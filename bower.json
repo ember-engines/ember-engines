@@ -1,5 +1,5 @@
 {
-  "name": "ember-engine",
+  "name": "ember-engines",
   "dependencies": {
     "ember": "components/ember#canary",
     "ember-cli-shims": "0.0.6",
