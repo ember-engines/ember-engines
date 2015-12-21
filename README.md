@@ -2,6 +2,23 @@
 
 This README outlines the details of collaborating on this Ember addon.
 
+## Rough Task List
+
+A) Enable mounting of route-less engines:
+  * `mount` method in routes (almost complete)
+  * `{{mount}}` helper for templates (almost complete)
+
+B) Enable mounting of routable engines:
+  * Separate routing map from router
+  * `mount` method in route map definition
+  * Enable deep linking across engine boundaries
+
+C) Establish dependency sharing between engines and parents
+  * As per https://github.com/tomdale/rfcs/blob/master/active/0000-engines.md#engine--parent-dependencies
+
+D) Make Ember CLI's resolver engine-aware:
+  * See ember-cli-resolver project - https://github.com/ember-cli/ember-resolver
+
 ## Installation
 
 * `git clone` this repository
