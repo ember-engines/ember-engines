@@ -44,6 +44,9 @@
     "ember-cli-babel": "^5.1.5"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "paths": [
+      "tests/dummy/lib/ember-chat"
+    ]
   }
 }
