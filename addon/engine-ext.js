@@ -1,4 +1,6 @@
 import Ember from 'ember';
+const emberRequire = Ember.__loader.require;
+const EmberView = emberRequire('ember-views/views/view').default;
 
 const {
   Engine,
@@ -7,7 +9,8 @@ const {
   TextField,
   TextArea,
   Checkbox,
-  ContainerDebugAdapter
+  ContainerDebugAdapter,
+  ComponentLookup
 } = Ember;
 
 Engine.reopen({
@@ -39,7 +42,7 @@ Engine.reopen({
 
       registry.injection('view', '_viewRegistry', '-view-registry:main');
 
-      // registry.register('view:toplevel', EmberView.extend());
+      registry.register('view:toplevel', EmberView.extend());
 
       // registry.register('route:basic', Route, { instantiate: false });
       // registry.register('event_dispatcher:main', EventDispatcher);
@@ -80,6 +83,8 @@ Engine.reopen({
       // Custom resolver authors may want to register their own ContainerDebugAdapter with this key
 
       registry.register('container-debug-adapter:main', ContainerDebugAdapter);
+
+      registry.register('component-lookup:main', ComponentLookup);
     }
 
     return registry;
