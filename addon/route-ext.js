@@ -23,7 +23,7 @@ Route.reopen({
     let view = engineInstance.lookup('view:application');
 
     let renderOptions = {
-      engine: engineInstance,
+      owner: engineInstance,
       into: options && options.into && options.into.replace(/\//g, '.'),
       outlet: (options && options.outlet) || 'main',
       template,

@@ -4,6 +4,7 @@ import 'ember-engines/router-ext';
 import 'ember-engines/engine-ext';
 import 'ember-engines/engine-instance-ext';
 import 'ember-engines/keywords/mount';
+import 'ember-engines/keywords/outlet';
 
 // TODO: Move to ensure they are ran prior to instantiating Ember.Application
 export function initialize() {
