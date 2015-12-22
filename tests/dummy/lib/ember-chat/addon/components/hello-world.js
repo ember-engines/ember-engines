@@ -7,8 +7,9 @@ export default Ember.Component.extend({
   name: null,
 
   init() {
-    console.log('hello-world.init');
     this._super(...arguments);
+
+    console.log('hello-world.init');
   },
 
   click() {
