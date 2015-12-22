@@ -7,7 +7,7 @@ export default Ember.Route.extend({
     console.log('renderTemplate');
 
     // Mount the chat engine in the sidebar
-    this.mount('chat', {
+    this.mount('ember-chat', {
       into: 'application',
       outlet: 'sidebar'
     });
