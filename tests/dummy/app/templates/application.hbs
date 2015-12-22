@@ -2,10 +2,16 @@
 
 <div class="sidebar">
   <h3>Sidebar</h3>
+
+  <div>Engine mounted with `Route#mount` in named outlet:</div>
   {{outlet "sidebar"}}
 </div>
 
 <div class="main">
   <h3>Main</h3>
-  {{outlet}}
+
+  <div>Engine mounted with \{{mount}} helper:</div>
+  {{mount "ember-chat"}}
 </div>
+
+{{outlet}}
