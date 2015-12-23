@@ -3,8 +3,6 @@ import Ember from 'ember';
 const {
   Router: EmberRouter,
   RouterDSL: EmberRouterDSL,
-  get,
-  Logger,
   getOwner
 } = Ember;
 
