@@ -1,6 +1,6 @@
 import Ember from 'ember';
-const emberRequire = Ember.__loader.require;
-const EmberView = emberRequire('ember-views/views/view').default;
+import emberRequire from './ext-require';
+const EmberView = emberRequire('ember-views/views/view');
 
 const {
   Engine,

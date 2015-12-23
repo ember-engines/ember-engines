@@ -1,13 +1,13 @@
 import Ember from "ember";
+import emberRequire from 'ember-engines/ext-require';
 
-const emberRequire = Ember.__loader.require;
 // const internal = emberRequire('htmlbars-runtime').internal;
-const read = emberRequire('ember-metal/streams/utils').read;
-const registerKeyword = emberRequire('ember-htmlbars/keywords').registerKeyword;
-// const legacyViewKeyword = emberRequire('ember-htmlbars/keywords/view').default;
-const ViewNodeManager = emberRequire('ember-htmlbars/node-managers/view-node-manager').default;
-const RenderEnv = emberRequire('ember-htmlbars/system/render-env').default;
-const EmptyObject = emberRequire('ember-metal/empty_object').default;
+const read = emberRequire('ember-metal/streams/utils', 'read');
+const registerKeyword = emberRequire('ember-htmlbars/keywords', 'registerKeyword');
+// const legacyViewKeyword = emberRequire('ember-htmlbars/keywords/view');
+const ViewNodeManager = emberRequire('ember-htmlbars/node-managers/view-node-manager');
+const RenderEnv = emberRequire('ember-htmlbars/system/render-env');
+const EmptyObject = emberRequire('ember-metal/empty_object');
 
 const {
   assert

@@ -1,10 +1,10 @@
 import Ember from 'ember';
-const emberRequire = Ember.__loader.require;
-const outlet = emberRequire('ember-htmlbars/keywords/outlet').default;
-const isEnabled = emberRequire('ember-metal/features').default;
-const ViewNodeManager = emberRequire('ember-htmlbars/node-managers/view-node-manager').default;
-const RenderEnv = emberRequire('ember-htmlbars/system/render-env').default;
-const info = emberRequire('ember-metal/debug').info;
+import emberRequire from '../ext-require';
+const outlet = emberRequire('ember-htmlbars/keywords/outlet');
+const isEnabled = emberRequire('ember-metal/features');
+const ViewNodeManager = emberRequire('ember-htmlbars/node-managers/view-node-manager');
+const RenderEnv = emberRequire('ember-htmlbars/system/render-env');
+const info = emberRequire('ember-metal/debug', 'info');
 
 const {
   get
