@@ -12,5 +12,16 @@ export default Resolver.extend({
 
       return module.default;
     }
+  },
+
+  resolveRouteMap(parsedName) {
+    let engineName = parsedName.fullNameWithoutType;
+    let engineRoutesModule = engineName + '/routes';
+
+    if (requirejs.entries[engineRoutesModule]) {
+      let module = require(engineRoutesModule);
+
+      return module.default;
+    }
   }
 });
