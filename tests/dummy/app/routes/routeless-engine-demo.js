@@ -8,7 +8,7 @@ export default Ember.Route.extend({
 
     // Mount the chat engine in the sidebar
     this.mount('ember-chat', {
-      into: 'application',
+      into: 'routeless-engine-demo',
       outlet: 'sidebar'
     });
   }
