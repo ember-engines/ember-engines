@@ -19,12 +19,16 @@ Route.reopen({
     engineInstance.boot({parent: owner});
 
     let template = engineInstance.lookup('template:application');
+    let controller = engineInstance.lookup('controller:application');
+    let view = engineInstance.lookup('view:application');
 
     let renderOptions = {
-      engine: engineInstance,
+      owner: engineInstance,
       into: options && options.into && options.into.replace(/\//g, '.'),
       outlet: (options && options.outlet) || 'main',
-      template
+      template,
+      controller,
+      view
     };
 
     this.connections.push(renderOptions);

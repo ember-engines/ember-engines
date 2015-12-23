@@ -5,6 +5,7 @@ const internal = emberRequire('htmlbars-runtime').internal;
 const registerKeyword = emberRequire('ember-htmlbars/keywords').registerKeyword;
 const legacyViewKeyword = emberRequire('ember-htmlbars/keywords/view').default;
 const ViewNodeManager = emberRequire('ember-htmlbars/node-managers/view-node-manager').default;
+const RenderEnv = emberRequire('ember-htmlbars/system/render-env').default;
 
 const {
   assert
@@ -132,6 +133,7 @@ registerKeyword('mount', {
     // let engineView = engineInstance.lookup('view:application');
 
     let engineTemplate = engineInstance.lookup('template:application');
+    //TODO - assert engineTemplate
 
     let router = owner.lookup('router:main');
 
@@ -142,10 +144,10 @@ registerKeyword('mount', {
     //   owner.hasRegistration('view:' + name) || owner.hasRegistration(templateName) || !!template
     // );
     //
-    // var view = owner.lookup('view:' + name);
-    // if (!view) {
-    //   view = owner.lookup('view:default');
-    // }
+    var view = engineInstance.lookup('view:application');
+    if (!view) {
+      view = engineInstance.lookup('view:toplevel');
+    }
     // var viewHasTemplateSpecified = view && !!get(view, 'template');
     // if (!template && !viewHasTemplateSpecified) {
     //   template = owner.lookup(templateName);
@@ -219,14 +221,16 @@ registerKeyword('mount', {
     //   options.component = engineView;
     // }
 
-    var nodeManager = ViewNodeManager.create(node, env, hash, options, state.parentView, null, null, engineTemplate);
+    let engineEnv = RenderEnv.build(view, engineTemplate.meta);
+
+    var nodeManager = ViewNodeManager.create(node, engineEnv, hash, options, state.parentView, null, null, engineTemplate);
     state.manager = nodeManager;
 
     // if (router && params.length === 1) {
     //   router._connectActiveComponentNode(name, nodeManager);
     // }
 
-    nodeManager.render(env, hash, visitor);
+    nodeManager.render(engineEnv, hash, visitor);
   },
 
   rerender(node, env, scope, params, hash, template, inverse, visitor) {
