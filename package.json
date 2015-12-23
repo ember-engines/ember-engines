@@ -46,7 +46,8 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "paths": [
-      "tests/dummy/lib/ember-chat"
+      "tests/dummy/lib/ember-chat",
+      "tests/dummy/lib/ember-blog"
     ]
   }
 }
