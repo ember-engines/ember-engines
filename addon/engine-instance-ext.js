@@ -59,7 +59,7 @@ EngineInstance.reopen({
 
     @private
   */
-  _bootSync(options) {
+  _bootSync(/* options */) {
     if (this._booted) { return this; }
 
     // if (isEnabled('ember-application-visit')) {

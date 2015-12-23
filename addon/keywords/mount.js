@@ -1,11 +1,13 @@
 import Ember from "ember";
 
 const emberRequire = Ember.__loader.require;
-const internal = emberRequire('htmlbars-runtime').internal;
+// const internal = emberRequire('htmlbars-runtime').internal;
+const read = emberRequire('ember-metal/streams/utils').read;
 const registerKeyword = emberRequire('ember-htmlbars/keywords').registerKeyword;
-const legacyViewKeyword = emberRequire('ember-htmlbars/keywords/view').default;
+// const legacyViewKeyword = emberRequire('ember-htmlbars/keywords/view').default;
 const ViewNodeManager = emberRequire('ember-htmlbars/node-managers/view-node-manager').default;
 const RenderEnv = emberRequire('ember-htmlbars/system/render-env').default;
+const EmptyObject = emberRequire('ember-metal/empty_object').default;
 
 const {
   assert
@@ -64,7 +66,7 @@ registerKeyword('mount', {
     }
   },
 
-  setupState(prevState, env, scope, params, hash) {
+  setupState(prevState, env, scope, params /*, hash */) {
     console.log('{{mount}} setupState');
 
     var name = params[0];
@@ -90,7 +92,7 @@ registerKeyword('mount', {
     return isStable(lastState.childOutletState, nextState.childOutletState);
   },
 
-  isEmpty(state) {
+  isEmpty(/* state */) {
     return false;
   },
 
@@ -98,8 +100,8 @@ registerKeyword('mount', {
     console.log('{{mount}} render');
 
     var state = node.getState();
-    var name = params[0];
-    var context = params[1];
+    // var name = params[0];
+    // var context = params[1];
 
     var owner = env.owner;
 
@@ -135,7 +137,7 @@ registerKeyword('mount', {
     let engineTemplate = engineInstance.lookup('template:application');
     //TODO - assert engineTemplate
 
-    let router = owner.lookup('router:main');
+    // let router = owner.lookup('router:main');
 
     // var templateName = 'template:' + name;
     // assert(
@@ -233,7 +235,7 @@ registerKeyword('mount', {
     nodeManager.render(engineEnv, hash, visitor);
   },
 
-  rerender(node, env, scope, params, hash, template, inverse, visitor) {
+  rerender(node, env, scope, params /*, hash, template, inverse, visitor */) {
     console.log('{{mount}} rerender');
 
     var model = read(params[1]);
