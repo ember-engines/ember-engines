@@ -4,9 +4,14 @@ const {
   RouterDSL: EmberRouterDSL
 } = Ember;
 
-EmberRouterDSL.prototype.mount = function(name, _options) {
+EmberRouterDSL.prototype.mount = function(_name, _options) {
   let options = _options || {};
-  let engineRouteMap = this.options.resolveRouteMap(name);
+  let engineRouteMap = this.options.resolveRouteMap(_name);
+  let name = _name;
+  if (options.as) {
+    options.resetNamespace = true;
+    name = options.as;
+  }
 
   if (engineRouteMap) {
     var fullName = getFullName(this, name, options.resetNamespace);
