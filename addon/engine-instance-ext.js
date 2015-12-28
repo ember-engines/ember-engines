@@ -43,6 +43,8 @@ EngineInstance.reopen({
 
     this._bootPromise = new RSVP.Promise(resolve => resolve(this._bootSync(options)));
 
+    // TODO: Unsure that we should allow boot to be async...
+
     return this._bootPromise;
   },
 
@@ -115,15 +117,21 @@ EngineInstance.reopen({
 
     [
       'view:toplevel',
-      'renderer:-dom',
       'route:basic',
       'event_dispatcher:main',
-      'router:main',
       '-bucket-cache:main',
       'service:-routing'
     ].forEach((key) => {
       this.register(key, parent.resolveRegistration(key));
     });
+
+    [
+      'renderer:-dom',
+      'router:main'
+    ].forEach((key) => {
+      this.register(key, parent.lookup(key), { instantiate: false });
+    });
+
   },
 
   // mount(view) {
