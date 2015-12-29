@@ -1,28 +1,64 @@
 import Ember from 'ember';
 
 const {
-  RouterDSL: EmberRouterDSL
+  RouterDSL: EmberRouterDSL,
+  merge
 } = Ember;
+
+let uuid = 0;
 
 EmberRouterDSL.prototype.mount = function(_name, _options) {
   let options = _options || {};
   let engineRouteMap = this.options.resolveRouteMap(_name);
   let name = _name;
+
   if (options.as) {
     options.resetNamespace = true;
     name = options.as;
   }
 
-  if (engineRouteMap) {
-    var fullName = getFullName(this, name, options.resetNamespace);
-    var dsl = new EmberRouterDSL(fullName, this.options);
+  var fullName = getFullName(this, name, options.resetNamespace);
 
-    engineRouteMap.call(dsl);
+  let engineInfo = {
+    name: _name,
+    instanceId: uuid++,
+    fullName
+  };
 
-    createRoute(this, name, options, dsl.generate());
-  } else {
-    createRoute(this, name, options);
+  let path = options.path;
+
+  if (typeof path !== 'string') {
+    path = `/${name}`;
   }
+
+  let callback;
+  if (engineRouteMap) {
+    let optionsForChild = merge({ engineInfo }, this.options);
+    let childDSL = new EmberRouterDSL(fullName, optionsForChild);
+
+    engineRouteMap.call(childDSL);
+
+    callback = childDSL.generate();
+  }
+
+  this.push(path, fullName, callback);
+};
+
+EmberRouterDSL.prototype.push = function(url, fullName, callback) {
+  var parts = fullName.split('.');
+
+  if (this.options.engineInfo) {
+    let localFullName = fullName.slice(this.options.engineInfo.fullName.length + 1);
+    let routeInfo = merge({ localFullName }, this.options.engineInfo);
+
+    this.options.addRouteForEngine(fullName, routeInfo);
+  }
+
+  if (url === '' || url === '/' || parts[parts.length - 1] === 'index') {
+    this.explicitIndex = true;
+  }
+
+  this.matches.push([url, fullName, callback]);
 };
 
 function canNest(dsl) {
@@ -35,16 +71,4 @@ function getFullName(dsl, name, resetNamespace) {
   } else {
     return name;
   }
-}
-
-function createRoute(dsl, name, options, callback) {
-  options = options || {};
-
-  var fullName = getFullName(dsl, name, options.resetNamespace);
-
-  if (typeof options.path !== 'string') {
-    options.path = `/${name}`;
-  }
-
-  dsl.push(options.path, fullName, callback);
 }
