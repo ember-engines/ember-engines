@@ -74,8 +74,8 @@ EmberRouter.reopen({
     var seen = new EmptyObject();
     let owner = getOwner(this);
 
-    return (name) => {
-      let routeName = 'route:' + name;
+    return (_name) => {
+      let name = _name;
       let engineInfo = this._routeToEngineInfoXRef[name];
       let handler, engineInstance, routeOwner;
 
@@ -83,18 +83,20 @@ EmberRouter.reopen({
         engineInstance = this._getEngineInstance(engineInfo);
 
         routeOwner = engineInstance;
-        routeName = `route:${engineInfo.localFullName}`;
+        name = engineInfo.localFullName;
       } else {
         routeOwner = owner;
       }
 
+      let routeName = 'route:' + name;
+
       handler = routeOwner.lookup(routeName);
 
-      if (seen[routeName]) {
+      if (seen[_name]) {
         return handler;
       }
 
-      seen[routeName] = true;
+      seen[_name] = true;
 
       if (!handler) {
         let DefaultRoute = routeOwner._lookupFactory('route:basic');
@@ -107,11 +109,7 @@ EmberRouter.reopen({
         }
       }
 
-      if (engineInfo) {
-        handler.routeName = engineInfo.localFullName;
-      } else {
-        handler.routeName = name;
-      }
+      handler.routeName = name;
 
       return handler;
     };
