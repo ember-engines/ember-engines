@@ -20,7 +20,7 @@ Route.reopen({
 
     let template = engineInstance.lookup('template:application');
     let controller = engineInstance.lookup('controller:application');
-    let view = engineInstance.lookup('view:application');
+    let ViewClass = engineInstance._lookupFactory('view:application');
 
     let renderOptions = {
       owner: engineInstance,
@@ -28,7 +28,7 @@ Route.reopen({
       outlet: (options && options.outlet) || 'main',
       template,
       controller,
-      view
+      ViewClass
     };
 
     this.connections.push(renderOptions);
