@@ -61,15 +61,21 @@ outlet.render = function(renderNode, _env, scope, params, hash, template, invers
   }
 
   let owner = outletState.render.owner;
-  if (owner) {
+  // detect if we are crossing into an engine
+  if (owner !== env.owner) {
     env = new RenderEnv({
       view: null,
-      outletState: parentView.outletState,
+      outletState: outletState.outlets,
       owner,
       renderer: _env.renderer,
       dom: _env.renderer._dom,
       meta: env.meta
     });
+
+    // when this outlet represents an engine we must ensure that a `ViewClass` is present
+    // even if the engine does not contain a `view:application`. We need a `ViewClass` to
+    // ensure that an `ownerView` is set on the `env` created just above
+    options.component = options.component || owner._lookupFactory('view:toplevel');
   }
 
   var nodeManager = ViewNodeManager.create(renderNode, env, attrs, options, parentView, null, null, template);
