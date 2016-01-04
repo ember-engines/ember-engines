@@ -154,11 +154,11 @@ registerKeyword('mount', {
     // if (!template && !viewHasTemplateSpecified) {
     //   template = owner.lookup(templateName);
     // }
-    //
-    // if (view) {
-    //   view.ownerView = env.view.ownerView;
-    // }
-    //
+
+    if (view) {
+      view.ownerView = env.view.ownerView;
+    }
+
     // // provide controller override
     // var controllerName;
     // var controllerFullName;
