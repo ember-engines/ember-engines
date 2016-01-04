@@ -61,7 +61,8 @@ outlet.render = function(renderNode, _env, scope, params, hash, template, invers
   }
 
   let owner = outletState.render.owner;
-  if (owner) {
+  // detect if we are crossing into an engine
+  if (owner !== env.owner) {
     env = new RenderEnv({
       view: null,
       outletState: parentView.outletState,
