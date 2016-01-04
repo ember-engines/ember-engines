@@ -65,7 +65,7 @@ outlet.render = function(renderNode, _env, scope, params, hash, template, invers
   if (owner !== env.owner) {
     env = new RenderEnv({
       view: null,
-      outletState: parentView.outletState,
+      outletState: outletState.outlets,
       owner,
       renderer: _env.renderer,
       dom: _env.renderer._dom,
