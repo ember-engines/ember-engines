@@ -22,6 +22,7 @@ EmberRouterDSL.prototype.mount = function(_name, _options) {
   let engineInfo = {
     name: _name,
     instanceId: uuid++,
+    mountPoint: fullName,
     fullName
   };
 
