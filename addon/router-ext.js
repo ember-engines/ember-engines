@@ -57,7 +57,7 @@ EmberRouter.reopen({
       // TODO: throw if engine can't be found (or should we make a default?)
       engineInstance = Engine.buildInstance({
         parent: owner,
-        routeabe: true,
+        routeable: true,
         mountPoint
       });
 
