@@ -37,9 +37,8 @@ EngineInstance.reopen({
 
     if (this._bootPromise) { return this._bootPromise; }
 
-    assert('`parent` is a required option for `EngineInstance#boot()`', options.parent);
+    assert('`parent` is a required to be set when prior to calling `EngineInstance#boot` ', this.parent);
 
-    this.parent = options.parent;
 
     this._bootPromise = new RSVP.Promise(resolve => resolve(this._bootSync(options)));
 

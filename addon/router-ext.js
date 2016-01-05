@@ -56,14 +56,12 @@ EmberRouter.reopen({
 
       // TODO: throw if engine can't be found (or should we make a default?)
       engineInstance = Engine.buildInstance({
-        // TODO: should these be passed to `boot` instead?
+        parent: owner,
         routeabe: true,
         mountPoint
       });
 
-      engineInstance.boot({
-        parent: owner
-      });
+      engineInstance.boot();
 
       engineInstances[name][instanceId] = engineInstance;
     }
