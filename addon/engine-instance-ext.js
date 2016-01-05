@@ -7,7 +7,7 @@ const {
 } = Ember;
 
 EngineInstance.reopen({
-  parentInstance: null,
+  parent: null,
 
   /**
     The root DOM element of the `EngineInstance` as an element or a
