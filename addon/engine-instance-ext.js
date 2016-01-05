@@ -127,7 +127,8 @@ EngineInstance.reopen({
 
     [
       'renderer:-dom',
-      'router:main'
+      'router:main',
+      '-view-registry:main'
     ].forEach((key) => {
       this.register(key, parent.lookup(key), { instantiate: false });
     });

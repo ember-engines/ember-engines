@@ -39,7 +39,7 @@ Engine.reopen({
       }
       registry.register('view:-outlet', OutletView);
 
-      registry.register('-view-registry:main', { create() { return {}; } });
+      //registry.register('-view-registry:main', { create() { return {}; } });
 
       registry.injection('view', '_viewRegistry', '-view-registry:main');
 
