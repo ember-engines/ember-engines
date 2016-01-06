@@ -5,7 +5,6 @@ import emberRequire from './ext-require';
 const EmberView = emberRequire('ember-views/views/view');
 const RoutingService = emberRequire('ember-routing/services/routing');
 
-
 const {
   Engine,
   SelectView,
