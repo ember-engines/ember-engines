@@ -7,7 +7,7 @@ const {
 } = Ember;
 
 EngineInstance.reopen({
-  parentInstance: null,
+  parent: null,
 
   /**
     The root DOM element of the `EngineInstance` as an element or a
@@ -37,9 +37,8 @@ EngineInstance.reopen({
 
     if (this._bootPromise) { return this._bootPromise; }
 
-    assert('`parent` is a required option for `EngineInstance#boot()`', options.parent);
+    assert('`parent` is a required to be set prior to calling `EngineInstance#boot` ', this.parent);
 
-    this.parent = options.parent;
 
     this._bootPromise = new RSVP.Promise(resolve => resolve(this._bootSync(options)));
 
@@ -127,7 +126,8 @@ EngineInstance.reopen({
 
     [
       'renderer:-dom',
-      'router:main'
+      'router:main',
+      '-view-registry:main'
     ].forEach((key) => {
       this.register(key, parent.lookup(key), { instantiate: false });
     });

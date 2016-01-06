@@ -1,6 +1,10 @@
 import Ember from 'ember';
+import LinkToComponent from './components/link-to';
 import emberRequire from './ext-require';
+
 const EmberView = emberRequire('ember-views/views/view');
+const RoutingService = emberRequire('ember-routing/services/routing');
+
 
 const {
   Engine,
@@ -38,7 +42,7 @@ Engine.reopen({
       }
       registry.register('view:-outlet', OutletView);
 
-      registry.register('-view-registry:main', { create() { return {}; } });
+      //registry.register('-view-registry:main', { create() { return {}; } });
 
       registry.injection('view', '_viewRegistry', '-view-registry:main');
 
@@ -69,12 +73,12 @@ Engine.reopen({
       registry.register('component:-text-area', TextArea);
       registry.register('component:-checkbox', Checkbox);
       // registry.register('view:-legacy-each', LegacyEachView);
-      // registry.register('component:link-to', LinkToComponent);
+      registry.register('component:link-to', LinkToComponent);
 
       // Register the routing service...
-      // registry.register('service:-routing', RoutingService);
+      registry.register('service:-routing', RoutingService);
       // Then inject the app router into it
-      // registry.injection('service:-routing', 'router', 'router:main');
+      registry.injection('service:-routing', 'router', 'router:main');
 
       // DEBUGGING
       registry.register('resolver-for-debugging:main', registry.resolver, { instantiate: false });

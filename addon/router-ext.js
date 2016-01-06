@@ -41,7 +41,7 @@ EmberRouter.reopen({
     });
   },
 
-  _getEngineInstance({ name, instanceId }) {
+  _getEngineInstance({ name, instanceId, mountPoint }) {
     let engineInstances = this._engineInstances;
 
     if (!engineInstances[name]) {
@@ -55,9 +55,13 @@ EmberRouter.reopen({
       let Engine = owner.lookup('engine:' + name);
 
       // TODO: throw if engine can't be found (or should we make a default?)
-      engineInstance = Engine.buildInstance();
+      engineInstance = Engine.buildInstance({
+        parent: owner,
+        routeable: true,
+        mountPoint
+      });
 
-      engineInstance.boot({parent: owner});
+      engineInstance.boot();
 
       engineInstances[name][instanceId] = engineInstance;
     }
