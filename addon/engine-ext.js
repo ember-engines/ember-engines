@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import LinkToComponent from './components/link-to';
 import emberRequire from './ext-require';
 
 const EmberView = emberRequire('ember-views/views/view');
@@ -13,7 +12,8 @@ const {
   TextArea,
   Checkbox,
   ContainerDebugAdapter,
-  ComponentLookup
+  ComponentLookup,
+  LinkComponent
 } = Ember;
 
 Engine.reopen({
@@ -72,7 +72,7 @@ Engine.reopen({
       registry.register('component:-text-area', TextArea);
       registry.register('component:-checkbox', Checkbox);
       // registry.register('view:-legacy-each', LegacyEachView);
-      registry.register('component:link-to', LinkToComponent);
+      registry.register('component:link-to', LinkComponent);
 
       // Register the routing service...
       registry.register('service:-routing', RoutingService);
