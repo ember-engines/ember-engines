@@ -14,11 +14,24 @@ test('can invoke components', function(assert) {
 });
 
 test('can render a link', function(assert) {
+  assert.expect(2);
+
   visit('/routeable-engine-demo/blog/post/1');
 
   andThen(() => {
     assert.equal(currentURL(), '/routeable-engine-demo/blog/post/1');
 
     assert.equal(this.application.$('a.routeable-post-comments-link').attr('href'), '/routeable-engine-demo/blog/post/1/comments');
+  });
+});
+
+test('internal links can be clicked', function(assert) {
+  assert.expect(1);
+
+  visit('/routeable-engine-demo/blog/post/1');
+  click('.routeable-post-comments-link');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/routeable-engine-demo/blog/post/1/comments');
   });
 });

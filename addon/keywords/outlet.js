@@ -68,7 +68,13 @@ outlet.render = function(renderNode, _env, scope, params, hash, template, invers
       outletState: outletState.outlets,
       owner,
       renderer: _env.renderer,
-      dom: _env.renderer._dom,
+      dom: _env.dom,
+
+      lifecycleHooks: _env.lifecycleHooks,
+      renderedViews: _env.renderedViews,
+      renderedNodes: _env.renderedNodes,
+      hasParentOutlet: _env.hasParentOutlet,
+
       meta: env.meta
     });
 
