@@ -4,5 +4,11 @@ import Resolver from 'ember-resolver';
 export default Ember.Engine.extend({
   modulePrefix: 'ember-chat',
 
-  Resolver
+  Resolver,
+
+  dependencies: {
+    services: [
+      'store'
+    ]
+  }
 });
