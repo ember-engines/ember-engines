@@ -1,7 +1,10 @@
 import Ember from 'ember';
 import LinkComponent from './components/link-to';
 import emberRequire from './ext-require';
+
 const EmberView = emberRequire('ember-views/views/view');
+const RoutingService = emberRequire('ember-routing/services/routing');
+
 
 const {
   Engine,
@@ -73,9 +76,9 @@ Engine.reopen({
       registry.register('component:link-to', LinkComponent);
 
       // Register the routing service...
-      // registry.register('service:-routing', RoutingService);
+      registry.register('service:-routing', RoutingService);
       // Then inject the app router into it
-      // registry.injection('service:-routing', 'router', 'router:main');
+      registry.injection('service:-routing', 'router', 'router:main');
 
       // DEBUGGING
       registry.register('resolver-for-debugging:main', registry.resolver, { instantiate: false });
