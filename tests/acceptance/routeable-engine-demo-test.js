@@ -35,3 +35,14 @@ test('internal links can be clicked', function(assert) {
     assert.equal(currentURL(), '/routeable-engine-demo/blog/post/1/comments');
   });
 });
+
+test('a route can use transitionTo to transition to internal route', function(assert) {
+  assert.expect(1);
+
+  visit('/routeable-engine-demo/blog/new');
+  click('.trigger-transition-to');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/routeable-engine-demo/blog/post/1');
+  });
+});
