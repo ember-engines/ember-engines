@@ -37,7 +37,7 @@ EngineInstance.reopen({
 
     if (this._bootPromise) { return this._bootPromise; }
 
-    assert('`parent` is a required to be set when prior to calling `EngineInstance#boot` ', this.parent);
+    assert('`parent` is a required to be set prior to calling `EngineInstance#boot` ', this.parent);
 
 
     this._bootPromise = new RSVP.Promise(resolve => resolve(this._bootSync(options)));
