@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import LinkComponent from './components/link-to';
 import emberRequire from './ext-require';
 const EmberView = emberRequire('ember-views/views/view');
 
@@ -10,8 +11,7 @@ const {
   TextArea,
   Checkbox,
   ContainerDebugAdapter,
-  ComponentLookup,
-  LinkComponent
+  ComponentLookup
 } = Ember;
 
 Engine.reopen({
