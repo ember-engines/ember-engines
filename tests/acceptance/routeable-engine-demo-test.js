@@ -46,3 +46,24 @@ test('a route can use transitionTo to transition to internal route', function(as
     assert.equal(currentURL(), '/routeable-engine-demo/blog/post/1');
   });
 });
+
+test('internal links can be clicked', function(assert) {
+  assert.expect(1);
+
+  visit('/routeable-engine-demo/special-admin-blog-here/post/1');
+  click('.routeable-post-comments-link');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/routeable-engine-demo/special-admin-blog-here/post/1/comments');
+  });
+});
+
+test('transitionTo works properly within parent application', function(assert) {
+  assert.expect(1);
+
+  visit('/routeable-engine-demo/normal-route');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/routeless-engine-demo');
+  });
+});

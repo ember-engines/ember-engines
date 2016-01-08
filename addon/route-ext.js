@@ -4,7 +4,8 @@ const {
   assert,
   Route,
   getOwner,
-  run
+  run,
+  Error: EmberError
 } = Ember;
 
 Route.reopen({
@@ -44,15 +45,12 @@ Route.reopen({
     let owner = getOwner(this);
     let prefix = owner.mountPoint;
 
-    if (resemblesURL(routeName)) {
-      // avoid creating double slashes
-      if (routeName.charAt(0) === '/') {
-        routeName = `/${prefix}${_routeName}`;
+    if (owner.routeable) {
+      if (resemblesURL(routeName)) {
+        throw new EmberError('Route#transitionTo cannot be used for URLs. Please use the route name instead.');
       } else {
-        routeName = `/${prefix}`;
+        routeName = `${prefix}.${_routeName}`;
       }
-    } else {
-      routeName = `${prefix}.${_routeName}`;
     }
 
     return this._super(routeName, ...args);

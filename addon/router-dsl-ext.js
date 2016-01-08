@@ -13,7 +13,6 @@ EmberRouterDSL.prototype.mount = function(_name, _options) {
   let name = _name;
 
   if (options.as) {
-    options.resetNamespace = true;
     name = options.as;
   }
 
