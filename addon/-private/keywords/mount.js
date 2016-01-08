@@ -1,5 +1,5 @@
 import Ember from "ember";
-import emberRequire from 'ember-engines/ext-require';
+import emberRequire from '../ext-require';
 
 // const internal = emberRequire('htmlbars-runtime').internal;
 const read = emberRequire('ember-metal/streams/utils', 'read');

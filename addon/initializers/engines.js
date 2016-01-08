@@ -1,12 +1,12 @@
 // Load extensions to Ember
-import 'ember-engines/route-ext';
-import 'ember-engines/router-ext';
-import 'ember-engines/engine-ext';
-import 'ember-engines/engine-instance-ext';
-import 'ember-engines/keywords/mount';
-import 'ember-engines/keywords/outlet';
-import 'ember-engines/router-dsl-ext';
-import 'ember-engines/link-to-component-ext';
+import '../-private/route-ext';
+import '../-private/router-ext';
+import '../-private/engine-ext';
+import '../-private/engine-instance-ext';
+import '../-private/keywords/mount';
+import '../-private/keywords/outlet';
+import '../-private/router-dsl-ext';
+import '../-private/link-to-component-ext';
 
 
 // TODO: Move to ensure they are ran prior to instantiating Ember.Application

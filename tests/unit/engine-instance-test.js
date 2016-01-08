@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import EnginesInitializer from '../../initializers/engines';
-import { getEngineParent } from 'ember-engines/engine-parent';
+import { getEngineParent } from 'ember-engines/-private/engine-parent';
 import { module, test } from 'qunit';
 
 const {
