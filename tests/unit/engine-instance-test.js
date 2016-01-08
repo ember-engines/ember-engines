@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import EnginesInitializer from '../../initializers/engines';
+import { getEngineParent } from 'ember-engines/engine-parent';
 import { module, test } from 'qunit';
 
 const {
@@ -49,7 +50,7 @@ test('it can build a child engine instance with no dependencies', function(asser
   let blogEngineInstance = mainEngineInstance.buildChildEngineInstance('blog');
 
   assert.ok(blogEngineInstance);
-  assert.strictEqual(blogEngineInstance.parent, mainEngineInstance, 'parent is assigned');
+  assert.strictEqual(getEngineParent(blogEngineInstance), mainEngineInstance, 'parent is assigned');
 
   blogEngineInstance.cloneCoreDependencies = function() {
     assert.ok(true, 'cloneCoreDependencies called');
@@ -90,7 +91,7 @@ test('it can build a child engine instance with dependencies', function(assert) 
   let blogEngineInstance = mainEngineInstance.buildChildEngineInstance('blog');
 
   assert.ok(blogEngineInstance);
-  assert.strictEqual(blogEngineInstance.parent, mainEngineInstance, 'parent is assigned');
+  assert.strictEqual(getEngineParent(blogEngineInstance), mainEngineInstance, 'parent is assigned');
 
   blogEngineInstance.cloneCoreDependencies = function() {
     assert.ok(true, 'cloneCoreDependencies called');
@@ -137,7 +138,7 @@ test('it can build a child engine instance with dependencies that are aliased', 
   let blogEngineInstance = mainEngineInstance.buildChildEngineInstance('blog');
 
   assert.ok(blogEngineInstance);
-  assert.strictEqual(blogEngineInstance.parent, mainEngineInstance, 'parent is assigned');
+  assert.strictEqual(getEngineParent(blogEngineInstance), mainEngineInstance, 'parent is assigned');
 
   blogEngineInstance.cloneCoreDependencies = function() {
     assert.ok(true, 'cloneCoreDependencies called');
