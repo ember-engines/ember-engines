@@ -1,4 +1,8 @@
 import Ember from 'ember';
+import {
+  getEngineParent,
+  setEngineParent
+} from './engine-parent';
 
 const {
   Error: EmberError,
@@ -8,8 +12,6 @@ const {
 } = Ember;
 
 EngineInstance.reopen({
-  parent: null,
-
   /**
     The root DOM element of the `EngineInstance` as an element or a
     [jQuery-compatible selector
@@ -104,11 +106,11 @@ EngineInstance.reopen({
       throw new EmberError(`You attempted to mount the engine '${name}', but it can not be found.`);
     }
 
-    options.parent = this;
-
     options.dependencies = dependencies;
 
     let engineInstance = Engine.buildInstance(options);
+
+    setEngineParent(engineInstance, this);
 
     return engineInstance;
   },
@@ -131,7 +133,7 @@ EngineInstance.reopen({
 
     if (this._bootPromise) { return this._bootPromise; }
 
-    assert('`parent` is a required to be set prior to calling `EngineInstance#boot` ', this.parent);
+    assert('An engine instance\'s parent must be set via `setEngineParent(engine, parent)` prior to calling `engine.boot()` ', getEngineParent(this));
 
     this._bootPromise = new RSVP.Promise(resolve => resolve(this._bootSync(options)));
 
@@ -207,7 +209,7 @@ EngineInstance.reopen({
   },
 
   cloneCoreDependencies() {
-    let parent = this.parent;
+    let parent = getEngineParent(this);
 
     [
       'view:toplevel',
