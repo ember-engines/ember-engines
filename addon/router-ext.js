@@ -2,6 +2,7 @@ import Ember from 'ember';
 import emberRequire from './ext-require';
 
 const {
+  assert,
   Router: EmberRouter,
   RouterDSL: EmberRouterDSL,
   getOwner,
@@ -52,11 +53,13 @@ EmberRouter.reopen({
 
     if (!engineInstance) {
       let owner = getOwner(this);
-      let Engine = owner.lookup('engine:' + name);
 
-      // TODO: throw if engine can't be found (or should we make a default?)
-      engineInstance = Engine.buildInstance({
-        parent: owner,
+      assert(
+        'You attempted to mount the engine \'' + name + '\' in your router map, but the engine can not be found.',
+        owner.hasRegistration(`engine:${name}`)
+      );
+
+      engineInstance = owner.buildChildEngineInstance(name, {
         routeable: true,
         mountPoint
       });

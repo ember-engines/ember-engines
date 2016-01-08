@@ -1,22 +1,25 @@
 import Ember from 'ember';
 
 const {
+  assert,
   Route,
   getOwner,
   run
 } = Ember;
 
 Route.reopen({
-  mount(engine, options) {
+  mount(engineName, options) {
     console.log('mount', options);
 
     let owner = getOwner(this);
 
-    let Engine = owner.lookup(`engine:${engine}`);
+    assert(
+      'You used `Route.mount(\'' + engineName + '\')`, but the engine \'' + engineName + '\' can not be found.',
+      owner.hasRegistration(`engine:${engineName}`)
+    );
 
-    let engineInstance = Engine.buildInstance();
-
-    engineInstance.boot({parent: owner});
+    let engineInstance = owner.buildChildEngineInstance(engineName);
+    engineInstance.boot();
 
     let template = engineInstance.lookup('template:application');
     let controller = engineInstance.lookup('controller:application');

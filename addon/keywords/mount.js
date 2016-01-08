@@ -117,18 +117,14 @@ registerKeyword('mount', {
     );
 
     let engineName = params[0];
-    let engineKey = `engine:${engineName}`;
 
     assert(
       'You used `{{mount \'' + engineName + '\'}}`, but the engine \'' + engineName + '\' can not be found.',
-      owner.hasRegistration(engineKey)
+      owner.hasRegistration(`engine:${engineName}`)
     );
 
-    let Engine = owner.lookup(engineKey);
-
-    let engineInstance = Engine.buildInstance();
-
-    engineInstance.boot({parent: owner});
+    let engineInstance = owner.buildChildEngineInstance(engineName);
+    engineInstance.boot();
 
     let engineController = engineInstance.lookup('controller:application');
 

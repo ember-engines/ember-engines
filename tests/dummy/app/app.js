@@ -10,7 +10,24 @@ Ember.MODEL_FACTORY_INJECTIONS = true;
 App = Ember.Application.extend({
   modulePrefix: config.modulePrefix,
   podModulePrefix: config.podModulePrefix,
-  Resolver
+  Resolver,
+
+  engines: {
+    emberBlog: {
+      dependencies: {
+        services: [
+          {'data-store': 'store'}
+        ]
+      }
+    },
+    emberChat: {
+      dependencies: {
+        services: [
+          'store'
+        ]
+      }
+    }
+  }
 });
 
 loadInitializers(App, config.modulePrefix);

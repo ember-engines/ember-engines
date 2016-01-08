@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 const {
+  Error: EmberError,
   EngineInstance,
   assert,
   RSVP
@@ -18,6 +19,99 @@ EngineInstance.reopen({
     @property {String|DOMElement} rootElement
   */
   rootElement: null,
+
+  /**
+    A mapping of dependency names and values, grouped by category.
+
+    `dependencies` should be set by the parent of this engine instance upon
+    instantiation and prior to boot.
+
+    During the boot process, engine instances verify that their required
+    dependencies, as defined on the parent `Engine` class, have been assigned
+    by the parent.
+
+    @private
+    @property {Object} dependencies
+  */
+  dependencies: null,
+
+  /**
+    A cache of dependency names and values, grouped by engine name.
+
+    This cache is maintained by `buildChildEngineInstance()` for every engine
+    that's a child of this parent instance.
+
+    Only dependencies that are singletons are currently allowed, which makes
+    this safe.
+
+    @private
+    @property {Object} _dependenciesForChildEngines
+  */
+  _dependenciesForChildEngines: null,
+
+  buildChildEngineInstance(name, options = {}) {
+    // Check dependencies cached by engine name
+    let dependencies = this._dependenciesForChildEngines && this._dependenciesForChildEngines[name];
+
+    // Prepare dependencies if none are cached
+    if (!dependencies) {
+      dependencies = {};
+
+      let camelizedName = Ember.String.camelize(name);
+
+      let engineConfiguration = this.base.engines && this.base.engines[camelizedName];
+
+      if (engineConfiguration) {
+        let engineDependencies = engineConfiguration.dependencies;
+
+        if (engineDependencies) {
+          ['services'].forEach((category) => {
+            if (engineDependencies[category]) {
+              dependencies[category] = {};
+              let dependencyType = this._dependencyTypeFromCategory(category);
+
+              for (let engineDependency of engineDependencies[category]) {
+                let dependencyName;
+                let dependencyNameInParent;
+
+                if (typeof engineDependency === 'object') {
+                  dependencyName = Object.keys(engineDependency)[0];
+                  dependencyNameInParent = engineDependency[dependencyName];
+                } else {
+                  dependencyName = dependencyNameInParent = engineDependency;
+                }
+
+                let dependencyKey = `${dependencyType}:${dependencyNameInParent}`;
+                let dependency = this.lookup(dependencyKey);
+
+                assert(`Engine parent failed to lookup '${dependencyKey}' dependency, as declared in 'engines.${camelizedName}.dependencies.${category}'.`, dependency);
+
+                dependencies[category][dependencyName] = dependency;
+              }
+            }
+          });
+        }
+      }
+
+      // Cache dependencies for child engines for faster instantiation in the future
+      this._dependenciesForChildEngines = this._dependenciesForChildEngines || {};
+      this._dependenciesForChildEngines[name] = dependencies;
+    }
+
+    let Engine = this.lookup(`engine:${name}`);
+
+    if (!Engine) {
+      throw new EmberError(`You attempted to mount the engine '${name}', but it can not be found.`);
+    }
+
+    options.parent = this;
+
+    options.dependencies = dependencies;
+
+    let engineInstance = Engine.buildInstance(options);
+
+    return engineInstance;
+  },
 
   /**
     Initialize the `Ember.EngineInstance` and return a promise that resolves
@@ -38,7 +132,6 @@ EngineInstance.reopen({
     if (this._bootPromise) { return this._bootPromise; }
 
     assert('`parent` is a required to be set prior to calling `EngineInstance#boot` ', this.parent);
-
 
     this._bootPromise = new RSVP.Promise(resolve => resolve(this._bootSync(options)));
 
@@ -102,7 +195,9 @@ EngineInstance.reopen({
       // }
     // }
 
-    this.cloneDependencies();
+    this.cloneCoreDependencies();
+
+    this.cloneCustomDependencies();
 
     this._booted = true;
 
@@ -111,7 +206,7 @@ EngineInstance.reopen({
     return this;
   },
 
-  cloneDependencies() {
+  cloneCoreDependencies() {
     let parent = this.parent;
 
     [
@@ -131,7 +226,36 @@ EngineInstance.reopen({
     ].forEach((key) => {
       this.register(key, parent.lookup(key), { instantiate: false });
     });
+  },
 
+  cloneCustomDependencies() {
+    let requiredDependencies = this.base.dependencies;
+
+    if (requiredDependencies) {
+      Object.keys(requiredDependencies).forEach((category) => {
+        let dependencyType = this._dependencyTypeFromCategory(category);
+
+        requiredDependencies[category].forEach((dependencyName) => {
+          let key = `${dependencyType}:${dependencyName}`;
+
+          let dependency = this.dependencies[category] && this.dependencies[category][dependencyName];
+
+          assert(`A dependency mapping for '${category}.${dependencyName}' must be declared on this engine's parent.`, dependency);
+
+          this.register(key, dependency, { instantiate: false });
+
+          console.log('clone custom dependency:', key);
+        });
+      });
+    }
+  },
+
+  _dependencyTypeFromCategory(category) {
+    switch(category) {
+      case 'services':
+        return 'service';
+    }
+    assert(`Dependencies of category '${category}' can not be shared with engines.`, false);
   },
 
   // mount(view) {
