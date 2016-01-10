@@ -1,43 +1,381 @@
 # ember-engines
 
-This README outlines the details of collaborating on this Ember addon.
+This Ember addon implements the functionality described in the [Ember Engines
+RFC](https://github.com/emberjs/rfcs/pull/10).
 
-## Rough Task List
+Engines allow multiple logical applications to be composed together into a
+single application from the user's perspective.
 
-A) Enable mounting of route-less engines:
-  * `mount` method in routes (almost complete)
-  * `{{mount}}` helper for templates (almost complete)
+This addon must be installed in any ember-cli projects that function as either
+consumers or providers of engines.
 
-B) Enable mounting of routable engines:
-  * Separate routing map from router
-  * `mount` method in route map definition
-  * Enable deep linking across engine boundaries
+The following functionality is supported:
 
-C) Establish dependency sharing between engines and parents
-  * As per https://github.com/tomdale/rfcs/blob/master/active/0000-engines.md#engine--parent-dependencies
+* Routable engines which can be mounted at specific routes in a routing map, and
+  which can contain routes of their own.
 
-D) Make Ember CLI's resolver engine-aware:
-  * See ember-cli-resolver project - https://github.com/ember-cli/ember-resolver
+* Route-less engines, which can be rendered in a template using either the
+  `{{mount}}` keyword or the `Route#mount` method.
+
+* Sharing of dependencies from parents (applications or other engines) to
+  contained engines. Shared dependencies are currently limited to services.
+
+The following functionality will soon be supported:
+
+* Lazy loading of engines.
+
+* Route serializer modules that isolate serialization logic from the rest of
+  the route definition.
+
+Support for the following concepts is under consideration:
+
+* Namespaced access to engine resources from applications.
+
+* Sharing of dependencies other than services.
+
+* Passing configuration attributes from an engine's parent.
 
 ## Installation
+
+Ember Engines are currently supported in Ember Canary.
+
+This addon can be installed with:
+
+```
+ember install ember-engines
+```
+
+## Providing Engines
+
+### Creating Engines
+
+Engines can be created as separate addon projects or in-repo addons.
+
+Separate addon projects can be created with the `addon` command:
+
+```
+ember addon <engine-name>
+```
+
+_Note: As described in the RFC, ember-cli will hopefully support an `engine`
+command to get started more easily with engine projects._
+
+In order to create an engine within an existing application's project, run the
+`in-repo-addon` generator:
+
+```
+ember g in-repo-addon <engine-name>
+```
+
+_Note: As described in the RFC, ember-cli will hopefully support an
+`in-repo-engine` generator to get started more easily with in-repo engines._
+
+Don't forget to install `ember-engines` in your project:
+
+```
+ember install ember-engines
+```
+
+### Configuring your Engine
+
+Within your engine's `addon` directory, remove `app.js`. Add a new `engine.js`
+file instead:
+
+```
+import Engine from 'ember-engines/engine';
+import Resolver from 'ember-engines/ember-resolver';
+
+export default Engine.extend({
+  modulePrefix: 'ember-blog',
+
+  Resolver
+});
+```
+
+It's important to define a `modulePrefix` that will be used to resolve your
+engine and its constituent modules.
+
+### Routable Engines
+
+Routable engines should declare their route map in a `routes.js` file.
+For example:
+
+```
+export default function() {
+  this.route('new');
+
+  this.route('post', { path: 'post/:id' }, function() {
+    this.route('comments', function() {
+      this.route('comment', { path: ':id' });
+    });
+  });
+}
+```
+
+Routeable engines interact with the parent application's router as if they are
+an extension of the parent application. A routeable engine's application route
+will be mounted wherever specified by the parent's route map (its "mountpoint").
+
+### Route-less Engines
+
+Route-less engines should define an `engine.js` as described above. Neither
+`router.js` nor `routes.js` should be defined.
+
+Route-less engines will be rendered as their application template
+(`templates/application.hbs`).
+
+### Declaring Dependencies
+
+Your engine should declare any dependencies that it expects from its parent.
+Dependencies must be declared in the engine definition.
+
+For example, the following engine requires a `store` service from its parent:
+
+```
+import Engine from 'ember-engines/engine';
+import Resolver from 'ember-engines/resolver';
+
+export default Engine.extend({
+  modulePrefix: 'ember-blog',
+
+  Resolver,
+
+  dependencies: {
+    services: [
+      'store'
+    ]
+  }
+});
+```
+
+Currently, only services can be shared across the parent/engine boundary.
+
+## Consuming Engines
+
+Engines that are published as separate addons should be installed like any
+other addon:
+
+```
+ember install <engine-name>
+```
+
+As mentioned above, engines can also exist as in-repo addons, in which case
+you just need to ensure that this addon (`ember-engines`) has been installed
+in your main project.
+
+### Customizing the Resolver
+
+An Application or Engine that contains other engines must use the `Resolver`
+provided in the `ember-engines/resolver` module. For example:
+
+```
+import Ember from 'ember';
+import Resolver from 'ember-engines/resolver';
+import loadInitializers from 'ember/load-initializers';
+import config from './config/environment';
+
+let App;
+
+Ember.MODEL_FACTORY_INJECTIONS = true;
+
+App = Ember.Application.extend({
+  modulePrefix: config.modulePrefix,
+  podModulePrefix: config.podModulePrefix,
+  Resolver
+});
+
+loadInitializers(App, config.modulePrefix);
+
+export default App;
+```
+
+### Route-less Engines
+
+Route-less engines can be rendered in a template using either the `{{mount}}`
+keyword or the `Route#mount` method.
+
+#### Using `{{mount}}` in Templates
+
+Route-less engines can be mounted in templates using the `{{mount}}` keyword.
+For example, the following template renders the `ember-chat` engine:
+
+```
+{{mount "ember-chat"}}
+```
+
+Currently, the engine name is the only argument that can be passed to
+`{{mount}}`.
+
+#### Calling `mount()` in Routes
+
+Engines can be mounted in routes using the `mount` method, which should be
+called during `renderTemplate`. For example:
+
+```
+import Ember from 'ember';
+
+export default Ember.Route.extend({
+  renderTemplate() {
+    this._super(...arguments);
+
+    // Mount the chat engine in the sidebar
+    this.mount('ember-chat', {
+      into: 'routeless-engine-demo',
+      outlet: 'sidebar'
+    });
+  }
+});
+```
+
+The first argument to `mount` is the name of the engine (`ember-chat` in the
+above example).
+
+The second argument is an options hash which matches the options that can be
+passed to `Route#render` to render a template.
+
+### Routable Engines
+
+#### Mounting Engines in your Route Map
+
+Routable engines should be mounted in your router's route map using the
+`mount()` method. For example:
+
+```
+import Ember from 'ember';
+import config from './config/environment';
+
+const Router = Ember.Router.extend({
+  location: config.locationType
+});
+
+Router.map(function() {
+  this.route('blogs', function() {
+    // Mount the main blog at /blogs/ember-blog
+    this.mount('ember-blog');
+
+    // Mount the hr blog at /blogs/hr-blog
+    this.mount('ember-blog', { as: 'hr-blog' });
+
+    // Mount the admin blog at /blogs/special-admin-blog-here
+    this.mount('ember-blog', { as: 'admin-blog', path: '/special-admin-blog-here' });
+  });
+});
+
+export default Router;
+```
+
+The above example mounts three different instances of the `ember-blog` engine
+within the `blogs` route.
+
+The engine mounted with `this.mount('ember-blog')` will have a root path of
+`/blogs/ember-blog` and its root route can be referenced as `ember-blog`.
+
+The engine mounted with `this.mount('ember-blog', { as: 'hr-blog' })` will have
+a root path of `/blogs/hr-blog` and its root route can be referenced as
+`hr-blog`.
+
+The engine mounted with `this.mount('ember-blog', { as: 'admin-blog', path:
+'/special-admin-blog-here' })` will have a root path of
+`/blogs/special-admin-blog-here` and its root route can be referenced as
+`admin-blog`.
+
+_Note: The above example is not very practical currently without a method to
+configure individual instances of `ember-blog`._
+
+### Providing Dependencies to Engines
+
+Applications or engines that contain an engine must provide mappings that
+fulfill the dependencies required by that engine.
+
+For example, the following engine expects its parent to provide `store` and
+`session` services:
+
+```
+import Engine from 'ember-engines/engine';
+import Resolver from 'ember-engines/resolver';
+
+export default Engine.extend({
+  modulePrefix: 'ember-blog',
+
+  Resolver,
+
+  dependencies: {
+    services: [
+      'store',
+      'session'
+    ]
+  }
+});
+```
+
+An application that contains this engine must explicitly fulfill these
+dependencies. For example:
+
+```
+import Ember from 'ember';
+import Resolver from 'ember-engines/resolver';
+import loadInitializers from 'ember/load-initializers';
+import config from './config/environment';
+
+let App;
+
+Ember.MODEL_FACTORY_INJECTIONS = true;
+
+App = Ember.Application.extend({
+  modulePrefix: config.modulePrefix,
+  podModulePrefix: config.podModulePrefix,
+  Resolver,
+
+  engines: {
+    emberBlog: {
+      dependencies: {
+        services: [
+          'store',
+          {'session': 'user-session'}
+        ]
+      }
+    }
+  }
+});
+
+loadInitializers(App, config.modulePrefix);
+
+export default App;
+```
+
+Note that the app's `store` service is directly mapped to the engine's `store`
+service, while the app's `user-session` service is mapped to the engine's
+`session` service.
+
+Also note that multiple engines can be configured per parent application/engine,
+and that each engine name should be camelCased (`emberBlog` instead of
+`ember-blog`).
+
+## Contributing
+
+### Installation
 
 * `git clone` this repository
 * `npm install`
 * `bower install`
 
-## Running
+### Running
 
 * `ember server`
 * Visit your app at http://localhost:4200.
 
-## Running Tests
+### Running Tests
 
 * `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
 * `ember test`
 * `ember test --server`
 
-## Building
+### Building
 
 * `ember build`
 
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+
+## License
+
+Copyright 2015 Dan Gebhardt and Robert Jackson. MIT License (see LICENSE.md for details).
