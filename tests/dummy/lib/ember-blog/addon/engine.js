@@ -1,7 +1,7 @@
-import Ember from 'ember';
-import Resolver from 'ember-resolver';
+import Engine from 'ember-engines/engine';
+import Resolver from 'ember-engines/resolver';
 
-export default Ember.Engine.extend({
+export default Engine.extend({
   modulePrefix: 'ember-blog',
 
   Resolver,

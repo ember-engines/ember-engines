@@ -3,10 +3,12 @@ import {
   getEngineParent,
   setEngineParent
 } from './engine-parent';
+import emberRequire from './ext-require';
+
+const EngineInstance = emberRequire('ember-application/system/engine-instance');
 
 const {
   Error: EmberError,
-  EngineInstance,
   assert,
   RSVP
 } = Ember;
