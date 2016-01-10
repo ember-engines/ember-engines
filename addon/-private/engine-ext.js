@@ -3,9 +3,9 @@ import emberRequire from './ext-require';
 
 const EmberView = emberRequire('ember-views/views/view');
 const RoutingService = emberRequire('ember-routing/services/routing');
+const Engine = emberRequire('ember-application/system/engine');
 
 const {
-  Engine,
   SelectView,
   OutletView,
   TextField,
