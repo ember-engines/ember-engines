@@ -112,8 +112,8 @@ export default function() {
 }
 ```
 
-Routeable engines interact with the parent application's router as if they are
-an extension of the parent application. A routeable engine's application route
+Routable engines interact with the parent application's router as if they are
+an extension of the parent application. A routable engine's application route
 will be mounted wherever specified by the parent's route map (its "mountpoint").
 
 ### Route-less Engines
