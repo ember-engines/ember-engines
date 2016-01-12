@@ -10,8 +10,6 @@ const {
 
 Route.reopen({
   mount(engineName, options) {
-    console.log('mount', options);
-
     let owner = getOwner(this);
 
     assert(

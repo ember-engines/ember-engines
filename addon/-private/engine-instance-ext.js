@@ -131,8 +131,6 @@ EngineInstance.reopen({
     @return {Promise<Ember.EngineInstance,Error>}
   */
   boot(options = {}) {
-    console.log('EngineInstance#boot');
-
     if (this._bootPromise) { return this._bootPromise; }
 
     assert('An engine instance\'s parent must be set via `setEngineParent(engine, parent)` prior to calling `engine.boot()` ', getEngineParent(this));
@@ -205,8 +203,6 @@ EngineInstance.reopen({
 
     this._booted = true;
 
-    console.log('EngineInstance#booted');
-
     return this;
   },
 
@@ -247,8 +243,6 @@ EngineInstance.reopen({
           assert(`A dependency mapping for '${category}.${dependencyName}' must be declared on this engine's parent.`, dependency);
 
           this.register(key, dependency, { instantiate: false });
-
-          console.log('clone custom dependency:', key);
         });
       });
     }

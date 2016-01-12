@@ -58,8 +58,6 @@ const {
 
 registerKeyword('mount', {
   willRender(renderNode, env) {
-    console.log('{{mount}} willRender');
-
     if (env.view.ownerView._outlets) {
       // We make sure we will get dirtied when outlet state changes.
       env.view.ownerView._outlets.push(renderNode);
@@ -67,8 +65,6 @@ registerKeyword('mount', {
   },
 
   setupState(prevState, env, scope, params /*, hash */) {
-    console.log('{{mount}} setupState');
-
     var name = params[0];
 
     assert(
@@ -97,8 +93,6 @@ registerKeyword('mount', {
   },
 
   render(node, env, scope, params, hash, template, inverse, visitor) {
-    console.log('{{mount}} render');
-
     var state = node.getState();
     // var name = params[0];
     // var context = params[1];
@@ -232,8 +226,6 @@ registerKeyword('mount', {
   },
 
   rerender(node, env, scope, params /*, hash, template, inverse, visitor */) {
-    console.log('{{mount}} rerender');
-
     var model = read(params[1]);
     node.getState().controller.set('model', model);
   }
