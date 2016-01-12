@@ -9,13 +9,20 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:testall"
+    "test": "ember try:testall",
+    "prepublish": "rm -rf node_modules/ember-blog && ln -s ../tests/dummy/lib/ember-blog node_modules/ember-blog && rm -rf node_modules/ember-chat && ln -s ../tests/dummy/lib/ember-chat node_modules/ember-chat"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgeb/ember-engines.git"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "authors": [
+    "Dan Gebhardt",
+    "Robert Jackson"
+  ],
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
@@ -34,7 +41,9 @@
     "ember-disable-proxy-controllers": "^1.0.1",
     "ember-export-application-global": "^1.0.4",
     "ember-resolver": "^2.0.3",
-    "ember-try": "~0.0.8"
+    "ember-try": "~0.0.8",
+    "ember-blog": "*",
+    "ember-chat": "*"
   },
   "keywords": [
     "ember-addon"
@@ -44,10 +53,6 @@
     "ember-cli-babel": "^5.1.5"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config",
-    "paths": [
-      "tests/dummy/lib/ember-chat",
-      "tests/dummy/lib/ember-blog"
-    ]
+    "configPath": "tests/dummy/config"
   }
 }

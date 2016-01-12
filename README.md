@@ -78,12 +78,11 @@ ember install ember-engines
 
 ### Configuring your Engine
 
-Within your engine's `addon` directory, remove `app.js`. Add a new `engine.js`
-file instead:
+Within your engine's `addon` directory, add a new `engine.js` file:
 
 ```
 import Engine from 'ember-engines/engine';
-import Resolver from 'ember-engines/ember-resolver';
+import Resolver from 'ember-engines/resolver';
 
 export default Engine.extend({
   modulePrefix: 'ember-blog',
