@@ -1,11 +1,11 @@
 {
   "name": "ember-chat",
+  "version": "0.0.0",
   "keywords": [
     "ember-addon",
     "ember-engine"
   ],
   "dependencies": {
-    "ember-cli-htmlbars": "*",
-    "ember-engines": "*"
+    "ember-cli-htmlbars": "*"
   }
 }
