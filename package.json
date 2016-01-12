@@ -11,11 +11,17 @@
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgeb/ember-engines.git"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "authors": [
+    "Dan Gebhardt",
+    "Robert Jackson"
+  ],
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
