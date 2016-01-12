@@ -22,8 +22,6 @@ Engine.reopen({
     let registry = this._super(...arguments);
 
     if (!(this instanceof Ember.Application)) {
-      console.log('Engine.buildRegistry');
-
       registry.optionsForType('component', { singleton: false });
       registry.optionsForType('view', { singleton: false });
       registry.optionsForType('template', { instantiate: false });
