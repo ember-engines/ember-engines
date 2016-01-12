@@ -10,7 +10,7 @@
     "build": "ember build",
     "start": "ember server",
     "test": "ember try:testall",
-    "prepublish": "bash ./bin/install-test-addons.sh"
+    "prepublish": "./bin/install-test-addons.sh"
   },
   "repository": {
     "type": "git",
