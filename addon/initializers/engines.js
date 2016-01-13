@@ -8,7 +8,7 @@ import '../-private/keywords/outlet';
 import '../-private/router-dsl-ext';
 import '../-private/link-to-component-ext';
 
-// TODO: Move to ensure they are ran prior to instantiating Ember.Application
+// TODO: Move to ensure they run prior to instantiating Ember.Application
 export function initialize() {
 }
 
