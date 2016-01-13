@@ -37,13 +37,23 @@ Support for the following concepts is under consideration:
 
 ## Installation
 
-Ember Engines are currently supported in Ember Canary.
-
-This addon can be installed with:
+From your Ember CLI project's root directory, run the following:
 
 ```
 ember install ember-engines
 ```
+
+You will also need to install Ember Canary:
+
+```
+rm -rf bower_components
+bower install --save ember#canary
+bower install
+```
+
+Bower may prompt you to select various "resolutions". Make sure to choose
+`ember#canary` if prompted, and prefix the choice with ! to persist it to
+`bower.json`.
 
 ## Providing Engines
 
@@ -70,11 +80,8 @@ ember g in-repo-addon <engine-name>
 _Note: As described in the RFC, ember-cli will hopefully support an
 `in-repo-engine` generator to get started more easily with in-repo engines._
 
-Don't forget to install `ember-engines` in your project:
-
-```
-ember install ember-engines
-```
+Don't forget to install `ember-engines` and Ember Canary in your project, as
+described above.
 
 ### Configuring your Engine
 
