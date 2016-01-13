@@ -13,6 +13,18 @@ test('can invoke components', function(assert) {
   });
 });
 
+test('can deserialize a route\'s params', function(assert) {
+  assert.expect(2);
+
+  visit('/routeable-engine-demo/blog/post/1');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/routeable-engine-demo/blog/post/1');
+
+    assert.equal(this.application.$('h3.post-title').text().trim(), 'Post 1');
+  });
+});
+
 test('can render a link', function(assert) {
   assert.expect(2);
 
