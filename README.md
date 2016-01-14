@@ -87,7 +87,7 @@ described above.
 
 Within your engine's `addon` directory, add a new `engine.js` file:
 
-```
+```js
 import Engine from 'ember-engines/engine';
 import Resolver from 'ember-engines/resolver';
 
@@ -106,7 +106,7 @@ engine and its constituent modules.
 Routable engines should declare their route map in a `routes.js` file.
 For example:
 
-```
+```js
 export default function() {
   this.route('new');
 
@@ -137,7 +137,7 @@ Dependencies must be declared in the engine definition.
 
 For example, the following engine requires a `store` service from its parent:
 
-```
+```js
 import Engine from 'ember-engines/engine';
 import Resolver from 'ember-engines/resolver';
 
@@ -174,7 +174,7 @@ in your main project.
 An Application or Engine that contains other engines must use the `Resolver`
 provided in the `ember-engines/resolver` module. For example:
 
-```
+```js
 import Ember from 'ember';
 import Resolver from 'ember-engines/resolver';
 import loadInitializers from 'ember/load-initializers';
@@ -205,7 +205,7 @@ keyword or the `Route#mount` method.
 Route-less engines can be mounted in templates using the `{{mount}}` keyword.
 For example, the following template renders the `ember-chat` engine:
 
-```
+```hbs
 {{mount "ember-chat"}}
 ```
 
@@ -217,7 +217,7 @@ Currently, the engine name is the only argument that can be passed to
 Engines can be mounted in routes using the `mount` method, which should be
 called during `renderTemplate`. For example:
 
-```
+```js
 import Ember from 'ember';
 
 export default Ember.Route.extend({
@@ -246,7 +246,7 @@ passed to `Route#render` to render a template.
 Routable engines should be mounted in your router's route map using the
 `mount()` method. For example:
 
-```
+```js
 import Ember from 'ember';
 import config from './config/environment';
 
@@ -296,7 +296,7 @@ fulfill the dependencies required by that engine.
 For example, the following engine expects its parent to provide `store` and
 `session` services:
 
-```
+```js
 import Engine from 'ember-engines/engine';
 import Resolver from 'ember-engines/resolver';
 
@@ -317,7 +317,7 @@ export default Engine.extend({
 An application that contains this engine must explicitly fulfill these
 dependencies. For example:
 
-```
+```js
 import Ember from 'ember';
 import Resolver from 'ember-engines/resolver';
 import loadInitializers from 'ember/load-initializers';
