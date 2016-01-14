@@ -60,7 +60,7 @@ EmberRouter.reopen({
       );
 
       engineInstance = owner.buildChildEngineInstance(name, {
-        routeable: true,
+        routable: true,
         mountPoint
       });
 
