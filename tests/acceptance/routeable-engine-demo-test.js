@@ -25,6 +25,18 @@ test('can deserialize a route\'s params', function(assert) {
   });
 });
 
+test('a route can lookup another route\'s model', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo/blog/post/1/comments');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/comments');
+
+    assert.equal(this.application.$('h4.comments').text().trim(), 'Comments for Post 1');
+  });
+});
+
 test('can render a link', function(assert) {
   assert.expect(2);
 

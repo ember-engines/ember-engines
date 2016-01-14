@@ -85,6 +85,18 @@ Route.reopen({
     }
 
     return this._super(routeName, ...args);
+  },
+
+  modelFor(_routeName, ...args) {
+    let routeName = _routeName;
+    let owner = getOwner(this);
+
+    if (owner.routable) {
+      let prefix = owner.mountPoint;
+      routeName = `${prefix}.${_routeName}`;
+    }
+
+    return this._super(routeName, ...args);
   }
 });
 
