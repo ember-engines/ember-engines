@@ -8,7 +8,7 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('routeless-engine-demo');
 
-  this.route('routeable-engine-demo', function() {
+  this.route('routable-engine-demo', function() {
     this.route('normal-route');
 
     this.mount('ember-blog');

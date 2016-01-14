@@ -29,7 +29,7 @@ Route.reopen({
 
     // ---- begin: customization for routable engines
     let fullName = name;
-    if (owner.routeable) {
+    if (owner.routable) {
       let prefix = owner.mountPoint;
 
       fullName = `${prefix}.${fullName}`;
@@ -76,7 +76,7 @@ Route.reopen({
     let owner = getOwner(this);
     let prefix = owner.mountPoint;
 
-    if (owner.routeable) {
+    if (owner.routable) {
       if (resemblesURL(routeName)) {
         throw new EmberError('Route#transitionTo cannot be used for URLs. Please use the route name instead.');
       } else {
