@@ -74,7 +74,8 @@ EngineInstance.reopen({
               dependencies[category] = {};
               let dependencyType = this._dependencyTypeFromCategory(category);
 
-              for (let engineDependency of engineDependencies[category]) {
+              for (let i = 0; i < engineDependencies[category].length; i++) {
+                let engineDependency = engineDependencies[category][i];
                 let dependencyName;
                 let dependencyNameInParent;
 
