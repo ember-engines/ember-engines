@@ -14,8 +14,8 @@ The following functionality is supported:
 * Routable engines which can be mounted at specific routes in a routing map, and
   which can contain routes of their own.
 
-* Route-less engines, which can be rendered in a template using either the
-  `{{mount}}` keyword or the `Route#mount` method.
+* Route-less engines, which can be rendered in a template using the `{{mount}}`
+  keyword.
 
 * Sharing of dependencies from parents (applications or other engines) to
   contained engines. Shared dependencies are currently limited to services.
@@ -197,8 +197,8 @@ export default App;
 
 ### Route-less Engines
 
-Route-less engines can be rendered in a template using either the `{{mount}}`
-keyword or the `Route#mount` method.
+Route-less engines can be rendered in a template using the `{{mount}}`
+keyword.
 
 #### Using `{{mount}}` in Templates
 
@@ -211,33 +211,6 @@ For example, the following template renders the `ember-chat` engine:
 
 Currently, the engine name is the only argument that can be passed to
 `{{mount}}`.
-
-#### Calling `mount()` in Routes
-
-Engines can be mounted in routes using the `mount` method, which should be
-called during `renderTemplate`. For example:
-
-```js
-import Ember from 'ember';
-
-export default Ember.Route.extend({
-  renderTemplate() {
-    this._super(...arguments);
-
-    // Mount the chat engine in the sidebar
-    this.mount('ember-chat', {
-      into: 'routeless-engine-demo',
-      outlet: 'sidebar'
-    });
-  }
-});
-```
-
-The first argument to `mount` is the name of the engine (`ember-chat` in the
-above example).
-
-The second argument is an options hash which matches the options that can be
-passed to `Route#render` to render a template.
 
 ### Routable Engines
 
