@@ -1,0 +1,9 @@
+{
+  "name": "common-components",
+  "keywords": [
+    "ember-addon"
+  ],
+  "dependencies": {
+    "ember-cli-htmlbars": "*"
+  }
+}

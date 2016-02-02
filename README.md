@@ -85,6 +85,18 @@ described above.
 
 ### Configuring your Engine
 
+Within your engine's root directory, modify `index.js` so that your addon
+is configured as an engine using the `EngineAddon` extension:
+
+```js
+/*jshint node:true*/
+var EngineAddon = require('ember-engines/lib/engine-addon');
+
+module.exports = EngineAddon.extend({
+  name: 'ember-blog'
+});
+```
+
 Within your engine's `addon` directory, add a new `engine.js` file:
 
 ```js

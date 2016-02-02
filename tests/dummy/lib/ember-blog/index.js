@@ -1,5 +1,7 @@
 /*jshint node:true*/
-module.exports = {
+var EngineAddon = require('../../../../lib/engine-addon');
+
+module.exports = EngineAddon.extend({
   name: 'ember-blog',
 
   isDevelopingAddon: function() {
@@ -9,4 +11,4 @@ module.exports = {
   hintingEnabled: function() {
     return false;
   }
-};
+});
