@@ -1,8 +1,6 @@
 /*jshint node:true*/
-var EngineAddon = require('../../../../lib/engine-addon');
-
-module.exports = EngineAddon.extend({
-  name: 'ember-chat',
+module.exports = {
+  name: 'common-components',
 
   isDevelopingAddon: function() {
     return true;
@@ -11,4 +9,4 @@ module.exports = EngineAddon.extend({
   hintingEnabled: function() {
     return false;
   }
-});
+};

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+mkdir -p node_modules
+
+rm -rf node_modules/common-components
+ln -s ../tests/dummy/lib/common-components node_modules/common-components
+
 rm -rf node_modules/ember-blog
 ln -s ../tests/dummy/lib/ember-blog node_modules/ember-blog
 
