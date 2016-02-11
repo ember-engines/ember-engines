@@ -226,8 +226,11 @@ registerKeyword('mount', {
   },
 
   rerender(node, env, scope, params /*, hash, template, inverse, visitor */) {
-    var model = read(params[1]);
-    node.getState().controller.set('model', model);
+    let controller = node.getState().controller;
+    if (controller) {
+      let model = read(params[1]);
+      controller.set('model', model);
+    }
   }
 });
 
