@@ -1,12 +1,12 @@
 import Ember from 'ember';
 import emberRequire from './ext-require';
 
+const SelectView = emberRequire('ember-views/views/select');
 const EmberView = emberRequire('ember-views/views/view');
 const RoutingService = emberRequire('ember-routing/services/routing');
 const Engine = emberRequire('ember-application/system/engine');
 
 const {
-  SelectView,
   OutletView,
   TextField,
   TextArea,
