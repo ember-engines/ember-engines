@@ -13,6 +13,21 @@ test('can invoke components', function(assert) {
   });
 });
 
+test('can link to external routes', function(assert) {
+  visit('/routable-engine-demo/blog/new');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/new');
+    assert.equal(this.application.$('.new-user-link').attr('href'), '/users/new');
+  });
+
+  click('.new-user-link');
+  andThen(() => {
+    assert.equal(currentURL(), '/users/new');
+    assert.equal(this.application.$('.title').text().trim(), 'New user');
+  });
+});
+
 test('can deserialize a route\'s params', function(assert) {
   assert.expect(2);
 

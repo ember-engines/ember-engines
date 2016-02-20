@@ -21,6 +21,11 @@ Router.map(function() {
 
     this.mount('ember-blog', { as: 'admin-blog', path: '/special-admin-blog-here' });
   });
+
+  this.route('users', function() {
+    this.route('new');
+  });
+  
 });
 
 export default Router;

@@ -14,9 +14,13 @@ LinkComponent.reopen({
     let owner = getOwner(this);
 
     if (owner.mountPoint) {
-      let fullRouteName = owner.mountPoint + '.' + get(this, 'targetRouteName');
-
-      set(this, 'targetRouteName', fullRouteName);
+      let targetRouteName = get(this, 'targetRouteName');
+      if (!targetRouteName.isGlobalUrl) {
+        let fullRouteName = owner.mountPoint + '.' + targetRouteName;
+        set(this, 'targetRouteName', fullRouteName);
+      } else {
+        set(this, 'targetRouteName', targetRouteName.toString());
+      }
     }
   }
 });

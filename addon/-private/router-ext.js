@@ -18,6 +18,7 @@ EmberRouter.reopen({
 
     this._engineInstances = new EmptyObject();
     this._routeToEngineInfoXRef = new EmptyObject();
+    this._urls = [];
   },
 
   /*
@@ -38,6 +39,10 @@ EmberRouter.reopen({
 
       addRouteForEngine(name, engineInfo) {
         router._routeToEngineInfoXRef[name] = engineInfo;
+      },
+
+      addUrl(url) {
+        router._urls.push(url);
       }
     });
   },
@@ -120,5 +125,18 @@ EmberRouter.reopen({
 
       return handler;
     };
+  },
+
+  setupRouter: function() {
+    let ret = this._super(...arguments);
+
+    let owner = getOwner(this);
+    let urls = this._urls;
+    urls.forEach(url => {
+        owner.register(`url:${url}`, Ember.Object.extend({url: url}));
+    });
+
+
+    return ret;
   }
 });

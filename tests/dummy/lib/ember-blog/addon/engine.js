@@ -9,6 +9,9 @@ export default Engine.extend({
   dependencies: {
     services: [
       'data-store'
+    ],
+    urls: [
+      'new-user'
     ]
   }
 });
