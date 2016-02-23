@@ -69,7 +69,7 @@ EngineInstance.reopen({
         let engineDependencies = engineConfiguration.dependencies;
 
         if (engineDependencies) {
-          ['services'].forEach((category) => {
+          ['services', 'urls'].forEach((category) => {
             if (engineDependencies[category]) {
               dependencies[category] = {};
               let dependencyType = this._dependencyTypeFromCategory(category);
@@ -215,7 +215,8 @@ EngineInstance.reopen({
       'route:basic',
       'event_dispatcher:main',
       '-bucket-cache:main',
-      'service:-routing'
+      'service:-routing',
+      'helper:get-url'
     ].forEach((key) => {
       this.register(key, parent.resolveRegistration(key));
     });
@@ -240,7 +241,6 @@ EngineInstance.reopen({
           let key = `${dependencyType}:${dependencyName}`;
 
           let dependency = this.dependencies[category] && this.dependencies[category][dependencyName];
-
           assert(`A dependency mapping for '${category}.${dependencyName}' must be declared on this engine's parent.`, dependency);
 
           this.register(key, dependency, { instantiate: false });
@@ -253,6 +253,8 @@ EngineInstance.reopen({
     switch(category) {
       case 'services':
         return 'service';
+      case 'urls':
+        return 'url';
     }
     assert(`Dependencies of category '${category}' can not be shared with engines.`, false);
   },

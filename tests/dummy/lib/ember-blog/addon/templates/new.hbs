@@ -3,6 +3,8 @@
 
   {{hello-world class="routable-hello-world"}}
 
+  {{#link-to (get-url 'new-user') class="new-user-link"}}New user{{/link-to}}<br>
+
   <button {{action 'goAway'}} class="trigger-transition-to">Go Away!</button>
   <button {{action 'goAwayViaURL'}} class="trigger-transition-to-url">Go Away via URL!</button>
 </div>

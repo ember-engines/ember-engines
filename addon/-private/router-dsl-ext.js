@@ -55,13 +55,14 @@ EmberRouterDSL.prototype.push = function(url, fullName, callback) {
   if (this.options.engineInfo) {
     let localFullName = fullName.slice(this.options.engineInfo.fullName.length + 1);
     let routeInfo = merge({ localFullName }, this.options.engineInfo);
-
     this.options.addRouteForEngine(fullName, routeInfo);
   }
 
   if (url === '' || url === '/' || parts[parts.length - 1] === 'index') {
     this.explicitIndex = true;
   }
+
+  this.options.addUrl(fullName);
 
   this.matches.push([url, fullName, callback]);
 };

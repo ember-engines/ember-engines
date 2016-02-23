@@ -17,6 +17,9 @@ App = Ember.Application.extend({
       dependencies: {
         services: [
           {'data-store': 'store'}
+        ],
+        urls: [
+          {'new-user': 'users.new'}
         ]
       }
     },
