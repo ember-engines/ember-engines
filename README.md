@@ -1,14 +1,12 @@
 # ember-engines [![Build Status](https://travis-ci.org/dgeb/ember-engines.png)](https://travis-ci.org/dgeb/ember-engines)
 
 This Ember addon implements the functionality described in the [Ember Engines
-RFC](https://github.com/emberjs/rfcs/pull/10).
+RFC](https://github.com/emberjs/rfcs/pull/10). Engines allow multiple logical
+applications to be composed together into a single application from the user's
+perspective.
 
-Engines allow multiple logical applications to be composed together into a
-single application from the user's perspective.
 This addon must be installed in any ember-cli projects that function as either
-consumers or providers of engines.
-
-The following functionality is supported:
+consumers or providers of engines. The following functionality is supported:
 
 * Routable engines which can be mounted at specific routes in a routing map, and
   which can contain routes of their own.
