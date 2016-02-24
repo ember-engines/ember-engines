@@ -5,7 +5,6 @@ RFC](https://github.com/emberjs/rfcs/pull/10).
 
 Engines allow multiple logical applications to be composed together into a
 single application from the user's perspective.
-
 This addon must be installed in any ember-cli projects that function as either
 consumers or providers of engines.
 
@@ -13,26 +12,21 @@ The following functionality is supported:
 
 * Routable engines which can be mounted at specific routes in a routing map, and
   which can contain routes of their own.
-
 * Route-less engines, which can be rendered in a template using the `{{mount}}`
   keyword.
-
 * Sharing of dependencies from parents (applications or other engines) to
   contained engines. Shared dependencies are currently limited to services.
 
 The following functionality will soon be supported:
 
 * Lazy loading of engines.
-
 * Route serializer modules that isolate serialization logic from the rest of
   the route definition.
 
 Support for the following concepts is under consideration:
 
 * Namespaced access to engine resources from applications.
-
 * Sharing of dependencies other than services.
-
 * Passing configuration attributes from an engine's parent.
 
 ## Installation
@@ -137,9 +131,7 @@ will be mounted wherever specified by the parent's route map (its "mountpoint").
 ### Route-less Engines
 
 Route-less engines should define an `engine.js` as described above. Neither
-`router.js` nor `routes.js` should be defined.
-
-Route-less engines will be rendered as their application template
+`router.js` nor `routes.js` should be defined. Route-less engines will be rendered as their application template
 (`templates/application.hbs`).
 
 ### Declaring Dependencies
