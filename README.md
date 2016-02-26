@@ -111,7 +111,9 @@ Routable engines should declare their route map in a `routes.js` file.
 For example:
 
 ```js
-export default function() {
+import buildRoutes from 'ember-engines/routes';
+
+export default buildRoutes(function() {
   this.route('new');
 
   this.route('post', { path: 'post/:id' }, function() {
@@ -119,7 +121,7 @@ export default function() {
       this.route('comment', { path: ':id' });
     });
   });
-}
+});
 ```
 
 Routable engines interact with the parent application's router as if they are

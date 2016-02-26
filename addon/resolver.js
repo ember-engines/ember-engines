@@ -1,5 +1,7 @@
 /* globals require, requirejs */
+import Ember from 'ember';
 import Resolver from 'ember-resolver';
+import { ROUTES } from './routes';
 
 export default Resolver.extend({
   resolveEngine(parsedName) {
@@ -20,8 +22,11 @@ export default Resolver.extend({
 
     if (requirejs.entries[engineRoutesModule]) {
       let module = require(engineRoutesModule);
+      let routeMap = module.default;
 
-      return module.default;
+      Ember.assert(`The route map for ${engineName} should be wrapped by 'buildRoutes' before exporting.` , routeMap[ROUTES]);
+
+      return routeMap;
     }
   }
 });

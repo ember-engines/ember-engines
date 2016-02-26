@@ -1,4 +1,6 @@
-export default function() {
+import buildRoutes from 'ember-engines/routes';
+
+export default buildRoutes(function() {
   this.route('new');
 
   this.route('post', { path: 'post/:id' }, function() {
@@ -6,7 +8,7 @@ export default function() {
       this.route('comment', { path: ':id' });
     });
   });
-}
+});
 
 // {{link-to 'blog.comments.comment'}}
 //
