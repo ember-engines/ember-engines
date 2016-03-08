@@ -17,7 +17,10 @@ App = Ember.Application.extend({
       dependencies: {
         services: [
           {'data-store': 'store'}
-        ]
+        ],
+        externalRoutes: {
+          home: 'application'
+        }
       }
     },
     emberChat: {

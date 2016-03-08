@@ -13,7 +13,8 @@ consumers or providers of engines. The following functionality is supported:
 * Route-less engines, which can be rendered in a template using the `{{mount}}`
   keyword.
 * Sharing of dependencies from parents (applications or other engines) to
-  contained engines. Shared dependencies are currently limited to services.
+  contained engines. Shared dependencies are currently limited to services
+  and route paths.
 
 The following functionality will soon be supported:
 
@@ -24,7 +25,7 @@ The following functionality will soon be supported:
 Support for the following concepts is under consideration:
 
 * Namespaced access to engine resources from applications.
-* Sharing of dependencies other than services.
+* Sharing of dependencies other than services and route paths.
 * Passing configuration attributes from an engine's parent.
 
 ## Introduction Video
@@ -162,7 +163,65 @@ export default Engine.extend({
 });
 ```
 
-Currently, only services can be shared across the parent/engine boundary.
+Currently, only services and route paths (see below) can be shared across the
+parent/engine boundary.
+
+### Linking To External Routes
+
+Linking to routes outside of an Engine's isolated context is currently supported
+by defining "external routes" as dependencies of your Engine.
+
+You specify **what** external things your Engine wants to link to by providing
+an array of names like so:
+
+```js
+// ember-blog/addon/engine.js
+export default Engine.extend({
+  // ...
+  dependencies: {
+    externalRoutes: [
+      'home',
+      'settings'
+    ]
+  }
+});
+```
+
+The Engine's consumer is then responsible for defining **where** those things are
+located via a route path:
+
+```js
+// dummy/app/app.js
+const App = Ember.Application.extend({
+  modulePrefix: config.modulePrefix,
+  podModulePrefix: config.podModulePrefix,
+  Resolver,
+
+  engines: {
+    emberBlog: {
+      dependencies: {
+        externalRoutes: {
+          home: 'home.index',
+          settings: 'settings.blog.index'
+        }
+      }
+    }
+  }
+});
+```
+You can then use those external routes either programmatically or within a
+template like so:
+
+```hbs
+{{#link-to-external 'home'}}Go home{{/link-to-external}}
+```
+
+```js
+// ember-blog/addon/some-route.js
+this.transitionToExternal('settings');
+```
+
+For further documentation on this subject, view the [Engine Linking RFC](https://github.com/emberjs/rfcs/pull/122).
 
 ## Consuming Engines
 

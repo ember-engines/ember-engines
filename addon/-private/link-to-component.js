@@ -7,7 +7,7 @@ const {
   set
 } = Ember;
 
-LinkComponent.reopen({
+export default LinkComponent.extend({
   willRender() {
     this._super(...arguments);
 
