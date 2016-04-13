@@ -27,6 +27,10 @@ Support for the following concepts is under consideration:
 * Sharing of dependencies other than services.
 * Passing configuration attributes from an engine's parent.
 
+## Introduction Video
+
+[![Introduction to Ember Engines at Global Ember Meetup](https://i.vimeocdn.com/video/559400541_640x360.jpg)](https://vimeo.com/157688181)
+
 ## Installation
 
 From your Ember CLI project's root directory, run the following:
