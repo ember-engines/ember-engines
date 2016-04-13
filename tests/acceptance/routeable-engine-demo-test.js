@@ -14,7 +14,7 @@ test('can invoke components', function(assert) {
 });
 
 test('can deserialize a route\'s params', function(assert) {
-  assert.expect(2);
+  assert.expect(3);
 
   visit('/routable-engine-demo/blog/post/1');
 
@@ -22,6 +22,7 @@ test('can deserialize a route\'s params', function(assert) {
     assert.equal(currentURL(), '/routable-engine-demo/blog/post/1');
 
     assert.equal(this.application.$('h3.post-title').text().trim(), 'Post 1');
+    assert.equal(this.application.$('p.author').text().trim(), 'Derek Zoolander');
   });
 });
 

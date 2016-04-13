@@ -1,5 +1,7 @@
 <h3 class="post-title">{{model.title}}</h3>
 
+<p class="author">{{model.user.name}}</p>
+
 {{#link-to 'post.comments' 1 class="routable-post-comments-link"}}Comments{{/link-to}}
 
 {{outlet}}

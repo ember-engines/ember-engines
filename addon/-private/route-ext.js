@@ -62,7 +62,11 @@ Route.reopen({
 
     if (owner.routable) {
       let prefix = owner.mountPoint;
-      routeName = `${prefix}.${_routeName}`;
+      if (routeName === 'application') {
+        routeName = prefix;
+      } else {
+        routeName = `${prefix}.${_routeName}`;
+      }
     }
 
     return this._super(routeName, ...args);
