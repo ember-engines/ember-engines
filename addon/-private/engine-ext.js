@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import emberRequire from './ext-require';
 
-const SelectView = emberRequire('ember-views/views/select');
 const EmberView = emberRequire('ember-views/views/view');
 const RoutingService = emberRequire('ember-routing/services/routing');
 const Engine = emberRequire('ember-application/system/engine');
@@ -34,9 +33,6 @@ Engine.reopen({
 
       registry.injection('view', 'renderer', 'renderer:-dom');
 
-      if (Ember.ENV._ENABLE_LEGACY_VIEW_SUPPORT) {
-        registry.register('view:select', SelectView);
-      }
       registry.register('view:-outlet', OutletView);
 
       //registry.register('-view-registry:main', { create() { return {}; } });
