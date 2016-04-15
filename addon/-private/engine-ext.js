@@ -4,6 +4,8 @@ import emberRequire from './ext-require';
 const EmberView = emberRequire('ember-views/views/view');
 const RoutingService = emberRequire('ember-routing/services/routing');
 const Engine = emberRequire('ember-application/system/engine');
+const P = emberRequire('container/registry', 'privatize');
+const topLevelViewTemplate = emberRequire('ember-htmlbars/templates/top-level-view');
 
 const {
   OutletView,
@@ -33,6 +35,8 @@ Engine.reopen({
 
       registry.injection('view', 'renderer', 'renderer:-dom');
 
+      registry.register('template:-outlet', topLevelViewTemplate);
+      registry.injection('route', '_topLevelViewTemplate', 'template:-outlet');
       registry.register('view:-outlet', OutletView);
 
       //registry.register('-view-registry:main', { create() { return {}; } });
@@ -56,9 +60,9 @@ Engine.reopen({
       registry.injection('controller', 'namespace', 'application:main');
 
       // registry.register('-bucket-cache:main', BucketCache);
-      registry.injection('router', '_bucketCache', '-bucket-cache:main');
-      registry.injection('route', '_bucketCache', '-bucket-cache:main');
-      registry.injection('controller', '_bucketCache', '-bucket-cache:main');
+      registry.injection('router', '_bucketCache', P`-bucket-cache:main`);
+      registry.injection('route', '_bucketCache', P`-bucket-cache:main`);
+      registry.injection('controller', '_bucketCache', P`-bucket-cache:main`);
 
       registry.injection('route', 'router', 'router:main');
 

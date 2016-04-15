@@ -6,6 +6,7 @@ import {
 import emberRequire from './ext-require';
 
 const EngineInstance = emberRequire('ember-application/system/engine-instance');
+const P = emberRequire('container/registry', 'privatize');
 
 const {
   Error: EmberError,
@@ -214,7 +215,7 @@ EngineInstance.reopen({
       'view:toplevel',
       'route:basic',
       'event_dispatcher:main',
-      '-bucket-cache:main',
+      P`-bucket-cache:main`,
       'service:-routing'
     ].forEach((key) => {
       this.register(key, parent.resolveRegistration(key));
