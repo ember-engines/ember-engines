@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 const {
   RouterDSL: EmberRouterDSL,
-  merge
+  assign
 } = Ember;
 
 let uuid = 0;
@@ -33,7 +33,7 @@ EmberRouterDSL.prototype.mount = function(_name, _options) {
 
   let callback;
   if (engineRouteMap) {
-    let optionsForChild = merge({ engineInfo }, this.options);
+    let optionsForChild = assign({ engineInfo }, this.options);
     let childDSL = new EmberRouterDSL(fullName, optionsForChild);
 
     engineRouteMap.call(childDSL);
@@ -42,7 +42,7 @@ EmberRouterDSL.prototype.mount = function(_name, _options) {
   }
 
   let localFullName = 'application';
-  let routeInfo = merge({ localFullName }, engineInfo);
+  let routeInfo = assign({ localFullName }, engineInfo);
 
   this.options.addRouteForEngine(fullName, routeInfo);
 
@@ -54,7 +54,7 @@ EmberRouterDSL.prototype.push = function(url, fullName, callback) {
 
   if (this.options.engineInfo) {
     let localFullName = fullName.slice(this.options.engineInfo.fullName.length + 1);
-    let routeInfo = merge({ localFullName }, this.options.engineInfo);
+    let routeInfo = assign({ localFullName }, this.options.engineInfo);
 
     this.options.addRouteForEngine(fullName, routeInfo);
   }
