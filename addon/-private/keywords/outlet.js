@@ -3,13 +3,25 @@ import emberRequire from '../ext-require';
 const outlet = emberRequire('ember-htmlbars/keywords/outlet');
 const isEnabled = emberRequire('ember-metal/features');
 const ViewNodeManager = emberRequire('ember-htmlbars/node-managers/view-node-manager');
-const RenderEnv = emberRequire('ember-htmlbars/system/render-env');
 const info = emberRequire('ember-metal/debug', 'info');
 
 const {
   get
 } = Ember;
 
+const outletChildEnv = outlet.childEnv;
+outlet.childEnv = function(state) {
+  let childEnv = outletChildEnv.apply(this, arguments);
+  let outletState = state.outletState;
+  let owner = outletState && outletState.render.owner;
+
+  if (owner !== childEnv.owner) {
+    childEnv.originalOwner = childEnv.owner;
+    childEnv.owner = owner;
+  }
+
+  return childEnv;
+};
 
 outlet.render = function(renderNode, _env, scope, params, hash, template, inverse, visitor) {
   let env = _env;
@@ -17,13 +29,14 @@ outlet.render = function(renderNode, _env, scope, params, hash, template, invers
   var parentView = env.view;
   var outletState = state.outletState;
   var toRender = outletState.render;
-  var namespace = env.owner.lookup('application:main');
+  var owner = env.originalOwner || env.owner;
+  var namespace = owner.lookup('application:main');
   var LOG_VIEW_LOOKUPS = get(namespace, 'LOG_VIEW_LOOKUPS');
 
   var ViewClass = outletState.render.ViewClass;
 
   if (!state.hasParentOutlet && !ViewClass) {
-    ViewClass = env.owner._lookupFactory('view:toplevel');
+    ViewClass = owner._lookupFactory('view:toplevel');
   }
 
   var Component;
@@ -60,24 +73,8 @@ outlet.render = function(renderNode, _env, scope, params, hash, template, invers
     state.manager = null;
   }
 
-  let owner = outletState.render.owner;
   // detect if we are crossing into an engine
-  if (owner !== env.owner) {
-    env = new RenderEnv({
-      view: null,
-      outletState: outletState.outlets,
-      owner,
-      renderer: _env.renderer,
-      dom: _env.dom,
-
-      lifecycleHooks: _env.lifecycleHooks,
-      renderedViews: _env.renderedViews,
-      renderedNodes: _env.renderedNodes,
-      hasParentOutlet: _env.hasParentOutlet,
-
-      meta: env.meta
-    });
-
+  if (env.originalOwner) {
     // when this outlet represents an engine we must ensure that a `ViewClass` is present
     // even if the engine does not contain a `view:application`. We need a `ViewClass` to
     // ensure that an `ownerView` is set on the `env` created just above
