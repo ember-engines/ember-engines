@@ -9,7 +9,7 @@ const {
 } = Ember;
 
 const assign = emberRequire('ember-metal/assign');
-const emberA = emberRequire('ember-runtime/system/native_array').A;
+const emberA = emberRequire('ember-runtime/system/native_array', 'A');
 
 Route.reopen({
   paramsFor(name) {
