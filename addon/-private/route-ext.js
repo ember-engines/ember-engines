@@ -11,6 +11,27 @@ const {
 const assign = emberRequire('ember-metal/assign');
 const emberA = emberRequire('ember-runtime/system/native_array', 'A');
 
+/*
+  Returns an arguments array where the route name arg is prefixed based on the mount point
+*/
+function prefixRouteNameArg(...args) {
+  let routeName = args[0];
+  let owner = getOwner(this);
+  let prefix = owner.mountPoint;
+
+  // only alter the routeName if it's actually referencing a route.
+  if (owner.routable && typeof routeName === 'string') {
+    if (resemblesURL(routeName)) {
+      throw new EmberError('Route#transitionTo cannot be used for URLs. Please use the route name instead.');
+    } else {
+      routeName = `${prefix}.${routeName}`;
+      args[0] = routeName;
+    }
+  }
+
+  return args;
+}
+
 Route.reopen({
   paramsFor(name) {
     let owner = getOwner(this);
@@ -40,20 +61,12 @@ Route.reopen({
     return params;
   },
 
-  transitionTo(_routeName, ...args) {
-    let routeName = _routeName;
-    let owner = getOwner(this);
-    let prefix = owner.mountPoint;
+  replaceWith(...args) {
+    return this._super.apply(this, (prefixRouteNameArg.call(this, ...args)));
+  },
 
-    if (owner.routable) {
-      if (resemblesURL(routeName)) {
-        throw new EmberError('Route#transitionTo cannot be used for URLs. Please use the route name instead.');
-      } else {
-        routeName = `${prefix}.${_routeName}`;
-      }
-    }
-
-    return this._super(routeName, ...args);
+  transitionTo(...args) {
+    return this._super.apply(this, (prefixRouteNameArg.call(this, ...args)));
   },
 
   modelFor(_routeName, ...args) {
@@ -73,6 +86,7 @@ Route.reopen({
   }
 });
 
+// Cloned private function required to check if a routeName resembles a url instead
 function resemblesURL(str) {
   return typeof str === 'string' && ( str === '' || str.charAt(0) === '/');
 }
