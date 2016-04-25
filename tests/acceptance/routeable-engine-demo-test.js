@@ -10,6 +10,7 @@ test('can invoke components', function(assert) {
     assert.equal(currentURL(), '/routable-engine-demo/blog/new');
 
     assert.equal(this.application.$('.routable-hello-world').text().trim(), 'Hello, world!');
+    assert.equal(this.application.$('.hello-name').text().trim(), 'Hello, Jerry!', 'Re-rendered hello-name component correctly');
   });
 });
 
