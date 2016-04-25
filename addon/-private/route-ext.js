@@ -75,10 +75,14 @@ Route.reopen({
 
     if (owner.routable) {
       let prefix = owner.mountPoint;
-      if (routeName === 'application') {
-        routeName = prefix;
-      } else {
-        routeName = `${prefix}.${_routeName}`;
+      // only change the routeName when there is an active transition.
+      // otherwise, we need the passed in route name.
+      if (this.router && this.router.router.activeTransition) {
+        if (routeName === 'application') {
+          routeName = prefix;
+        } else {
+          routeName = `${prefix}.${_routeName}`;
+        }
       }
     }
 
@@ -103,10 +107,19 @@ function getFullQueryParams(router, state) {
   return state.fullQueryParams;
 }
 
-// Cloned private function required to support `paramsFor` override
+// Slightly modified private function required to support `paramsFor` override
 function getQueryParamsFor(route, state) {
   state.queryParamsFor = state.queryParamsFor || {};
   var name = route.routeName;
+
+  // ---- begin: customization for routable engines
+  var owner = getOwner(route);
+  var prefix = owner.mountPoint;
+
+  if (prefix) {
+    name = prefix + '.' + name;
+  }
+  // --- end: customization for routable engines
 
   if (state.queryParamsFor[name]) { return state.queryParamsFor[name]; }
 
