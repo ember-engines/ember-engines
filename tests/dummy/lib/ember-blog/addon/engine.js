@@ -1,9 +1,13 @@
 import Engine from 'ember-engines/engine';
 import Resolver from 'ember-engines/resolver';
+import loadInitializers from 'ember-load-initializers';
 
-export default Engine.extend({
-  modulePrefix: 'ember-blog',
+let Eng;
 
+const modulePrefix = 'ember-blog';
+
+Eng = Engine.extend({
+  modulePrefix,
   Resolver,
 
   dependencies: {
@@ -12,3 +16,7 @@ export default Engine.extend({
     ]
   }
 });
+
+loadInitializers(Eng, modulePrefix);
+
+export default Eng;

@@ -98,12 +98,18 @@ Within your engine's `addon` directory, add a new `engine.js` file:
 ```js
 import Engine from 'ember-engines/engine';
 import Resolver from 'ember-engines/resolver';
+import loadInitializers from 'ember-load-initializers';
 
-export default Engine.extend({
-  modulePrefix: 'ember-blog',
-
+const modulePrefix = 'ember-blog';
+const Eng = Engine.extend({
+  modulePrefix,
   Resolver
 });
+
+loadInitializers(Eng, modulePrefix);
+
+export default Eng;
+
 ```
 
 It's important to define a `modulePrefix` that will be used to resolve your

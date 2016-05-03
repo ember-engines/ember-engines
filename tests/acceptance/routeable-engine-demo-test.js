@@ -1,5 +1,8 @@
 import { test } from 'qunit';
+import sinon from 'sinon';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+import Initializer from 'ember-blog/initializers/ember-blog-initializer';
+import InstanceInitializer from 'ember-blog/instance-initializers/ember-blog-instance-initializer';
 
 moduleForAcceptance('Acceptance | routable engine demo');
 
@@ -91,5 +94,54 @@ test('transitionTo works properly within parent application', function(assert) {
 
   andThen(() => {
     assert.equal(currentURL(), '/routeless-engine-demo');
+  });
+});
+
+test('initializers run within engine', function(assert) {
+  assert.expect(1);
+
+  let stub = sinon.stub(Initializer, 'initialize');
+
+  visit('/routable-engine-demo/blog/new');
+
+  andThen(() => {
+    assert.ok(stub.calledOnce, 'Initializer ran once');
+    stub.restore();
+  });
+});
+
+test('instance initializers run within engine', function(assert) {
+  assert.expect(1);
+
+  let stub = sinon.stub(InstanceInitializer, 'initialize');
+
+  visit('/routable-engine-demo/blog/new');
+
+  andThen(() => {
+    assert.ok(stub.calledOnce, 'Instance initializer ran once');
+    stub.restore();
+  });
+});
+
+test('instance-initializers run after initializers', function(assert) {
+  assert.expect(2);
+
+  let appInitialized = false;
+  let instanceInitialized = false;
+
+  let appInit = sinon.stub(Initializer, 'initialize', function() {
+    appInitialized = true;
+    assert.ok(!instanceInitialized, 'instance initialized has not run yet');
+  });
+  let instanceInit = sinon.stub(InstanceInitializer, 'initialize', function() {
+    instanceInitialized = true;
+    assert.ok(appInitialized, 'initializer already ran');
+  });
+
+  visit('/routable-engine-demo/blog/new');
+
+  andThen(() => {
+    appInit.restore();
+    instanceInit.restore();
   });
 });
