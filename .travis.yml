@@ -22,7 +22,6 @@ before_install:
 
 install:
   - npm install -g bower
-  - npm run prepublish
   - npm install
   - bower install
 
