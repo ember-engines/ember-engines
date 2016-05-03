@@ -18,6 +18,20 @@ const {
 } = Ember;
 
 Engine.reopen({
+  _initializersRan: false,
+
+  ensureInitializers() {
+    if (!this._initializersRan) {
+      this.runInitializers();
+      this._initializersRan = true;
+    }
+  },
+
+  buildInstance(options) {
+    this.ensureInitializers();
+    return this._super(options);
+  },
+
   buildRegistry() {
     let namespace = this;
     let registry = this._super(...arguments);
