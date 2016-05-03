@@ -7,6 +7,6 @@
   ],
   "dependencies": {
     "ember-cli-htmlbars": "*",
-    "common-components": "*"
+    "common-components": "file:../common-components"
   }
 }
