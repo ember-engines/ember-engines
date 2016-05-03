@@ -9,8 +9,7 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:testall",
-    "prepublish": "./bin/install-test-addons.sh"
+    "test": "ember try:testall"
   },
   "repository": {
     "type": "git",
@@ -27,8 +26,6 @@
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
     "ember-ajax": "0.7.1",
-    "ember-blog": "*",
-    "ember-chat": "*",
     "ember-cli": "2.5.0",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-dependency-checker": "^1.2.0",
@@ -57,6 +54,10 @@
     "ember-cli-babel": "^5.1.5"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "paths": [
+      "tests/dummy/lib/ember-blog",
+      "tests/dummy/lib/ember-chat"
+    ]
   }
 }
