@@ -32,6 +32,16 @@ function prefixRouteNameArg(...args) {
   return args;
 }
 
+/*
+  Creates an aliased form of a method that properly resolves external routes.
+*/
+function externalAlias(methodName) {
+  return function _externalAliasMethod(routeName, ...args) {
+    let externalRoute = getOwner(this)._getExternalRoute(routeName);
+    this.router[methodName](externalRoute, ...args);
+  };
+}
+
 Route.reopen({
   paramsFor(name) {
     let owner = getOwner(this);
@@ -68,6 +78,10 @@ Route.reopen({
   transitionTo(...args) {
     return this._super.apply(this, (prefixRouteNameArg.call(this, ...args)));
   },
+
+  transitionToExternal: externalAlias('transitionTo'),
+
+  replaceWithExternal: externalAlias('replaceWith'),
 
   modelFor(_routeName, ...args) {
     let routeName = _routeName;

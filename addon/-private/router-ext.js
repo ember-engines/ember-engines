@@ -72,7 +72,6 @@ EmberRouter.reopen({
     return engineInstance;
   },
 
-
   /*
     Overridden to use the passed in `info` object as an object (previously a string
     representing the route name).

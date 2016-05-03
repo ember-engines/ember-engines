@@ -97,6 +97,10 @@ EngineInstance.reopen({
             }
           });
         }
+
+        if (engineDependencies.externalRoutes) {
+          dependencies.externalRoutes = engineDependencies.externalRoutes;
+        }
       }
 
       // Cache dependencies for child engines for faster instantiation in the future
@@ -230,6 +234,22 @@ EngineInstance.reopen({
     });
   },
 
+  /*
+    Gets the application-scoped route path for an external route.
+
+    @private
+    @method _getExternalRoute
+    @param {String} routeName
+    @return {String} route
+  */
+  _getExternalRoute(routeName) {
+    const route = this._externalRoutes[routeName];
+
+    Ember.assert(`The external route ${routeName} does not exist`, route);
+
+    return route;
+  },
+
   cloneCustomDependencies() {
     let requiredDependencies = this.base.dependencies;
 
@@ -237,14 +257,21 @@ EngineInstance.reopen({
       Object.keys(requiredDependencies).forEach((category) => {
         let dependencyType = this._dependencyTypeFromCategory(category);
 
-        requiredDependencies[category].forEach((dependencyName) => {
-          let key = `${dependencyType}:${dependencyName}`;
+        if (category === 'externalRoutes') {
+          this._externalRoutes = {};
+        }
 
+        requiredDependencies[category].forEach((dependencyName) => {
           let dependency = this.dependencies[category] && this.dependencies[category][dependencyName];
 
           assert(`A dependency mapping for '${category}.${dependencyName}' must be declared on this engine's parent.`, dependency);
 
-          this.register(key, dependency, { instantiate: false });
+          if (category === 'externalRoutes') {
+            this._externalRoutes[dependencyName] = dependency;
+          } else {
+            let key = `${dependencyType}:${dependencyName}`;
+            this.register(key, dependency, { instantiate: false });
+          }
         });
       });
     }
@@ -254,6 +281,8 @@ EngineInstance.reopen({
     switch(category) {
       case 'services':
         return 'service';
+      case 'externalRoutes':
+        return 'externalRoute';
     }
     assert(`Dependencies of category '${category}' can not be shared with engines.`, false);
   },

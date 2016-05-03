@@ -58,6 +58,17 @@ test('internal links can be clicked', function(assert) {
   assert.expect(1);
 
   visit('/routable-engine-demo/blog/post/1');
+  click('.routable-post-home-link');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/');
+  });
+});
+
+test('external links can be clicked', function(assert) {
+  assert.expect(1);
+
+  visit('/routable-engine-demo/blog/post/1');
   click('.routable-post-comments-link');
 
   andThen(() => {

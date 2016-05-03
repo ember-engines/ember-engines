@@ -13,6 +13,9 @@ Eng = Engine.extend({
   dependencies: {
     services: [
       'data-store'
+    ],
+    externalRoutes: [
+      'home'
     ]
   }
 });
