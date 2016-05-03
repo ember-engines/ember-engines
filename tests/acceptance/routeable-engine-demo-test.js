@@ -122,3 +122,26 @@ test('instance initializers run within engine', function(assert) {
     stub.restore();
   });
 });
+
+test('instance-initializers run after initializers', function(assert) {
+  assert.expect(2);
+
+  let appInitialized = false;
+  let instanceInitialized = false;
+
+  let appInit = sinon.stub(Initializer, 'initialize', function() {
+    appInitialized = true;
+    assert.ok(!instanceInitialized, 'instance initialized has not run yet');
+  });
+  let instanceInit = sinon.stub(InstanceInitializer, 'initialize', function() {
+    instanceInitialized = true;
+    assert.ok(appInitialized, 'initializer already ran');
+  });
+
+  visit('/routable-engine-demo/blog/new');
+
+  andThen(() => {
+    appInit.restore();
+    instanceInit.restore();
+  });
+});
