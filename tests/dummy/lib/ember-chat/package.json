@@ -8,5 +8,10 @@
   "dependencies": {
     "ember-cli-htmlbars": "*",
     "common-components": "*"
+  },
+  "ember-addon": {
+    "paths": [
+      "lib/common-components"
+    ]
   }
 }
