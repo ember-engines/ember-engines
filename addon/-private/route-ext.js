@@ -61,7 +61,11 @@ Route.reopen({
     if (owner.routable) {
       let prefix = owner.mountPoint;
 
-      fullName = `${prefix}.${fullName}`;
+      if (fullName === 'application') {
+        fullName = prefix;
+      } else {
+        fullName = `${prefix}.${fullName}`;
+      }
     }
     assign(params, state.params[fullName]);
     // --- end: customization for routable engines
