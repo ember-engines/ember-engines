@@ -119,5 +119,18 @@ EmberRouter.reopen({
 
       return handler;
     };
+  },
+
+  /**
+    @private
+  */
+  willDestroy() {
+    this._super(...arguments);
+    let instances = this._engineInstances;
+    for (let name in instances) {
+      for (let id in instances[name]) {
+        Ember.run(instances[name][id], 'destroy');
+      }
+    }
   }
 });
