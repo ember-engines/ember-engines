@@ -44,8 +44,6 @@ EmberRouterDSL.prototype.mount = function(_name, _options) {
   let localFullName = 'application';
   let routeInfo = assign({ localFullName }, engineInfo);
 
-  this.options.addRouteForEngine(fullName, routeInfo);
-
   this.push(path, fullName, callback);
 };
 
