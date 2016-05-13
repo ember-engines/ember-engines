@@ -33,12 +33,23 @@ EmberRouterDSL.prototype.mount = function(_name, _options) {
 
   let callback;
   if (engineRouteMap) {
+    let shouldResetEngineInfo = false;
+    let oldEngineInfo = this.options.engineInfo;
+    if (oldEngineInfo) {
+      shouldResetEngineInfo = true;
+      this.options.engineInfo = engineInfo;
+    }
+
     let optionsForChild = assign({ engineInfo }, this.options);
     let childDSL = new EmberRouterDSL(fullName, optionsForChild);
 
     engineRouteMap.call(childDSL);
 
     callback = childDSL.generate();
+
+    if (shouldResetEngineInfo) {
+      this.options.engineInfo = oldEngineInfo;
+    }
   }
 
   let localFullName = 'application';
