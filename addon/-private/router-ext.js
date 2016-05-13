@@ -37,7 +37,9 @@ EmberRouter.reopen({
       },
 
       addRouteForEngine(name, engineInfo) {
-        router._routeToEngineInfoXRef[name] = engineInfo;
+        if (!router._routeToEngineInfoXRef[name]) {
+          router._routeToEngineInfoXRef[name] = engineInfo;
+        }
       }
     });
   },
