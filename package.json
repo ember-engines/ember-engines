@@ -1,6 +1,6 @@
 {
   "name": "ember-engines",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Experimental support for Ember Engines",
   "directories": {
     "doc": "doc",
