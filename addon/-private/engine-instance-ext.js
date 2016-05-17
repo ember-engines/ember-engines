@@ -10,8 +10,7 @@ const P = emberRequire('container/registry', 'privatize');
 
 const {
   Error: EmberError,
-  assert,
-  RSVP
+  assert
 } = Ember;
 
 EngineInstance.reopen({
@@ -124,31 +123,6 @@ EngineInstance.reopen({
   },
 
   /**
-    Initialize the `Ember.EngineInstance` and return a promise that resolves
-    with the instance itself when the boot process is complete.
-
-    The primary task here is to run any registered instance initializers.
-
-    See the documentation on `BootOptions` for the options it takes.
-
-    @private
-    @method boot
-    @param options
-    @return {Promise<Ember.EngineInstance,Error>}
-  */
-  boot(options = {}) {
-    if (this._bootPromise) { return this._bootPromise; }
-
-    assert('An engine instance\'s parent must be set via `setEngineParent(engine, parent)` prior to calling `engine.boot()` ', getEngineParent(this));
-
-    this._bootPromise = new RSVP.Promise(resolve => resolve(this._bootSync(options)));
-
-    // TODO: Unsure that we should allow boot to be async...
-
-    return this._bootPromise;
-  },
-
-  /**
     Unfortunately, a lot of existing code assumes booting an instance is
     synchronous – specifically, a lot of tests assumes the last call to
     `app.advanceReadiness()` or `app.reset()` will result in a new instance
@@ -161,55 +135,16 @@ EngineInstance.reopen({
 
     @private
   */
-  _bootSync(/* options */) {
+  _bootSync(options) {
     if (this._booted) { return this; }
 
-    // if (isEnabled('ember-application-visit')) {
-    //   options = new BootOptions(options);
-    //
-    //   let registry = this.__registry__;
-    //
-      // registry.register('-environment:main', options.toEnvironment(), { instantiate: false });
-      // registry.injection('view', '_environment', '-environment:main');
-      // registry.injection('route', '_environment', '-environment:main');
-      //
-      // registry.register('renderer:-dom', {
-      //   create() {
-      //     return new Renderer(new DOMHelper(options.document), options.isInteractive);
-      //   }
-      // });
-      //
-      // if (options.rootElement) {
-      //   this.rootElement = options.rootElement;
-      // } else {
-      //   this.rootElement = this.application.rootElement;
-      // }
-      //
-      // if (options.location) {
-      //   let router = get(this, 'router');
-      //   set(router, 'location', options.location);
-      // }
-      //
-      // this.base.runInstanceInitializers(this);
-      //
-      // if (options.isInteractive) {
-      //   this.setupEventDispatcher();
-      // }
-    // } else {
-      this.base.runInstanceInitializers(this);
-
-      // if (environment.hasDOM) {
-      //   this.setupEventDispatcher();
-      // }
-    // }
+    assert('An engine instance\'s parent must be set via `setEngineParent(engine, parent)` prior to calling `engine.boot()` ', getEngineParent(this));
 
     this.cloneCoreDependencies();
 
     this.cloneCustomDependencies();
 
-    this._booted = true;
-
-    return this;
+    return this._super(options);
   },
 
   cloneCoreDependencies() {
