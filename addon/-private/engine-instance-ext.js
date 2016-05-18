@@ -1,15 +1,11 @@
 import Ember from 'ember';
-import {
-  getEngineParent,
-  setEngineParent
-} from './engine-parent';
 import emberRequire from './ext-require';
 
 const EngineInstance = emberRequire('ember-application/system/engine-instance');
+const getEngineParent = emberRequire('ember-application/system/engine-parent', 'getEngineParent');
 const P = emberRequire('container/registry', 'privatize');
 
 const {
-  Error: EmberError,
   assert
 } = Ember;
 
@@ -107,19 +103,9 @@ EngineInstance.reopen({
       this._dependenciesForChildEngines[name] = dependencies;
     }
 
-    let Engine = this.lookup(`engine:${name}`);
-
-    if (!Engine) {
-      throw new EmberError(`You attempted to mount the engine '${name}', but it can not be found.`);
-    }
-
     options.dependencies = dependencies;
 
-    let engineInstance = Engine.buildInstance(options);
-
-    setEngineParent(engineInstance, this);
-
-    return engineInstance;
+    return this._super(name, options);
   },
 
   /**
@@ -137,8 +123,6 @@ EngineInstance.reopen({
   */
   _bootSync(options) {
     if (this._booted) { return this; }
-
-    assert('An engine instance\'s parent must be set via `setEngineParent(engine, parent)` prior to calling `engine.boot()` ', getEngineParent(this));
 
     this.cloneCoreDependencies();
 

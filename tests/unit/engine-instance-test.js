@@ -1,8 +1,10 @@
 import Ember from 'ember';
 import EnginesInitializer from '../../initializers/engines';
-import { getEngineParent } from 'ember-engines/-private/engine-parent';
 import Engine from 'ember-engines/engine';
+import emberRequire from 'ember-engines/-private/ext-require';
 import { module, test } from 'qunit';
+
+const getEngineParent = emberRequire('ember-application/system/engine-parent', 'getEngineParent');
 
 const {
   run
