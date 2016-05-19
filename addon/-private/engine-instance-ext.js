@@ -2,8 +2,6 @@ import Ember from 'ember';
 import emberRequire from './ext-require';
 
 const EngineInstance = emberRequire('ember-application/system/engine-instance');
-const getEngineParent = emberRequire('ember-application/system/engine-parent', 'getEngineParent');
-const P = emberRequire('container/registry', 'privatize');
 
 const {
   assert
@@ -108,51 +106,6 @@ EngineInstance.reopen({
     return this._super(name, options);
   },
 
-  /**
-    Unfortunately, a lot of existing code assumes booting an instance is
-    synchronous – specifically, a lot of tests assumes the last call to
-    `app.advanceReadiness()` or `app.reset()` will result in a new instance
-    being fully-booted when the current runloop completes.
-
-    We would like new code (like the `visit` API) to stop making this assumption,
-    so we created the asynchronous version above that returns a promise. But until
-    we have migrated all the code, we would have to expose this method for use
-    *internally* in places where we need to boot an instance synchronously.
-
-    @private
-  */
-  _bootSync(options) {
-    if (this._booted) { return this; }
-
-    this.cloneCoreDependencies();
-
-    this.cloneCustomDependencies();
-
-    return this._super(options);
-  },
-
-  cloneCoreDependencies() {
-    let parent = getEngineParent(this);
-
-    [
-      'view:toplevel',
-      'route:basic',
-      'event_dispatcher:main',
-      P`-bucket-cache:main`,
-      'service:-routing'
-    ].forEach((key) => {
-      this.register(key, parent.resolveRegistration(key));
-    });
-
-    [
-      'renderer:-dom',
-      'router:main',
-      '-view-registry:main'
-    ].forEach((key) => {
-      this.register(key, parent.lookup(key), { instantiate: false });
-    });
-  },
-
   /*
     Gets the application-scoped route path for an external route.
 
@@ -169,7 +122,9 @@ EngineInstance.reopen({
     return route;
   },
 
-  cloneCustomDependencies() {
+  cloneParentDependencies() {
+    this._super();
+
     let requiredDependencies = this.base.dependencies;
 
     if (requiredDependencies) {
