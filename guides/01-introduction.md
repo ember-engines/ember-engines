@@ -33,4 +33,4 @@ Do note that since Engines have not had a 1.0.0 release and some features are st
 - [Engines RFC](https://github.com/emberjs/rfcs/pull/10)
 - [Engine Linking RFC](https://github.com/emberjs/rfcs/pull/122)
 
-_Note: this guide is accurate as of the 0.2.3 release of ember-engines_.
+_Note: this guide is accurate as of the 0.2.4 release of ember-engines_.
