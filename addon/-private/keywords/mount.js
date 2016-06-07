@@ -2,7 +2,7 @@ import Ember from "ember";
 import emberRequire from '../ext-require';
 
 // const internal = emberRequire('htmlbars-runtime').internal;
-const read = emberRequire('ember-metal/streams/utils', 'read');
+const read = emberRequire('ember-htmlbars/streams/utils', 'read');
 const registerKeyword = emberRequire('ember-htmlbars/keywords', 'registerKeyword');
 // const legacyViewKeyword = emberRequire('ember-htmlbars/keywords/view');
 const ViewNodeManager = emberRequire('ember-htmlbars/node-managers/view-node-manager');
