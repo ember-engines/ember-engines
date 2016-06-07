@@ -1,14 +1,20 @@
 import Engine from 'ember-engines/engine';
 import Resolver from 'ember-engines/resolver';
+import loadInitializers from 'ember-load-initializers';
+import config from './config/environment';
 
-export default Engine.extend({
-  modulePrefix: 'ember-chat',
+const { modulePrefix } = config;
 
+const Eng = Engine.extend({
+  modulePrefix,
   Resolver,
-
   dependencies: {
     services: [
       'store'
     ]
   }
 });
+
+loadInitializers(Eng, modulePrefix);
+
+export default Eng;
