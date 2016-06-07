@@ -3,9 +3,22 @@
 var path = require('path');
 var InRepoAddon = require('ember-cli/blueprints/in-repo-addon/index');
 var Route = require('ember-cli/blueprints/route/index');
+var stringUtil = require('ember-cli-string-utils');
 
 module.exports = {
   description: 'Creates an Engine within the current repository.',
+
+  locals: function(options) {
+    var entity    = options.entity;
+    var rawName   = entity.name;
+    var name      = stringUtil.dasherize(rawName);
+    var namespace = stringUtil.classify(rawName);
+
+    return {
+      name: name,
+      modulePrefix: name
+    };
+  },
 
   availableOptions: [
     {
