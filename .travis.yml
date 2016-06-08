@@ -10,7 +10,7 @@ cache:
     - node_modules
 
 env:
-  - EMBER_TRY_SCENARIO=ember-2.6.0-beta.4
+  - EMBER_TRY_SCENARIO=ember-2.6
 
 matrix:
   fast_finish: true
