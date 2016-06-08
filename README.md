@@ -94,14 +94,32 @@ module.exports = EngineAddon.extend({
 });
 ```
 
+Within your engine's `config` directory, create a new `environment.js` file:
+
+```js
+/*jshint node:true*/
+'use strict';
+
+module.exports = function(environment) {
+  var ENV = {
+    modulePrefix: 'ember-blog',
+    environment: environment
+  }
+
+  return ENV;
+};
+```
+
 Within your engine's `addon` directory, add a new `engine.js` file:
 
 ```js
 import Engine from 'ember-engines/engine';
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-engines/resolver'; // <=== IMPORTANT - custom resolver!!!
 import loadInitializers from 'ember-load-initializers';
+import config from './config/environment';
 
-const modulePrefix = 'ember-blog';
+const { modulePrefix } = config;
+
 const Eng = Engine.extend({
   modulePrefix,
   Resolver
@@ -110,11 +128,10 @@ const Eng = Engine.extend({
 loadInitializers(Eng, modulePrefix);
 
 export default Eng;
-
 ```
 
-It's important to define a `modulePrefix` that will be used to resolve your
-engine and its constituent modules.
+It's important that `modulePrefix` be set in `config/environment.js` so that
+it can be referenced in `addon/engine.js`.
 
 ### Routable Engines
 
@@ -155,18 +172,24 @@ For example, the following engine requires a `store` service from its parent:
 ```js
 import Engine from 'ember-engines/engine';
 import Resolver from 'ember-engines/resolver';
+import loadInitializers from 'ember-load-initializers';
+import config from './config/environment';
 
-export default Engine.extend({
-  modulePrefix: 'ember-blog',
+const { modulePrefix } = config;
 
+const Eng = Engine.extend({
+  modulePrefix,
   Resolver,
-
   dependencies: {
     services: [
       'store'
     ]
   }
 });
+
+loadInitializers(Eng, modulePrefix);
+
+export default Eng;
 ```
 
 Currently, only services and route paths (see below) can be shared across the
@@ -199,8 +222,8 @@ located via a route path:
 ```js
 // dummy/app/app.js
 const App = Ember.Application.extend({
-  modulePrefix: config.modulePrefix,
-  podModulePrefix: config.podModulePrefix,
+  modulePrefix,
+  podModulePrefix,
   Resolver,
 
   engines: {
@@ -215,6 +238,7 @@ const App = Ember.Application.extend({
   }
 });
 ```
+
 You can then use those external routes either programmatically or within a
 template like so:
 
@@ -249,21 +273,21 @@ provided in the `ember-engines/resolver` module. For example:
 
 ```js
 import Ember from 'ember';
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-engines/resolver'; // <=== IMPORTANT - custom resolver!!!
 import loadInitializers from 'ember/load-initializers';
 import config from './config/environment';
 
-let App;
-
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
-App = Ember.Application.extend({
-  modulePrefix: config.modulePrefix,
-  podModulePrefix: config.podModulePrefix,
+const { modulePrefix, podModulePrefix } = config;
+
+const App = Ember.Application.extend({
+  modulePrefix,
+  podModulePrefix,
   Resolver
 });
 
-loadInitializers(App, config.modulePrefix);
+loadInitializers(App, modulePrefix);
 
 export default App;
 ```
@@ -369,13 +393,13 @@ import Resolver from 'ember-engines/resolver';
 import loadInitializers from 'ember/load-initializers';
 import config from './config/environment';
 
-let App;
-
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
-App = Ember.Application.extend({
-  modulePrefix: config.modulePrefix,
-  podModulePrefix: config.podModulePrefix,
+const { modulePrefix, podModulePrefix } = config;
+
+const App = Ember.Application.extend({
+  modulePrefix,
+  podModulePrefix,
   Resolver,
 
   engines: {
@@ -390,7 +414,7 @@ App = Ember.Application.extend({
   }
 });
 
-loadInitializers(App, config.modulePrefix);
+loadInitializers(App, modulePrefix);
 
 export default App;
 ```
