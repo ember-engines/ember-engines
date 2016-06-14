@@ -1,17 +1,10 @@
 import Ember from 'ember';
-import {
-  getEngineParent,
-  setEngineParent
-} from './engine-parent';
 import emberRequire from './ext-require';
 
 const EngineInstance = emberRequire('ember-application/system/engine-instance');
-const P = emberRequire('container/registry', 'privatize');
 
 const {
-  Error: EmberError,
-  assert,
-  RSVP
+  assert
 } = Ember;
 
 EngineInstance.reopen({
@@ -108,130 +101,9 @@ EngineInstance.reopen({
       this._dependenciesForChildEngines[name] = dependencies;
     }
 
-    let Engine = this.lookup(`engine:${name}`);
-
-    if (!Engine) {
-      throw new EmberError(`You attempted to mount the engine '${name}', but it can not be found.`);
-    }
-
     options.dependencies = dependencies;
 
-    let engineInstance = Engine.buildInstance(options);
-
-    setEngineParent(engineInstance, this);
-
-    return engineInstance;
-  },
-
-  /**
-    Initialize the `Ember.EngineInstance` and return a promise that resolves
-    with the instance itself when the boot process is complete.
-
-    The primary task here is to run any registered instance initializers.
-
-    See the documentation on `BootOptions` for the options it takes.
-
-    @private
-    @method boot
-    @param options
-    @return {Promise<Ember.EngineInstance,Error>}
-  */
-  boot(options = {}) {
-    if (this._bootPromise) { return this._bootPromise; }
-
-    assert('An engine instance\'s parent must be set via `setEngineParent(engine, parent)` prior to calling `engine.boot()` ', getEngineParent(this));
-
-    this._bootPromise = new RSVP.Promise(resolve => resolve(this._bootSync(options)));
-
-    // TODO: Unsure that we should allow boot to be async...
-
-    return this._bootPromise;
-  },
-
-  /**
-    Unfortunately, a lot of existing code assumes booting an instance is
-    synchronous – specifically, a lot of tests assumes the last call to
-    `app.advanceReadiness()` or `app.reset()` will result in a new instance
-    being fully-booted when the current runloop completes.
-
-    We would like new code (like the `visit` API) to stop making this assumption,
-    so we created the asynchronous version above that returns a promise. But until
-    we have migrated all the code, we would have to expose this method for use
-    *internally* in places where we need to boot an instance synchronously.
-
-    @private
-  */
-  _bootSync(/* options */) {
-    if (this._booted) { return this; }
-
-    // if (isEnabled('ember-application-visit')) {
-    //   options = new BootOptions(options);
-    //
-    //   let registry = this.__registry__;
-    //
-      // registry.register('-environment:main', options.toEnvironment(), { instantiate: false });
-      // registry.injection('view', '_environment', '-environment:main');
-      // registry.injection('route', '_environment', '-environment:main');
-      //
-      // registry.register('renderer:-dom', {
-      //   create() {
-      //     return new Renderer(new DOMHelper(options.document), options.isInteractive);
-      //   }
-      // });
-      //
-      // if (options.rootElement) {
-      //   this.rootElement = options.rootElement;
-      // } else {
-      //   this.rootElement = this.application.rootElement;
-      // }
-      //
-      // if (options.location) {
-      //   let router = get(this, 'router');
-      //   set(router, 'location', options.location);
-      // }
-      //
-      // this.base.runInstanceInitializers(this);
-      //
-      // if (options.isInteractive) {
-      //   this.setupEventDispatcher();
-      // }
-    // } else {
-      this.base.runInstanceInitializers(this);
-
-      // if (environment.hasDOM) {
-      //   this.setupEventDispatcher();
-      // }
-    // }
-
-    this.cloneCoreDependencies();
-
-    this.cloneCustomDependencies();
-
-    this._booted = true;
-
-    return this;
-  },
-
-  cloneCoreDependencies() {
-    let parent = getEngineParent(this);
-
-    [
-      'view:toplevel',
-      'route:basic',
-      'event_dispatcher:main',
-      P`-bucket-cache:main`,
-      'service:-routing'
-    ].forEach((key) => {
-      this.register(key, parent.resolveRegistration(key));
-    });
-
-    [
-      'renderer:-dom',
-      'router:main',
-      '-view-registry:main'
-    ].forEach((key) => {
-      this.register(key, parent.lookup(key), { instantiate: false });
-    });
+    return this._super(name, options);
   },
 
   /*
@@ -250,7 +122,9 @@ EngineInstance.reopen({
     return route;
   },
 
-  cloneCustomDependencies() {
+  cloneParentDependencies() {
+    this._super();
+
     let requiredDependencies = this.base.dependencies;
 
     if (requiredDependencies) {

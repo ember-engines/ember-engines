@@ -28,6 +28,20 @@ Support for the following concepts is under consideration:
 * Sharing of dependencies other than services and route paths.
 * Passing configuration attributes from an engine's parent.
 
+## Important Note about Compatibility and Stability
+
+This addon should be considered experimental and used with caution.
+
+The [master branch of this addon](https://github.com/dgeb/ember-engines) is
+being developed against the [master branch of Ember](https://github.com/emberjs/ember.js).
+The `ember-application-engines` feature flag must be enabled in order to use
+this branch, which should not be considered stable.
+
+The [v0.2 branch of this addon](https://github.com/dgeb/ember-engines/tree/v0.2)
+is being developed to be compatible with v2.6.x of Ember. This branch should
+be considered reasonably stable, although it does contain a number of overrides
+to code in Ember core. Please proceed with caution.
+
 ## Introduction Video
 
 [![Introduction to Ember Engines at Global Ember Meetup](https://i.vimeocdn.com/video/559400541_640x360.jpg)](https://vimeo.com/157688181)
@@ -40,17 +54,7 @@ From your Ember CLI project's root directory, run the following:
 ember install ember-engines
 ```
 
-You will also need to install Ember Canary:
-
-```
-rm -rf bower_components
-bower install --save ember#canary
-bower install
-```
-
-Bower may prompt you to select various "resolutions". Make sure to choose
-`ember#canary` if prompted, and prefix the choice with ! to persist it to
-`bower.json`.
+Install the appropriate version of Ember as noted above.
 
 ## Providing Engines
 
@@ -68,17 +72,14 @@ _Note: As described in the RFC, ember-cli will hopefully support an `engine`
 command to get started more easily with engine projects._
 
 In order to create an engine within an existing application's project, run the
-`in-repo-addon` generator:
+`in-repo-engine` generator:
 
 ```
-ember g in-repo-addon <engine-name>
+ember g in-repo-engine <engine-name>
 ```
 
-_Note: As described in the RFC, ember-cli will hopefully support an
-`in-repo-engine` generator to get started more easily with in-repo engines._
-
-Don't forget to install `ember-engines` and Ember Canary in your project, as
-described above.
+Don't forget to install `ember-engines` and the appropriate version of Ember in
+your project, as described above.
 
 ### Configuring your Engine
 
@@ -94,14 +95,32 @@ module.exports = EngineAddon.extend({
 });
 ```
 
+Within your engine's `config` directory, create a new `environment.js` file:
+
+```js
+/*jshint node:true*/
+'use strict';
+
+module.exports = function(environment) {
+  var ENV = {
+    modulePrefix: 'ember-blog',
+    environment: environment
+  }
+
+  return ENV;
+};
+```
+
 Within your engine's `addon` directory, add a new `engine.js` file:
 
 ```js
 import Engine from 'ember-engines/engine';
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-engines/resolver'; // <=== IMPORTANT - custom resolver!!!
 import loadInitializers from 'ember-load-initializers';
+import config from './config/environment';
 
-const modulePrefix = 'ember-blog';
+const { modulePrefix } = config;
+
 const Eng = Engine.extend({
   modulePrefix,
   Resolver
@@ -110,11 +129,10 @@ const Eng = Engine.extend({
 loadInitializers(Eng, modulePrefix);
 
 export default Eng;
-
 ```
 
-It's important to define a `modulePrefix` that will be used to resolve your
-engine and its constituent modules.
+It's important that `modulePrefix` be set in `config/environment.js` so that
+it can be referenced in `addon/engine.js`.
 
 ### Routable Engines
 
@@ -155,18 +173,24 @@ For example, the following engine requires a `store` service from its parent:
 ```js
 import Engine from 'ember-engines/engine';
 import Resolver from 'ember-engines/resolver';
+import loadInitializers from 'ember-load-initializers';
+import config from './config/environment';
 
-export default Engine.extend({
-  modulePrefix: 'ember-blog',
+const { modulePrefix } = config;
 
+const Eng = Engine.extend({
+  modulePrefix,
   Resolver,
-
   dependencies: {
     services: [
       'store'
     ]
   }
 });
+
+loadInitializers(Eng, modulePrefix);
+
+export default Eng;
 ```
 
 Currently, only services and route paths (see below) can be shared across the
@@ -199,8 +223,8 @@ located via a route path:
 ```js
 // dummy/app/app.js
 const App = Ember.Application.extend({
-  modulePrefix: config.modulePrefix,
-  podModulePrefix: config.podModulePrefix,
+  modulePrefix,
+  podModulePrefix,
   Resolver,
 
   engines: {
@@ -215,6 +239,7 @@ const App = Ember.Application.extend({
   }
 });
 ```
+
 You can then use those external routes either programmatically or within a
 template like so:
 
@@ -228,6 +253,37 @@ this.transitionToExternal('settings');
 ```
 
 For further documentation on this subject, view the [Engine Linking RFC](https://github.com/emberjs/rfcs/pull/122).
+
+### Accessing Engine Configuration Settings
+
+As in an application, you can provide configuration settings for your
+engine in `config/environment.js`. You can access these settings in a
+couple different ways.
+
+The simplest method is to import these settings:
+
+```js
+// addon/engine.js
+import config from './config/environment';
+
+console.log(config.modulePrefix);
+```
+
+Configuration settings are also registered with the key `config:environment` and
+can be looked up given an engine instance. For example:
+
+```js
+// addon/instance-initializers/hello-instance.js
+export function initialize(engineInstance) {
+  let config = engineInstance.resolveRegistration('config:environment');
+  console.log('modulePrefix', config.modulePrefix);
+}
+
+export default {
+  name: 'hello-instance',
+  initialize: initialize
+};
+```
 
 ## Consuming Engines
 
@@ -249,21 +305,21 @@ provided in the `ember-engines/resolver` module. For example:
 
 ```js
 import Ember from 'ember';
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-engines/resolver'; // <=== IMPORTANT - custom resolver!!!
 import loadInitializers from 'ember/load-initializers';
 import config from './config/environment';
 
-let App;
-
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
-App = Ember.Application.extend({
-  modulePrefix: config.modulePrefix,
-  podModulePrefix: config.podModulePrefix,
+const { modulePrefix, podModulePrefix } = config;
+
+const App = Ember.Application.extend({
+  modulePrefix,
+  podModulePrefix,
   Resolver
 });
 
-loadInitializers(App, config.modulePrefix);
+loadInitializers(App, modulePrefix);
 
 export default App;
 ```
@@ -369,13 +425,13 @@ import Resolver from 'ember-engines/resolver';
 import loadInitializers from 'ember/load-initializers';
 import config from './config/environment';
 
-let App;
-
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
-App = Ember.Application.extend({
-  modulePrefix: config.modulePrefix,
-  podModulePrefix: config.podModulePrefix,
+const { modulePrefix, podModulePrefix } = config;
+
+const App = Ember.Application.extend({
+  modulePrefix,
+  podModulePrefix,
   Resolver,
 
   engines: {
@@ -390,7 +446,7 @@ App = Ember.Application.extend({
   }
 });
 
-loadInitializers(App, config.modulePrefix);
+loadInitializers(App, modulePrefix);
 
 export default App;
 ```
@@ -430,4 +486,4 @@ For more information on using ember-cli, visit [http://www.ember-cli.com/](http:
 
 ## License
 
-Copyright 2015 Dan Gebhardt and Robert Jackson. MIT License (see LICENSE.md for details).
+Copyright 2015-2016 Dan Gebhardt and Robert Jackson. MIT License (see LICENSE.md for details).
