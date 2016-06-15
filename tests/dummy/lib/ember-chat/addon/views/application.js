@@ -9,5 +9,9 @@ export default Ember.Component.extend({
   willRender() {
     console.log('ChatEngine.ApplicationView - willRender');
     this._super(...arguments);
+  },
+
+  click() {
+    console.log('what?');
   }
 });
