@@ -64,24 +64,41 @@ registerKeyword('mount', {
     }
   },
 
-  setupState(prevState, env, scope, params /*, hash */) {
-    var name = params[0];
+  setupState(prevState, env, scope, params, hash) {
+    let name = params[0];
+
+    assert(
+      'The first argument of {{mount}} must be an engine name, e.g. {{mount "chat-engine"}}.',
+      params.length === 1
+    );
 
     assert(
       'The first argument of {{mount}} must be quoted, e.g. {{mount "chat-engine"}}.',
       typeof name === 'string'
     );
 
-    return {
+    assert(
+      'You used `{{mount \'' + name + '\'}}`, but the engine \'' + name + '\' can not be found.',
+      env.owner.hasRegistration(`engine:${name}`)
+    );
+
+    let engineInstance = buildEngineFromEnv(name, env);
+
+    let state = {
       parentView: env.view,
       manager: prevState.manager,
-      controller: prevState.controller,
-      childOutletState: childOutletState(name, env)
+      controller: engineInstance.lookup('controller:application'),
+      childOutletState: childOutletState(name, env),
+      _engineInstance: engineInstance
     };
+
+    return state;
   },
 
   childEnv(state, env) {
-    return env.childWithOutletState(state.childOutletState);
+    // let childEnv = env.childWithOutletState(state.childOutletState);
+    let childEnv = buildEnvForEngine(getEngineFromState(state), env);
+    return childEnv;
   },
 
   isStable(lastState, nextState) {
@@ -105,20 +122,12 @@ registerKeyword('mount', {
     //     {{view}} should not override class bindings defined on a child view"
     //
 
-    assert(
-      'The first argument of {{mount}} must be an engine name, e.g. {{mount "chat-engine"}}.',
-      params.length === 1
-    );
-
     let engineName = params[0];
 
-    assert(
-      'You used `{{mount \'' + engineName + '\'}}`, but the engine \'' + engineName + '\' can not be found.',
-      owner.hasRegistration(`engine:${engineName}`)
-    );
-
-    let engineInstance = owner.buildChildEngineInstance(engineName);
-    engineInstance.boot();
+    let engineInstance = getEngineFromState(state); // owner.buildChildEngineInstance(engineName);
+    if (!engineInstance._booted) {
+      engineInstance.boot();
+    }
 
     let engineController = engineInstance.lookup('controller:application');
 
@@ -145,7 +154,7 @@ registerKeyword('mount', {
     //   template = owner.lookup(templateName);
     // }
 
-    if (view) {
+    if (view.ownerView !== env.view.ownerView) {
       view.ownerView = env.view.ownerView;
     }
 
@@ -196,7 +205,9 @@ registerKeyword('mount', {
     // if (engineView) {
     //   engineView.set('controller', engineController);
     // }
-    state.controller = engineController;
+
+    // NOTE: setting state.controller now handled in `setupState`
+    // state.controller = engineController;
 
     // hash.viewName = camelize(name);
 
@@ -213,14 +224,10 @@ registerKeyword('mount', {
     //   options.component = engineView;
     // }
 
-    let engineEnv = RenderEnv.build(view, engineTemplate.meta);
+    let engineEnv = buildEnvForEngine(engineInstance, env);
 
     var nodeManager = ViewNodeManager.create(node, engineEnv, hash, options, state.parentView, null, null, engineTemplate);
     state.manager = nodeManager;
-
-    // if (router && params.length === 1) {
-    //   router._connectActiveComponentNode(name, nodeManager);
-    // }
 
     nodeManager.render(engineEnv, hash, visitor);
   },
@@ -287,4 +294,28 @@ function isStableOutlet(a, b) {
     }
   }
   return true;
+}
+
+function getEngineFromState(state) {
+  return state._engineInstance;
+}
+
+function buildEngineFromEnv(name, env) {
+  let engineInstance = env.owner.buildChildEngineInstance(name);
+  engineInstance.boot();
+  return engineInstance;
+}
+
+function buildEnvForEngine(engineInstance, parentEnv) {
+  let view = engineInstance.lookup('view:application') || engineInstance.lookup('view:toplevel');
+  let engineTemplate = engineInstance.lookup('template:application');
+
+  if (view.ownerView !== parentEnv.view.ownerView) {
+    view.ownerView = parentEnv.view.ownerView;
+  }
+
+  let engineEnv = RenderEnv.build(view, engineTemplate.meta);
+
+  return engineEnv;
+
 }
