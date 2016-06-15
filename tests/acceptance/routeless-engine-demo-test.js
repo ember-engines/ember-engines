@@ -13,3 +13,16 @@ test('can invoke components directly in an engine and also that are dependencies
     assert.equal(this.application.$('.hola .greeting').text().trim(), 'Hola');
   });
 });
+
+test('can rerender a component in a routeless engine', function(assert) {
+  visit('/routeless-engine-demo');
+
+  andThen(() => {
+    let $clickCount = find('.click-count');
+    assert.equal($clickCount.text().trim(), '0');
+    click('button.clicker');
+    andThen(() => {
+      assert.equal($clickCount.text().trim(), '1');
+    });
+  });
+});
