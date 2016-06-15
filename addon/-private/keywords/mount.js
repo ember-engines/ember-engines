@@ -64,7 +64,7 @@ registerKeyword('mount', {
     }
   },
 
-  setupState(prevState, env, scope, params, hash) {
+  setupState(prevState, env, scope, params /*, hash */) {
     let name = params[0];
 
     assert(
