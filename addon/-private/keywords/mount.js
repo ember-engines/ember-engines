@@ -114,7 +114,7 @@ registerKeyword('mount', {
     // var name = params[0];
     // var context = params[1];
 
-    var owner = env.owner;
+    // var owner = env.owner;
 
     // The render keyword presumes it can work without a router. This is really
     // only to satisfy the test:
@@ -122,7 +122,7 @@ registerKeyword('mount', {
     //     {{view}} should not override class bindings defined on a child view"
     //
 
-    let engineName = params[0];
+    // let engineName = params[0];
 
     let engineInstance = getEngineFromState(state); // owner.buildChildEngineInstance(engineName);
     if (!engineInstance._booted) {

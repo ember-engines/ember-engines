@@ -25,4 +25,4 @@ test('can rerender a component in a routeless engine', function(assert) {
       assert.equal($clickCount.text().trim(), '1');
     });
   });
-})
+});
