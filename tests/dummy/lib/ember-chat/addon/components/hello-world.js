@@ -8,11 +8,16 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
+    this.set('clickCount', 0);
 
     console.log('hello-world.init');
   },
 
-  click() {
-    console.log('hello-world click');
+  actions: {
+    click() {
+      console.log('hello-world click');
+      this.incrementProperty('clickCount');
+    }
   }
+
 });
