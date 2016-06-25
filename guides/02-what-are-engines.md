@@ -10,7 +10,7 @@ The summary from the [Engines RFC](https://github.com/emberjs/rfcs/blob/master/t
 
 The key term here is "logical application". That is, an Engine represents a set of functionality and user experiences that could logically be considered an application. However, they differ from normal Ember applications in that they are intended to be composed within a parent application in order to create a single, cohesive user experience.
 
-The oft used example of this is a "blogging" application. While a blog itself could be a full-fledged application, you may also wish to use it as a specific subsection of your overall application. If you threw a "news feed" engine into that mix, you might get an application sturcture that looks something like this:
+The oft used example of this is a "blogging" application. While a blog itself could be a full-fledged application, you may also wish to use it as a specific subsection of your overall application. If you threw a "news feed" engine into that mix, you might get an application structure that looks something like this:
 
 ![Diagram of Application with two Engines](./images/02-app-diagram.png)
 
