@@ -1,8 +1,8 @@
 ### Table of Contents
 
-- [Introduction](./01-introduction)
-- [What Are Engines?](./02-what-are-engines)
-- [Core Concepts](./03-core-concepts)
+- [Introduction](./01-introduction.md)
+- [What Are Engines?](./02-what-are-engines.md)
+- [Core Concepts](./03-core-concepts.md)
 - [Creating An Engine](./04-creating-an-engine.md)
 - [Mounting An Engine](./05-mounting-an-engine.md)
 - [Linking and External Links](./06-linking-and-external-links.md)
