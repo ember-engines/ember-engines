@@ -4,7 +4,7 @@
 - [What Are Engines?](./02-what-are-engines.md)
 - [Core Concepts](./03-core-concepts.md)
 - [Creating An Engine](./04-creating-an-engine.md)
-- [Mounting An Engine](./05-mounting-an-engine.md)
+- [Mounting An Engine](./05-mounting-engines.md)
 - [Linking and External Links](./06-linking-and-external-links.md)
 - [Sharing Services](./07-services.md)
 - [Sharing Components and More](./08-sharing-components-and-more.md)
@@ -33,4 +33,4 @@ Do note that since Engines have not had a 1.0.0 release and some features are st
 - [Engines RFC](https://github.com/emberjs/rfcs/pull/10)
 - [Engine Linking RFC](https://github.com/emberjs/rfcs/pull/122)
 
-_Note: this guide is accurate as of the 0.2.4 release of ember-engines_.
+_Note: this guide is accurate as of the 0.2.6 release of ember-engines_.
