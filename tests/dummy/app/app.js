@@ -5,11 +5,10 @@ import config from './config/environment';
 
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
-const { modulePrefix, podModulePrefix } = config;
+const { modulePrefix } = config;
 
 const App = Ember.Application.extend({
   modulePrefix,
-  podModulePrefix,
   Resolver,
 
   engines: {
