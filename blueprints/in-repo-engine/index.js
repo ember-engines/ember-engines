@@ -37,9 +37,17 @@ module.exports = {
   _setupRouteBlueprint: function() {
     var checker = new VersionChecker(this);
     var emberCliVersion = checker.for('ember-cli', 'npm');
+
     var routeBlueprintPkg = emberCliVersion.isAbove('2.6.0')
       ? OLD_ROUTE_BLUEPRINT_PKG
       : NEW_ROUTE_BLUEPRINT_PKG;
+
+    if (emberCliVersion.isAbove('2.6.0')) {
+      var legacyBlueprintsVersion = checker.for('ember-cli-legacy-blueprints', 'npm');
+      if (!legacyBlueprintsVersion.version) {
+        throw "Using ember-engines with ember-cli 2.6 and above requires the ember-cli-legacy-blueprints addon";        
+      }
+    }
 
     this.routeBlueprint = require(routeBlueprintPkg + '/blueprints/route/index');
 
