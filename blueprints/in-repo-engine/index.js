@@ -2,8 +2,11 @@
 
 var path = require('path');
 var InRepoAddon = require('ember-cli/blueprints/in-repo-addon/index');
-var Route = require('ember-cli/blueprints/route/index');
+var VersionChecker = require('ember-cli-version-checker');
 var stringUtil = require('ember-cli-string-utils');
+
+var OLD_ROUTE_BLUEPRINT_PKG = 'ember-cli';
+var NEW_ROUTE_BLUEPRINT_PKG = 'ember-cli-legacy-blueprints';
 
 module.exports = {
   description: 'Creates an Engine within the current repository.',
@@ -13,7 +16,6 @@ module.exports = {
     var rawName   = entity.name;
     var name      = stringUtil.dasherize(rawName);
     var namespace = stringUtil.classify(rawName);
-
     return {
       name: name,
       modulePrefix: name
@@ -32,14 +34,39 @@ module.exports = {
     }
   ],
 
+  _setupRouteBlueprint: function() {
+    var checker = new VersionChecker(this);
+    var emberCliVersion = checker.for('ember-cli', 'npm');
+
+    var routeBlueprintPkg = emberCliVersion.isAbove('2.6.0')
+      ? OLD_ROUTE_BLUEPRINT_PKG
+      : NEW_ROUTE_BLUEPRINT_PKG;
+
+    if (emberCliVersion.isAbove('2.6.0')) {
+      var legacyBlueprintsVersion = checker.for('ember-cli-legacy-blueprints', 'npm');
+      if (!legacyBlueprintsVersion.version) {
+        throw "Using ember-engines with ember-cli 2.6 and above requires the ember-cli-legacy-blueprints addon";        
+      }
+    }
+
+    this.routeBlueprint = require(routeBlueprintPkg + '/blueprints/route/index');
+
+    this.shouldTouchRouter = this.routeBlueprint.shouldTouchRouter;
+    this.shouldEntityTouchRouter = this.routeBlueprint.shouldEntityTouchRouter;
+  },
+
   install: function(options) {
     this.options = options;
-    return this._super.install.apply(this, arguments);
+    var superResult = this._super.install.apply(this, arguments);
+    this._setupRouteBlueprint();
+    return superResult;
   },
 
   uninstall: function(options) {
     this.options = options;
-    return this._super.uninstall.apply(this, arguments);
+    var superResult = this._super.uninstall.apply(this, arguments);
+    this._setupRouteBlueprint();
+    return superResult;
   },
 
   filesPath: function() {
@@ -53,19 +80,16 @@ module.exports = {
     return false;
   },
 
-  shouldTouchRouter: Route.shouldTouchRouter,
-  shouldEntityTouchRouter: Route.shouldEntityTouchRouter,
-
   beforeInstall: InRepoAddon.beforeInstall,
 
   afterInstall: function(options) {
     options.identifier = 'mount';
     InRepoAddon.afterInstall.call(this, options);
-    Route.afterInstall.call(this, options);
+    this.routeBlueprint.afterInstall.call(this, options);
   },
 
   afterUninstall: function(options) {
     options.identifier = 'mount';
-    Route.afterUninstall.call(this, options);
+    this.routeBlueprint.afterUninstall.call(this, options);
   }
 };
