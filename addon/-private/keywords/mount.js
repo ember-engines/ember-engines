@@ -9,7 +9,8 @@ const EmptyObject = emberRequire('ember-metal/empty_object');
 
 const {
   assert,
-  getOwner
+  getOwner,
+  setOwner
 } = Ember;
 
 registerKeyword('mount', {
@@ -42,16 +43,20 @@ registerKeyword('mount', {
 
     engineInstance.boot();
 
-    return {
+    let state = {
       parentView: env.view,
       manager: prevState.manager,
       controller: lookupEngineController(engineInstance),
       childOutletState: childOutletState(name, env)
     };
+
+    setOwner(state, engineInstance);
+
+    return state;
   },
 
   childEnv(state, env) {
-    return buildEnvForEngine(getEngineFromState(state), env);
+    return buildEnvForEngine(getOwner(state), env);
   },
 
   isStable(lastState, nextState) {
@@ -65,7 +70,7 @@ registerKeyword('mount', {
   render(node, env, scope, params, hash, template, inverse, visitor) {
     let state = node.getState();
 
-    let engineInstance = getEngineFromState(state);
+    let engineInstance = getOwner(state);
 
     let engineController = lookupEngineController(engineInstance);
 
@@ -147,10 +152,6 @@ function isStableOutlet(a, b) {
     }
   }
   return true;
-}
-
-function getEngineFromState(state) {
-  return getOwner(state.controller);
 }
 
 function lookupEngineController(engineInstance) {
