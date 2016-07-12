@@ -6,7 +6,7 @@
     "ember-engine"
   ],
   "ember-addon": {
-    "configPath": "ember-config"
+    "engineConfigPath": "ember-config"
   },
   "dependencies": {
     "ember-cli-htmlbars": "*"
