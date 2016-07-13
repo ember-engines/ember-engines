@@ -2,7 +2,6 @@
 
 var path = require('path');
 var InRepoAddon = require('ember-cli/blueprints/in-repo-addon/index');
-var Route = require('ember-cli/blueprints/route/index');
 var stringUtil = require('ember-cli-string-utils');
 
 module.exports = {
@@ -13,7 +12,6 @@ module.exports = {
     var rawName   = entity.name;
     var name      = stringUtil.dasherize(rawName);
     var namespace = stringUtil.classify(rawName);
-
     return {
       name: name,
       modulePrefix: name
@@ -32,14 +30,24 @@ module.exports = {
     }
   ],
 
+  _setupRouteBlueprint: function() {
+    this.routeBlueprint = this.lookupBlueprint('route');
+    this.shouldTouchRouter = this.routeBlueprint.shouldTouchRouter;
+    this.shouldEntityTouchRouter = this.routeBlueprint.shouldEntityTouchRouter;
+  },
+
   install: function(options) {
     this.options = options;
-    return this._super.install.apply(this, arguments);
+    var superResult = this._super.install.apply(this, arguments);
+    this._setupRouteBlueprint();
+    return superResult;
   },
 
   uninstall: function(options) {
     this.options = options;
-    return this._super.uninstall.apply(this, arguments);
+    var superResult = this._super.uninstall.apply(this, arguments);
+    this._setupRouteBlueprint();
+    return superResult;
   },
 
   filesPath: function() {
@@ -53,19 +61,16 @@ module.exports = {
     return false;
   },
 
-  shouldTouchRouter: Route.shouldTouchRouter,
-  shouldEntityTouchRouter: Route.shouldEntityTouchRouter,
-
   beforeInstall: InRepoAddon.beforeInstall,
 
   afterInstall: function(options) {
     options.identifier = 'mount';
     InRepoAddon.afterInstall.call(this, options);
-    Route.afterInstall.call(this, options);
+    this.routeBlueprint.afterInstall.call(this, options);
   },
 
   afterUninstall: function(options) {
     options.identifier = 'mount';
-    Route.afterUninstall.call(this, options);
+    this.routeBlueprint.afterUninstall.call(this, options);
   }
 };
