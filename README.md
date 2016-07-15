@@ -286,6 +286,10 @@ export default buildRoutes(function() {
 
 Note that route serializers are unique to Engines and won't work in normal applications. In a normal Ember application you should continue to use `Route#serialize`.
 
+#### Loading / Error Substates
+
+The loading and error substates work in a similar fashion to [substates in a normal Ember app](https://guides.emberjs.com/v2.6.0/routing/loading-and-error-substates/). The only difference is that lazily loaded Engines will enter a loading state while the assets for the Engine are loaded and can enter an error state when an asset fails to load.
+
 ### Accessing Engine Configuration Settings
 
 As in an application, you can provide configuration settings for your
