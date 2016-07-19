@@ -5,10 +5,6 @@ import emberRequire from './ext-require';
 
 const Engine = emberRequire('ember-application/system/engine');
 
-const {
-  ComponentLookup
-} = Ember;
-
 Engine.reopen({
   buildRegistry() {
     let registry = this._super(...arguments);
@@ -16,7 +12,6 @@ Engine.reopen({
     if (!(this instanceof Ember.Application)) {
       registry.register('component:link-to', EngineScopedLinkComponent);
       registry.register('component:link-to-external', ExternalLinkComponent);
-      registry.register('component-lookup:main', ComponentLookup);
     }
 
     return registry;
