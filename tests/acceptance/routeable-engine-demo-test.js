@@ -30,6 +30,20 @@ test('can deserialize a route\'s params', function(assert) {
   });
 });
 
+test('can restore unspecified query parameters', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo/blog/post/1?lang=English');
+  click('.routable-post-comments-link');
+  click('.back-to-post-link');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=English');
+
+    assert.equal(this.application.$('p.language').text().trim(), 'English');
+  });
+});
+
 test('a route can lookup another route\'s model', function(assert) {
   assert.expect(2);
 
