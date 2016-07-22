@@ -219,7 +219,6 @@ EngineInstance.reopen({
       'view:toplevel',
       'route:basic',
       'event_dispatcher:main',
-      P`-bucket-cache:main`,
       'service:-routing'
     ].forEach((key) => {
       this.register(key, parent.resolveRegistration(key));
@@ -228,6 +227,7 @@ EngineInstance.reopen({
     [
       'renderer:-dom',
       'router:main',
+      P`-bucket-cache:main`,
       '-view-registry:main'
     ].forEach((key) => {
       this.register(key, parent.lookup(key), { instantiate: false });
