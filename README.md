@@ -34,8 +34,9 @@ This addon should be considered experimental and used with caution.
 
 The [master branch of this addon](https://github.com/dgeb/ember-engines) is
 being developed against the [master branch of Ember](https://github.com/emberjs/ember.js).
-The `ember-application-engines` feature flag must be enabled in order to use
-this branch, which should not be considered stable.
+This branch should not be considered stable until it is associated with a
+stable version of Ember that supports engines. This will be v2.8.0 of Ember at
+the earliest.
 
 The [v0.2 branch of this addon](https://github.com/dgeb/ember-engines/tree/v0.2)
 is being developed to be compatible with v2.6.x of Ember. This branch should
