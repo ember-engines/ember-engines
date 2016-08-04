@@ -1,21 +1,16 @@
-import Ember from 'ember';
 import emberRequire from '../ext-require';
 const outlet = emberRequire('ember-htmlbars/keywords/outlet');
-const isEnabled = emberRequire('ember-metal/features');
 const ViewNodeManager = emberRequire('ember-htmlbars/node-managers/view-node-manager');
-const info = emberRequire('ember-metal/debug', 'info');
 
-const {
-  get
-} = Ember;
-
-const outletChildEnv = outlet.childEnv;
-outlet.childEnv = function(state) {
-  let childEnv = outletChildEnv.apply(this, arguments);
+outlet.childEnv = function(state, env) {
   let outletState = state.outletState;
-  let owner = outletState && outletState.render.owner;
+  let toRender = outletState && outletState.render;
+  let meta = toRender && toRender.template && toRender.template.meta;
 
-  if (owner !== childEnv.owner) {
+  let childEnv = env.childWithOutletState(outletState && outletState.outlets, true, meta);
+
+  let owner = outletState && outletState.render && outletState.render.owner;
+  if (owner && owner !== childEnv.owner) {
     childEnv.originalOwner = childEnv.owner;
     childEnv.owner = owner;
   }
@@ -23,50 +18,32 @@ outlet.childEnv = function(state) {
   return childEnv;
 };
 
-outlet.render = function(renderNode, _env, scope, params, hash, template, inverse, visitor) {
-  let env = _env;
-  var state = renderNode.getState();
-  var parentView = env.view;
-  var outletState = state.outletState;
-  var toRender = outletState.render;
-  var owner = env.originalOwner || env.owner;
-  var namespace = owner.lookup('application:main');
-  var LOG_VIEW_LOOKUPS = get(namespace, 'LOG_VIEW_LOOKUPS');
+outlet.render = function(renderNode, env, scope, params, hash, _template, inverse, visitor) {
+  let state = renderNode.getState();
+  let owner = env.owner;
+  let parentView = env.view;
+  let outletState = state.outletState;
+  let toRender = outletState.render;
 
-  var ViewClass = outletState.render.ViewClass;
+
+  let ViewClass = outletState.render.ViewClass;
+
+  owner = env.originalOwner || owner;
 
   if (!state.hasParentOutlet && !ViewClass) {
     ViewClass = owner._lookupFactory('view:toplevel');
   }
 
-  var Component;
-
-  if (isEnabled('ember-routing-routable-components')) {
-    Component = outletState.render.Component;
-  }
-
-  var options;
-  var attrs = {};
-  if (Component) {
-    options = {
-      component: Component
-    };
-    attrs = toRender.attrs;
-  } else {
-    options = {
-      component: ViewClass,
-      self: toRender.controller,
-      createOptions: {
-        controller: toRender.controller
-      }
-    };
-
-    template = template || toRender.template && toRender.template.raw;
-
-    if (LOG_VIEW_LOOKUPS && ViewClass) {
-      info('Rendering ' + toRender.name + ' with ' + ViewClass, { fullName: 'view:' + toRender.name });
+  let attrs = {};
+  let options = {
+    component: ViewClass,
+    self: toRender.controller,
+    createOptions: {
+      controller: toRender.controller
     }
-  }
+  };
+
+  let template = _template || toRender.template && toRender.template.raw;
 
   if (state.manager) {
     state.manager.destroy();
@@ -81,12 +58,8 @@ outlet.render = function(renderNode, _env, scope, params, hash, template, invers
     options.component = options.component || owner._lookupFactory('view:toplevel');
   }
 
-  var nodeManager = ViewNodeManager.create(renderNode, env, attrs, options, parentView, null, null, template);
+  let nodeManager = ViewNodeManager.create(renderNode, env, attrs, options, parentView, null, null, template);
   state.manager = nodeManager;
-
-  if (!env.view) {
-    env.view = nodeManager.component;
-  }
 
   nodeManager.render(env, hash, visitor);
 };
