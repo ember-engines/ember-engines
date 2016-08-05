@@ -24,25 +24,21 @@ rm -rf bower_components/ember
 bower install --save ember#beta
 ```
 
-If Bower complains about not finding a suitable version, choose the option that says `ember#canary` and persist it with `!`.
+If Bower complains about not finding a suitable version, choose the option that says `ember#beta` and persist it with `!`.
 
-This will replace your `ember` version in `bower.json` with one pointing to the [Canary release channel of Ember](http://emberjs.com/builds/#/canary).
+This will replace your `ember` version in `bower.json` with one pointing to the [Beta release channel of Ember](http://emberjs.com/builds/#/beta).
 
 ---
 
-## Aside: Canary and Feature Flags
+## Aside: Beta Versions
 
-Before moving on, it is important to understand what using a Canary version of Ember entails. From the Ember builds page:
+Before moving on, it is important to understand what using a Beta version of Ember entails. From the Ember builds page:
 
-> Canary builds are generated from each commit to the master branch of Ember and Ember-Data.
+> Beta builds incorporate new features that are ready for evaluation in application code. We do not recommend using Beta builds in production.
 
-So this means that a Canary version of Ember contains the latest code up to whatever commit hash it is associated with and a Canary you install today might be different from the one you install tomorrow.
+Basically this means Beta versions are the next in line build to be released as a stable version. They are meant to be intalled to test new features and ensure backward compatible changes do not cause any regressions.
 
-This is important to keep in mind when debugging issues during development of Engines, as the problem you encounter might actually be the result of an issue in the master branch of Ember and not with Engines themselves.
-
-So why use Canary if it is unstable? The short answer is: _feature flags_. [Feature Flags](https://guides.emberjs.com/v2.5.0/configuring-ember/feature-flags/) are environmental variables that you can use to enable or disable newly introduced features in a Canary version of Ember. Since Engines are new, but require some upstream support to work properly, those features are currently flagged behind `ember-application-engines`.
-
-In summation, since Engines are so new, we need to use a Canary release of Ember to make sure we can access all the fancy new features that might not have been properly exposed to the public yet.
+If any issues are found they sould be reported and if able fixed with a PR.
 
 ---
 
