@@ -16,12 +16,12 @@ ember addon super-blog
 
 At this point, you have a vanilla Addon which is not yet an Engine, so let's introduce the remaining pieces needed for it to function as a one.
 
-First, since Engines are currently an experimental technology, we need to install a Canary version of Ember to make sure we have the features needed to enable them. We can do that like so:
+First, since Engines are currently an experimental technology, we need to install a Beta version of Ember to make sure we have the features needed to enable them. We can do that like so:
 
 ```bash
 cd super-blog/
 rm -rf bower_components/ember
-bower install --save ember#canary
+bower install --save ember#beta
 ```
 
 If Bower complains about not finding a suitable version, choose the option that says `ember#canary` and persist it with `!`.
