@@ -18,7 +18,9 @@ matrix:
 before_install:
   - npm config set spin false
   - npm install -g bower
+  - bower --version
   - npm install phantomjs-prebuilt
+  - phantomjs --version
 
 install:
   - npm install
@@ -27,4 +29,4 @@ install:
 script:
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
-  - ember try $EMBER_TRY_SCENARIO test --skip-cleanup
+  - ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
