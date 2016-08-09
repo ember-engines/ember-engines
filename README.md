@@ -38,9 +38,9 @@ The `ember-application-engines` feature flag must be enabled in order to use
 this branch, which should not be considered stable.
 
 The [v0.2 branch of this addon](https://github.com/dgeb/ember-engines/tree/v0.2)
-is being developed to be compatible with v2.6.x of Ember. This branch should
-be considered reasonably stable, although it does contain a number of overrides
-to code in Ember core. Please proceed with caution.
+is being developed to be compatible with v2.6.x and v2.7.x of Ember. This branch
+should be considered reasonably stable, although it does contain a number of
+overrides to code in Ember core. Please proceed with caution.
 
 ## Introduction Video
 
