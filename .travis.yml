@@ -11,6 +11,7 @@ cache:
 
 env:
   - EMBER_TRY_SCENARIO=ember-2.6
+  - EMBER_TRY_SCENARIO=ember-2.7
 
 matrix:
   fast_finish: true

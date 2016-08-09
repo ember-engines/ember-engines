@@ -1,7 +1,9 @@
 import Ember from "ember";
 import emberRequire from '../ext-require';
 
-const read = emberRequire('ember-metal/streams/utils', 'read');
+const read = Ember.__loader.registry['ember-htmlbars/streams/utils'] ?
+  emberRequire('ember-htmlbars/streams/utils', 'read') :
+  emberRequire('ember-metal/streams/utils', 'read');
 const registerKeyword = emberRequire('ember-htmlbars/keywords', 'registerKeyword');
 const ViewNodeManager = emberRequire('ember-htmlbars/node-managers/view-node-manager');
 const RenderEnv = emberRequire('ember-htmlbars/system/render-env');

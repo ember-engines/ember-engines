@@ -10,7 +10,6 @@ const P = emberRequire('container/registry', 'privatize');
 const topLevelViewTemplate = emberRequire('ember-htmlbars/templates/top-level-view');
 
 const {
-  OutletView,
   TextField,
   TextArea,
   Checkbox,
@@ -52,7 +51,6 @@ Engine.reopen({
 
       registry.register('template:-outlet', topLevelViewTemplate);
       registry.injection('route', '_topLevelViewTemplate', 'template:-outlet');
-      registry.register('view:-outlet', OutletView);
 
       //registry.register('-view-registry:main', { create() { return {}; } });
 
