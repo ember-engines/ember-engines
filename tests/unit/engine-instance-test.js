@@ -37,10 +37,6 @@ module('Unit | EngineInstance', {
   }
 });
 
-test('it works', function(assert) {
-  assert.ok(true);
-});
-
 test('it can build a child engine instance with no dependencies', function(assert) {
   assert.expect(2);
 
@@ -49,6 +45,7 @@ test('it can build a child engine instance with no dependencies', function(asser
   app.register('engine:blog', BlogEngine);
 
   let appInstance = app.buildInstance();
+  appInstance.setupRegistry();
 
   let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
 
@@ -86,6 +83,7 @@ test('it can build a child engine instance with dependencies', function(assert) 
   app.register('engine:blog', BlogEngine);
 
   let appInstance = app.buildInstance();
+  appInstance.setupRegistry();
 
   let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
 
@@ -129,6 +127,7 @@ test('it can build a child engine instance with dependencies that are aliased', 
   app.register('engine:blog', BlogEngine);
 
   let appInstance = app.buildInstance();
+  appInstance.setupRegistry();
 
   let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
 
