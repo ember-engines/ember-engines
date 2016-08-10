@@ -348,7 +348,7 @@ provided in the `ember-engines/resolver` module. For example:
 ```js
 import Ember from 'ember';
 import Resolver from 'ember-engines/resolver'; // <=== IMPORTANT - custom resolver!!!
-import loadInitializers from 'ember/load-initializers';
+import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
 
 Ember.MODEL_FACTORY_INJECTIONS = true;
