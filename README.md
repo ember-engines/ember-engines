@@ -33,15 +33,20 @@ Support for the following concepts is under consideration:
 This addon should be considered experimental and used with caution.
 
 The [master branch of this addon](https://github.com/dgeb/ember-engines) is
-being developed against the [master branch of Ember](https://github.com/emberjs/ember.js).
-This branch should not be considered stable until it is associated with a
-stable version of Ember that supports engines. This will be v2.8.0 of Ember at
-the earliest.
+being developed against the [master branch of
+Ember](https://github.com/emberjs/ember.js). This branch includes experimental
+lazy-loading features and should not be considered stable.
+
+The [v0.3 branch of this addon](https://github.com/dgeb/ember-engines/tree/v0.3)
+is being developed to be compatible with v2.8.x of Ember. This is the first
+version of Ember in which the required hooks for engines are available
+without a feature flag. Once v2.8.x of Ember stabilizes, this branch should
+also be considered stable.
 
 The [v0.2 branch of this addon](https://github.com/dgeb/ember-engines/tree/v0.2)
-is being developed to be compatible with v2.6.x of Ember. This branch should
-be considered reasonably stable, although it does contain a number of overrides
-to code in Ember core. Please proceed with caution.
+is being developed to be compatible with v2.6.x and v2.7.x of Ember. This branch
+should be considered reasonably stable, although it does contain a number of
+overrides to code in Ember core. Please proceed with caution.
 
 ## Introduction Video
 
