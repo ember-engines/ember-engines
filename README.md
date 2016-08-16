@@ -140,6 +140,17 @@ export default Eng;
 It's important that `modulePrefix` be set in `config/environment.js` so that
 it can be referenced in `addon/engine.js`.
 
+### Lazy Loading Engines
+
+You must also declare in your Engine's `index.js` file whether or not the engine should be lazy loaded. Until lazy loading is supported, this should be set to `false`:
+```js
+var EngineAddon = require('ember-engines/lib/engine-addon');
+module.exports = EngineAddon.extend({
+  name: 'ember-blog',
+  lazyLoading: false
+});
+```
+
 ### Routable Engines
 
 Routable engines should declare their route map in a `routes.js` file.
