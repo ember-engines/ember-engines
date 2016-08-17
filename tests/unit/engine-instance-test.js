@@ -4,6 +4,9 @@ import Engine from 'ember-engines/engine';
 import emberRequire from 'ember-engines/-private/ext-require';
 import { module, test } from 'qunit';
 
+import Resolver from '../../resolver';
+import config from '../../config/environment';
+
 const getEngineParent = emberRequire('ember-application/system/engine-parent', 'getEngineParent');
 
 const {
@@ -18,6 +21,8 @@ module('Unit | EngineInstance', {
     EnginesInitializer.initialize();
 
     App = Application.extend({
+      Resolver,
+      modulePrefix: config.modulePrefix,
       router: null
     });
 
@@ -57,9 +62,6 @@ test('it can build a child engine instance with no dependencies', function(asser
 
 test('it can build a child engine instance with dependencies', function(assert) {
   assert.expect(3);
-
-  let storeService = {};
-  app.register('service:store', storeService, { instantiate: false });
 
   let BlogEngine = Engine.extend({
     router: null,
@@ -101,9 +103,6 @@ test('it can build a child engine instance with dependencies', function(assert) 
 
 test('it can build a child engine instance with dependencies that are aliased', function(assert) {
   assert.expect(3);
-
-  let storeService = {};
-  app.register('service:store', storeService, { instantiate: false });
 
   let BlogEngine = Engine.extend({
     router: null,
