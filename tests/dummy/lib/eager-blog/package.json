@@ -1,0 +1,14 @@
+{
+  "name": "eager-blog",
+  "version": "0.0.0",
+  "keywords": [
+    "ember-addon",
+    "ember-engine"
+  ],
+  "ember-addon": {
+    "engineConfigPath": "ember-config"
+  },
+  "dependencies": {
+    "ember-cli-htmlbars": "*"
+  }
+}

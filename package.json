@@ -27,6 +27,7 @@
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
     "ember-ajax": "^2.0.1",
+    "eager-blog": "file:./tests/dummy/lib/eager-blog",
     "ember-blog": "file:./tests/dummy/lib/ember-blog",
     "ember-chat": "file:./tests/dummy/lib/ember-chat",
     "ember-cli": "^2.7.0",

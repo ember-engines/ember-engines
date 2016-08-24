@@ -1,19 +1,15 @@
 import Ember from 'ember';
-import { test, skip } from 'qunit';
+import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 import App from '../../app';
 
 const { RSVP } = Ember;
 
-
 moduleForAcceptance('Acceptance | lazy routable engine', {
   beforeEach() {
     // Remove the ember-blog to fake it having "not loaded".
-    const engineModule = window.requirejs.entries['ember-blog/engine'];
+    this._engineModule = window.requirejs.entries['ember-blog/engine'];
     window.requirejs.entries['ember-blog/engine'] = undefined;
-
-    // Reset this initializer so subsequent tests don't blow up.
-    App.instanceInitializers['stub-loader-methods'] = undefined;
 
     // We stub out the loader methods so that we can verify what they're doing.
     const module = this;
@@ -28,7 +24,7 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
 
           // "Load" the engine module.
           if (uri.indexOf('engine.js') !== -1) {
-            window.requirejs.entries['ember-blog/engine'] = engineModule;
+            window.requirejs.entries['ember-blog/engine'] = module._engineModule;
           }
 
           return RSVP.resolve();
@@ -40,6 +36,13 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
         });
       }
     });
+  },
+
+  afterEach() {
+    // Reset this initializer so subsequent tests don't blow up.
+    delete App.instanceInitializers['stub-loader-methods'];
+
+    window.requirejs.entries['ember-blog/engine'] = this._engineModule;
   }
 });
 
@@ -106,23 +109,23 @@ test('it should not pause to load assets on transition to a loaded, but not init
   });
 });
 
-skip('it should not pause to load assets on deep link into an eager Engine', function(assert) {
+test('it should not pause to load assets on deep link into an eager Engine', function(assert) {
   assert.expect(2);
 
-  visit('/routable-eager-engine-demo');
+  visit('/routable-engine-demo/eager-blog');
   andThen(() => {
     assert.equal(this.loadEvents.length, 0, 'no load events occured');
-    assert.equal(currentURL(), '/routeless-engine-demo');
+    assert.equal(currentURL(), '/routable-engine-demo/eager-blog');
   });
 });
 
-skip('it should not pause to load assets on transition into an eager Engine', function(assert) {
+test('it should not pause to load assets on transition into an eager Engine', function(assert) {
   assert.expect(2);
 
-  visit('/routable-eager-engine');
-  click('.blog-new:last');
+  visit('/routable-engine-demo');
+  click('.eager-blog:last');
   andThen(() => {
     assert.equal(this.loadEvents.length, 0, 'no load events occured');
-    assert.equal(currentURL(), '/routeless-engine-demo');
+    assert.equal(currentURL(), '/routable-engine-demo/eager-blog');
   });
 });
