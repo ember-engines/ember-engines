@@ -30,7 +30,7 @@ test('can deserialize a route\'s params', function(assert) {
   });
 });
 
-test('can restore unspecified query parameters', function(assert) {
+test('correctly handles missing default query params', function(assert) {
   assert.expect(2);
 
   visit('/routable-engine-demo/blog/post/1?lang=English');
@@ -38,7 +38,7 @@ test('can restore unspecified query parameters', function(assert) {
   click('.back-to-post-link');
 
   andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=English');
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1');
 
     assert.equal(this.application.$('p.language').text().trim(), 'English');
   });

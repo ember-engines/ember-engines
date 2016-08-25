@@ -2,7 +2,7 @@
 var EngineAddon = require('../../../../lib/engine-addon');
 
 module.exports = EngineAddon.extend({
-  name: 'ember-blog',
+  name: 'eager-blog',
 
   isDevelopingAddon: function() {
     return true;
@@ -12,5 +12,5 @@ module.exports = EngineAddon.extend({
     return false;
   },
 
-  lazyLoading: true
+  lazyLoading: false
 });

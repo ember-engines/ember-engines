@@ -20,6 +20,8 @@ Router.map(function() {
     this.mount('ember-blog', { as: 'dev-blog', resetNamespace: true });
 
     this.mount('ember-blog', { as: 'admin-blog', path: '/special-admin-blog-here' });
+
+    this.mount('eager-blog', { resetNamespace: true });
   });
 });
 
