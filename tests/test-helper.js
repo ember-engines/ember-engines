@@ -2,8 +2,9 @@ import resolver from './helpers/resolver';
 import {
   setResolver
 } from 'ember-qunit';
-import preloadAssets from './helpers/ember-engines/preload-assets';
+import preloadAssets from 'ember-asset-loader/test-support/preload-assets';
+import manifest from '../asset-manifest';
 
-preloadAssets();
+preloadAssets(manifest);
 
 setResolver(resolver);
