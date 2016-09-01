@@ -10,6 +10,10 @@ export default Ember.Route.extend({
       this.transitionTo('post', 1);
     },
 
+    goAwayViaIntermediate() {
+      this.intermediateTransitionTo('transient-route');
+    },
+
     goAwayViaURL() {
       this.transitionTo('/post/1');
     }

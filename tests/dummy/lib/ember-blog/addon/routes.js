@@ -8,6 +8,8 @@ export default buildRoutes(function() {
       this.route('comment', { path: ':id' });
     });
   });
+
+  this.route('transient-route');
 });
 
 // {{link-to 'blog.comments.comment'}}
