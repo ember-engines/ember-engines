@@ -121,7 +121,7 @@ Within your engine's `addon` directory, add a new `engine.js` file:
 
 ```js
 import Engine from 'ember-engines/engine';
-import Resolver from 'ember-engines/resolver'; // <=== IMPORTANT - custom resolver!!!
+import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
 
@@ -178,7 +178,7 @@ For example, the following engine requires a `store` service from its parent:
 
 ```js
 import Engine from 'ember-engines/engine';
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
 
@@ -335,7 +335,7 @@ Eager engines are built approximately the same as existing addons. Differences
 are limited to consolidating the namespace of `app` code inside of an engine
 into the engine's namespace instead of the host application.
 
-Beyond that it adds in a configuration module for the engine, and nothing else. 
+Beyond that it adds in a configuration module for the engine, and nothing else.
 It is a remarkably straightforward process.
 
 ### Lazy Engines
@@ -395,7 +395,7 @@ named `lazy-engine/routes/application` inside of the
 #### `/addon/templates`
 
 Templates will be compiled by your engine but they must include
-`ember-cli-htmlbars` inside of `dependencies` in the engine's `package.json`. 
+`ember-cli-htmlbars` inside of `dependencies` in the engine's `package.json`.
 
 As an example, `/addon/templates/application.hbs` will result in a JavaScript
 module named `lazy-engine/templates/application` inside of the
@@ -471,32 +471,6 @@ ember install <engine-name>
 As mentioned above, engines can also exist as in-repo addons, in which case
 you just need to ensure that this addon (`ember-engines`) has been installed
 in your main project.
-
-### Customizing the Resolver
-
-An Application or Engine that contains other engines must use the `Resolver`
-provided in the `ember-engines/resolver` module. For example:
-
-```js
-import Ember from 'ember';
-import Resolver from 'ember-engines/resolver'; // <=== IMPORTANT - custom resolver!!!
-import loadInitializers from 'ember-load-initializers';
-import config from './config/environment';
-
-Ember.MODEL_FACTORY_INJECTIONS = true;
-
-const { modulePrefix, podModulePrefix } = config;
-
-const App = Ember.Application.extend({
-  modulePrefix,
-  podModulePrefix,
-  Resolver
-});
-
-loadInitializers(App, modulePrefix);
-
-export default App;
-```
 
 ### Route-less Engines
 
@@ -574,7 +548,7 @@ For example, the following engine expects its parent to provide `store` and
 
 ```js
 import Engine from 'ember-engines/engine';
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-resolver';
 
 export default Engine.extend({
   modulePrefix: 'ember-blog',
@@ -595,7 +569,7 @@ dependencies. For example:
 
 ```js
 import Ember from 'ember';
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-resolver';
 import loadInitializers from 'ember/load-initializers';
 import config from './config/environment';
 

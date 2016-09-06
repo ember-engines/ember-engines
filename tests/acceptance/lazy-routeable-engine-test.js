@@ -9,7 +9,7 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
   beforeEach() {
     // Remove the ember-blog to fake it having "not loaded".
     this._engineModule = window.requirejs.entries['ember-blog/engine'];
-    window.requirejs.entries['ember-blog/engine'] = undefined;
+    delete window.requirejs.entries['ember-blog/engine'];
 
     // We stub out the loader methods so that we can verify what they're doing.
     const module = this;

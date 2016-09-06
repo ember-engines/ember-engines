@@ -11,7 +11,7 @@ Update it to:
 
 ```js
 // tests/dummy/app/resolver.js
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-resolver';
 ```
 
 ## Creating Engine Templates

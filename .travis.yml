@@ -11,6 +11,7 @@ cache:
 
 env:
   - EMBER_TRY_SCENARIO=ember-canary
+  - EMBER_TRY_SCENARIO=ember-beta
 
 matrix:
   fast_finish: true
