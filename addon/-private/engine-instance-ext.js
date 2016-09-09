@@ -139,8 +139,6 @@ EngineInstance.reopen({
   boot(options = {}) {
     if (this._bootPromise) { return this._bootPromise; }
 
-    assert('An engine instance\'s parent must be set via `setEngineParent(engine, parent)` prior to calling `engine.boot()` ', getEngineParent(this));
-
     this._bootPromise = new RSVP.Promise(resolve => resolve(this._bootSync(options)));
 
     // TODO: Unsure that we should allow boot to be async...
@@ -163,6 +161,8 @@ EngineInstance.reopen({
   */
   _bootSync(/* options */) {
     if (this._booted) { return this; }
+
+    assert('An engine instance\'s parent must be set via `setEngineParent(engine, parent)` prior to calling `engine.boot()` ', getEngineParent(this));
 
     // if (isEnabled('ember-application-visit')) {
     //   options = new BootOptions(options);
