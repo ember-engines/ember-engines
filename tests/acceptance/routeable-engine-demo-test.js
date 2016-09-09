@@ -104,6 +104,29 @@ test('a route can use transitionTo to transition to internal route', function(as
   });
 });
 
+test('a controller can use transitionToRoute to transition to internal route', function(assert) {
+  assert.expect(1);
+
+  visit('/routable-engine-demo/blog/new');
+  click('.trigger-transition-to-route');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1');
+  });
+});
+
+test('a route can use intermediateTransitionTo to transition to another route', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo/blog/new');
+  click('.trigger-intermediate-transition-to');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/new');
+    assert.ok(this.application.$('.transient-route-message').text().trim());
+  });
+});
+
 test('internal links can be clicked', function(assert) {
   assert.expect(1);
 
