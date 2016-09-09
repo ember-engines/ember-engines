@@ -1,8 +1,11 @@
+import Ember from 'ember';
 import { test } from 'qunit';
 import sinon from 'sinon';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 import Initializer from 'ember-blog/initializers/ember-blog-initializer';
 import InstanceInitializer from 'ember-blog/instance-initializers/ember-blog-instance-initializer';
+
+const { run } = Ember;
 
 moduleForAcceptance('Acceptance | routable engine demo');
 
@@ -168,5 +171,21 @@ test('instance-initializers run after initializers', function(assert) {
   andThen(() => {
     appInit.restore();
     instanceInit.restore();
+  });
+});
+
+test('should be possible to build and boot an application instance to visit a routeable engine', function (assert) {
+  assert.expect(2);
+
+  const instance = this.application.buildInstance();
+
+  return instance.boot({ location: 'none' }).then((instance) => {
+    assert.ok(true, 'Booted successfully');
+    return instance.visit('/routable-engine-demo/blog/post/1');
+  }).then(() => {
+    assert.ok(true, 'Visited successfully');
+    return wait();
+  }).then(() => {
+    run(instance, 'destroy');
   });
 });
