@@ -36,7 +36,7 @@ Before moving on, it is important to understand what using a Beta version of Emb
 
 > Beta builds incorporate new features that are ready for evaluation in application code. We do not recommend using Beta builds in production.
 
-Basically this means Beta versions are the next in line build to be released as a stable version. They are meant to be intalled to test new features and ensure backward compatible changes do not cause any regressions.
+Basically this means Beta versions are the next in line build to be released as a stable version. They are meant to be installed to test new features and ensure backward compatible changes do not cause any regressions.
 
 If any issues are found they sould be reported and if able fixed with a PR.
 
