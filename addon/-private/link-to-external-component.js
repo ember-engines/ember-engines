@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { attributeMungingMethod } from './link-to-utils';
 
 const {
   LinkComponent,
@@ -8,7 +9,7 @@ const {
 } = Ember;
 
 export default LinkComponent.extend({
-  willRender() {
+  [attributeMungingMethod]() {
     this._super(...arguments);
 
     const owner = getOwner(this);
