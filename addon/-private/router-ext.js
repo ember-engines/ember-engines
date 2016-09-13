@@ -2,7 +2,6 @@ import Ember from 'ember';
 import emberRequire from './ext-require';
 
 const hasDefaultSerialize = emberRequire('ember-routing/system/route', 'hasDefaultSerialize');
-const EmptyObject = emberRequire('ember-metal/empty_object');
 
 const {
   Logger: {
@@ -39,7 +38,7 @@ Router.reopen({
    * @override
    */
   _getHandlerFunction() {
-    let seen = new EmptyObject();
+    let seen = Object.create(null);
     let owner = getOwner(this);
 
     return (name) => {
@@ -146,7 +145,7 @@ Router.reopen({
     let engineInstances = this._engineInstances;
 
     if (!engineInstances[name]) {
-      engineInstances[name] = new EmptyObject();
+      engineInstances[name] = Object.create(null);
     }
 
     let engineInstance = engineInstances[name][instanceId];
