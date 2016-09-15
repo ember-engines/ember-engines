@@ -1,12 +1,11 @@
 import Ember from 'ember';
 import Engine from 'ember-engines/engine';
-import emberRequire from 'ember-engines/-private/ext-require';
 import { module, test } from 'qunit';
 
 import Resolver from '../../resolver';
 import config from '../../config/environment';
 
-const getEngineParent = emberRequire('ember-application/system/engine-parent', 'getEngineParent');
+const getEngineParent = Ember.__loader.require('ember-application/system/engine-parent').getEngineParent;
 
 const {
   Application,

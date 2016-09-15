@@ -7,8 +7,7 @@ moduleForComponent('component-with-link-to-external', 'Integration | Component |
 
   beforeEach() {
     let testComponent = Ember.Component.extend();
-
-    this.registry.register('component:test-component', Ember.Component.extend());
+    this.registry.register('component:test-component', testComponent);
   }
 });
 
