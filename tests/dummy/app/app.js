@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import 'ember-engines/ext';
 import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';

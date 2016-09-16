@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import emberRequire from './ext-require';
 
-const hasDefaultSerialize = emberRequire('ember-routing/system/route', 'hasDefaultSerialize');
+const hasDefaultSerialize = Ember.__loader.require('ember-routing/system/route').hasDefaultSerialize;
 
 const {
   Logger: {
