@@ -10,7 +10,7 @@ cache:
     - node_modules
 
 env:
-  - EMBER_TRY_SCENARIO=ember-canary
+  - EMBER_TRY_SCENARIO=default
 
 matrix:
   fast_finish: true
