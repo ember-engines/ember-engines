@@ -3,7 +3,7 @@ import {
   setResolver
 } from 'ember-qunit';
 import preloadAssets from 'ember-asset-loader/test-support/preload-assets';
-import manifest from '../asset-manifest';
+import manifest from '../config/asset-manifest';
 
 preloadAssets(manifest);
 
