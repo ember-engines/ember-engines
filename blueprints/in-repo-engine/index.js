@@ -72,5 +72,10 @@ module.exports = {
   afterUninstall: function(options) {
     options.identifier = 'mount';
     this.routeBlueprint.afterUninstall.call(this, options);
+  },
+  
+  _generatePackageJson: function(options, isInstall) {
+    InRepoAddon._generatePackageJson.apply(this, arguments);
   }
+  
 };
