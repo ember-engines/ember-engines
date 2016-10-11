@@ -2,18 +2,6 @@
 
 Now that we have our Engine created, let's actually mount it so that we can see it in action.
 
-```js
-// tests/dummy/app/resolver.js
-import Resolver from 'ember-resolver';
-```
-
-Update it to:
-
-```js
-// tests/dummy/app/resolver.js
-import Resolver from 'ember-resolver';
-```
-
 ## Creating Engine Templates
 
 In order to actually tell that our Engine renders properly, we need to add a template.
