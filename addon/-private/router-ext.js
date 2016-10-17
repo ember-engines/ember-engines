@@ -18,14 +18,16 @@ Router.reopen({
   assetLoader: Ember.inject.service(),
 
   /**
-   * We skip doing default query params stuff when attempting to go to an
-   * Engine route.
+   * When going to an Engine route, we check for QP meta in the BucketCache
+   * instead of checking the Route (which may not exist yet). We populate
+   * the BucketCache after loading the Route the first time.
    *
    * @override
    */
-  _prepareQueryParams(routeName) {
+  _getQPMeta(handlerInfo) {
+    let routeName = handlerInfo.name;
     if (this._engineInfoByRoute[routeName]) {
-      return;
+      return this._bucketCache.lookup('route-meta', routeName);
     }
 
     return this._super(...arguments);
@@ -95,7 +97,8 @@ Router.reopen({
       }
     }
 
-    handler.routeName = localRouteName;
+    handler._setRouteName(localRouteName);
+    handler._populateQPMeta();
 
     return handler;
   },
