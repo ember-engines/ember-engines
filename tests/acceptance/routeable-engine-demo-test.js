@@ -30,17 +30,151 @@ test('can deserialize a route\'s params', function(assert) {
   });
 });
 
-test('correctly handles missing default query params', function(assert) {
+test('correctly handles navigation with query param in initial url', function(assert) {
+  assert.expect(9);
+
+  visit('/routable-engine-demo/blog/post/1?lang=English');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=English', 'url is visited properly');
+    assert.equal(this.application.$('p.language').text().trim(), 'English', 'query param value is passed through correctly - 1');
+  });
+
+  click('.routable-post-comments-link');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/comments?lang=English', 'query param is carried to sub-route');
+    assert.equal(this.application.$('p.language').text().trim(), 'English', 'query param value is passed through correctly - 2');
+  });
+
+
+  click('.back-to-post-link');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=English', 'query param is carried back to original route properly');
+    assert.equal(this.application.$('p.language').text().trim(), 'English', 'query param value is passed through correctly - 3');
+  });
+
+  click('.routable-post-blog-home-link');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog', 'query param is removed when changing route hierarchy');
+  });
+
+  click('.routable-post-1-link');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=English', 'query param is rehydrated in url');
+    assert.equal(this.application.$('p.language').text().trim(), 'English', 'query param value is passed through correctly - 4');
+  });
+});
+
+test('can link-to a route with query params from outside an Engine', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo');
+  click('.blog-post-1-link-jp');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=Japanese');
+    assert.equal(this.application.$('p.language').text().trim(), 'Japanese');
+  });
+});
+
+test('can programmatically transition to a route with query params from outside an Engine', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo');
+  click('.blog-post-1-link-ch');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=Chinese');
+    assert.equal(this.application.$('p.language').text().trim(), 'Chinese');
+  });
+});
+
+test('can link-to a route with query params within an Engine', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo/blog');
+  click('.routable-post-1-link-jp');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=Japanese');
+    assert.equal(this.application.$('p.language').text().trim(), 'Japanese');
+  });
+});
+
+test('can programmatically transition to a route with query params within an Engine', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo/blog');
+  click('.routable-post-1-link-ch');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=Chinese');
+    assert.equal(this.application.$('p.language').text().trim(), 'Chinese');
+  });
+});
+
+test('can perform a QP-only link-to transition', function(assert) {
   assert.expect(2);
 
   visit('/routable-engine-demo/blog/post/1?lang=English');
-  click('.routable-post-comments-link');
-  click('.back-to-post-link');
-
+  click('.routable-post-jp-link');
   andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1');
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=Japanese', 'URL is updated properly');
+    assert.equal(this.application.$('p.language').text().trim(), 'Japanese', 'DOM is updated properly');
+  });
+});
 
-    assert.equal(this.application.$('p.language').text().trim(), 'English');
+test('can perform a QP-only transitionTo', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo/blog/post/1?lang=English');
+  click('.routable-post-ch-link');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=Chinese', 'URL is updated properly');
+    assert.equal(this.application.$('p.language').text().trim(), 'Chinese', 'DOM is updated properly');
+  });
+});
+
+test('can perform a redirect transition with QP', function(assert) {
+  assert.expect(1);
+
+  visit('/routable-engine-demo/redirect');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=English');
+  });
+});
+
+test('can perform an afterModel transition with QP', function(assert) {
+  assert.expect(1);
+
+  visit('/routable-engine-demo/after-model/3');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/3?lang=English');
+  });
+});
+
+test('query param bucket cache does not collide when starting outside Engine', function(assert) {
+  assert.expect(2);
+
+  visit('/post/1?lang=English');
+  click('.blog-post-no-qp');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1','URL does not have any query params');
+  });
+
+  click('.non-blog-post');
+  andThen(() => {
+    assert.equal(currentURL(), '/post/1?lang=English', 'URL has original query params');
+  });
+});
+
+test('query param bucket cache does not collide when starting inside Engine', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo/blog/post/1?lang=English');
+  click('.non-blog-post');
+  andThen(() => {
+    assert.equal(currentURL(), '/post/1', 'URL does not have any query params');
+  });
+
+  click('.blog-post-no-qp');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1?lang=English', 'URL has original query params');
   });
 });
 
