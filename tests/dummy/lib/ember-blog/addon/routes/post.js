@@ -8,5 +8,11 @@ export default Ember.Route.extend({
       id: params.id,
       title: `Post ${params.id}`
     };
+  },
+
+  actions: {
+    goToChineseVersion() {
+      this.transitionTo({ queryParams: { lang: 'Chinese' } });
+    }
   }
 });
