@@ -1,13 +1,5 @@
-// Load extensions to Ember
-import '../-private/route-ext';
-import '../-private/engine-ext';
-import '../-private/engine-instance-ext';
-
-// TODO: Move to ensure they run prior to instantiating Ember.Application
-export function initialize() {
-}
-
+// kept in case folks had ordering in another initializer
 export default {
   name: 'engines',
-  initialize
+  initialize() {}
 };
