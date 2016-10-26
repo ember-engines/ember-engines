@@ -10,7 +10,8 @@
     "build": "ember build",
     "start": "ember server",
     "test": "ember try:testall",
-    "prepublish": "./bin/install-test-addons.sh"
+    "test:windows": "ember try:one %EMBER_TRY_SCENARIO% test --skip-cleanup",
+    "prepublish": "node ./bin/install-test-addons.js"
   },
   "repository": {
     "type": "git",
