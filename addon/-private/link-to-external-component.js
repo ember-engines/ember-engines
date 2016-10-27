@@ -13,8 +13,11 @@ export default LinkComponent.extend({
     this._super(...arguments);
 
     const owner = getOwner(this);
-    const targetRouteName = get(this, 'targetRouteName');
-    const externalRoute = owner._getExternalRoute(targetRouteName);
-    set(this, 'targetRouteName', externalRoute);
+
+    if (owner.mountPoint) {
+      const targetRouteName = get(this, 'targetRouteName');
+      const externalRoute = owner._getExternalRoute(targetRouteName);
+      set(this, 'targetRouteName', externalRoute);
+    }
   }
 });
