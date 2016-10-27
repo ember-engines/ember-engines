@@ -56,7 +56,7 @@
     "broccoli-babel-transpiler": "^5.5.0",
     "broccoli-concat": "^3.0.1",
     "broccoli-file-creator": "^1.1.0",
-    "broccoli-funnel": "1.0.6",
+    "broccoli-funnel": "^1.0.8",
     "path-posix": "1.0.0",
     "broccoli-merge-trees": "^1.0.0",
     "broccoli-plugin": "^1.2.1",
