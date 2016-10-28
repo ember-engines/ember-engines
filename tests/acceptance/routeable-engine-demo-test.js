@@ -256,6 +256,23 @@ test('transitionTo works properly within parent application', function(assert) {
   });
 });
 
+test('intermediateTransitionTo to a loaded route works within an Engine', function(assert) {
+  assert.expect(2);
+
+  this.application.__container__.lookup('router:main').reopen({
+    intermediateTransitionTo(routeName) {
+      assert.equal(routeName, 'blog.post.loading');
+      this._super(...arguments);
+    }
+  });
+
+  visit('/routable-engine-demo/blog/post/1/comments');
+  click('.routable-post-likes-link');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/likes');
+  });
+});
+
 test('initializers run within engine', function(assert) {
   assert.expect(1);
 
