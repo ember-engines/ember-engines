@@ -17,6 +17,11 @@ const {
 Router.reopen({
   assetLoader: Ember.inject.service(),
 
+  init() {
+    this._super(...arguments);
+    this._enginePromises = Object.create(null);
+  },
+
   /**
    * When going to an Engine route, we check for QP meta in the BucketCache
    * instead of checking the Route (which may not exist yet). We populate
@@ -47,21 +52,42 @@ Router.reopen({
       let engineInfo = this._engineInfoByRoute[name];
 
       if (engineInfo) {
-        return this._getEngineInstance(engineInfo).then((instance) => {
-          let handler = this._internalGetHandler(seen, name, engineInfo.localFullName, instance);
-
-          if (!hasDefaultSerialize(handler)) {
-            throw new Error('Defining a custom serialize method on an Engine route is not supported.');
-          }
-
-          return handler;
-        });
+        let engineInstance = this._getEngineInstance(engineInfo);
+        if (engineInstance) {
+          return this._getHandlerForEngine(seen, name, engineInfo.localFullName, engineInstance);
+        } else {
+          return this._loadEngineInstance(engineInfo).then((instance) => {
+            return this._getHandlerForEngine(seen, name, engineInfo.localFullName, instance);
+          });
+        }
       }
 
       // If we don't cross into an Engine, then the routeName and localRouteName
       // are the same.
       return this._internalGetHandler(seen, name, name, owner);
     };
+  },
+
+  /**
+   * Gets the handler for a route from an Engine instance, proxies to the
+   * _internalGetHandler method.
+   *
+   * @private
+   * @method _getHandlerForEngine
+   * @param {Object} seen
+   * @param {String} routeName
+   * @param {String} localRouteName
+   * @param {Owner} routeOwner
+   * @return {EngineInstance} engineInstance
+   */
+  _getHandlerForEngine(seen, routeName, localRouteName, engineInstance) {
+    let handler = this._internalGetHandler(seen, routeName, localRouteName, engineInstance);
+
+    if (!hasDefaultSerialize(handler)) {
+      throw new Error('Defining a custom serialize method on an Engine route is not supported.');
+    }
+
+    return handler;
   },
 
   /**
@@ -105,7 +131,7 @@ Router.reopen({
 
   /**
    * Checks the owner to see if it has a registration for an Engine. This is a
-   * proxy to tell if an Engine class is loaded or not.
+   * proxy to tell if an Engine's assets are loaded or not.
    *
    * @private
    * @method _engineIsLoaded
@@ -133,73 +159,93 @@ Router.reopen({
   },
 
   /**
-   * Returns a Promise that resolves with an EngineInstance for a specific type
-   * of Engine. It fetches the Engine assets if necessary.
+   * Gets the instance of an Engine with the specified name and instanceId.
    *
    * @private
    * @method _getEngineInstance
    * @param {Object} engineInfo
    * @param {String} engineInfo.name
    * @param {String} engineInfo.instanceId
-   * @param {String} engineInfo.mountPoint
-   * @return {Promise}
+   * @return {EngineInstance}
    */
-  _getEngineInstance({ name, instanceId, mountPoint }) {
+  _getEngineInstance({ name, instanceId }) {
     let engineInstances = this._engineInstances;
-
-    if (!engineInstances[name]) {
-      engineInstances[name] = Object.create(null);
-    }
-
-    let engineInstance = engineInstances[name][instanceId];
-
-    // Engine instance has already been created
-    if (engineInstance) {
-      return RSVP.resolve(engineInstance);
-    }
-
-    // Engine has been loaded but instance not created
-    if (this._engineIsLoaded(name)) {
-      engineInstance = this._constructEngineInstance(name, mountPoint);
-      engineInstances[name][instanceId] = engineInstance;
-
-      return RSVP.resolve(engineInstance);
-    }
-
-    // Engine has not been loaded
-    return engineInstances[name][instanceId] = this.get('assetLoader')
-      .loadBundle(name)
-      .then(() => {
-        this._registerEngine(name);
-        return engineInstances[name][instanceId] = this._constructEngineInstance(name, mountPoint);
-      });
+    return engineInstances[name] && engineInstances[name][instanceId];
   },
 
   /**
-   * Constructs an instance of an Engine at the specified mountPoint.
+   * Loads an instance of an Engine with the specified name and instanceId.
+   * Returns a Promise for both Eager and Lazy Engines. This function loads the
+   * assets for any Lazy Engines.
+   *
+   * @private
+   * @method _loadEngineInstance
+   * @param {Object} engineInfo
+   * @param {String} engineInfo.name
+   * @param {String} engineInfo.instanceId
+   * @param {String} engineInfo.mountPoint
+   * @return {Promise}
+   */
+  _loadEngineInstance({ name, instanceId, mountPoint }) {
+    let enginePromises = this._enginePromises;
+
+    if (!enginePromises[name]) {
+      enginePromises[name] = Object.create(null);
+    }
+
+    let enginePromise = enginePromises[name][instanceId];
+
+    // We already have a Promise for this engine instance
+    if (enginePromise) {
+      return enginePromise;
+    }
+
+    if (this._engineIsLoaded(name)) {
+      // The Engine is loaded, but has no Promise
+      enginePromise = RSVP.resolve();
+    } else {
+      // The Engine is not loaded and has no Promise
+      enginePromise = this.get('assetLoader').loadBundle(name).then(() => this._registerEngine(name));
+    }
+
+    return enginePromises[name][instanceId] = enginePromise.then(() => {
+      return this._constructEngineInstance({ name, instanceId, mountPoint });
+    });
+  },
+
+  /**
+   * Constructs an instance of an Engine based on an engineInfo object.
    * TODO: Figure out if this works with nested Engines.
    *
    * @private
    * @method _constructEngineInstance
-   * @param {String} name
-   * @param {String} mountPoint
+   * @param {Object} engineInfo
+   * @param {String} engineInfo.name
+   * @param {String} engineInfo.instanceId
+   * @param {String} engineInfo.mountPoint
    * @return {EngineInstance} engineInstance
    */
-  _constructEngineInstance(name, mountPoint) {
-    const owner = getOwner(this);
+  _constructEngineInstance({ name, instanceId, mountPoint }) {
+    let owner = getOwner(this);
 
     assert(
       'You attempted to mount the engine \'' + name + '\' in your router map, but the engine can not be found.',
       owner.hasRegistration(`engine:${name}`)
     );
 
-    const engineInstance = owner.buildChildEngineInstance(name, {
+    let engineInstances = this._engineInstances;
+
+    if (!engineInstances[name]) {
+      engineInstances[name] = Object.create(null);
+    }
+
+    let engineInstance = owner.buildChildEngineInstance(name, {
       routable: true,
       mountPoint
     });
 
     engineInstance.boot();
 
-    return engineInstance;
+    return engineInstances[name][instanceId] = engineInstance;
   }
 });
