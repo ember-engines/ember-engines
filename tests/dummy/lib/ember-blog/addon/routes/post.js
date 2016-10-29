@@ -13,12 +13,6 @@ export default Ember.Route.extend({
   actions: {
     goToChineseVersion() {
       this.transitionTo({ queryParams: { lang: 'Chinese' } });
-    },
-
-    loading() {
-      // Manually invoking the loading route since loading states
-      // do not currently work properly. Should fix soon.
-      this.intermediateTransitionTo('post.loading');
     }
   }
 });
