@@ -7,8 +7,8 @@ export default buildRoutes(function() {
     this.route('comments', function() {
       this.route('comment', { path: ':id' });
     });
+
+    // The likes route loads slowly to test loading states
+    this.route('likes');
   });
 });
-
-// {{link-to 'blog.comments.comment'}}
-//
