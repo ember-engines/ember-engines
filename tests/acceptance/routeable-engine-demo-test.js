@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { test } from 'qunit';
 import sinon from 'sinon';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
@@ -256,7 +257,7 @@ test('transitionTo works properly within parent application', function(assert) {
   });
 });
 
-test('intermediateTransitionTo to a loaded route works within an Engine', function(assert) {
+test('loading routes and intermediateTransitionTo work within an engine', function(assert) {
   assert.expect(2);
 
   this.application.__container__.lookup('router:main').reopen({
@@ -270,6 +271,29 @@ test('intermediateTransitionTo to a loaded route works within an Engine', functi
   click('.routable-post-likes-link');
   andThen(() => {
     assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/likes');
+  });
+});
+
+test('error routes and intermediateTransitionTo work within an engine', function(assert) {
+  assert.expect(3);
+
+  let originalExceptionHandler = Ember.Test.adapter.exception;
+  Ember.Test.adapter.exception = () => {};
+
+  this.application.__container__.lookup('router:main').reopen({
+    intermediateTransitionTo(routeName) {
+      assert.equal(routeName, 'blog.post.error');
+      this._super(...arguments);
+    }
+  });
+
+  visit('/routable-engine-demo/blog/post/1/comments');
+  click('.routable-post-diggs-link');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/comments');
+    assert.equal(find('.error-message').text(), 'Error: Nope!');
+
+    Ember.Test.adapter.exception = originalExceptionHandler;
   });
 });
 

@@ -10,5 +10,8 @@ export default buildRoutes(function() {
 
     // The likes route loads slowly to test loading states
     this.route('likes');
+
+    // The diggs route throws an error to test error states
+    this.route('diggs');
   });
 });
