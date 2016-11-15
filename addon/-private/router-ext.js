@@ -229,7 +229,7 @@ Router.reopen({
     let owner = getOwner(this);
 
     assert(
-      'You attempted to mount the engine \'' + name + '\' in your router map, but the engine can not be found.',
+      'You attempted to mount the engine \'' + name + '\' in your router map, but the engine cannot be found.',
       owner.hasRegistration(`engine:${name}`)
     );
 
