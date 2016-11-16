@@ -64,4 +64,33 @@ describe('RollupFunnel', function() {
       });
     });
   });
+
+  // TODO: Make rebuilds great!
+  describe('rebuild', function() {
+    it.skip('is stable on unchanged rebuild', function() {
+      var stat;
+      var rollupFunnel = new RollupFunnel(fixtureDir, {
+        include: true,
+        rollup: {
+          entry: 'routes.js',
+          external: [ 'ember-engines/routes' ]
+        }
+      });
+
+      var builder = new broccoli.Builder(rollupFunnel);
+      return builder.build().then(function(result) {
+        stat = fs.lstatSync(result.directory);
+        return builder.build();
+      }).then(function(result) {
+        var rebuildStat = fs.lstatSync(result.directory);
+        assert.deepEqual(rebuildStat, stat);
+      });
+    });
+
+    it.skip('should do work only when a file in the dependency graph changed while using inlcude', function() {
+    });
+
+    it.skip('should do work only when a file in the dependency graph changed while using exclude', function() {
+    });
+  });
 });
