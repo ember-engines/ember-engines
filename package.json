@@ -10,6 +10,7 @@
     "build": "ember build",
     "start": "ember server",
     "test": "ember try:testall",
+    "test:node": "mocha --recursive node-tests",
     "test:windows": "ember try:one %EMBER_TRY_SCENARIO% test --skip-cleanup",
     "prepublish": "node ./bin/install-test-addons.js"
   },
@@ -27,6 +28,7 @@
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
+    "broccoli-builder": "^0.18.0",
     "eager-blog": "file:./tests/dummy/lib/eager-blog",
     "ember-ajax": "^2.0.1",
     "ember-blog": "file:./tests/dummy/lib/ember-blog",
@@ -47,8 +49,11 @@
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.1.0",
     "ember-sinon": "0.5.0",
+    "fixturify": "^0.3.0",
     "fs-extra": "^1.0.0",
-    "loader.js": "^4.0.1"
+    "loader.js": "^4.0.1",
+    "mocha": "^3.1.2",
+    "walk-sync": "^0.3.1"
   },
   "keywords": [
     "ember-addon"
