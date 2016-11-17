@@ -89,6 +89,26 @@ your project, as described above.
 
 ### Configuring your Engine
 
+Engines depend on `ember-engines` as a peer dependency, which means
+that it must be installed in the consuming app. So make sure that it's
+specified as suck in your `package.json`:
+
+```json
+  "peerDependencies": {                                                                                                   
+    "ember-engines": "*" 
+  },
+```
+
+_Note: For engines that are stand alone addons, that is, not an in-repo-engine,
+make sure to also add `ember-engines` as a dev dependency. This allows local
+development._
+
+```json
+  "devDependencies": {
+    "ember-engines": "0.4.0-beta.3"
+  }
+```
+
 Within your engine's root directory, modify `index.js` so that your addon
 is configured as an engine using the `EngineAddon` extension:
 
