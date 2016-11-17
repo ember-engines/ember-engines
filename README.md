@@ -91,7 +91,7 @@ your project, as described above.
 
 Engines depend on `ember-engines` as a peer dependency, which means
 that it must be installed in the consuming app. So make sure that it's
-specified as suck in your `package.json`:
+specified as such in your `package.json`:
 
 ```json
   "peerDependencies": {                                                                                                   
