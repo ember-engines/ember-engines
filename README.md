@@ -91,7 +91,7 @@ your project, as described above.
 
 Engines depend on `ember-engines` as a peer dependency, which means
 that it must be installed in the consuming app. So make sure that it's
-specified as such in your `package.json`:
+specified as such in your engine's `package.json`:
 
 ```json
   "peerDependencies": {                                                                                                   
@@ -99,9 +99,8 @@ specified as such in your `package.json`:
   },
 ```
 
-_Note: For engines that are stand alone addons, that is, not an in-repo-engine,
-make sure to also add `ember-engines` as a dev dependency. This allows local
-development._
+Also, make sure to add `ember-engines` as a dev dependency. This allows local
+development, and usage of Ember CLI commands like `ember install`.
 
 ```json
   "devDependencies": {
