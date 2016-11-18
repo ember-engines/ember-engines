@@ -618,6 +618,40 @@ Also note that multiple engines can be configured per parent application/engine,
 and that each engine name should be camelCased (`emberBlog` instead of
 `ember-blog`).
 
+### Unit/Integration testing for in repo-engines
+
+To test components declared inside an in-repo engine, you need to set the a custom resolver with the engine's prefix.
+
+Assuming you have an in-repo engine called `appointments-manager` and it has a component `date-picker`. The
+following would be the setup to test such component from the host app:
+
+```js
+// host-app/tests/integration/components/date-picker-test.js
+
+import { moduleForComponent, skip } from 'ember-qunit';
+import hbs from 'htmlbars-inline-precompile';
+import Resolver from 'ember-engines/resolver';
+
+const resolver = Resolver.create();
+
+resolver.namespace = {
+  modulePrefix: 'appointments-manager'
+};
+
+moduleForComponent('date-picker', 'Integration | Component | Date picker', {
+  integration: true,
+  resolver
+});
+
+test('renders text', function(assert) {
+  this.render(hbs`{{date-picker}}`);
+
+  assert.equal(this.$().text().trim(), 'una fecha');
+});
+```
+
+**Note: you could create a helper and then use it like `Resolver from ../helpers/appointments-manager/resolver`**
+
 ## Contributing
 
 ### Installation
