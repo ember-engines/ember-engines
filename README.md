@@ -99,8 +99,9 @@ specified as such in your engine's `package.json`:
   },
 ```
 
-Also, make sure to add `ember-engines` as a dev dependency. This allows local
-development, and usage of Ember CLI commands like `ember install`.
+Also, make sure to add `ember-engines` as a dev dependency in the engines's `package.json`.
+This allows local development, and usage of Ember CLI commands like `ember install`.
+This is necessary for both types of engines, standalone and in-repo.
 
 ```json
   "devDependencies": {
