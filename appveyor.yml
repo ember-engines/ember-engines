@@ -1,0 +1,33 @@
+# https://www.appveyor.com/docs/appveyor-yml/
+
+# Test against these versions of Node.js.
+environment:
+  nodejs_version: "4"
+  matrix:
+    - EMBER_TRY_SCENARIO: ember-canary
+    - EMBER_TRY_SCENARIO: ember-beta
+
+# Install scripts. (runs after repo cloning)
+install:
+  - git rev-parse HEAD
+  - npm version
+  - npm install phantomjs-prebuilt
+  - npm install -g bower
+  - npm install
+  - bower install
+
+cache:
+  - '%APPDATA%\npm-cache'
+  - '%APPDATA%\Roaming\bower'
+
+# Post-install test scripts.
+test_script:
+  # Output useful info for debugging.
+  - npm version
+  - cmd: npm run test:windows
+
+# Don't actually build.
+build: off
+
+# Set build version format here instead of in the admin panel.
+version: "{build}"
