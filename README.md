@@ -89,6 +89,26 @@ your project, as described above.
 
 ### Configuring your Engine
 
+Engines depend on `ember-engines` as a peer dependency, which means
+that it must be installed in the consuming app. So make sure that it's
+specified as such in your engine's `package.json`:
+
+```json
+  "peerDependencies": {                                                                                                   
+    "ember-engines": "*" 
+  },
+```
+
+Also, make sure to add `ember-engines` as a dev dependency in the engines's `package.json`.
+This allows local development, and usage of Ember CLI commands like `ember install`.
+This is necessary for both types of engines, standalone and in-repo.
+
+```json
+  "devDependencies": {
+    "ember-engines": "0.4.0-beta.3"
+  }
+```
+
 Within your engine's root directory, modify `index.js` so that your addon
 is configured as an engine using the `EngineAddon` extension:
 
@@ -143,8 +163,10 @@ it can be referenced in `addon/engine.js`.
 ### Lazy Loading Engines
 
 You must also declare in your Engine's `index.js` file whether or not the engine should be lazy loaded. Until lazy loading is supported, this should be set to `false`:
+
 ```js
 var EngineAddon = require('ember-engines/lib/engine-addon');
+
 module.exports = EngineAddon.extend({
   name: 'ember-blog',
   lazyLoading: false
