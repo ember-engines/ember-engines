@@ -620,7 +620,7 @@ and that each engine name should be camelCased (`emberBlog` instead of
 
 ### Unit/Integration testing for in repo-engines
 
-To test components declared inside an in-repo engine, you need to set the a custom resolver with the engine's prefix.
+To test components declared inside an in-repo engine, you need to set a custom resolver with the engine's prefix.
 
 Assuming you have an in-repo engine called `appointments-manager` and it has a component `date-picker`. The
 following would be the setup to test such component from the host app:
