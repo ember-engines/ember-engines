@@ -94,7 +94,7 @@ is configured as an engine using the `EngineAddon` extension:
 
 ```js
 /*jshint node:true*/
-var EngineAddon = require('ember-engines/lib/engine-addon');
+const EngineAddon = require('ember-engines/lib/engine-addon');
 
 module.exports = EngineAddon.extend({
   name: 'ember-blog'
@@ -108,7 +108,7 @@ Within your engine's `config` directory, create a new `environment.js` file:
 'use strict';
 
 module.exports = function(environment) {
-  var ENV = {
+  const ENV = {
     modulePrefix: 'ember-blog',
     environment: environment
   }
@@ -144,7 +144,7 @@ it can be referenced in `addon/engine.js`.
 
 You must also declare in your Engine's `index.js` file whether or not the engine should be lazy loaded. Until lazy loading is supported, this should be set to `false`:
 ```js
-var EngineAddon = require('ember-engines/lib/engine-addon');
+const EngineAddon = require('ember-engines/lib/engine-addon');
 module.exports = EngineAddon.extend({
   name: 'ember-blog',
   lazyLoading: false
