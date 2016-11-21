@@ -9,7 +9,7 @@ export default function hasEmberVersion(major, minor) {
 }
 
 export const attributeMungingMethod = (function() {
-  if (hasEmberVersion(2, 9)) {
+  if (hasEmberVersion(2, 10)) {
     return 'didReceiveAttrs';
   } else {
     return `willRender`;
