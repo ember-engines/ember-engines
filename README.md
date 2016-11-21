@@ -652,7 +652,7 @@ test('renders text', function(assert) {
 
 **Note: you could create a helper and then use it like `Resolver from ../helpers/appointments-manager/resolver`**
 
-## Demo Projects ##
+## Demo Projects
 
 * [ember-engines-demo](https://github.com/dgeb/ember-engines-demo) - an example of a parent application (consumer).
   * ember-chat-engine - an example of a route-less engine that is an in-repo addon.
