@@ -153,7 +153,7 @@ module.exports = EngineAddon.extend({
 
 ### Routable Engines
 
-Routable engines should declare their route map in a `routes.js` file.
+Routable engines should declare their route map in a `routes.js` file within your engine's `addon` directory.
 For example:
 
 ```js
@@ -378,7 +378,7 @@ dist
 └── robots.txt
 ```
 
-#### `/routes.js`
+#### `/addon/routes.js`
 
 The `routes.js` file and anything it `import`s must be present at boot time of
 the host application. It will be bundled into the host application's `vendor.js`
