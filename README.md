@@ -153,7 +153,7 @@ module.exports = EngineAddon.extend({
 
 ### Routable Engines
 
-Routable engines should declare their route map in a `routes.js` file.
+Routable engines should declare their route map in a `routes.js` file within your engine's `addon` directory.
 For example:
 
 ```js
@@ -378,7 +378,7 @@ dist
 └── robots.txt
 ```
 
-#### `/routes.js`
+#### `/addon/routes.js`
 
 The `routes.js` file and anything it `import`s must be present at boot time of
 the host application. It will be bundled into the host application's `vendor.js`
@@ -651,6 +651,12 @@ test('renders text', function(assert) {
 ```
 
 **Note: you could create a helper and then use it like `Resolver from ../helpers/appointments-manager/resolver`**
+
+## Demo Projects
+
+* [ember-engines-demo](https://github.com/dgeb/ember-engines-demo) - an example of a parent application (consumer).
+  * ember-chat-engine - an example of a route-less engine that is an in-repo addon.
+* [ember-blog-engine](https://github.com/dgeb/ember-blog-engine) - an example of a routable engine that is a separate addon project.
 
 ## Contributing
 
