@@ -30,5 +30,4 @@ install:
 script:
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
-  - npm run test:node
   - ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
