@@ -55,7 +55,7 @@
   ],
   "dependencies": {
     "amd-name-resolver": "0.0.5",
-    "broccoli-babel-transpiler": "^5.5.0",
+    "broccoli-babel-transpiler": "^5.6.1",
     "broccoli-concat": "^3.0.1",
     "broccoli-dependency-funnel": "^1.0.0",
     "broccoli-file-creator": "^1.1.0",
