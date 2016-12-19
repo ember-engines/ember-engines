@@ -16,6 +16,10 @@ env:
 matrix:
   fast_finish: true
 
+branches:
+  only:
+    - master
+
 before_install:
   - npm config set spin false
   - npm install -g bower
