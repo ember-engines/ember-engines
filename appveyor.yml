@@ -4,8 +4,11 @@
 environment:
   nodejs_version: "4"
   matrix:
-    - EMBER_TRY_SCENARIO: ember-canary
-    - EMBER_TRY_SCENARIO: ember-beta
+    - TEST_SCRIPT: test:windows
+      EMBER_TRY_SCENARIO: ember-canary
+    - TEST_SCRIPT: test:windows
+      EMBER_TRY_SCENARIO: ember-beta
+    - TEST_SCRIPT: test:node
 
 # Install scripts. (runs after repo cloning)
 install:
@@ -24,7 +27,7 @@ cache:
 test_script:
   # Output useful info for debugging.
   - npm version
-  - cmd: npm run test:windows
+  - cmd: npm run %TEST_SCRIPT%
 
 # Don't actually build.
 build: off
