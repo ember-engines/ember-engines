@@ -10,6 +10,7 @@
     "build": "ember build",
     "start": "ember server",
     "test": "ember try:testall",
+    "test:ember": "ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup",
     "test:node": "mocha node-tests/**/*-test.js --reporter tap",
     "test:windows": "ember try:one %EMBER_TRY_SCENARIO% test --skip-cleanup",
     "prepublish": "node ./bin/install-test-addons.js"
