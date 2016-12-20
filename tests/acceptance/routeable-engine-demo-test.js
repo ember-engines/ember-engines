@@ -203,6 +203,17 @@ test('can render a link', function(assert) {
   });
 });
 
+test('link-to current-when attribute prepends engine mount point', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo/eager-blog/post/1');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/eager-blog/post/1');
+    assert.ok(this.application.$('a.current-when-test-link').hasClass('active'));
+  });
+});
+
 test('internal links can be clicked', function(assert) {
   assert.expect(1);
 
