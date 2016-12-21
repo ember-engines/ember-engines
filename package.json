@@ -13,6 +13,7 @@
     "test:ember": "ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup",
     "test:node": "mocha node-tests/**/*-test.js --reporter tap",
     "test:windows": "ember try:one %EMBER_TRY_SCENARIO% test --skip-cleanup",
+    "test:dev:node": "BUILD_DEV=true testem -f testem-node.js",
     "prepublish": "node ./bin/install-test-addons.js"
   },
   "repository": {

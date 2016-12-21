@@ -16,3 +16,4 @@
 npm-debug.log
 testem.log
 tests/dummy/lib/**/node_modules
+/engine-testing
