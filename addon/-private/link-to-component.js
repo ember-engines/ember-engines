@@ -22,7 +22,7 @@ export default LinkComponent.extend({
       // Prepend engine mount point to current-when if set
       let currentWhen = get(this, 'current-when');
       if (currentWhen !== null) {
-        let fullCurrentWhen = owner.mountPoint + '.' + get(this, 'current-when');
+        let fullCurrentWhen = owner.mountPoint + '.' + currentWhen;
         set(this, 'current-when', fullCurrentWhen);
       }
     }
