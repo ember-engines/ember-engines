@@ -15,11 +15,13 @@ const {
 } = Ember;
 
 Router.reopen({
-  assetLoader: Ember.inject.service(),
-
   init() {
     this._super(...arguments);
     this._enginePromises = Object.create(null);
+
+    // We lookup the asset loader service instead of injecting it so that we
+    // don't blow up unit tests for consumers
+    this._assetLoader = getOwner(this).lookup('service:asset-loader');
   },
 
   /**
@@ -205,7 +207,7 @@ Router.reopen({
       enginePromise = RSVP.resolve();
     } else {
       // The Engine is not loaded and has no Promise
-      enginePromise = this.get('assetLoader').loadBundle(name).then(() => this._registerEngine(name));
+      enginePromise = this._assetLoader.loadBundle(name).then(() => this._registerEngine(name));
     }
 
     return enginePromises[name][instanceId] = enginePromise.then(() => {
