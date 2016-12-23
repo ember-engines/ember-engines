@@ -6,6 +6,9 @@ export default Ember.Component.extend({
   classNames: [ 'hello-name' ],
   init() {
     this._super(...arguments);
-    Ember.run.later(() => this.set('name', 'Jerry'), 500);
+    Ember.run.later(() => {
+      if (this.isDestroyed || this.isDestroying) { return; }
+      this.set('name', 'Jerry');
+    }, 500);
   }
 });
