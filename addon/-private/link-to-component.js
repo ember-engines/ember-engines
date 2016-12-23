@@ -16,15 +16,25 @@ export default LinkComponent.extend({
 
     if (owner.mountPoint) {
       // Prepend engine mount point to targetRouteName
-      let fullRouteName = owner.mountPoint + '.' + get(this, 'targetRouteName');
-      set(this, 'targetRouteName', fullRouteName);
+      this._prefixProperty(owner.mountPoint, 'targetRouteName');
 
       // Prepend engine mount point to current-when if set
-      let currentWhen = get(this, 'current-when');
-      if (currentWhen !== null) {
-        let fullCurrentWhen = owner.mountPoint + '.' + currentWhen;
-        set(this, 'current-when', fullCurrentWhen);
+      if (get(this, 'current-when') !== null) {
+        this._prefixProperty(owner.mountPoint, 'current-when');
       }
     }
+  },
+
+  _prefixProperty(prefix, prop) {
+    let propValue = get(this, prop);
+
+    let namespacedPropValue;
+    if (propValue === 'application') {
+      namespacedPropValue = prefix;
+    } else {
+      namespacedPropValue = prefix + '.' + propValue;
+    }
+
+    set(this, prop, namespacedPropValue);
   }
 });
