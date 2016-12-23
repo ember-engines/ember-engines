@@ -31,6 +31,15 @@ test('can deserialize a route\'s params', function(assert) {
   });
 });
 
+test('can link-to application route of Engine', function(assert) {
+  visit('/routable-engine-demo/blog/post/new');
+  click('.routable-post-blog-home-link-app');
+  andThen(() => {
+    assert.equal(currentURL(), '/routable-engine-demo/blog');
+    assert.equal(currentPath(), 'routable-engine-demo.blog.index');
+  });
+});
+
 test('correctly handles navigation with query param in initial url', function(assert) {
   assert.expect(9);
 
