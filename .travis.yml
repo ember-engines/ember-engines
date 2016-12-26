@@ -12,7 +12,9 @@ cache:
 env:
   - TEST_SCRIPT=test:ember EMBER_TRY_SCENARIO=ember-canary
   - TEST_SCRIPT=test:ember EMBER_TRY_SCENARIO=ember-beta
-  - TEST_SCRIPT=test:node
+
+  # Run the node build tests only if we've modified a build file
+  - TEST_SCRIPT=test:node:ci
 
 matrix:
   fast_finish: true

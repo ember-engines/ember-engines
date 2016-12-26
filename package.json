@@ -13,7 +13,9 @@
     "test:ember": "ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup",
     "test:node": "mocha node-tests/**/*-test.js --reporter tap",
     "test:windows": "ember try:one %EMBER_TRY_SCENARIO% test --skip-cleanup",
-    "test:dev:node": "BUILD_DEV=true testem -f testem-node.js",
+    "test:node:dev": "BUILD_DEV=true testem -f testem-node.js",
+    "test:node:ci": "git diff --name-only $TRAVIS_COMMIT_RANGE | grep -qE '^(lib|index.js|node-tests|package.json)' && npm run test:node || npm run test:null",
+    "test:null": "echo 'no appropriate changes detected, not running tests'",
     "prepublish": "node ./bin/install-test-addons.js"
   },
   "repository": {
