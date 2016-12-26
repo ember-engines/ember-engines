@@ -8,10 +8,10 @@ module.exports = {
   description: 'Creates an Engine within the current repository.',
 
   locals: function(options) {
-    var entity    = options.entity;
-    var rawName   = entity.name;
-    var name      = stringUtil.dasherize(rawName);
-    var namespace = stringUtil.classify(rawName);
+    var entity = options.entity;
+    var rawName = entity.name;
+    var name = stringUtil.dasherize(rawName);
+
     return {
       name: name,
       modulePrefix: name
