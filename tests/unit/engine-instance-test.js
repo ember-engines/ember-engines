@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import EnginesInitializer from '../../initializers/engines';
 import Engine from 'ember-engines/engine';
 import emberRequire from 'ember-engines/-private/ext-require';
 import { module, test } from 'qunit';
@@ -18,8 +17,6 @@ let App, app, appInstance;
 
 module('Unit | EngineInstance', {
   setup() {
-    EnginesInitializer.initialize();
-
     App = Application.extend({
       Resolver,
       modulePrefix: config.modulePrefix,
