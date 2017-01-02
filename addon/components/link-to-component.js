@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { attributeMungingMethod } from './link-to-utils';
+import { attributeMungingMethod } from '../-private/link-to-utils';
 
 const {
   LinkComponent,

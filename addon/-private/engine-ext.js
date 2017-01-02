@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import EngineScopedLinkComponent from './link-to-component';
-import ExternalLinkComponent from './link-to-external-component';
+import EngineScopedLinkComponent from '../components/link-to-component';
+import ExternalLinkComponent from '../components/link-to-external-component';
 import emberRequire from './ext-require';
 
 const Engine = emberRequire('ember-application/system/engine');
