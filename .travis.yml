@@ -7,7 +7,8 @@ sudo: false
 
 cache:
   directories:
-    - node_modules
+    - $HOME/.npm
+    - $HOME/.cache
 
 env:
   - TEST_SCRIPT=test:ember EMBER_TRY_SCENARIO=ember-canary
