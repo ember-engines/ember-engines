@@ -3,11 +3,10 @@ language: node_js
 node_js:
   - "4"
 
-sudo: false
-
 cache:
   directories:
-    - node_modules
+    - $HOME/.npm
+    - $HOME/.cache
 
 env:
   - TEST_SCRIPT=test:ember EMBER_TRY_SCENARIO=ember-canary
@@ -18,10 +17,6 @@ env:
 
 matrix:
   fast_finish: true
-
-branches:
-  only:
-    - master
 
 before_install:
   - npm config set spin false
