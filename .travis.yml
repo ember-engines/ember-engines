@@ -3,8 +3,6 @@ language: node_js
 node_js:
   - "4"
 
-sudo: false
-
 cache:
   directories:
     - $HOME/.npm
@@ -19,10 +17,6 @@ env:
 
 matrix:
   fast_finish: true
-
-branches:
-  only:
-    - master
 
 before_install:
   - npm config set spin false
