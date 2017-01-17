@@ -37,7 +37,7 @@
     "ember-ajax": "^2.0.1",
     "ember-blog": "file:./tests/dummy/lib/ember-blog",
     "ember-chat": "file:./tests/dummy/lib/ember-chat",
-    "ember-cli": "^2.7.0",
+    "ember-cli": "github:ember-cli/ember-cli#canary",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-dependency-checker": "^1.2.0",
     "ember-cli-htmlbars-inline-precompile": "^0.3.1",
