@@ -628,7 +628,7 @@ following would be the setup to test such component from the host app:
 ```js
 // host-app/tests/integration/components/date-picker-test.js
 
-import { moduleForComponent, skip } from 'ember-qunit';
+import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Resolver from 'ember-engines/resolver';
 
