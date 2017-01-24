@@ -37,6 +37,11 @@ being developed against the [master branch of
 Ember](https://github.com/emberjs/ember.js). This branch includes experimental
 lazy-loading features and should not be considered stable.
 
+v0.5 of this addon is being developed to be compatible with v2.12.x of Ember.
+
+[v0.4 of this addon](https://github.com/ember-engines/ember-engines/tree/v0.4.0)
+is being developed to be compatible with v2.10.x of Ember.
+
 The [v0.3 branch of this addon](https://github.com/ember-engines/ember-engines/tree/v0.3)
 is being developed to be compatible with v2.8.x of Ember. This is the first
 version of Ember in which the required hooks for engines are available
