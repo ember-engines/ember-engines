@@ -115,7 +115,7 @@ Router.reopen({
     seen[routeName] = true;
 
     if (!handler) {
-      const DefaultRoute = routeOwner._lookupFactory('route:basic');
+      const DefaultRoute = routeOwner.factoryFor('route:basic').class;
 
       routeOwner.register(fullRouteName, DefaultRoute.extend());
       handler = routeOwner.lookup(fullRouteName);
