@@ -37,7 +37,7 @@ being developed against the [master branch of
 Ember](https://github.com/emberjs/ember.js). This branch includes experimental
 lazy-loading features and should not be considered stable.
 
-v0.5 of this addon is being developed to be compatible with v2.12.x of Ember.
+v0.5 of this addon is being developed to be compatible with v2.12.x of both Ember and EmberCLI. 
 
 [v0.4 of this addon](https://github.com/ember-engines/ember-engines/tree/v0.4.0)
 is being developed to be compatible with v2.10.x of Ember.
