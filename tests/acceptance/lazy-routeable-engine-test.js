@@ -48,10 +48,11 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
 });
 
 function verifyInitialBlogRoute(assert, loadEvents, application) {
-  assert.equal(loadEvents.length, 3, 'loaded 3 assets');
+  assert.equal(loadEvents.length, 4, 'loaded 4 assets');
   assert.deepEqual(loadEvents[0].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine-vendor.css' ], 'loaded engine vendor css');
   assert.deepEqual(loadEvents[1].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine-vendor.js' ], 'loaded engine vendor js');
-  assert.deepEqual(loadEvents[2].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine.js' ], 'loaded engine js');
+  assert.deepEqual(loadEvents[2].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine.css' ], 'loaded engine css');
+  assert.deepEqual(loadEvents[3].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine.js' ], 'loaded engine js');
 
   assert.equal(currentURL(), '/routable-engine-demo/blog/new');
 
@@ -60,14 +61,14 @@ function verifyInitialBlogRoute(assert, loadEvents, application) {
 }
 
 test('it should pause to load JS and CSS assets on deep link into a lazy Engine', function(assert) {
-  assert.expect(7);
+  assert.expect(8);
 
   visit('/routable-engine-demo/blog/new');
   andThen(() => verifyInitialBlogRoute(assert, this.loadEvents, this.application));
 });
 
 test('it should pause to load JS and CSS assets on an initial transition into a lazy Engine', function(assert) {
-  assert.expect(7);
+  assert.expect(8);
 
   visit('/routable-engine-demo');
   click('.blog-new:last');
@@ -75,7 +76,7 @@ test('it should pause to load JS and CSS assets on an initial transition into a 
 });
 
 test('it should not pause to load assets on subsequent transitions into a lazy Engine', function(assert) {
-  assert.expect(10);
+  assert.expect(11);
 
   visit('/routable-engine-demo/blog/new');
   andThen(() => verifyInitialBlogRoute(assert, this.loadEvents, this.application));
@@ -87,13 +88,13 @@ test('it should not pause to load assets on subsequent transitions into a lazy E
 
   click('.blog-new');
   andThen(() => {
-    assert.equal(this.loadEvents.length, 3, 'did not load additional assets');
+    assert.equal(this.loadEvents.length, 4, 'did not load additional assets');
     assert.equal(currentURL(), '/routable-engine-demo/blog/new');
   });
 });
 
 test('it should not pause to load assets on transition to a loaded, but not initialized instance of a lazy Engine (e.g., Engine mounted more than once)', function(assert) {
-  assert.expect(10);
+  assert.expect(11);
 
   visit('/routable-engine-demo/blog/new');
   andThen(() => verifyInitialBlogRoute(assert, this.loadEvents, this.application));
@@ -105,7 +106,7 @@ test('it should not pause to load assets on transition to a loaded, but not init
 
   click('.ember-blog-new:last');
   andThen(() => {
-    assert.equal(this.loadEvents.length, 3, 'did not load additional assets');
+    assert.equal(this.loadEvents.length, 4, 'did not load additional assets');
     assert.equal(currentURL(), '/routable-engine-demo/ember-blog/new');
   });
 });
