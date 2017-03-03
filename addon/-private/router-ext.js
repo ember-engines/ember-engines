@@ -18,6 +18,7 @@ Router.reopen({
   init() {
     this._super(...arguments);
     this._enginePromises = Object.create(null);
+    this._seenHandlers = Object.create(null);
 
     // We lookup the asset loader service instead of injecting it so that we
     // don't blow up unit tests for consumers
@@ -33,8 +34,10 @@ Router.reopen({
    */
   _getQPMeta(handlerInfo) {
     let routeName = handlerInfo.name;
-    if (this._engineInfoByRoute[routeName]) {
-      return this._bucketCache.lookup('route-meta', routeName);
+    let isWithinEngine = this._engineInfoByRoute[routeName];
+    let hasBeenLoaded = this._seenHandlers[routeName];
+    if (isWithinEngine && !hasBeenLoaded) {
+      return undefined;
     }
 
     return this._super(...arguments);
@@ -47,7 +50,7 @@ Router.reopen({
    * @override
    */
   _getHandlerFunction() {
-    let seen = Object.create(null);
+    let seen = this._seenHandlers;
     let owner = getOwner(this);
 
     return (name) => {
@@ -126,7 +129,9 @@ Router.reopen({
     }
 
     handler._setRouteName(localRouteName);
-    handler._populateQPMeta();
+    if (handler._populateQPMeta) {
+      handler._populateQPMeta();
+    }
 
     return handler;
   },
