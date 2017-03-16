@@ -14,7 +14,9 @@ module.exports = {
 
     return {
       name: name,
-      modulePrefix: name
+      modulePrefix: name,
+      hasLazyFlag: typeof options.lazy !== 'undefined',
+      isLazy: !!options.lazy
     };
   },
 
@@ -27,6 +29,11 @@ module.exports = {
         { 'routable': 'routable' },
         { 'routeless': 'routeless' }
       ]
+    },
+    {
+      name: 'lazy',
+      type: Boolean,
+      description: 'Whether this Engine should load lazily or not'
     }
   ],
 
