@@ -10,9 +10,7 @@ cache:
 
 env:
   - TEST_SCRIPT=test:emberall
-
-  # Run the node build tests only if we've modified a build file
-  - TEST_SCRIPT=test:node:ci
+  - TEST_SCRIPT=test:node
 
 matrix:
   fast_finish: true
@@ -20,6 +18,7 @@ matrix:
 before_install:
   - npm config set spin false
   - npm install -g bower
+  - npm install -g npm # make sure npm is updated for ember-cli
   - bower --version
   - npm install phantomjs-prebuilt
   - phantomjs --version
@@ -29,6 +28,4 @@ install:
   - bower install
 
 script:
-  # Usually, it's ok to finish the test scenario without reverting
-  #  to the addon's original dependency state, skipping "cleanup".
   - npm run $TEST_SCRIPT
