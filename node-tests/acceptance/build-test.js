@@ -24,7 +24,7 @@ describe('Acceptance', function() {
     const DEFAULT_ROUTABLE_ENGINE_MODULES = [
       'engine',
       'resolver',
-      'routes',
+      'routes', // FIXME: This shouldn't wind up in the same file as the other modules when lazy loaded.
       'config/environment',
       'templates/application'
     ];
@@ -253,6 +253,45 @@ describe('Acceptance', function() {
       output.contains(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher(`${engineName}/foo`));
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`, moduleMatcher(`${addonName}/components/bar`));
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`, moduleMatcher(`${addonName}/templates/components/bar`));
+
+      DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
+        output.contains(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher(`${engineName}/${module}`));
+      });
+    }));
+
+    it('invokes trees and executes hooks in the proper order and handles imports for engines', co.wrap(function* () {
+      var app = new AddonTestApp();
+      var engineName = 'tree-invocation-order';
+
+      yield app.create('engine-testing', { noFixtures: true });
+      var engine = yield InRepoEngine.generate(app, engineName, { lazy: true });
+
+      var fixture = fixturify.readSync(path.resolve(__dirname, '../fixtures/tree-invocation-order'));
+      engine.writeFixture(fixture);
+
+      var output = yield build(app);
+
+      // routes.js and imports are properly hoisted
+      // FIXME: These are wrong! They should be in assets/vendor.js
+      output.contains('engines-dist/tree-invocation-order/assets/engine.js', moduleMatcher('tree-invocation-order/routes'));
+      output.contains('engines-dist/tree-invocation-order/assets/engine.js', moduleMatcher('tree-invocation-order/tree-invocation-order-import-target'));
+
+      // Basic css
+      output.contains('engines-dist/tree-invocation-order/assets/engine.css', new RegExp('tree-invocation-order/addon/styles/addon.css'));
+
+      // app.import and this.import of css files
+      output.contains('assets/vendor.css', new RegExp('tree-invocation-order/vendor/css/appimport.css'));
+      output.contains('engines-dist/tree-invocation-order/assets/engine-vendor.css', new RegExp('tree-invocation-order/vendor/css/thisimport.css'));
+
+      // app.import and this.import of js files. The this.import is prepended, so make sure it is first.
+      output.contains('assets/vendor.js', new RegExp('tree-invocation-order/vendor/js/appimport.js'));
+      output.contains('engines-dist/tree-invocation-order/assets/engine-vendor.js', new RegExp('^// tree-invocation-order/vendor/js/thisimport.js'));
+
+      // Validates tree invocation order
+      output.contains('engines-dist/tree-invocation-order/assets/circle.svg');
+
+      // Validates inclusion of public assets
+      output.contains('engines-dist/tree-invocation-order/tree-invocation-order-public-asset.html');
 
       DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
         output.contains(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher(`${engineName}/${module}`));

@@ -1,0 +1,14 @@
+{
+  "name": "tree-invocation-order",
+  "keywords": [
+    "ember-addon",
+    "ember-engine"
+  ],
+  "dependencies": {
+    "broccoli-funnel": "*",
+    "broccoli-merge-trees": "*",
+    "broccoli-stew": "*",
+    "ember-cli-babel": "*",
+    "ember-cli-htmlbars": "*"
+  }
+}
