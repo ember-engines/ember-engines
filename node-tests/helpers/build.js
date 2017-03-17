@@ -1,6 +1,8 @@
-var path = require('path');
-var fixturify = require('fixturify');
-var walkSync = require('walk-sync');
+'use strict';
+
+const path = require('path');
+const fixturify = require('fixturify');
+const walkSync = require('walk-sync');
 
 class BuildOutput {
   constructor(app) {
@@ -10,8 +12,8 @@ class BuildOutput {
   }
 
   contains(file, matcher) {
-    var fileParts = file.split('/');
-    var result = this._build;
+    let fileParts = file.split('/');
+    let result = this._build;
 
     while (fileParts.length && result != undefined) {
       result = result[fileParts.shift()];

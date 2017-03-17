@@ -1,13 +1,15 @@
-var path = require('path');
-var fs = require('fs-extra');
-var fixturify = require('fixturify');
+'use strict';
+
+const path = require('path');
+const fs = require('fs-extra');
+const fixturify = require('fixturify');
 
 class InRepoAddon {
   static generate(app, name) {
-    var args = [ 'generate', 'in-repo-addon', name ];
-    return app.runEmberCommand(...args).then(() => {
-      var addon = new InRepoAddon(app, name);
-      addon.editPackageJSON(pkg => pkg.dependencies = { 'ember-cli-htmlbars': '*' });
+    let args = [ 'generate', 'in-repo-addon', name ];
+    return app.runEmberCommand.apply(app, args).then(() => {
+      let addon = new InRepoAddon(app, name);
+      addon.editPackageJSON((pkg) => pkg.dependencies = { 'ember-cli-htmlbars': '*' });
       return addon;
     });
   }
@@ -18,8 +20,8 @@ class InRepoAddon {
   }
 
   editPackageJSON(editor) {
-    var packageJSONPath = path.join(this.path, 'package.json');
-    var pkg = fs.readJsonSync(packageJSONPath);
+    let packageJSONPath = path.join(this.path, 'package.json');
+    let pkg = fs.readJsonSync(packageJSONPath);
     editor(pkg);
     fs.writeJsonSync(packageJSONPath, pkg);
   }
