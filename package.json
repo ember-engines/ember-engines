@@ -11,6 +11,7 @@
     "start": "ember server",
     "test": "ember try:testall",
     "test:ember": "ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup",
+    "test:emberall": "ember try:each --skip-cleanup",
     "test:node": "mocha node-tests/**/*-test.js --reporter tap",
     "test:windows": "ember try:one %EMBER_TRY_SCENARIO% test --skip-cleanup",
     "test:node:dev": "BUILD_DEV=true testem -f testem-node.js",
