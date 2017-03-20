@@ -8,6 +8,7 @@ const AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 
 const build = require('../helpers/build');
 const InRepoEngine = require('../helpers/in-repo-engine');
+const expectedManifests = require('../fixtures/expected-manifests');
 
 /**
  * Creates a regex that matches the definition for the specified module name.
@@ -40,7 +41,7 @@ describe('Acceptance', function() {
       let output = yield build(app);
 
       // Only special file we add is the manifest for eager engines
-      output.contains('asset-manifest.json');
+      expect(output.manifest()).to.deep.equal(expectedManifests['eager']);
       output.contains('assets/node-asset-manifest.js');
       output.contains('assets/vendor.js', moduleMatcher(`${engineName}/routes`));
 
@@ -60,7 +61,7 @@ describe('Acceptance', function() {
       let output = yield build(app);
 
       // Verify we have the manifest and the lazy engine assets
-      output.contains('asset-manifest.json');
+      expect(output.manifest()).to.deep.equal(expectedManifests['lazy']);
       output.contains('assets/node-asset-manifest.js');
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`);
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`);
@@ -89,7 +90,7 @@ describe('Acceptance', function() {
       let output = yield build(app);
 
       // Verify we have the manifest and the lazy engine assets
-      output.contains('asset-manifest.json');
+      expect(output.manifest()).to.deep.equal(expectedManifests['lazy']);
       output.contains('assets/node-asset-manifest.js');
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`);
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`);
@@ -123,7 +124,7 @@ describe('Acceptance', function() {
       let output = yield build(app);
 
       // Verify we have the manifest and the nested lazy engine assets
-      output.contains('asset-manifest.json');
+      expect(output.manifest()).to.deep.equal(expectedManifests['lazy-in-eager']);
       output.contains('assets/node-asset-manifest.js');
       output.contains(`engines-dist/${nestedEngineName}/assets/engine-vendor.css`);
       output.contains(`engines-dist/${nestedEngineName}/assets/engine-vendor.js`);
@@ -157,7 +158,7 @@ describe('Acceptance', function() {
       var output = yield build(app);
 
       // Verify we have the manifest and assets for both lazy engines
-      output.contains('asset-manifest.json');
+      expect(output.manifest()).to.deep.equal(expectedManifests['lazy-in-lazy']);
       output.contains('assets/node-asset-manifest.js');
 
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`);
@@ -199,7 +200,7 @@ describe('Acceptance', function() {
       let output = yield build(app);
 
       // Verify we have the manifest
-      output.contains('asset-manifest.json');
+      expect(output.manifest()).to.deep.equal(expectedManifests['eager']);
       output.contains('assets/node-asset-manifest.js');
 
       output.contains('assets/vendor.js', moduleMatcher(`${engineName}/routes`));
@@ -293,6 +294,8 @@ describe('Acceptance', function() {
       engine.writeFixture(fixture);
 
       let output = yield build(app);
+
+      expect(output.manifest()).to.deep.equal(expectedManifests['tree-invocation-order']);
 
       // routes.js and imports are properly hoisted
       output.contains(`assets/vendor.js`, moduleMatcher('tree-invocation-order/routes'));

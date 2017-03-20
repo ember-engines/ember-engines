@@ -13,23 +13,16 @@ class BuildOutput {
 
   doesNotContain(file, matcher) {
     try {
-      return this.contains(file, matcher);
+      return !this.contains(file, matcher);
     } catch (e) {
       return true;
     }
   }
 
   contains(file, matcher) {
-    let fileParts = file.split('/');
-    let result = this._build;
+    let fileContents = this.file(file);
 
-    while (fileParts.length && result != undefined) {
-      result = result[fileParts.shift()];
-    }
-
-    if (result == undefined) {
-      throw new Error(`The file "${file}" was not found in the build output.`);
-    } else if (matcher && !matcher.test(result)) {
+    if (matcher && !matcher.test(fileContents)) {
       throw new Error(`Expected file "${file}" to match "${matcher}", but it was not found.`);
     }
 
@@ -42,6 +35,25 @@ class BuildOutput {
 
   test() {
     return this.app.runEmberCommand('test', '--path', this._buildPath);
+  }
+
+  file(file) {
+    let fileParts = file.split('/');
+    let result = this._build;
+
+    while (fileParts.length && result != undefined) {
+      result = result[fileParts.shift()];
+    }
+
+    if (result == undefined) {
+      throw new Error(`The file "${file}" was not found in the build output.`);
+    }
+
+    return result;
+  }
+
+  manifest() {
+    return JSON.parse(this.file('asset-manifest.json'));
   }
 }
 
