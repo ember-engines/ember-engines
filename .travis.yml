@@ -17,15 +17,13 @@ matrix:
 
 before_install:
   - npm config set spin false
-  - npm install -g bower
+  - npm install -g bower # bower needs to be installed globally for ember-cli-addon-tests
   - npm install -g npm # make sure npm is updated for ember-cli
-  - bower --version
   - npm install phantomjs-prebuilt
   - phantomjs --version
 
 install:
   - npm install
-  - bower install
 
 script:
   - npm run $TEST_SCRIPT
