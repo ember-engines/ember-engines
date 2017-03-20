@@ -13,9 +13,15 @@ class BuildOutput {
 
   doesNotContain(file, matcher) {
     try {
-      return !this.contains(file, matcher);
+      this.contains(file, matcher);
     } catch (e) {
       return true;
+    }
+
+    if (arguments.length === 1) {
+      throw new Error(`Expected file "${file}" to NOT be found in the build output, but it was.`);
+    } else {
+      throw new Error(`Expected file "${file}" to NOT match "${matcher}", but it did.`);
     }
   }
 

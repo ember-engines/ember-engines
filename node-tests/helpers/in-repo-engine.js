@@ -31,6 +31,14 @@ class InRepoEngine extends InRepoAddon {
     });
   }
 
+  nest(addon) {
+    this.editPackageJSON((pkg) => {
+      pkg['ember-addon'] = pkg['ember-addon'] || {};
+      pkg['ember-addon'].paths = pkg['ember-addon'].paths || [];
+      pkg['ember-addon'].paths.push(`../${addon.name}`);
+    });
+  }
+
   generateNestedEngine(name) {
     // Generate another in-repo-engine at the app level...
     let args = Array.prototype.slice.call(arguments)

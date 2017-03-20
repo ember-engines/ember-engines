@@ -15,6 +15,7 @@ class InRepoAddon {
   }
 
   constructor(app, name) {
+    this.name = name;
     this.app = app;
     this.path = path.join(app.path, 'lib', name);
   }
