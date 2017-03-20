@@ -20,6 +20,10 @@ function moduleMatcher(moduleName) {
   return new RegExp(`define\\(['"]${moduleName}['"]`);
 }
 
+function cssCommentMatcher(comment) {
+  return new RegExp(`/\\* ${comment} \\*/`);
+}
+
 describe('Acceptance', function() {
   describe('build', function() {
     this.timeout(300000);
@@ -44,6 +48,7 @@ describe('Acceptance', function() {
       expect(output.manifest()).to.deep.equal(expectedManifests['eager']);
       output.contains('assets/node-asset-manifest.js');
       output.contains('assets/vendor.js', moduleMatcher(`${engineName}/routes`));
+      output.contains('assets/vendor.css',cssCommentMatcher(`${engineName}.css`));
 
       // Check that all of the modules got merged into vendor
       DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
@@ -66,7 +71,7 @@ describe('Acceptance', function() {
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`);
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`);
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.map`);
-      output.contains(`engines-dist/${engineName}/assets/engine.css`);
+      output.contains(`engines-dist/${engineName}/assets/engine.css`, cssCommentMatcher(`${engineName}.css`));
       output.contains(`engines-dist/${engineName}/assets/engine.js`);
       output.contains(`engines-dist/${engineName}/assets/engine.map`);
       output.contains('assets/vendor.js', moduleMatcher(`${engineName}/routes`));
@@ -92,10 +97,10 @@ describe('Acceptance', function() {
       // Verify we have the manifest and the lazy engine assets
       expect(output.manifest()).to.deep.equal(expectedManifests['lazy']);
       output.contains('assets/node-asset-manifest.js');
-      output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`);
+      output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`, cssCommentMatcher(`${nestedEngineName}.css`));
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`);
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.map`);
-      output.contains(`engines-dist/${engineName}/assets/engine.css`);
+      output.contains(`engines-dist/${engineName}/assets/engine.css`, cssCommentMatcher(`${engineName}.css`));
       output.contains(`engines-dist/${engineName}/assets/engine.js`);
       output.contains(`engines-dist/${engineName}/assets/engine.map`);
 
@@ -129,12 +134,13 @@ describe('Acceptance', function() {
       output.contains(`engines-dist/${nestedEngineName}/assets/engine-vendor.css`);
       output.contains(`engines-dist/${nestedEngineName}/assets/engine-vendor.js`);
       output.contains(`engines-dist/${nestedEngineName}/assets/engine-vendor.map`);
-      output.contains(`engines-dist/${nestedEngineName}/assets/engine.css`);
+      output.contains(`engines-dist/${nestedEngineName}/assets/engine.css`, cssCommentMatcher(`${nestedEngineName}.css`));
       output.contains(`engines-dist/${nestedEngineName}/assets/engine.js`);
       output.contains(`engines-dist/${nestedEngineName}/assets/engine.map`);
 
       output.contains('assets/vendor.js', moduleMatcher(`${engineName}/routes`));
       output.contains('assets/vendor.js', moduleMatcher(`${nestedEngineName}/routes`));
+      output.contains('assets/vendor.css', cssCommentMatcher(`${engineName}.css`));
 
       DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
         // Check that all of the eager engine modules got merged into the vendor.js file
@@ -164,14 +170,14 @@ describe('Acceptance', function() {
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`);
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`);
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.map`);
-      output.contains(`engines-dist/${engineName}/assets/engine.css`);
+      output.contains(`engines-dist/${engineName}/assets/engine.css`, cssCommentMatcher(`${engineName}.css`));
       output.contains(`engines-dist/${engineName}/assets/engine.js`);
       output.contains(`engines-dist/${engineName}/assets/engine.map`);
 
       output.contains(`engines-dist/${nestedEngineName}/assets/engine-vendor.css`);
       output.contains(`engines-dist/${nestedEngineName}/assets/engine-vendor.js`);
       output.contains(`engines-dist/${nestedEngineName}/assets/engine-vendor.map`);
-      output.contains(`engines-dist/${nestedEngineName}/assets/engine.css`);
+      output.contains(`engines-dist/${nestedEngineName}/assets/engine.css`, cssCommentMatcher(`${nestedEngineName}.css`));
       output.contains(`engines-dist/${nestedEngineName}/assets/engine.js`);
       output.contains(`engines-dist/${nestedEngineName}/assets/engine.map`);
 
@@ -205,6 +211,9 @@ describe('Acceptance', function() {
 
       output.contains('assets/vendor.js', moduleMatcher(`${engineName}/routes`));
       output.contains('assets/vendor.js', moduleMatcher(`${nestedEngineName}/routes`));
+      output.contains('assets/vendor.css', cssCommentMatcher(`${engineName}.css`));
+      // FIXME: This is eager-in-eager css isn't being included in the output
+      // output.contains('assets/vendor.css', cssCommentMatcher(`${nestedEngineName}.css`));
 
       DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
         // Check that all of the modules for both engines got merged into vendor.js
@@ -301,11 +310,11 @@ describe('Acceptance', function() {
       output.contains(`assets/vendor.js`, moduleMatcher('tree-invocation-order/tree-invocation-order-import-target'));
 
       // Basic css
-      output.contains(`engines-dist/${engineName}/assets/engine.css`, new RegExp('tree-invocation-order/addon/styles/addon.css'));
+      output.contains(`engines-dist/${engineName}/assets/engine.css`, cssCommentMatcher('tree-invocation-order/addon/styles/addon.css'));
 
       // app.import and this.import of css files
-      output.contains('assets/vendor.css', new RegExp('tree-invocation-order/vendor/css/appimport.css'));
-      output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`, new RegExp('tree-invocation-order/vendor/css/thisimport.css'));
+      output.contains('assets/vendor.css', cssCommentMatcher('tree-invocation-order/vendor/css/appimport.css'));
+      output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`, cssCommentMatcher('tree-invocation-order/vendor/css/thisimport.css'));
 
       // app.import and this.import of js files. The this.import is prepended, so make sure it is first.
       output.contains('assets/vendor.js', new RegExp('tree-invocation-order/vendor/js/appimport.js'));

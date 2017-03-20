@@ -18,7 +18,16 @@ class InRepoEngine extends InRepoAddon {
     }
 
     return app.runEmberCommand.apply(app, args).then(() => {
-      return new InRepoEngine(app, name);
+      let engine = new InRepoEngine(app, name);
+      // Set up a simple default CSS file
+      engine.writeFixture({
+        addon: {
+          styles: {
+            'app.css': `/* ${name}.css */`
+          }
+        }
+      });
+      return engine;
     });
   }
 
