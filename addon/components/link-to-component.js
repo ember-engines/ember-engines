@@ -5,7 +5,8 @@ const {
   LinkComponent,
   getOwner,
   get,
-  set
+  set,
+  typeOf
 } = Ember;
 
 export default LinkComponent.extend({
@@ -28,13 +29,29 @@ export default LinkComponent.extend({
   _prefixProperty(prefix, prop) {
     let propValue = get(this, prop);
 
+    // Sometimes `targetRouteName` will be a class
+    if (typeOf(propValue) !== 'string') {
+      return;
+    }
+
     let namespacedPropValue;
-    if (propValue === 'application') {
-      namespacedPropValue = prefix;
+    if (prop === 'current-when') {
+      // `current-when` is a space-separated list of routes
+      namespacedPropValue = propValue.split(' ');
+      namespacedPropValue = namespacedPropValue.map((propValue) => this._namespacePropertyValue(prefix, propValue));
+      namespacedPropValue = namespacedPropValue.join(' ');
     } else {
-      namespacedPropValue = prefix + '.' + propValue;
+      namespacedPropValue = this._namespacePropertyValue(prefix, propValue);
     }
 
     set(this, prop, namespacedPropValue);
+  },
+
+  _namespacePropertyValue(prefix, propValue) {
+    if (propValue === 'application') {
+      return prefix;
+    } else {
+      return prefix + '.' + propValue;
+    }
   }
 });
