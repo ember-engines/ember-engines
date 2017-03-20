@@ -11,6 +11,14 @@ class BuildOutput {
     this._build = fixturify.readSync(this._buildPath);
   }
 
+  doesNotContain(file, matcher) {
+    try {
+      return this.contains(file, matcher);
+    } catch (e) {
+      return true;
+    }
+  }
+
   contains(file, matcher) {
     let fileParts = file.split('/');
     let result = this._build;

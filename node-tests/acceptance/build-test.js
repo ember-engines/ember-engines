@@ -26,7 +26,6 @@ describe('Acceptance', function() {
     const DEFAULT_ROUTABLE_ENGINE_MODULES = [
       'engine',
       'resolver',
-      'routes', // FIXME: This shouldn't wind up in the same file as the other modules when lazy loaded.
       'config/environment',
       'templates/application'
     ];
@@ -43,6 +42,7 @@ describe('Acceptance', function() {
       // Only special file we add is the manifest for eager engines
       output.contains('asset-manifest.json');
       output.contains('assets/node-asset-manifest.js');
+      output.contains('assets/vendor.js', moduleMatcher(`${engineName}/routes`));
 
       // Check that all of the modules got merged into vendor
       DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
@@ -68,6 +68,7 @@ describe('Acceptance', function() {
       output.contains(`engines-dist/${engineName}/assets/engine.css`);
       output.contains(`engines-dist/${engineName}/assets/engine.js`);
       output.contains(`engines-dist/${engineName}/assets/engine.map`);
+      output.contains('assets/vendor.js', moduleMatcher(`${engineName}/routes`));
 
       DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
         // Check that all of the modules got merged into the engine.js file
@@ -96,6 +97,9 @@ describe('Acceptance', function() {
       output.contains(`engines-dist/${engineName}/assets/engine.css`);
       output.contains(`engines-dist/${engineName}/assets/engine.js`);
       output.contains(`engines-dist/${engineName}/assets/engine.map`);
+
+      output.contains('assets/vendor.js', moduleMatcher(`${engineName}/routes`));
+      output.contains('assets/vendor.js', moduleMatcher(`${nestedEngineName}/routes`));
 
       DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
         // Check that all of the lazy engine modules got merged into the engine.js file
@@ -127,6 +131,9 @@ describe('Acceptance', function() {
       output.contains(`engines-dist/${nestedEngineName}/assets/engine.css`);
       output.contains(`engines-dist/${nestedEngineName}/assets/engine.js`);
       output.contains(`engines-dist/${nestedEngineName}/assets/engine.map`);
+
+      output.contains('assets/vendor.js', moduleMatcher(`${engineName}/routes`));
+      output.contains('assets/vendor.js', moduleMatcher(`${nestedEngineName}/routes`));
 
       DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
         // Check that all of the eager engine modules got merged into the vendor.js file
@@ -167,6 +174,9 @@ describe('Acceptance', function() {
       output.contains(`engines-dist/${nestedEngineName}/assets/engine.js`);
       output.contains(`engines-dist/${nestedEngineName}/assets/engine.map`);
 
+      output.contains('assets/vendor.js', moduleMatcher(`${engineName}/routes`));
+      output.contains('assets/vendor.js', moduleMatcher(`${nestedEngineName}/routes`));
+
       DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
         // Check that all of the lazy engine modules got merged into the engine's engine.js file
         output.contains(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher(`${engineName}/${module}`));
@@ -191,6 +201,9 @@ describe('Acceptance', function() {
       // Verify we have the manifest
       output.contains('asset-manifest.json');
       output.contains('assets/node-asset-manifest.js');
+
+      output.contains('assets/vendor.js', moduleMatcher(`${engineName}/routes`));
+      output.contains('assets/vendor.js', moduleMatcher(`${nestedEngineName}/routes`));
 
       DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
         // Check that all of the modules for both engines got merged into vendor.js
@@ -282,9 +295,8 @@ describe('Acceptance', function() {
       let output = yield build(app);
 
       // routes.js and imports are properly hoisted
-      // FIXME: These are wrong! They should be in assets/vendor.js
-      output.contains(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher('tree-invocation-order/routes'));
-      output.contains(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher('tree-invocation-order/tree-invocation-order-import-target'));
+      output.contains(`assets/vendor.js`, moduleMatcher('tree-invocation-order/routes'));
+      output.contains(`assets/vendor.js`, moduleMatcher('tree-invocation-order/tree-invocation-order-import-target'));
 
       // Basic css
       output.contains(`engines-dist/${engineName}/assets/engine.css`, new RegExp('tree-invocation-order/addon/styles/addon.css'));
@@ -306,6 +318,31 @@ describe('Acceptance', function() {
       // Default modules wind up in proper place still
       DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
         output.contains(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher(`${engineName}/${module}`));
+      });
+    }));
+
+    it('correctly hoists routes.js and its imports', co.wrap(function* () {
+      let app = new AddonTestApp();
+      let engineName = 'routes-hoisting';
+
+      yield app.create('engine-testing', { noFixtures: true });
+      let engine = yield InRepoEngine.generate(app, engineName, { lazy: true });
+
+      let fixture = fixturify.readSync(path.resolve(__dirname, `../fixtures/${engineName}`));
+      engine.writeFixture(fixture);
+
+      let output = yield build(app);
+
+      let hoistedModules = [
+        'routes',
+        'absolute-routes-import',
+        'relative-routes-import'
+      ];
+
+      hoistedModules.forEach((module) => {
+        let matcher = moduleMatcher(`${engineName}/${module}`);
+        output.contains(`assets/vendor.js`, matcher);
+        output.doesNotContain(`engines-dist/${engineName}/assets/engine.js`, matcher);
       });
     }));
   });
