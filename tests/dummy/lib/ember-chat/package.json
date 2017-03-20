@@ -6,6 +6,7 @@
     "ember-engine"
   ],
   "dependencies": {
+    "ember-cli-babel": "*",
     "ember-cli-htmlbars": "*",
     "common-components": "file:../common-components"
   }
