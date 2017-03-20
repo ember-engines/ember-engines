@@ -10,5 +10,7 @@ module.exports = EngineAddon.extend({
 
   hintingEnabled: function() {
     return false;
-  }
+  },
+
+  lazyLoading: false
 });

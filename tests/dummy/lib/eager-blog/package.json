@@ -9,6 +9,7 @@
     "engineConfigPath": "ember-config"
   },
   "dependencies": {
+    "ember-cli-babel": "*",
     "ember-cli-htmlbars": "*"
   }
 }
