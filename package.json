@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dgeb/ember-engines.git"
+    "url": "git+https://github.com/ember-engines/ember-engines.git"
   },
   "engines": {
     "node": ">= 0.10.0"
