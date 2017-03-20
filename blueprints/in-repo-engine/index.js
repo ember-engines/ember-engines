@@ -3,6 +3,7 @@
 var path = require('path');
 var InRepoAddon = require('ember-cli/blueprints/in-repo-addon/index');
 var stringUtil = require('ember-cli-string-utils');
+var fs = require('fs-extra');
 
 module.exports = {
   description: 'Creates an Engine within the current repository.',
@@ -83,5 +84,13 @@ module.exports = {
 
   _generatePackageJson: function(options, isInstall) {
     InRepoAddon._generatePackageJson.apply(this, arguments);
+  },
+
+  _readJsonSync(path) {
+    return fs.readJsonSync(path);
+  },
+
+  _writeFileSync(path, content) {
+    fs.writeFileSync(path, content);
   }
 };
