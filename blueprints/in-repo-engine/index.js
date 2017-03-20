@@ -4,7 +4,7 @@ var path = require('path');
 var InRepoAddon = require('ember-cli/blueprints/in-repo-addon/index');
 var stringUtil = require('ember-cli-string-utils');
 
-module.exports = {
+module.exports = Object.assign({}, InRepoAddon, {
   description: 'Creates an Engine within the current repository.',
 
   locals: function(options) {
@@ -84,4 +84,4 @@ module.exports = {
   _generatePackageJson: function(options, isInstall) {
     InRepoAddon._generatePackageJson.apply(this, arguments);
   }
-};
+});
