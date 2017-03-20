@@ -34,6 +34,7 @@
     "broccoli-asset-rev": "^2.4.2",
     "chai": "^3.5.0",
     "co": "^4.6.0",
+    "common-tags": "^1.4.0",
     "eager-blog": "file:./tests/dummy/lib/eager-blog",
     "ember-ajax": "^2.0.1",
     "ember-blog": "file:./tests/dummy/lib/ember-blog",

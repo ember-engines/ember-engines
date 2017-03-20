@@ -290,8 +290,7 @@ describe('Acceptance', function() {
       yield app.create('engine-testing', { noFixtures: true });
       let engine = yield InRepoEngine.generate(app, engineName, { lazy: true });
 
-      let fixture = fixturify.readSync(path.resolve(__dirname, '../fixtures/tree-invocation-order'));
-      engine.writeFixture(fixture);
+      engine.writeFixture(require(`../fixtures/${engineName}/data`));
 
       let output = yield build(app);
 
@@ -331,8 +330,7 @@ describe('Acceptance', function() {
       yield app.create('engine-testing', { noFixtures: true });
       let engine = yield InRepoEngine.generate(app, engineName, { lazy: true });
 
-      let fixture = fixturify.readSync(path.resolve(__dirname, `../fixtures/${engineName}`));
-      engine.writeFixture(fixture);
+      engine.writeFixture(require(`../fixtures/${engineName}/data`));
 
       let output = yield build(app);
 
