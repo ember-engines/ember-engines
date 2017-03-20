@@ -32,26 +32,20 @@ Support for the following concepts is under consideration:
 
 This addon should be considered experimental and used with caution.
 
-The [master branch of this addon](https://github.com/ember-engines/ember-engines) is
-being developed against the [master branch of
-Ember](https://github.com/emberjs/ember.js). This branch includes experimental
-lazy-loading features and should not be considered stable.
+The [master branch of this addon](https://github.com/ember-engines/ember-engines)
+is being developed against the master branch of Ember and Ember-CLI, and should
+be considered unstable. If you're planning to deploy to production, please use
+one of the stable releases.
 
-v0.5 of this addon is being developed to be compatible with v2.12.x of both Ember and EmberCLI. 
+[v0.5 of this addon](https://github.com/ember-engines/ember-engines/tree/v0.5.0)
+is compatible with v2.12.x of both Ember and Ember-CLI.
 
 [v0.4 of this addon](https://github.com/ember-engines/ember-engines/tree/v0.4.0)
-is being developed to be compatible with v2.10.x of Ember.
+is compatible with v2.10.x of both Ember and Ember-CLI.
 
-The [v0.3 branch of this addon](https://github.com/ember-engines/ember-engines/tree/v0.3)
-is being developed to be compatible with v2.8.x of Ember. This is the first
-version of Ember in which the required hooks for engines are available
-without a feature flag. Once v2.8.x of Ember stabilizes, this branch should
-also be considered stable.
-
-The [v0.2 branch of this addon](https://github.com/ember-engines/ember-engines/tree/v0.2)
-is being developed to be compatible with v2.6.x and v2.7.x of Ember. This branch
-should be considered reasonably stable, although it does contain a number of
-overrides to code in Ember core. Please proceed with caution.
+[v0.3 of this addon](https://github.com/ember-engines/ember-engines/tree/v0.3)
+is compatible with v2.8.x of Ember. This is the first version of Ember in which
+the required hooks for engines are available without a feature flag.
 
 ## Introduction Video
 
