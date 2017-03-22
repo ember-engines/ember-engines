@@ -31,14 +31,6 @@ class InRepoEngine extends InRepoAddon {
     });
   }
 
-  nest(addon) {
-    this.editPackageJSON((pkg) => {
-      pkg['ember-addon'] = pkg['ember-addon'] || {};
-      pkg['ember-addon'].paths = pkg['ember-addon'].paths || [];
-      pkg['ember-addon'].paths.push(`../${addon.name}`);
-    });
-  }
-
   generateNestedEngine(name) {
     // Generate another in-repo-engine at the app level...
     let args = Array.prototype.slice.call(arguments)
@@ -51,37 +43,12 @@ class InRepoEngine extends InRepoAddon {
 
       // Add the in-repo-engine to this engine.
       this.editPackageJSON((pkg) => {
-        pkg['ember-addon'] = {
-          paths: [
-            `../${name}`
-          ]
-        };
+        pkg['ember-addon'] = pkg['ember-addon'] || {};
+        pkg['ember-addon'].paths = pkg['ember-addon'].paths || [];
+        pkg['ember-addon'].paths.push(`../${name}`);
       });
 
       return engine;
-    });
-  }
-
-  generateNestedAddon(name) {
-    // Generate another in-repo-addon at the app level...
-    let args = Array.prototype.slice.call(arguments)
-    args.unshift(this.app);
-    return InRepoAddon.generate.apply(null, args).then((addon) => {
-      // Remove the in-repo-addon from the app...
-      this.app.editPackageJSON((pkg) => {
-        pkg['ember-addon'].paths = pkg['ember-addon'].paths.filter((path) => path !== `lib/${name}`);
-      });
-
-      // Add the in-repo-addon to this engine.
-      this.editPackageJSON((pkg) => {
-        pkg['ember-addon'] = {
-          paths: [
-            `../${name}`
-          ]
-        };
-      });
-
-      return addon;
     });
   }
 }
