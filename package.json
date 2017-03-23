@@ -87,6 +87,7 @@
     "lodash.defaultsdeep": "^4.5.1"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "after": "broccoli-asset-rev"
   }
 }
