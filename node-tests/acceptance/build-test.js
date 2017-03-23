@@ -10,20 +10,10 @@ const build = require('../helpers/build');
 const InRepoAddon = require('../helpers/in-repo-addon');
 const InRepoEngine = require('../helpers/in-repo-engine');
 const expectedManifests = require('../fixtures/expected-manifests');
+const matchers = require('../helpers/matchers');
 
-/**
- * Creates a regex that matches the definition for the specified module name.
- *
- * @param {String} moduleName
- * @return {RegExp}
- */
-function moduleMatcher(moduleName) {
-  return new RegExp(`define\\(['"]${moduleName}['"]`);
-}
-
-function cssCommentMatcher(comment) {
-  return new RegExp(`/\\* ${comment} \\*/`);
-}
+const moduleMatcher = matchers.module;
+const cssCommentMatcher = matchers.cssComment;
 
 describe('Acceptance', function() {
   describe('build', function() {
