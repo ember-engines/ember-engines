@@ -15,6 +15,7 @@ class InRepoAddon {
   }
 
   constructor(app, name) {
+    this.name = name;
     this.app = app;
     this.path = path.join(app.path, 'lib', name);
   }
@@ -28,6 +29,35 @@ class InRepoAddon {
 
   writeFixture(fixture) {
     fixturify.writeSync(this.path, fixture);
+  }
+
+  nest(addon) {
+    this.editPackageJSON((pkg) => {
+      pkg['ember-addon'] = pkg['ember-addon'] || {};
+      pkg['ember-addon'].paths = pkg['ember-addon'].paths || [];
+      pkg['ember-addon'].paths.push(`../${addon.name}`);
+    });
+  }
+
+  generateNestedAddon(name) {
+    // Generate another in-repo-addon at the app level...
+    let args = Array.prototype.slice.call(arguments)
+    args.unshift(this.app);
+    return InRepoAddon.generate.apply(null, args).then((addon) => {
+      // Remove the in-repo-addon from the app...
+      this.app.editPackageJSON((pkg) => {
+        pkg['ember-addon'].paths = pkg['ember-addon'].paths.filter((path) => path !== `lib/${name}`);
+      });
+
+      // Add the in-repo-addon to this engine.
+      this.editPackageJSON((pkg) => {
+        pkg['ember-addon'] = pkg['ember-addon'] || {};
+        pkg['ember-addon'].paths = pkg['ember-addon'].paths || [];
+        pkg['ember-addon'].paths.push(`../${name}`);
+      });
+
+      return addon;
+    });
   }
 }
 

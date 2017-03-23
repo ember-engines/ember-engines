@@ -7,22 +7,13 @@ const expect = require('chai').expect;
 const AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 
 const build = require('../helpers/build');
+const InRepoAddon = require('../helpers/in-repo-addon');
 const InRepoEngine = require('../helpers/in-repo-engine');
 const expectedManifests = require('../fixtures/expected-manifests');
+const matchers = require('../helpers/matchers');
 
-/**
- * Creates a regex that matches the definition for the specified module name.
- *
- * @param {String} moduleName
- * @return {RegExp}
- */
-function moduleMatcher(moduleName) {
-  return new RegExp(`define\\(['"]${moduleName}['"]`);
-}
-
-function cssCommentMatcher(comment) {
-  return new RegExp(`/\\* ${comment} \\*/`);
-}
+const moduleMatcher = matchers.module;
+const cssCommentMatcher = matchers.cssComment;
 
 describe('Acceptance', function() {
   describe('build', function() {
@@ -354,6 +345,59 @@ describe('Acceptance', function() {
         output.contains(`assets/vendor.js`, matcher);
         output.doesNotContain(`engines-dist/${engineName}/assets/engine.js`, matcher);
       });
+    }));
+
+    it('does not duplicated addons in lazy engines that appear in the host', co.wrap(function* () {
+      let app = new AddonTestApp();
+      let appName = 'engine-testing';
+      let engineName = 'lazy';
+      let addonName = 'nested';
+
+      yield app.create(appName, { noFixtures: true });
+      let addon = yield InRepoAddon.generate(app, addonName);
+      let engine = yield InRepoEngine.generate(app, engineName, { lazy: true });
+
+      engine.nest(addon);
+
+      addon.writeFixture({
+        app: {
+          'foo.js': `export { default } from 'nested/components/foo';`
+        },
+        addon: {
+          styles: {
+            'addon.css': `/* ${addonName}.css */`
+          },
+          components: {
+            'foo.js': `export default {}`
+          },
+          templates: {
+            components: {
+              'foo.hbs': `<h1>foo</h1>`
+            }
+          }
+        },
+        public: {
+          'some-file.txt': `some file`
+        }
+      });
+
+      let output = yield build(app);
+
+      // Verify all the files are in the host's assets
+      output.contains(`assets/${appName}.js`, moduleMatcher(`${appName}/foo`));
+      output.contains('nested/some-file.txt');
+      output.contains('assets/vendor.js', moduleMatcher(`${addonName}/components/foo`));
+      output.contains('assets/vendor.js', moduleMatcher(`${addonName}/templates/components/foo`));
+      output.contains('assets/vendor.css', cssCommentMatcher(`${addonName}.css`));
+
+      // App folder should still be merged into the Engine's namespace
+      output.contains(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher(`${engineName}/foo`));
+
+      // All other files should not be included
+      output.doesNotContain(`engines-dist/${engineName}/nested/some-file.txt`);
+      output.doesNotContain(`engines-dist/${engineName}/assets/engine-vendor.js`, moduleMatcher(`${addonName}/components/foo`));
+      output.doesNotContain(`engines-dist/${engineName}/assets/engine-vendor.js`, moduleMatcher(`${addonName}/templates/components/foo`));
+      output.doesNotContain(`engines-dist/${engineName}/assets/engine-vendor.css`, cssCommentMatcher(`${addonName}.css`));
     }));
   });
 });
