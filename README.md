@@ -455,8 +455,51 @@ behavior.
 
 Further, the engine must enumerate its primary assets (JS and CSS) in order to
 be loaded by the asset loading service. That will be generated at
-`/dist/asset-manifest.json` at build time. It will also by default be inserted
+`/dist/asset-manifest.json` at build time that looks like as below. It will also by default be inserted
 into a meta tag config inside of the host application's `index.html`.
+
+```json
+{
+  "bundles": {
+    "lazy-engine": {
+      "assets": [
+        {
+          "uri": "/engines-dist/lazy-engine/assets/engine-vendor.css",
+          "type": "css"
+        },
+        {
+          "uri": "/engines-dist/lazy-engine/assets/engine-vendor.js",
+          "type": "js"
+        },
+        {
+          "uri": "/engines-dist/lazy-engine/assets/engine.css",
+          "type": "css"
+        },
+        {
+          "uri": "/engines-dist/lazy-engine/assets/engine.js",
+          "type": "js"
+        }
+      ]
+    }
+  }
+}
+
+
+```
+
+To customise the URIs for the assets in `asset-manifest.json`, you can pass `assetLoader` options specifying a `generateURI` function as part of your host application's options:
+
+```js
+var app = new EmberApp(defaults, {
+  assetLoader: {
+    generateURI: function(filePath) {
+      return 'http://cdn.io/' + filePath;
+    }
+  }
+});
+```
+
+Refer [here](https://github.com/ember-engines/ember-asset-loader#generating-custom-uris) to know more about customising URIs.
 
 ### Nested Eager Engines
 
