@@ -629,13 +629,9 @@ following would be the setup to test such component from the host app:
 
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import Resolver from 'ember-engines/resolver';
+import engineResolverFor from 'ember-engines/test-support/engine-resolver-for';
 
-const resolver = Resolver.create();
-
-resolver.namespace = {
-  modulePrefix: 'appointments-manager'
-};
+const resolver = engineResolverFor('appointments-manager');
 
 moduleForComponent('date-picker', 'Integration | Component | Date picker', {
   integration: true,
