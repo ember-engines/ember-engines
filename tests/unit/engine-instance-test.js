@@ -17,7 +17,7 @@ const {
 let App, app, appInstance;
 
 module('Unit | EngineInstance', {
-  setup() {
+  beforeEach() {
     EnginesInitializer.initialize();
 
     App = Application.extend({
@@ -31,7 +31,7 @@ module('Unit | EngineInstance', {
     });
   },
 
-  teardown() {
+  afterEach() {
     if (appInstance) {
       run(appInstance, 'destroy');
     }
