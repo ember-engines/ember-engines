@@ -11,6 +11,7 @@ const expectedManifests = require('../fixtures/expected-manifests');
 const matchers = require('../helpers/matchers');
 
 const moduleMatcher = matchers.module;
+const reexportMatcher = matchers.reexport;
 const cssCommentMatcher = matchers.cssComment;
 
 describe('Acceptance', function() {
@@ -222,7 +223,7 @@ describe('Acceptance', function() {
 
       addon.writeFixture({
         app: {
-          'foo.js': '// should wind up in engine namespace'
+          'foo.js': 'export { default } from "nested/components/bar";'
         },
         addon: {
           components: {
@@ -239,7 +240,7 @@ describe('Acceptance', function() {
       let output = yield build(app);
 
       // Verify app files in addon wind up in engine's namespace in vendor.js
-      output.contains('assets/vendor.js', moduleMatcher(`${engineName}/foo`));
+      output.contains('assets/vendor.js', reexportMatcher(`${addonName}/components/bar`, `${engineName}/foo`));
 
       // Verify addon files in addon wind up in addon's namespace in vendor.js
       output.contains('assets/vendor.js', moduleMatcher(`${addonName}/components/bar`));
@@ -257,7 +258,7 @@ describe('Acceptance', function() {
 
       addon.writeFixture({
         app: {
-          'foo.js': '// should wind up in engine namespace'
+          'foo.js': 'export { default } from "nested/components/bar";'
         },
         addon: {
           components: {
@@ -274,7 +275,7 @@ describe('Acceptance', function() {
       let output = yield build(app);
 
       // Verify app files in addon wind up in engine's namespace in engine.js
-      output.contains(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher(`${engineName}/foo`));
+      output.contains(`engines-dist/${engineName}/assets/engine.js`, reexportMatcher(`${addonName}/components/bar`, `${engineName}/foo`));
 
       // Verify addon files in addon wind up in addon's namespace in enigne-vendor.js
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`, moduleMatcher(`${addonName}/components/bar`));
@@ -345,7 +346,7 @@ describe('Acceptance', function() {
       });
     }));
 
-    it('does not duplicated addons in lazy engines that appear in the host', co.wrap(function* () {
+    it('does not duplicate addons in lazy engines that appear in the host', co.wrap(function* () {
       let app = new AddonTestApp();
       let appName = 'engine-testing';
       let engineName = 'lazy';
@@ -389,7 +390,7 @@ describe('Acceptance', function() {
       output.contains('assets/vendor.css', cssCommentMatcher(`${addonName}.css`));
 
       // App folder should still be merged into the Engine's namespace
-      output.contains(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher(`${engineName}/foo`));
+      output.contains(`engines-dist/${engineName}/assets/engine.js`, reexportMatcher(`${addonName}/components/foo`, `${engineName}/foo`));
 
       // All other files should not be included
       output.doesNotContain(`engines-dist/${engineName}/nested/some-file.txt`);
