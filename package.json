@@ -40,7 +40,7 @@
     "ember-blog": "file:./tests/dummy/lib/ember-blog",
     "ember-chat": "file:./tests/dummy/lib/ember-chat",
     "ember-cli": "2.13.1",
-    "ember-cli-addon-tests": "^0.6.3",
+    "ember-cli-addon-tests": "^0.7.0",
     "ember-cli-app-version": "^3.0.0",
     "ember-cli-dependency-checker": "^1.2.0",
     "ember-cli-htmlbars-inline-precompile": "^0.4.2",

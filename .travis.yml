@@ -20,8 +20,8 @@ before_install:
   # Since we override the install hooks, we need to setup Yarn on our own
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
-  # NPM & Bower need to be installed globally for ember-cli-addon-tests
-  - yarn global add npm bower phantomjs-prebuilt
+  # NPM needs to be installed globally for ember-cli-addon-tests
+  - yarn global add npm phantomjs-prebuilt
   - phantomjs --version
 
 install:
