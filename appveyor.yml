@@ -15,13 +15,10 @@ install:
   - git rev-parse HEAD
   - npm version
   - npm install phantomjs-prebuilt
-  - npm install -g bower
   - npm install
-  - bower install
 
 cache:
   - '%APPDATA%\npm-cache'
-  - '%APPDATA%\Roaming\bower'
 
 # Post-install test scripts.
 test_script:

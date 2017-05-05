@@ -659,7 +659,6 @@ test('renders text', function(assert) {
 
 * `git clone` this repository
 * `npm install`
-* `bower install`
 
 ### Running
 
