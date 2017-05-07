@@ -72,7 +72,7 @@
     "amd-name-resolver": "0.0.5",
     "broccoli-babel-transpiler": "^5.6.1",
     "broccoli-concat": "^3.0.1",
-    "broccoli-conditional-debug": "^0.5.3",
+    "broccoli-debug": "^0.6.0",
     "broccoli-dependency-funnel": "^1.0.2",
     "broccoli-file-creator": "^1.1.0",
     "broccoli-funnel": "^1.0.8",
