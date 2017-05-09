@@ -5,11 +5,9 @@ const AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 const stripIndent = require('common-tags').stripIndent;
 
 const build = require('../helpers/build');
-const InRepoAddon = require('../helpers/in-repo-addon');
 const InRepoEngine = require('../helpers/in-repo-engine');
 const matchers = require('../helpers/matchers');
 
-const moduleMatcher = matchers.module;
 const cssCommentMatcher = matchers.cssComment;
 
 describe('Acceptance', function() {

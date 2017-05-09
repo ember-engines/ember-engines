@@ -12,7 +12,7 @@
     "test": "ember try:testall",
     "test:ember": "ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup",
     "test:emberall": "ember try:each --skip-cleanup",
-    "test:node": "mocha node-tests/**/*-test.js --reporter tap",
+    "test:node": "mocha 'node-tests/**/*-test.js' --reporter tap",
     "test:windows": "ember try:one %EMBER_TRY_SCENARIO% test --skip-cleanup",
     "test:node:dev": "BUILD_DEV=true testem -f testem-node.js",
     "test:null": "echo 'no appropriate changes detected, not running tests'",
@@ -43,9 +43,9 @@
     "ember-cli-addon-tests": "^0.7.0",
     "ember-cli-app-version": "^3.0.0",
     "ember-cli-dependency-checker": "^1.2.0",
+    "ember-cli-eslint": "^3.1.0",
     "ember-cli-htmlbars-inline-precompile": "^0.4.2",
     "ember-cli-inject-live-reload": "^1.4.0",
-    "ember-cli-jshint": "^1.0.0",
     "ember-cli-qunit": "^4.0.0",
     "ember-cli-release": "^0.2.9",
     "ember-cli-shims": "^1.1.0",
@@ -83,9 +83,11 @@
     "ember-cli-htmlbars": "^1.0.3",
     "ember-cli-preprocess-registry": "^3.0.0",
     "ember-cli-string-utils": "^1.0.0",
+    "eslint": "^3.19.0",
     "exists-sync": "0.0.3",
     "lodash": "^4.12.0",
-    "lodash.defaultsdeep": "^4.5.1"
+    "lodash.defaultsdeep": "^4.5.1",
+    "mocha-eslint": "^3.0.1"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

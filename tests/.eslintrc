@@ -1,0 +1,12 @@
+{
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "env": {
+    "node": false,
+    "browser": true,
+    "embertest": true
+  },
+  "rules": {
+  }
+}

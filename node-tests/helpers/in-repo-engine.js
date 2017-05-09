@@ -1,8 +1,5 @@
 'use strict';
 
-const path = require('path');
-const fs = require('fs-extra');
-const fixturify = require('fixturify');
 const InRepoAddon = require('./in-repo-addon');
 
 class InRepoEngine extends InRepoAddon {
