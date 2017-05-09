@@ -1,8 +1,6 @@
 'use strict';
 
 const co = require('co');
-const path = require('path');
-const fixturify = require('fixturify');
 const expect = require('chai').expect;
 const AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 
