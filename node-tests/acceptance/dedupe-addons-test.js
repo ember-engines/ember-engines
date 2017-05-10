@@ -9,6 +9,7 @@ const InRepoEngine = require('../helpers/in-repo-engine');
 const matchers = require('../helpers/matchers');
 
 const moduleMatcher = matchers.module;
+const reexportMatcher = matchers.reexport;
 const cssCommentMatcher = matchers.cssComment;
 
 describe('Acceptance', function() {
@@ -59,7 +60,7 @@ describe('Acceptance', function() {
       output.contains('assets/vendor.css', cssCommentMatcher(`${addonName}.css`));
 
       // App folder should still be merged into the Engine's namespace
-      output.contains(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher(`${engineName}/foo`));
+      output.contains(`engines-dist/${engineName}/assets/engine.js`, reexportMatcher(`${addonName}/components/foo`, `${engineName}/foo`));
 
       // All other files should not be included
       output.doesNotContain(`engines-dist/${engineName}/nested/some-file.txt`);
@@ -169,8 +170,8 @@ describe('Acceptance', function() {
       output.contains('assets/vendor.css', cssCommentMatcher(`${addonName}.css`));
 
       // App folder should still be merged into the Engine's namespace
-      output.doesNotContain(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher(`${engineName}/foo`));
-      output.contains(`engines-dist/${nestedEngineName}/assets/engine.js`, moduleMatcher(`${nestedEngineName}/foo`));
+      output.doesNotContain(`engines-dist/${engineName}/assets/engine.js`, reexportMatcher(`${addonName}/components/foo`, `${engineName}/foo`));
+      output.contains(`engines-dist/${nestedEngineName}/assets/engine.js`, reexportMatcher(`${addonName}/components/foo`, `${nestedEngineName}/foo`));
 
       // All other files should not be included
       output.doesNotContain(`engines-dist/${engineName}/nested/some-file.txt`);
@@ -230,7 +231,7 @@ describe('Acceptance', function() {
       output.doesNotContain('assets/vendor.css', cssCommentMatcher(`${addonName}.css`));
 
       // Verify all the files are in the host engine's assets
-      output.contains(`engines-dist/${engineName}/assets/engine.js`, moduleMatcher(`${engineName}/foo`));
+      output.contains(`engines-dist/${engineName}/assets/engine.js`, reexportMatcher(`${addonName}/components/foo`, `${engineName}/foo`));
 
       output.contains(`engines-dist/${engineName}/nested/some-file.txt`);
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`, moduleMatcher(`${addonName}/components/foo`));
@@ -239,7 +240,7 @@ describe('Acceptance', function() {
 
 
       // All other files should not be included
-      output.contains(`engines-dist/${nestedEngineName}/assets/engine.js`, moduleMatcher(`${nestedEngineName}/foo`));
+      output.contains(`engines-dist/${nestedEngineName}/assets/engine.js`, reexportMatcher(`${addonName}/components/foo`, `${nestedEngineName}/foo`));
 
       output.doesNotContain(`engines-dist/${nestedEngineName}/nested/some-file.txt`);
       output.doesNotContain(`engines-dist/${nestedEngineName}/assets/engine-vendor.js`, moduleMatcher(`${addonName}/components/foo`));
