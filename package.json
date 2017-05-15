@@ -74,7 +74,7 @@
     "broccoli-babel-transpiler": "^5.6.1",
     "broccoli-concat": "^3.0.1",
     "broccoli-debug": "^0.6.0",
-    "broccoli-dependency-funnel": "^1.0.2",
+    "broccoli-dependency-funnel": "^2.0.1",
     "broccoli-file-creator": "^1.1.0",
     "broccoli-funnel": "^1.0.8",
     "broccoli-merge-trees": "^1.0.0",
