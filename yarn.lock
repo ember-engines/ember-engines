@@ -1193,9 +1193,9 @@ broccoli-debug@^0.6.0, broccoli-debug@^0.6.1:
     sanitize-filename "^1.6.1"
     tree-sync "^1.2.2"
 
-broccoli-dependency-funnel@^1.0.2:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/broccoli-dependency-funnel/-/broccoli-dependency-funnel-1.1.0.tgz#14d826520a24f8cb43f02d2ddf7258d8c7c245cb"
+broccoli-dependency-funnel@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/broccoli-dependency-funnel/-/broccoli-dependency-funnel-2.0.1.tgz#def0aa9fdc73d13449dea4363d35896c58ea1beb"
   dependencies:
     broccoli-plugin "^1.3.0"
     exists-sync "^0.0.4"
