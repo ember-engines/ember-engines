@@ -18,3 +18,9 @@
 
 {{#link-to (query-params lang="Japanese") class="routable-post-jp-link"}}Go to Japanese version{{/link-to}}
 <button {{action "goToChineseVersion"}} class="routable-post-ch-link">Go to Chinese version</button>
+<button {{action "transitionToHome"}} class="routable-post-transition-to-home-button {{if transitionedToExternal 'transitioned-to-external'}}">
+    Go home programmatically
+</button>
+<button {{action "replaceWithHome"}} class="routable-post-replace-with-home-button {{if replacedWithExternal 'replaced-with-external'}}">
+    Also goes home programmatically
+</button>

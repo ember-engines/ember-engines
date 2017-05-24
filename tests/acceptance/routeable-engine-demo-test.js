@@ -277,6 +277,40 @@ test('transitionTo works properly within parent application', function(assert) {
   });
 });
 
+test('transitionToExternal transitions to the parent application from within an engine', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo/special-admin-blog-here/post/1');
+  click('.routable-post-transition-to-home-button');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/');
+
+    visit('/routable-engine-demo/special-admin-blog-here/post/1');
+
+    andThen(() => {
+      assert.ok(this.application.$('.routable-post-transition-to-home-button').hasClass('transitioned-to-external'));
+    })
+  });
+});
+
+test('replaceWithExternal transitions to the parent application from within an engine', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo/special-admin-blog-here/post/1');
+  click('.routable-post-replace-with-home-button');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/');
+
+    visit('/routable-engine-demo/special-admin-blog-here/post/1');
+
+    andThen(() => {
+      assert.ok(this.application.$('.routable-post-replace-with-home-button').hasClass('replaced-with-external'));
+    })
+  });
+});
+
 test('loading routes and intermediateTransitionTo work within an engine', function(assert) {
   assert.expect(2);
 
