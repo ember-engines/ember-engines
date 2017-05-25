@@ -398,5 +398,61 @@ describe('Acceptance', function() {
       output.doesNotContain(`engines-dist/${engineName}/assets/engine-vendor.js`, moduleMatcher(`${addonName}/templates/components/foo`));
       output.doesNotContain(`engines-dist/${engineName}/assets/engine-vendor.css`, cssCommentMatcher(`${addonName}.css`));
     }));
+
+    it('duplicates an addon in lazy engines when the tree returned by the addon is different', co.wrap(function* () {
+      let app = new AddonTestApp();
+      let appName = 'engine-testing';
+      let engineName = 'lazy';
+      let addonName = 'nested';
+
+      yield app.create(appName, { noFixtures: true });
+      let addon = yield InRepoAddon.generate(app, addonName);
+      let engine = yield InRepoEngine.generate(app, engineName, { lazy: true });
+
+      engine.nest(addon);
+
+      addon.writeFixture({
+        app: {
+          'foo.js': `export { default } from 'nested/components/foo';`
+        },
+        addon: {
+          styles: {
+            'addon.css': `/* ${addonName}.css */`
+          },
+          components: {
+            'foo.js': `export default {}`
+          },
+          templates: {
+            components: {
+              'foo.hbs': `<h1>foo</h1>`
+            }
+          }
+        },
+        public: {
+          'some-file.txt': `some file`
+        },
+        'index.js': `module.exports = {
+                       name: '${addonName}',
+                       treeForPublic: function(tree) { return this._super(tree); }
+                     }`
+      });
+
+      let output = yield build(app);
+
+      // Verify all the files are in the host's assets
+      output.contains(`assets/${appName}.js`, moduleMatcher(`${appName}/foo`));
+      output.contains(`${addonName}/some-file.txt`);
+      output.contains('assets/vendor.js', moduleMatcher(`${addonName}/components/foo`));
+      output.contains('assets/vendor.js', moduleMatcher(`${addonName}/templates/components/foo`));
+      output.contains('assets/vendor.css', cssCommentMatcher(`${addonName}.css`));
+
+      // Public file should be included in the engine as it is not the same tree
+      output.contains(`engines-dist/${engineName}/${addonName}/some-file.txt`);
+
+      // All other files should not be included
+      output.doesNotContain(`engines-dist/${engineName}/assets/engine-vendor.js`, moduleMatcher(`${addonName}/components/foo`));
+      output.doesNotContain(`engines-dist/${engineName}/assets/engine-vendor.js`, moduleMatcher(`${addonName}/templates/components/foo`));
+      output.doesNotContain(`engines-dist/${engineName}/assets/engine-vendor.css`, cssCommentMatcher(`${addonName}.css`));
+    }));
   });
 });
