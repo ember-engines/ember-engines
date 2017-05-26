@@ -277,37 +277,37 @@ test('transitionTo works properly within parent application', function(assert) {
   });
 });
 
-test('transitionToExternal transitions to the parent application from within an engine', function(assert) {
+test('transitionToExternal transitions to the parent application from within an engine and returns a thenable Transition object', function(assert) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/special-admin-blog-here/post/1');
+  visit('/routable-engine-demo/ember-blog/post/1');
   click('.routable-post-transition-to-home-button');
-
   andThen(() => {
     assert.equal(currentURL(), '/');
+  });
 
-    visit('/routable-engine-demo/special-admin-blog-here/post/1');
-
-    andThen(() => {
-      assert.ok(this.application.$('.routable-post-transition-to-home-button').hasClass('transitioned-to-external'));
-    })
+  click('.routeable-engine');
+  click('.ember-blog-new');
+  click('.trigger-transition-to');
+  andThen(() => {
+    assert.ok(this.application.$('.routable-post-transition-to-home-button').hasClass('transitioned-to-external'));
   });
 });
 
-test('replaceWithExternal transitions to the parent application from within an engine', function(assert) {
+test('replaceWithExternal transitions to the parent application from within an engine and returns a thenable Transition object', function(assert) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/special-admin-blog-here/post/1');
+  visit('/routable-engine-demo/ember-blog/post/1');
   click('.routable-post-replace-with-home-button');
-
   andThen(() => {
     assert.equal(currentURL(), '/');
+  });
 
-    visit('/routable-engine-demo/special-admin-blog-here/post/1');
-
-    andThen(() => {
-      assert.ok(this.application.$('.routable-post-replace-with-home-button').hasClass('replaced-with-external'));
-    })
+  click('.routeable-engine');
+  click('.ember-blog-new');
+  click('.trigger-transition-to');
+  andThen(() => {
+    assert.ok(this.application.$('.routable-post-replace-with-home-button').hasClass('replaced-with-external'));
   });
 });
 
