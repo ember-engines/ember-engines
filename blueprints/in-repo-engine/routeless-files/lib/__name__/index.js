@@ -4,9 +4,11 @@
 const EngineAddon = require('ember-engines/lib/engine-addon');
 
 module.exports = EngineAddon.extend({
-  name: '<%= dasherizedModuleName %>',<% if (hasLazyFlag) { %>
+  name: '<%= dasherizedModuleName %>',
 
-  lazyLoading: <%= isLazy %>,<% } %>
+  lazyLoading: {
+    enabled: <%= isLazy %>
+  },
 
   isDevelopingAddon() {
     return true;
