@@ -15,10 +15,10 @@ consumers or providers of engines. The following functionality is supported:
 * Sharing of dependencies from parents (applications or other engines) to
   contained engines. Shared dependencies are currently limited to services
   and route paths.
+* Lazy loading of engines.
 
 The following functionality will soon be supported:
 
-* Lazy loading of engines.
 * Route serializer modules that isolate serialization logic from the rest of
   the route definition.
 
