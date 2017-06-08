@@ -15,7 +15,6 @@ module.exports = Object.assign({}, InRepoAddon, {
     return {
       name: name,
       modulePrefix: name,
-      hasLazyFlag: typeof options.lazy !== 'undefined',
       isLazy: !!options.lazy
     };
   },
