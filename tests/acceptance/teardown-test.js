@@ -19,3 +19,19 @@ test('routeable engines clean up their container state', function(assert) {
   });
 
 });
+
+test('routeless engines clean up their container state', function(assert) {
+  let service;
+  assert.expect(2);
+  this.application = startApp();
+
+  visit('/routeless-engine-demo');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/routeless-engine-demo');
+    service = this.application.__container__.lookup('service:store').__exampleServiceForTesting;
+    destroyApp(this.application);
+    assert.ok(service.isDestroyed, 'service got destroyed');
+  });
+
+});
