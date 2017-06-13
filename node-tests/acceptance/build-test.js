@@ -346,6 +346,30 @@ describe('Acceptance', function() {
       });
     }));
 
+    it('correctly separates routes.js and its imports when lazyLoading.includeRoutesInApplication is false', co.wrap(function* () {
+      let app = new AddonTestApp();
+      let engineName = 'separate-routes';
+
+      yield app.create('engine-testing', { noFixtures: true });
+      let engine = yield InRepoEngine.generate(app, engineName, { lazy: true });
+
+      engine.writeFixture(require(`../fixtures/${engineName}/data`));
+
+      let output = yield build(app);
+
+      let hoistedModules = [
+        'routes',
+        'absolute-routes-import',
+        'relative-routes-import'
+      ];
+
+      hoistedModules.forEach((module) => {
+        let matcher = moduleMatcher(`${engineName}/${module}`);
+        output.doesNotContain(`assets/vendor.js`, matcher);
+        output.contains(`engines-dist/${engineName}/assets/routes.js`, matcher);
+      });
+    }));
+
     it('does not duplicate addons in lazy engines that appear in the host', co.wrap(function* () {
       let app = new AddonTestApp();
       let appName = 'engine-testing';
