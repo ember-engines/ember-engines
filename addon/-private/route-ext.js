@@ -11,7 +11,7 @@ const {
 function externalAlias(methodName) {
   return function _externalAliasMethod(routeName, ...args) {
     let externalRoute = getOwner(this)._getExternalRoute(routeName);
-    this.router[methodName](externalRoute, ...args);
+    return this.router[methodName](externalRoute, ...args);
   };
 }
 

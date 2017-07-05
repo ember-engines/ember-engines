@@ -1,6 +1,6 @@
 {
   "name": "ember-engines",
-  "version": "0.5.4",
+  "version": "0.5.8",
   "description": "Experimental support for Ember Engines",
   "directories": {
     "doc": "doc",
@@ -70,7 +70,7 @@
   ],
   "dependencies": {
     "amd-name-resolver": "0.0.5",
-    "babel-plugin-compact-reexports": "^0.1.0",
+    "babel-plugin-compact-reexports": "^0.1.1",
     "broccoli-babel-transpiler": "^5.6.1",
     "broccoli-concat": "^3.0.1",
     "broccoli-debug": "^0.6.0",

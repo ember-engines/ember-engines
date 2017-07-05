@@ -13,6 +13,20 @@ export default Ember.Route.extend({
   actions: {
     goToChineseVersion() {
       this.transitionTo({ queryParams: { lang: 'Chinese' } });
+    },
+    transitionToHome() {
+      this.transitionToExternal('home')
+        .then(() => {
+          var postController = this.controllerFor(this.routeName);
+          postController.set('transitionedToExternal', true);
+        });
+    },
+    replaceWithHome() {
+      this.replaceWithExternal('home')
+        .then(() => {
+          var postController = this.controllerFor(this.routeName);
+          postController.set('replacedWithExternal', true);
+        });
     }
   }
 });
