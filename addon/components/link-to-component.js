@@ -6,7 +6,8 @@ const {
   getOwner,
   get,
   set,
-  typeOf
+  typeOf,
+  assert
 } = Ember;
 
 export default LinkComponent.extend({
@@ -14,6 +15,11 @@ export default LinkComponent.extend({
     this._super(...arguments);
 
     let owner = getOwner(this);
+
+    assert(
+      `You attempted to use a link-to within a routeless engine, this is not supported.`,
+      owner.mountPoint !== undefined
+    );
 
     if (owner.mountPoint) {
       // Prepend engine mount point to targetRouteName
