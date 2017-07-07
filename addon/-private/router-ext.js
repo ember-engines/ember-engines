@@ -1,136 +1,258 @@
 import Ember from 'ember';
 import emberRequire from './ext-require';
 
+const hasDefaultSerialize = emberRequire('ember-routing/system/route', 'hasDefaultSerialize');
+
 const {
+  Logger: {
+    info
+  },
+  Router,
+  RSVP,
   assert,
-  Router: EmberRouter,
-  RouterDSL: EmberRouterDSL,
-  getOwner,
-  get
+  get,
+  getOwner
 } = Ember;
 
-const info = emberRequire('ember-metal/debug', 'info');
-const EmptyObject = emberRequire('ember-metal/empty_object');
-
-EmberRouter.reopen({
+Router.reopen({
   init() {
     this._super(...arguments);
+    this._enginePromises = Object.create(null);
+    this._seenHandlers = Object.create(null);
 
-    this._engineInstances = new EmptyObject();
-    this._routeToEngineInfoXRef = new EmptyObject();
+    // We lookup the asset loader service instead of injecting it so that we
+    // don't blow up unit tests for consumers
+    this._assetLoader = getOwner(this).lookup('service:asset-loader');
   },
 
-  /*
-    Overridden to allow passing an additional option of `resolveRouteMap`
-    which is used in the DSL's `mount` method to find a given engines route map.
-  */
-  _buildDSL() {
-    let owner = getOwner(this);
-    let moduleBasedResolver = this._hasModuleBasedResolver();
-    let router = this;
-
-    return new EmberRouterDSL(null, {
-      enableLoadingSubstates: !!moduleBasedResolver,
-
-      resolveRouteMap(name) {
-        return owner._lookupFactory('route-map:' + name);
-      },
-
-      addRouteForEngine(name, engineInfo) {
-        router._routeToEngineInfoXRef[name] = engineInfo;
-      }
-    });
-  },
-
-  _getEngineInstance({ name, instanceId, mountPoint }) {
-    let engineInstances = this._engineInstances;
-
-    if (!engineInstances[name]) {
-      engineInstances[name] = new EmptyObject();
+  /**
+   * When going to an Engine route, we check for QP meta in the BucketCache
+   * instead of checking the Route (which may not exist yet). We populate
+   * the BucketCache after loading the Route the first time.
+   *
+   * @override
+   */
+  _getQPMeta(handlerInfo) {
+    let routeName = handlerInfo.name;
+    let isWithinEngine = this._engineInfoByRoute[routeName];
+    let hasBeenLoaded = this._seenHandlers[routeName];
+    if (isWithinEngine && !hasBeenLoaded) {
+      return undefined;
     }
 
-    let engineInstance = engineInstances[name][instanceId];
-
-    if (!engineInstance) {
-      let owner = getOwner(this);
-
-      assert(
-        'You attempted to mount the engine \'' + name + '\' in your router map, but the engine can not be found.',
-        owner.hasRegistration(`engine:${name}`)
-      );
-
-      engineInstance = owner.buildChildEngineInstance(name, {
-        routable: true,
-        mountPoint
-      });
-
-      engineInstance.boot();
-
-      engineInstances[name][instanceId] = engineInstance;
-    }
-
-    return engineInstance;
+    return this._super(...arguments);
   },
 
-  /*
-    Overridden to use the passed in `info` object as an object (previously a string
-    representing the route name).
-  */
+  /**
+   * We override this to fetch assets when crossing into a lazy Engine for the
+   * first time. For other cases we do the normal thing.
+   *
+   * @override
+   */
   _getHandlerFunction() {
-    var seen = new EmptyObject();
+    let seen = this._seenHandlers;
     let owner = getOwner(this);
 
-    return (_name) => {
-      let name = _name;
-      let engineInfo = this._routeToEngineInfoXRef[name];
-      let handler, engineInstance, routeOwner;
+    return (name) => {
+      let engineInfo = this._engineInfoByRoute[name];
 
       if (engineInfo) {
-        engineInstance = this._getEngineInstance(engineInfo);
-
-        routeOwner = engineInstance;
-        name = engineInfo.localFullName;
-      } else {
-        routeOwner = owner;
-      }
-
-      let routeName = 'route:' + name;
-
-      handler = routeOwner.lookup(routeName);
-
-      if (seen[_name]) {
-        return handler;
-      }
-
-      seen[_name] = true;
-
-      if (!handler) {
-        let DefaultRoute = routeOwner._lookupFactory('route:basic');
-
-        routeOwner.register(routeName, DefaultRoute.extend());
-        handler = routeOwner.lookup(routeName);
-
-        if (get(this, 'namespace.LOG_ACTIVE_GENERATION')) {
-          info(`generated -> ${routeName}`, { fullName: routeName });
+        let engineInstance = this._getEngineInstance(engineInfo);
+        if (engineInstance) {
+          return this._getHandlerForEngine(seen, name, engineInfo.localFullName, engineInstance);
+        } else {
+          return this._loadEngineInstance(engineInfo).then((instance) => {
+            return this._getHandlerForEngine(seen, name, engineInfo.localFullName, instance);
+          });
         }
       }
 
-      handler.routeName = name;
-
-      return handler;
+      // If we don't cross into an Engine, then the routeName and localRouteName
+      // are the same.
+      return this._internalGetHandler(seen, name, name, owner);
     };
   },
 
   /**
-    @private
-  */
-  willDestroy() {
-    this._super(...arguments);
-    let instances = this._engineInstances;
-    for (let name in instances) {
-      for (let id in instances[name]) {
-        Ember.run(instances[name][id], 'destroy');
+   * Gets the handler for a route from an Engine instance, proxies to the
+   * _internalGetHandler method.
+   *
+   * @private
+   * @method _getHandlerForEngine
+   * @param {Object} seen
+   * @param {String} routeName
+   * @param {String} localRouteName
+   * @param {Owner} routeOwner
+   * @return {EngineInstance} engineInstance
+   */
+  _getHandlerForEngine(seen, routeName, localRouteName, engineInstance) {
+    let handler = this._internalGetHandler(seen, routeName, localRouteName, engineInstance);
+
+    if (!hasDefaultSerialize(handler)) {
+      throw new Error('Defining a custom serialize method on an Engine route is not supported.');
+    }
+
+    return handler;
+  },
+
+  /**
+   * This method is responsible for actually doing the lookup in getHandler.
+   * It is separate so that it can be used from different code paths.
+   *
+   * @private
+   * @method _internalGetHandler
+   * @param {Object} seen
+   * @param {String} routeName
+   * @param {String} localRouteName
+   * @param {Owner} routeOwner
+   * @return {Route} handler
+   */
+  _internalGetHandler(seen, routeName, localRouteName, routeOwner) {
+    const fullRouteName = 'route:' + localRouteName;
+    let handler = routeOwner.lookup(fullRouteName);
+
+    if (seen[routeName] && handler) {
+      return handler;
+    }
+
+    seen[routeName] = true;
+
+    if (!handler) {
+      const DefaultRoute = routeOwner.factoryFor ? routeOwner.factoryFor('route:basic').class : routeOwner._lookupFactory('route:basic');
+
+      routeOwner.register(fullRouteName, DefaultRoute.extend());
+      handler = routeOwner.lookup(fullRouteName);
+
+      if (get(this, 'namespace.LOG_ACTIVE_GENERATION')) {
+        info(`generated -> ${fullRouteName}`, { fullName: fullRouteName });
       }
     }
+
+    handler._setRouteName(localRouteName);
+    if (handler._populateQPMeta) {
+      handler._populateQPMeta();
+    }
+
+    return handler;
+  },
+
+  /**
+   * Checks the owner to see if it has a registration for an Engine. This is a
+   * proxy to tell if an Engine's assets are loaded or not.
+   *
+   * @private
+   * @method _engineIsLoaded
+   * @param {String} name
+   * @return {Boolean}
+   */
+  _engineIsLoaded(name) {
+    let owner = getOwner(this);
+    return owner.hasRegistration('engine:' + name);
+  },
+
+  /**
+   * Registers an Engine that was recently loaded.
+   *
+   * @private
+   * @method _registerEngine
+   * @param {String} name
+   * @return {Void}
+   */
+  _registerEngine(name) {
+    let owner = getOwner(this);
+    if (!owner.hasRegistration('engine:' + name)) {
+      owner.register('engine:' + name, window.require(name + '/engine').default);
+    }
+  },
+
+  /**
+   * Gets the instance of an Engine with the specified name and instanceId.
+   *
+   * @private
+   * @method _getEngineInstance
+   * @param {Object} engineInfo
+   * @param {String} engineInfo.name
+   * @param {String} engineInfo.instanceId
+   * @return {EngineInstance}
+   */
+  _getEngineInstance({ name, instanceId }) {
+    let engineInstances = this._engineInstances;
+    return engineInstances[name] && engineInstances[name][instanceId];
+  },
+
+  /**
+   * Loads an instance of an Engine with the specified name and instanceId.
+   * Returns a Promise for both Eager and Lazy Engines. This function loads the
+   * assets for any Lazy Engines.
+   *
+   * @private
+   * @method _loadEngineInstance
+   * @param {Object} engineInfo
+   * @param {String} engineInfo.name
+   * @param {String} engineInfo.instanceId
+   * @param {String} engineInfo.mountPoint
+   * @return {Promise}
+   */
+  _loadEngineInstance({ name, instanceId, mountPoint }) {
+    let enginePromises = this._enginePromises;
+
+    if (!enginePromises[name]) {
+      enginePromises[name] = Object.create(null);
+    }
+
+    let enginePromise = enginePromises[name][instanceId];
+
+    // We already have a Promise for this engine instance
+    if (enginePromise) {
+      return enginePromise;
+    }
+
+    if (this._engineIsLoaded(name)) {
+      // The Engine is loaded, but has no Promise
+      enginePromise = RSVP.resolve();
+    } else {
+      // The Engine is not loaded and has no Promise
+      enginePromise = this._assetLoader.loadBundle(name).then(() => this._registerEngine(name));
+    }
+
+    return enginePromises[name][instanceId] = enginePromise.then(() => {
+      return this._constructEngineInstance({ name, instanceId, mountPoint });
+    });
+  },
+
+  /**
+   * Constructs an instance of an Engine based on an engineInfo object.
+   * TODO: Figure out if this works with nested Engines.
+   *
+   * @private
+   * @method _constructEngineInstance
+   * @param {Object} engineInfo
+   * @param {String} engineInfo.name
+   * @param {String} engineInfo.instanceId
+   * @param {String} engineInfo.mountPoint
+   * @return {EngineInstance} engineInstance
+   */
+  _constructEngineInstance({ name, instanceId, mountPoint }) {
+    let owner = getOwner(this);
+
+    assert(
+      'You attempted to mount the engine \'' + name + '\' in your router map, but the engine cannot be found.',
+      owner.hasRegistration(`engine:${name}`)
+    );
+
+    let engineInstances = this._engineInstances;
+
+    if (!engineInstances[name]) {
+      engineInstances[name] = Object.create(null);
+    }
+
+    let engineInstance = owner.buildChildEngineInstance(name, {
+      routable: true,
+      mountPoint
+    });
+
+    engineInstance.boot();
+
+    return engineInstances[name][instanceId] = engineInstance;
   }
 });

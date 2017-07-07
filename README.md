@@ -1,4 +1,4 @@
-# ember-engines [![Build Status](https://travis-ci.org/dgeb/ember-engines.png)](https://travis-ci.org/dgeb/ember-engines)
+# ember-engines [![Build Status](https://travis-ci.org/ember-engines/ember-engines.svg?branch=master)](https://travis-ci.org/ember-engines/ember-engines)
 
 This Ember addon implements the functionality described in the [Ember Engines
 RFC](https://github.com/emberjs/rfcs/pull/10). Engines allow multiple logical
@@ -15,10 +15,10 @@ consumers or providers of engines. The following functionality is supported:
 * Sharing of dependencies from parents (applications or other engines) to
   contained engines. Shared dependencies are currently limited to services
   and route paths.
+* Lazy loading of engines.
 
 The following functionality will soon be supported:
 
-* Lazy loading of engines.
 * Route serializer modules that isolate serialization logic from the rest of
   the route definition.
 
@@ -27,6 +27,25 @@ Support for the following concepts is under consideration:
 * Namespaced access to engine resources from applications.
 * Sharing of dependencies other than services and route paths.
 * Passing configuration attributes from an engine's parent.
+
+## Important Note about Compatibility and Stability
+
+This addon should be considered experimental and used with caution.
+
+The [master branch of this addon](https://github.com/ember-engines/ember-engines)
+is being developed against the master branch of Ember and Ember-CLI, and should
+be considered unstable. If you're planning to deploy to production, please use
+one of the stable releases.
+
+[v0.5 of this addon](https://github.com/ember-engines/ember-engines/tree/v0.5.0)
+is compatible with v2.12.x of both Ember and Ember-CLI.
+
+[v0.4 of this addon](https://github.com/ember-engines/ember-engines/tree/v0.4.0)
+is compatible with v2.10.x of both Ember and Ember-CLI.
+
+[v0.3 of this addon](https://github.com/ember-engines/ember-engines/tree/v0.3)
+is compatible with v2.8.x of Ember. This is the first version of Ember in which
+the required hooks for engines are available without a feature flag.
 
 ## Introduction Video
 
@@ -40,17 +59,7 @@ From your Ember CLI project's root directory, run the following:
 ember install ember-engines
 ```
 
-You will also need to install Ember Canary:
-
-```
-rm -rf bower_components
-bower install --save ember#canary
-bower install
-```
-
-Bower may prompt you to select various "resolutions". Make sure to choose
-`ember#canary` if prompted, and prefix the choice with ! to persist it to
-`bower.json`.
+Install the appropriate version of Ember as noted above.
 
 ## Providing Engines
 
@@ -68,17 +77,14 @@ _Note: As described in the RFC, ember-cli will hopefully support an `engine`
 command to get started more easily with engine projects._
 
 In order to create an engine within an existing application's project, run the
-`in-repo-addon` generator:
+`in-repo-engine` generator:
 
 ```
-ember g in-repo-addon <engine-name>
+ember g in-repo-engine <engine-name>
 ```
 
-_Note: As described in the RFC, ember-cli will hopefully support an
-`in-repo-engine` generator to get started more easily with in-repo engines._
-
-Don't forget to install `ember-engines` and Ember Canary in your project, as
-described above.
+Don't forget to install `ember-engines` and the appropriate version of Ember in
+your project, as described above.
 
 ### Configuring your Engine
 
@@ -87,21 +93,39 @@ is configured as an engine using the `EngineAddon` extension:
 
 ```js
 /*jshint node:true*/
-var EngineAddon = require('ember-engines/lib/engine-addon');
+const EngineAddon = require('ember-engines/lib/engine-addon');
 
 module.exports = EngineAddon.extend({
   name: 'ember-blog'
 });
 ```
 
+Within your engine's `config` directory, create a new `environment.js` file:
+
+```js
+/*jshint node:true*/
+'use strict';
+
+module.exports = function(environment) {
+  const ENV = {
+    modulePrefix: 'ember-blog',
+    environment: environment
+  }
+
+  return ENV;
+};
+```
+
 Within your engine's `addon` directory, add a new `engine.js` file:
 
 ```js
 import Engine from 'ember-engines/engine';
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
+import config from './config/environment';
 
-const modulePrefix = 'ember-blog';
+const { modulePrefix } = config;
+
 const Eng = Engine.extend({
   modulePrefix,
   Resolver
@@ -110,15 +134,25 @@ const Eng = Engine.extend({
 loadInitializers(Eng, modulePrefix);
 
 export default Eng;
-
 ```
 
-It's important to define a `modulePrefix` that will be used to resolve your
-engine and its constituent modules.
+It's important that `modulePrefix` be set in `config/environment.js` so that
+it can be referenced in `addon/engine.js`.
+
+### Lazy Loading Engines
+
+You must also declare in your Engine's `index.js` file whether or not the engine should be lazy loaded. Until lazy loading is supported, this should be set to `false`:
+```js
+const EngineAddon = require('ember-engines/lib/engine-addon');
+module.exports = EngineAddon.extend({
+  name: 'ember-blog',
+  lazyLoading: false
+});
+```
 
 ### Routable Engines
 
-Routable engines should declare their route map in a `routes.js` file.
+Routable engines should declare their route map in a `routes.js` file within your engine's `addon` directory.
 For example:
 
 ```js
@@ -154,19 +188,25 @@ For example, the following engine requires a `store` service from its parent:
 
 ```js
 import Engine from 'ember-engines/engine';
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-resolver';
+import loadInitializers from 'ember-load-initializers';
+import config from './config/environment';
 
-export default Engine.extend({
-  modulePrefix: 'ember-blog',
+const { modulePrefix } = config;
 
+const Eng = Engine.extend({
+  modulePrefix,
   Resolver,
-
   dependencies: {
     services: [
       'store'
     ]
   }
 });
+
+loadInitializers(Eng, modulePrefix);
+
+export default Eng;
 ```
 
 Currently, only services and route paths (see below) can be shared across the
@@ -199,8 +239,8 @@ located via a route path:
 ```js
 // dummy/app/app.js
 const App = Ember.Application.extend({
-  modulePrefix: config.modulePrefix,
-  podModulePrefix: config.podModulePrefix,
+  modulePrefix,
+  podModulePrefix,
   Resolver,
 
   engines: {
@@ -215,6 +255,7 @@ const App = Ember.Application.extend({
   }
 });
 ```
+
 You can then use those external routes either programmatically or within a
 template like so:
 
@@ -229,6 +270,205 @@ this.transitionToExternal('settings');
 
 For further documentation on this subject, view the [Engine Linking RFC](https://github.com/emberjs/rfcs/pull/122).
 
+### Lazy-Loading Routing Considerations
+
+When routing into an Engine that is lazily loaded there are some special considerations and subtle differences from how routing works in a normal Ember application.
+
+#### Serialization of URLs
+
+Since the links to your Engine are constructed before the Engine itself is loaded, you need to make sure the application has the necessary code to serialize data into the URLs. To that end, you need to replace any [`Route#serialize`](http://emberjs.com/api/classes/Ember.Route.html#method_serialize) functions with route serializers, as defined in [the Route Serializers RFC](https://github.com/emberjs/rfcs/blob/master/text/0120-route-serializers.md).
+
+For example, if you had a `Post` route defined like so:
+
+```js
+export default Ember.Route.extend({
+  serialize(model) {
+    return { post_id: model.id };
+  }
+});
+```
+
+You would need to remove that function and inline it into your `routes.js` map, which is loaded pre-emptively with the application:
+
+```js
+function serializePost(model) {
+  return { post_id: model.id };
+}
+
+export default buildRoutes(function() {
+  this.route('post', { serialize: serializePost });
+});
+```
+
+Note that route serializers are unique to Engines and won't work in normal applications. In a normal Ember application you should continue to use `Route#serialize`.
+
+#### Loading / Error Substates
+
+The loading and error substates work in a similar fashion to [substates in a normal Ember app](https://guides.emberjs.com/v2.6.0/routing/loading-and-error-substates/). The only difference is that lazily loaded Engines will enter a loading state while the assets for the Engine are loaded and can enter an error state when an asset fails to load.
+
+### Accessing Engine Configuration Settings
+
+As in an application, you can provide configuration settings for your
+engine in `config/environment.js`. You can access these settings in a
+couple different ways.
+
+The simplest method is to import these settings:
+
+```js
+// addon/engine.js
+import config from './config/environment';
+
+console.log(config.modulePrefix);
+```
+
+Configuration settings are also registered with the key `config:environment` and
+can be looked up given an engine instance. For example:
+
+```js
+// addon/instance-initializers/hello-instance.js
+export function initialize(engineInstance) {
+  let config = engineInstance.resolveRegistration('config:environment');
+  console.log('modulePrefix', config.modulePrefix);
+}
+
+export default {
+  name: 'hello-instance',
+  initialize: initialize
+};
+```
+
+## Built Engine Output
+
+### Eager Engines
+
+Eager engines are built approximately the same as existing addons. Differences
+are limited to consolidating the namespace of `app` code inside of an engine
+into the engine's namespace instead of the host application.
+
+Beyond that it adds in a configuration module for the engine, and nothing else.
+It is a remarkably straightforward process.
+
+### Lazy Engines
+
+Lazy engines are built in the same way as eager engines, but their assets are
+not combined back into the host application's `vendor.js` file. This means that
+they are run through a separate and unique build process from what a default
+addon will go through, though it reaches out to the upstream implementation in
+Ember CLI where possible.
+
+A lazy engine's output (`lazy-engine`) looks like this:
+```
+dist
+├── assets
+│   ├── host-application.css
+│   ├── host-application.js
+│   ├── vendor.css
+│   └── vendor.js
+├── crossdomain.xml
+├── engines-dist
+│   └── lazy-engine
+│       ├── assets
+│       │   ├── engine-vendor.css
+│       │   ├── engine-vendor.js
+│       │   ├── engine.css
+│       │   └── engine.js
+│       └── public-asset.jpg
+├── index.html
+└── robots.txt
+```
+
+#### `/addon/routes.js`
+
+The `routes.js` file and anything it `import`s must be present at boot time of
+the host application. It will be bundled into the host application's `vendor.js`
+file. This location should be considered `undefined` behavior and should not be
+relied upon as it may change in the future.
+
+Its module name inside of the host application will be `lazy-engine/routes`. Any
+`import`s will also be in the `lazy-engine` module path.
+
+#### `/app`
+
+Assets in this folder don't make sense and will be ignored as they break the
+isolation guarantees of engines.
+
+#### `/addon`
+
+JavaScript assets in this folder will be processed as per normal addon behavior
+except that they will end up inside of the `engine.js` file. Their module
+definition will be rooted to the engine name.
+
+For example, `/addon/routes/application.js` will result in a JavaScript module
+named `lazy-engine/routes/application` inside of the
+`/dist/engines-dist/lazy-engine/engine.js` file.
+
+#### `/addon/templates`
+
+Templates will be compiled by your engine but they must include
+`ember-cli-htmlbars` inside of `dependencies` in the engine's `package.json`.
+
+As an example, `/addon/templates/application.hbs` will result in a JavaScript
+module named `lazy-engine/templates/application` inside of the
+`/dist/engines-dist/lazy-engine/engine.js` file.
+
+#### `/addon/styles/**/*.css`
+
+CSS files will be built similarly to how they are processed inside of typical
+adddons. Typical addon behavior is as follows:
+
+1. All nested addons are processed. Each of them may return a `style` tree. By
+default these style trees only contain the contents of `addon/styles/addon.css`.
+The contents of the `addon/styles/addon.css` file is moved inside of the
+Broccoli tree to `${addon-name}.css`. This can be modified if the addon
+specifies a custom `treeForStyle` hook.
+2. All top-level addons (those directly depended upon by the host) have all of
+`addon/styles/**/*.css` included into the host's `vendor.css` file. For example
+`addon/styles/foo.css` will appear in the output Broccoli tree at `foo.css`.
+3. If you name a CSS file in one of the top-level addons the same as an addon
+name (e.g. addon name is `alpha`), any top-level addon which has a CSS file
+of the same name as that addon (`alpha.css`) and is provided by an addon
+lexicographically after it (`zeta`) will clobber the contents of
+`alpha/addon/styles/addon.css` (from anywhere in the dependency graph) with
+`zeta/addon/styles/alpha.css`. (This is also a possible consequence of DAG
+topsorting.)
+
+Lazy engines will use a variation of this approach:
+
+1. The engine itself will be treated as if it is a top-level dependency. This
+means that `addon/styles/**/*.css` will end up inside of `engine.css`.
+2. Child addons of a lazy engine will be treated as if they are top-level
+addons. This means that they will have their `treeForStyle` hook executed and
+the result of that hook will be merged into `engine-vendor.css` in
+DAG/lexicographic order.
+3. Nested lazy engine boundaries will not be crossed when calculating the child
+`treeForStyle` hook.
+
+#### `/public`
+
+Assets appearing in the public folder will appear at the root of the engine
+output with no transformation. For example `/public/public-asset.jpg` appears at
+the root level of the `/dist/engines-dist/lazy-engine/` output folder. Assets in
+this folder have no default behavior and you are responsible for any custom
+behavior.
+
+#### Asset Manifest
+
+Further, the engine must enumerate its primary assets (JS and CSS) in order to
+be loaded by the asset loading service. That will be generated at
+`/dist/asset-manifest.json` at build time. It will also by default be inserted
+into a meta tag config inside of the host application's `index.html`.
+
+### Nested Eager Engines
+
+Nested eager engines will be built into their host engine or application.
+Modules will be deduplicated within the engine boundary and with the host
+application.
+
+### Nested Lazy Engines
+
+Nested lazy engines will be promoted to `/dist/engines-dist/` folder in the
+build output. Module deduplication will only be done with the host application.
+
 ## Consuming Engines
 
 Engines that are published as separate addons should be installed like any
@@ -241,32 +481,6 @@ ember install <engine-name>
 As mentioned above, engines can also exist as in-repo addons, in which case
 you just need to ensure that this addon (`ember-engines`) has been installed
 in your main project.
-
-### Customizing the Resolver
-
-An Application or Engine that contains other engines must use the `Resolver`
-provided in the `ember-engines/resolver` module. For example:
-
-```js
-import Ember from 'ember';
-import Resolver from 'ember-engines/resolver';
-import loadInitializers from 'ember/load-initializers';
-import config from './config/environment';
-
-let App;
-
-Ember.MODEL_FACTORY_INJECTIONS = true;
-
-App = Ember.Application.extend({
-  modulePrefix: config.modulePrefix,
-  podModulePrefix: config.podModulePrefix,
-  Resolver
-});
-
-loadInitializers(App, config.modulePrefix);
-
-export default App;
-```
 
 ### Route-less Engines
 
@@ -344,7 +558,7 @@ For example, the following engine expects its parent to provide `store` and
 
 ```js
 import Engine from 'ember-engines/engine';
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-resolver';
 
 export default Engine.extend({
   modulePrefix: 'ember-blog',
@@ -365,17 +579,17 @@ dependencies. For example:
 
 ```js
 import Ember from 'ember';
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-resolver';
 import loadInitializers from 'ember/load-initializers';
 import config from './config/environment';
 
-let App;
-
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
-App = Ember.Application.extend({
-  modulePrefix: config.modulePrefix,
-  podModulePrefix: config.podModulePrefix,
+const { modulePrefix, podModulePrefix } = config;
+
+const App = Ember.Application.extend({
+  modulePrefix,
+  podModulePrefix,
   Resolver,
 
   engines: {
@@ -390,7 +604,7 @@ App = Ember.Application.extend({
   }
 });
 
-loadInitializers(App, config.modulePrefix);
+loadInitializers(App, modulePrefix);
 
 export default App;
 ```
@@ -403,13 +617,48 @@ Also note that multiple engines can be configured per parent application/engine,
 and that each engine name should be camelCased (`emberBlog` instead of
 `ember-blog`).
 
+### Unit/Integration testing for in repo-engines
+
+To test components declared inside an in-repo engine, you need to set a custom resolver with the engine's prefix.
+
+Assuming you have an in-repo engine called `appointments-manager` and it has a component `date-picker`. The
+following would be the setup to test such component from the host app:
+
+```js
+// host-app/tests/integration/components/date-picker-test.js
+
+import { moduleForComponent, test } from 'ember-qunit';
+import hbs from 'htmlbars-inline-precompile';
+import engineResolverFor from 'ember-engines/test-support/engine-resolver-for';
+
+const resolver = engineResolverFor('appointments-manager');
+
+moduleForComponent('date-picker', 'Integration | Component | Date picker', {
+  integration: true,
+  resolver
+});
+
+test('renders text', function(assert) {
+  this.render(hbs`{{date-picker}}`);
+
+  assert.equal(this.$().text().trim(), 'una fecha');
+});
+```
+
+**Note: you could create a helper and then use it like `Resolver from ../helpers/appointments-manager/resolver`**
+
+## Demo Projects
+
+* [ember-engines-demo](https://github.com/dgeb/ember-engines-demo) - an example of a parent application (consumer).
+  * ember-chat-engine - an example of a route-less engine that is an in-repo addon.
+* [ember-blog-engine](https://github.com/dgeb/ember-blog-engine) - an example of a routable engine that is a separate addon project.
+
 ## Contributing
 
 ### Installation
 
 * `git clone` this repository
 * `npm install`
-* `bower install`
 
 ### Running
 
@@ -430,4 +679,4 @@ For more information on using ember-cli, visit [http://www.ember-cli.com/](http:
 
 ## License
 
-Copyright 2015 Dan Gebhardt and Robert Jackson. MIT License (see LICENSE.md for details).
+Copyright 2015-2016 Dan Gebhardt and Robert Jackson. MIT License (see LICENSE.md for details).

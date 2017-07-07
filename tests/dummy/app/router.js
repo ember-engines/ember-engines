@@ -10,6 +10,9 @@ Router.map(function() {
 
   this.route('routable-engine-demo', function() {
     this.route('normal-route');
+    this.route('redirect');
+    this.route('after-model', { path: '/after-model/:id' });
+
 
     this.mount('ember-blog');
 
@@ -20,7 +23,12 @@ Router.map(function() {
     this.mount('ember-blog', { as: 'dev-blog', resetNamespace: true });
 
     this.mount('ember-blog', { as: 'admin-blog', path: '/special-admin-blog-here' });
+
+    this.mount('eager-blog', { resetNamespace: true });
   });
+
+  // Used to check for collisions with Post route in ember-blog
+  this.route('post', { path: '/post/:id' });
 });
 
 export default Router;

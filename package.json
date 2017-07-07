@@ -1,6 +1,6 @@
 {
   "name": "ember-engines",
-  "version": "0.2.2",
+  "version": "0.5.8",
   "description": "Experimental support for Ember Engines",
   "directories": {
     "doc": "doc",
@@ -10,11 +10,17 @@
     "build": "ember build",
     "start": "ember server",
     "test": "ember try:testall",
-    "prepublish": "./bin/install-test-addons.sh"
+    "test:ember": "ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup",
+    "test:emberall": "ember try:each --skip-cleanup",
+    "test:node": "mocha 'node-tests/**/*-test.js' --reporter tap",
+    "test:windows": "ember try:one %EMBER_TRY_SCENARIO% test --skip-cleanup",
+    "test:node:dev": "BUILD_DEV=true testem -f testem-node.js",
+    "test:null": "echo 'no appropriate changes detected, not running tests'",
+    "prepublish": "node ./bin/install-test-addons.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dgeb/ember-engines.git"
+    "url": "git+https://github.com/ember-engines/ember-engines.git"
   },
   "engines": {
     "node": ">= 0.10.0"
@@ -26,36 +32,65 @@
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
-    "ember-ajax": "0.7.1",
+    "chai": "^3.5.0",
+    "co": "^4.6.0",
+    "common-tags": "^1.4.0",
+    "eager-blog": "file:./tests/dummy/lib/eager-blog",
+    "ember-ajax": "^3.0.0",
     "ember-blog": "file:./tests/dummy/lib/ember-blog",
     "ember-chat": "file:./tests/dummy/lib/ember-chat",
-    "ember-cli": "2.5.0",
-    "ember-cli-app-version": "^1.0.0",
+    "ember-cli": "2.13.1",
+    "ember-cli-addon-tests": "^0.7.0",
+    "ember-cli-app-version": "^3.0.0",
     "ember-cli-dependency-checker": "^1.2.0",
-    "ember-cli-htmlbars": "^1.0.3",
-    "ember-cli-htmlbars-inline-precompile": "^0.3.1",
+    "ember-cli-eslint": "^3.1.0",
+    "ember-cli-htmlbars-inline-precompile": "^0.4.2",
     "ember-cli-inject-live-reload": "^1.4.0",
-    "ember-cli-jshint": "^1.0.0",
-    "ember-cli-qunit": "^1.4.0",
-    "ember-cli-release": "0.2.8",
+    "ember-cli-qunit": "^4.0.0",
+    "ember-cli-release": "^0.2.9",
+    "ember-cli-shims": "^1.1.0",
     "ember-cli-sri": "^2.1.0",
+    "ember-cli-test-loader": "^1.1.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-disable-prototype-extensions": "^1.1.0",
-    "ember-export-application-global": "^1.0.5",
-    "ember-load-initializers": "^0.5.1",
-    "ember-resolver": "^2.0.3",
+    "ember-export-application-global": "^2.0.0",
+    "ember-load-initializers": "^1.0.0",
+    "ember-resolver": "^4.0.0",
     "ember-sinon": "0.5.0",
-    "ember-try": "^0.2.2",
-    "loader.js": "^4.0.1"
+    "ember-source": "2.13.0",
+    "execa": "^0.5.0",
+    "fixturify": "^0.3.3",
+    "fs-extra": "^1.0.0",
+    "loader.js": "^4.4.0",
+    "mocha": "^3.2.0",
+    "walk-sync": "^0.3.1"
   },
   "keywords": [
     "ember-addon"
   ],
   "dependencies": {
-    "broccoli-funnel": "^1.0.0",
+    "amd-name-resolver": "0.0.5",
+    "babel-plugin-compact-reexports": "^0.1.1",
+    "broccoli-babel-transpiler": "^5.6.1",
+    "broccoli-concat": "^3.0.1",
+    "broccoli-debug": "^0.6.0",
+    "broccoli-dependency-funnel": "^2.0.1",
+    "broccoli-file-creator": "^1.1.0",
+    "broccoli-funnel": "^1.0.8",
     "broccoli-merge-trees": "^1.0.0",
-    "ember-cli-htmlbars": "^1.0.1",
-    "ember-cli-babel": "^5.1.5"
+    "broccoli-test-helper": "^1.1.0",
+    "calculate-cache-key-for-tree": "^1.0.0",
+    "ember-asset-loader": "^0.2.0",
+    "ember-cli-babel": "^6.1.0",
+    "ember-cli-htmlbars": "^1.0.3",
+    "ember-cli-preprocess-registry": "^3.0.0",
+    "ember-cli-string-utils": "^1.0.0",
+    "ember-cli-version-checker": "^2.0.0",
+    "eslint": "^3.19.0",
+    "exists-sync": "0.0.3",
+    "lodash": "^4.12.0",
+    "lodash.defaultsdeep": "^4.5.1",
+    "mocha-eslint": "^3.0.1"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

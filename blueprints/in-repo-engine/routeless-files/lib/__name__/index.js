@@ -1,9 +1,16 @@
-/*jshint node:true*/
-var EngineAddon = require('ember-engines/lib/engine-addon');
+/* eslint-env node */
+'use strict';
+
+const EngineAddon = require('ember-engines/lib/engine-addon');
+
 module.exports = EngineAddon.extend({
   name: '<%= dasherizedModuleName %>',
 
-  isDevelopingAddon: function() {
+  lazyLoading: {
+    enabled: <%= isLazy %>
+  },
+
+  isDevelopingAddon() {
     return true;
   }
 });

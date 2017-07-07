@@ -2,10 +2,22 @@
 
 var path = require('path');
 var InRepoAddon = require('ember-cli/blueprints/in-repo-addon/index');
-var Route = require('ember-cli/blueprints/route/index');
+var stringUtil = require('ember-cli-string-utils');
 
-module.exports = {
+module.exports = Object.assign({}, InRepoAddon, {
   description: 'Creates an Engine within the current repository.',
+
+  locals: function(options) {
+    var entity = options.entity;
+    var rawName = entity.name;
+    var name = stringUtil.dasherize(rawName);
+
+    return {
+      name: name,
+      modulePrefix: name,
+      isLazy: !!options.lazy
+    };
+  },
 
   availableOptions: [
     {
@@ -16,17 +28,32 @@ module.exports = {
         { 'routable': 'routable' },
         { 'routeless': 'routeless' }
       ]
+    },
+    {
+      name: 'lazy',
+      type: Boolean,
+      description: 'Whether this Engine should load lazily or not'
     }
   ],
 
+  _setupRouteBlueprint: function() {
+    this.routeBlueprint = this.lookupBlueprint('route');
+    this.shouldTouchRouter = this.routeBlueprint.shouldTouchRouter;
+    this.shouldEntityTouchRouter = this.routeBlueprint.shouldEntityTouchRouter;
+  },
+
   install: function(options) {
     this.options = options;
-    return this._super.install.apply(this, arguments);
+    var superResult = this._super.install.apply(this, arguments);
+    this._setupRouteBlueprint();
+    return superResult;
   },
 
   uninstall: function(options) {
     this.options = options;
-    return this._super.uninstall.apply(this, arguments);
+    var superResult = this._super.uninstall.apply(this, arguments);
+    this._setupRouteBlueprint();
+    return superResult;
   },
 
   filesPath: function() {
@@ -40,19 +67,20 @@ module.exports = {
     return false;
   },
 
-  shouldTouchRouter: Route.shouldTouchRouter,
-  shouldEntityTouchRouter: Route.shouldEntityTouchRouter,
-
   beforeInstall: InRepoAddon.beforeInstall,
 
   afterInstall: function(options) {
     options.identifier = 'mount';
     InRepoAddon.afterInstall.call(this, options);
-    Route.afterInstall.call(this, options);
+    this.routeBlueprint.afterInstall.call(this, options);
   },
 
   afterUninstall: function(options) {
     options.identifier = 'mount';
-    Route.afterUninstall.call(this, options);
+    this.routeBlueprint.afterUninstall.call(this, options);
+  },
+
+  _generatePackageJson: function(options, isInstall) {
+    InRepoAddon._generatePackageJson.apply(this, arguments);
   }
-};
+});

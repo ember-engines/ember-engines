@@ -5,7 +5,12 @@
     "ember-addon",
     "ember-engine"
   ],
+  "ember-addon": {
+    "engineConfigPath": "ember-config"
+  },
   "dependencies": {
-    "ember-cli-htmlbars": "*"
+    "ember-cli-htmlbars": "*",
+    "ember-cli-babel": "*",
+    "common-components": "file:../common-components"
   }
 }

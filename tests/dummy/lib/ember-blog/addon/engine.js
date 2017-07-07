@@ -1,15 +1,13 @@
 import Engine from 'ember-engines/engine';
-import Resolver from 'ember-engines/resolver';
+import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
+import config from './config/environment';
 
-let Eng;
+const { modulePrefix } = config;
 
-const modulePrefix = 'ember-blog';
-
-Eng = Engine.extend({
+const Eng = Engine.extend({
   modulePrefix,
   Resolver,
-
   dependencies: {
     services: [
       'data-store'
