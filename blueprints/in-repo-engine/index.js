@@ -32,6 +32,7 @@ module.exports = Object.assign({}, InRepoAddon, {
     {
       name: 'lazy',
       type: Boolean,
+      default: false,
       description: 'Whether this Engine should load lazily or not'
     }
   ],
