@@ -21,9 +21,10 @@ import EmberResolver from 'ember-resolver';
  */
 export default function engineResolverFor(engineName, modulePrefix = engineName) {
   let Resolver;
-  try {
+
+  if (require.has(`${engineName}/resolver`)) {
     Resolver = require(`${engineName}/resolver`).default;
-  } catch (e) {
+  } else {
     Resolver = EmberResolver;
   }
   return Resolver.create({ namespace: { modulePrefix } });
