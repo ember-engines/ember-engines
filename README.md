@@ -1,4 +1,4 @@
-# ember-engines [![Build Status](https://travis-ci.org/ember-engines/ember-engines.svg?branch=master)](https://travis-ci.org/ember-engines/ember-engines)
+# ember-engines [![npm version](https://badge.fury.io/js/ember-engines.svg)](https://badge.fury.io/js/ember-engines) [![Build Status](https://travis-ci.org/ember-engines/ember-engines.svg?branch=master)](https://travis-ci.org/ember-engines/ember-engines)
 
 This Ember addon implements the functionality described in the [Ember Engines
 RFC](https://github.com/emberjs/rfcs/pull/10). Engines allow multiple logical
