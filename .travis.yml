@@ -23,7 +23,7 @@ before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
   # NPM needs to be installed globally for ember-cli-addon-tests
-  - yarn global add npm phantomjs-prebuilt
+  - yarn global add npm@4 phantomjs-prebuilt
   - phantomjs --version
 
 install:
