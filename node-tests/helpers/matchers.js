@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Creates a regex that matches the definition for the specified module name.
  *
