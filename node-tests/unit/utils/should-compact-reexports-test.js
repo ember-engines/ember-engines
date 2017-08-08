@@ -1,3 +1,5 @@
+'use strict';
+
 const co = require('co');
 const expect = require('chai').expect;
 const createTempDir = require('broccoli-test-helper').createTempDir;
