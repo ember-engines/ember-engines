@@ -61,7 +61,7 @@
     "fixturify": "^0.3.3",
     "fs-extra": "^1.0.0",
     "loader.js": "^4.4.0",
-    "mocha": "^3.2.0",
+    "mocha": "^3.5.0",
     "mocha-eslint": "^3.0.1",
     "walk-sync": "^0.3.1"
   },

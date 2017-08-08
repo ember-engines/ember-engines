@@ -4339,7 +4339,7 @@ mocha-eslint@^3.0.1:
     glob-all "^3.0.1"
     replaceall "^0.1.6"
 
-mocha@^3.2.0:
+mocha@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-3.5.0.tgz#1328567d2717f997030f8006234bce9b8cd72465"
   dependencies:
