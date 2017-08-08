@@ -63,8 +63,10 @@ class BuildOutput {
   }
 }
 
-function build(app) {
-  return app.runEmberCommand('build').then(() => {
+function build(app, _environment) {
+  let environment = _environment || 'development';
+
+  return app.runEmberCommand('build', '--environment', environment).then(() => {
     return new BuildOutput(app);
   });
 }
