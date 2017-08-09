@@ -8,6 +8,27 @@
       "lazy": {
         "assets": [
           {
+            "uri": "/engines-dist/lazy/assets/engine-vendor.js",
+            "type": "js"
+          },
+          {
+            "uri": "/engines-dist/lazy/assets/engine.css",
+            "type": "css"
+          },
+          {
+            "uri": "/engines-dist/lazy/assets/engine.js",
+            "type": "js"
+          }
+        ]
+      }
+    }
+  },
+
+  "eager-in-lazy": {
+    "bundles": {
+      "lazy": {
+        "assets": [
+          {
             "uri": "/engines-dist/lazy/assets/engine-vendor.css",
             "type": "css"
           },
@@ -33,10 +54,6 @@
       "lazy-in-eager": {
         "assets": [
           {
-            "uri": "/engines-dist/lazy-in-eager/assets/engine-vendor.css",
-            "type": "css"
-          },
-          {
             "uri": "/engines-dist/lazy-in-eager/assets/engine-vendor.js",
             "type": "js"
           },
@@ -58,10 +75,6 @@
       "lazy-in-lazy": {
         "assets": [
           {
-            "uri": "/engines-dist/lazy-in-lazy/assets/engine-vendor.css",
-            "type": "css"
-          },
-          {
             "uri": "/engines-dist/lazy-in-lazy/assets/engine-vendor.js",
             "type": "js"
           },
@@ -77,10 +90,6 @@
       },
       "lazy": {
         "assets": [
-          {
-            "uri": "/engines-dist/lazy/assets/engine-vendor.css",
-            "type": "css"
-          },
           {
             "uri": "/engines-dist/lazy/assets/engine-vendor.js",
             "type": "js"

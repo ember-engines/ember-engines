@@ -108,7 +108,7 @@ describe('Acceptance', function() {
       let output = yield build(app);
 
       // Verify we have the manifest and the lazy engine assets
-      expect(output.manifest()).to.deep.equal(expectedManifests['lazy']);
+      expect(output.manifest()).to.deep.equal(expectedManifests['eager-in-lazy']);
       output.contains('assets/node-asset-manifest.js');
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`, cssCommentMatcher(`${nestedEngineName}.css`));
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`);
