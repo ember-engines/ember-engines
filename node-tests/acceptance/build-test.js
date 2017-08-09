@@ -16,7 +16,7 @@ const cssCommentMatcher = matchers.cssComment;
 
 describe('Acceptance', function() {
   describe('build', function() {
-    this.timeout(300000);
+    this.timeout(450000);
 
     const DEFAULT_ROUTABLE_ENGINE_MODULES = [
       'engine',
