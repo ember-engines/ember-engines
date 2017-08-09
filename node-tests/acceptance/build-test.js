@@ -16,7 +16,7 @@ const cssCommentMatcher = matchers.cssComment;
 
 describe('Acceptance', function() {
   describe('build', function() {
-    this.timeout(300000);
+    this.timeout(450000);
 
     const DEFAULT_ROUTABLE_ENGINE_MODULES = [
       'engine',
@@ -108,7 +108,7 @@ describe('Acceptance', function() {
       let output = yield build(app);
 
       // Verify we have the manifest and the lazy engine assets
-      expect(output.manifest()).to.deep.equal(expectedManifests['lazy']);
+      expect(output.manifest()).to.deep.equal(expectedManifests['eager-in-lazy']);
       output.contains('assets/node-asset-manifest.js');
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`, cssCommentMatcher(`${nestedEngineName}.css`));
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`);
