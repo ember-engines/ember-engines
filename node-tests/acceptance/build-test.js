@@ -16,7 +16,7 @@ const cssCommentMatcher = matchers.cssComment;
 
 describe('Acceptance', function() {
   describe('build', function() {
-    this.timeout(300000);
+    this.timeout(450000);
 
     const DEFAULT_ROUTABLE_ENGINE_MODULES = [
       'engine',
@@ -72,6 +72,29 @@ describe('Acceptance', function() {
       });
     }));
 
+    it('minifies a lazy engines css in production builds', co.wrap(function* () {
+      let app = new AddonTestApp();
+      let engineName = 'lazy';
+
+      yield app.create('engine-testing', { noFixtures: true });
+      yield InRepoEngine.generate(app, engineName, { lazy: true });
+
+      let output = yield build(app, 'production');
+
+      let lazyFiles = output.manifest().bundles.lazy.assets;
+
+      for (let file of lazyFiles) {
+        if (file.type === 'css') {
+          // remove leading `/`
+          let filePath = file.uri.slice(1);
+
+          // all css files should be empty, since minification
+          // strips the comments we add
+          expect(output.file(filePath)).to.equal('');
+        }
+      }
+    }));
+
     it('correctly builds eager engine in lazy engine', co.wrap(function* () {
       let app = new AddonTestApp();
       let engineName = 'lazy';
@@ -85,7 +108,7 @@ describe('Acceptance', function() {
       let output = yield build(app);
 
       // Verify we have the manifest and the lazy engine assets
-      expect(output.manifest()).to.deep.equal(expectedManifests['lazy']);
+      expect(output.manifest()).to.deep.equal(expectedManifests['eager-in-lazy']);
       output.contains('assets/node-asset-manifest.js');
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`, cssCommentMatcher(`${nestedEngineName}.css`));
       output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`);

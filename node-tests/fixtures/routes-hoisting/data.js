@@ -1,3 +1,5 @@
+'use strict';
+
 const stripIndent = require('common-tags').stripIndent;
 
 module.exports = {

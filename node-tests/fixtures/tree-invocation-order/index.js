@@ -1,4 +1,6 @@
 /*jshint node:true*/
+'use strict';
+
 var EngineAddon = require('ember-engines/lib/engine-addon');
 var funnel = require('broccoli-funnel');
 var merge = require('broccoli-merge-trees');

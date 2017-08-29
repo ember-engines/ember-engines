@@ -8,7 +8,7 @@ const SEPARATORS = /\/|\\/;
 
 moduleForAcceptance('Acceptance | lazy routable engine', {
   beforeEach() {
-    // Remove the ember-blog to fake it having 'not loaded'.
+    // Remove the ember-blog to fake it having "not loaded".
     this._engineModule = window.requirejs.entries['ember-blog/engine'];
     delete window.requirejs.entries['ember-blog/engine'];
 
@@ -23,7 +23,7 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
         loader.defineLoader('js', function(uri) {
           module.loadEvents.push(uri);
 
-          // 'Load' the engine module.
+          // "Load" the engine module.
           if (uri.indexOf('engine.js') !== -1) {
             window.requirejs.entries['ember-blog/engine'] = module._engineModule;
           }
@@ -48,12 +48,10 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
 });
 
 function verifyInitialBlogRoute(assert, loadEvents, application) {
-  assert.equal(loadEvents.length, 5, 'loaded 5 assets');
-  assert.deepEqual(loadEvents[0].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine-vendor.css' ], 'loaded engine vendor css');
-  assert.deepEqual(loadEvents[1].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine-vendor.js' ], 'loaded engine vendor js');
-  assert.deepEqual(loadEvents[2].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine.css' ], 'loaded engine css');
-  assert.deepEqual(loadEvents[3].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine.js' ], 'loaded engine js');
-  assert.deepEqual(loadEvents[4].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'config', 'environment.js' ], 'loaded environment js');
+  assert.equal(loadEvents.length, 3, 'loaded 3 assets');
+  assert.deepEqual(loadEvents[0].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine-vendor.js' ], 'loaded engine vendor js');
+  assert.deepEqual(loadEvents[1].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine.css' ], 'loaded engine css');
+  assert.deepEqual(loadEvents[2].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine.js' ], 'loaded engine js');
 
   assert.equal(currentURL(), '/routable-engine-demo/blog/new');
 
@@ -62,14 +60,14 @@ function verifyInitialBlogRoute(assert, loadEvents, application) {
 }
 
 test('it should pause to load JS and CSS assets on deep link into a lazy Engine', function(assert) {
-  assert.expect(9);
+  assert.expect(7);
 
   visit('/routable-engine-demo/blog/new');
   andThen(() => verifyInitialBlogRoute(assert, this.loadEvents, this.application));
 });
 
 test('it should pause to load JS and CSS assets on an initial transition into a lazy Engine', function(assert) {
-  assert.expect(9);
+  assert.expect(7);
 
   visit('/routable-engine-demo');
   click('.blog-new:last');
@@ -77,7 +75,7 @@ test('it should pause to load JS and CSS assets on an initial transition into a 
 });
 
 test('it should not pause to load assets on subsequent transitions into a lazy Engine', function(assert) {
-  assert.expect(12);
+  assert.expect(10);
 
   visit('/routable-engine-demo/blog/new');
   andThen(() => verifyInitialBlogRoute(assert, this.loadEvents, this.application));
@@ -89,13 +87,13 @@ test('it should not pause to load assets on subsequent transitions into a lazy E
 
   click('.blog-new');
   andThen(() => {
-    assert.equal(this.loadEvents.length, 5, 'did not load additional assets');
+    assert.equal(this.loadEvents.length, 3, 'did not load additional assets');
     assert.equal(currentURL(), '/routable-engine-demo/blog/new');
   });
 });
 
 test('it should not pause to load assets on transition to a loaded, but not initialized instance of a lazy Engine (e.g., Engine mounted more than once)', function(assert) {
-  assert.expect(12);
+  assert.expect(10);
 
   visit('/routable-engine-demo/blog/new');
   andThen(() => verifyInitialBlogRoute(assert, this.loadEvents, this.application));
@@ -107,7 +105,7 @@ test('it should not pause to load assets on transition to a loaded, but not init
 
   click('.ember-blog-new:last');
   andThen(() => {
-    assert.equal(this.loadEvents.length, 5, 'did not load additional assets');
+    assert.equal(this.loadEvents.length, 3, 'did not load additional assets');
     assert.equal(currentURL(), '/routable-engine-demo/ember-blog/new');
   });
 });

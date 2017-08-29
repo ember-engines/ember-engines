@@ -86,59 +86,6 @@ ember g in-repo-engine <engine-name>
 Don't forget to install `ember-engines` and the appropriate version of Ember in
 your project, as described above.
 
-### Configuring your Engine
-
-Within your engine's root directory, modify `index.js` so that your addon
-is configured as an engine using the `EngineAddon` extension:
-
-```js
-/*jshint node:true*/
-const EngineAddon = require('ember-engines/lib/engine-addon');
-
-module.exports = EngineAddon.extend({
-  name: 'ember-blog'
-});
-```
-
-Within your engine's `config` directory, create a new `environment.js` file:
-
-```js
-/*jshint node:true*/
-'use strict';
-
-module.exports = function(environment) {
-  const ENV = {
-    modulePrefix: 'ember-blog',
-    environment: environment
-  }
-
-  return ENV;
-};
-```
-
-Within your engine's `addon` directory, add a new `engine.js` file:
-
-```js
-import Engine from 'ember-engines/engine';
-import Resolver from 'ember-resolver';
-import loadInitializers from 'ember-load-initializers';
-import config from './config/environment';
-
-const { modulePrefix } = config;
-
-const Eng = Engine.extend({
-  modulePrefix,
-  Resolver
-});
-
-loadInitializers(Eng, modulePrefix);
-
-export default Eng;
-```
-
-It's important that `modulePrefix` be set in `config/environment.js` so that
-it can be referenced in `addon/engine.js`.
-
 ### Lazy Loading Engines
 
 You must also declare in your Engine's `index.js` file whether or not the engine should be lazy loaded. Until lazy loading is supported, this should be set to `false`:

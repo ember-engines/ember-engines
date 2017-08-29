@@ -1,3 +1,5 @@
+'use strict';
+
 const matchers = require('./matchers');
 const expect = require('chai').expect;
 
