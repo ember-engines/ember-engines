@@ -212,7 +212,13 @@ Router.reopen({
       enginePromise = RSVP.resolve();
     } else {
       // The Engine is not loaded and has no Promise
-      enginePromise = this._assetLoader.loadBundle(name).then(() => this._registerEngine(name));
+      enginePromise = this._assetLoader.loadBundle(name).then(
+        () => this._registerEngine(name),
+        (error) => {
+          delete enginePromises[name][instanceId];
+          return RSVP.reject(error);
+        }
+      );
     }
 
     return enginePromises[name][instanceId] = enginePromise.then(() => {
