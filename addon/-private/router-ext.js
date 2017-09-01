@@ -251,8 +251,11 @@ Router.reopen({
       mountPoint
     });
 
-    engineInstance.boot();
+    engineInstances[name][instanceId] = engineInstance;
 
-    return engineInstances[name][instanceId] = engineInstance;
+    return engineInstance.boot()
+      .then(() => {
+        return engineInstance;
+      });
   }
 });
