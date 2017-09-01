@@ -25,6 +25,8 @@ Router.map(function() {
     this.mount('ember-blog', { as: 'admin-blog', path: '/special-admin-blog-here' });
 
     this.mount('eager-blog', { resetNamespace: true });
+
+    this.mount('fails-loudly');
   });
 
   // Used to check for collisions with Post route in ember-blog

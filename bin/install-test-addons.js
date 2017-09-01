@@ -11,3 +11,6 @@ fs.symlinkSync('../tests/dummy/lib/ember-blog', 'node_modules/ember-blog');
 
 fs.removeSync('node_modules/ember-chat');
 fs.symlinkSync('../tests/dummy/lib/ember-chat', 'node_modules/ember-chat');
+
+fs.removeSync('node_modules/fails-loudly');
+fs.symlinkSync('../tests/dummy/lib/fails-loudly', 'node_modules/fails-loudly');
