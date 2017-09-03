@@ -191,7 +191,7 @@ Router.reopen({
    * @param {String} engineInfo.name
    * @param {String} engineInfo.instanceId
    * @param {String} engineInfo.mountPoint
-   * @return {Promise}
+   * @return {Promise<EngineInstance>}
    */
   _loadEngineInstance({ name, instanceId, mountPoint }) {
     let enginePromises = this._enginePromises;
@@ -230,7 +230,7 @@ Router.reopen({
    * @param {String} engineInfo.name
    * @param {String} engineInfo.instanceId
    * @param {String} engineInfo.mountPoint
-   * @return {EngineInstance} engineInstance
+   * @return {Promise<EngineInstance>}
    */
   _constructEngineInstance({ name, instanceId, mountPoint }) {
     let owner = getOwner(this);
