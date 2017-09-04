@@ -216,7 +216,7 @@ Router.reopen({
         () => this._registerEngine(name),
         (error) => {
           delete enginePromises[name][instanceId];
-          return RSVP.reject(error);
+          throw error;
         }
       );
     }
