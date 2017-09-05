@@ -89,10 +89,10 @@ EngineInstance.reopen({
               }
             }
           });
-        }
-
-        if (engineDependencies.externalRoutes) {
-          dependencies.externalRoutes = engineDependencies.externalRoutes;
+          
+          if (engineDependencies.externalRoutes) {
+            dependencies.externalRoutes = engineDependencies.externalRoutes;
+          }
         }
       }
 

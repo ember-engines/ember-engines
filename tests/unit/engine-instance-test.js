@@ -42,6 +42,29 @@ module('Unit | EngineInstance', {
   }
 });
 
+test('it can build a child engine instance without parent dependencies defined', function(assert) {
+  assert.expect(2);
+
+  let BlogEngine = Engine.extend({
+    router: null,
+    dependencies: {}
+  });
+
+  app.engines = undefined;
+
+  app.register('engine:blog', BlogEngine);
+
+  let appInstance = app.buildInstance();
+  appInstance.setupRegistry();
+
+  let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
+
+  assert.ok(blogEngineInstance);
+  assert.strictEqual(getEngineParent(blogEngineInstance), appInstance, 'parent is assigned');
+
+  return blogEngineInstance.boot();
+});
+
 test('it can build a child engine instance with no dependencies', function(assert) {
   assert.expect(2);
 
