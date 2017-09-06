@@ -6,7 +6,6 @@ import App from '../../app';
 
 const { RSVP } = Ember;
 const SEPARATORS = /\/|\\/;
-const nope = () => {};
 
 moduleForAcceptance('Acceptance | lazy routable engine', {
   beforeEach() {
@@ -16,7 +15,7 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
 
     // We stub out the loader methods so that we can verify what they're doing.
     const module = this;
-    this.loader = this.application.__container__.lookup('service:asset-loader');
+    this.loader = this.application.__deprecatedInstance__.lookup('service:asset-loader');
     this.loadEvents = [];
 
     this.loader.defineLoader('js', function(uri) {
@@ -34,6 +33,8 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
       module.loadEvents.push(uri);
       return RSVP.resolve();
     });
+
+    this._adapterException = Ember.Test.adapter.exception;
   },
 
   afterEach() {
@@ -41,6 +42,7 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
     delete App.instanceInitializers['stub-loader-methods'];
 
     window.requirejs.entries['ember-blog/engine'] = this._engineModule;
+    Ember.Test.adapter.exception = this._adapterException;
   }
 });
 
@@ -63,35 +65,32 @@ test('it should pause to load JS and CSS assets on deep link into a lazy Engine'
   andThen(() => verifyInitialBlogRoute(assert, this.loadEvents, this.application));
 });
 
-test('it should pause to load JS and CSS assets on deep link into a lazy Engine after retrying the transition', function(assert) {
+test('it should pause to load JS and CSS assets if previous deep link into a lazy Engine has failed', function(assert) {
   assert.expect(7);
 
   define('dummy/routes/application', () => (Ember.Route.extend({
       actions: {
-        error: nope
+        error() {}
       }
     })
   ));
 
-  const adapterException = Ember.Test.adapter.exception;
-  const loader = this.application.__container__.lookup('service:asset-loader');
-  const jsLoader = loader.__assetLoaders.js;
-  const cssLoader = loader.__assetLoaders.css;
+  const jsLoader = this.loader.__assetLoaders.js;
+  const cssLoader = this.loader.__assetLoaders.css;
   const failLoader = () => RSVP.reject('rejected');
 
-  Ember.Test.adapter.exception = nope;
-  loader.defineLoader('js', failLoader);
-  loader.defineLoader('css', failLoader);
+  Ember.Test.adapter.exception = () => {};
+  this.loader.defineLoader('js', failLoader);
+  this.loader.defineLoader('css', failLoader);
   visit('/routable-engine-demo/blog/new');
 
   andThen(() => {
-    loader.defineLoader('js', jsLoader);
-    loader.defineLoader('css', cssLoader);
+    this.loader.defineLoader('js', jsLoader);
+    this.loader.defineLoader('css', cssLoader);
     visit('/routable-engine-demo/blog/new');
 
     andThen(() => {
       verifyInitialBlogRoute(assert, this.loadEvents, this.application);
-      Ember.Test.adapter.exception = adapterException;
       delete window.requirejs.entries['dummy/routes/application'];
     });
   });
@@ -105,35 +104,35 @@ test('it should pause to load JS and CSS assets on an initial transition into a 
   andThen(() => verifyInitialBlogRoute(assert, this.loadEvents, this.application));
 });
 
-test('it should pause to load JS and CSS assets on deep link into a lazy Engine after retrying the transition', function(assert) {
+test('it should pause to load JS and CSS assets if previous transition into a lazy Engine has failed', function(assert) {
   assert.expect(7);
 
   define('dummy/routes/application', () => (Ember.Route.extend({
       actions: {
-        error: nope
+        error() {}
       }
     })
   ));
 
-  const adapterException = Ember.Test.adapter.exception;
-  const loader = this.application.__container__.lookup('service:asset-loader');
-  const jsLoader = loader.__assetLoaders.js;
-  const cssLoader = loader.__assetLoaders.css;
-  const failLoader = () => RSVP.reject('rejected');
-
-  Ember.Test.adapter.exception = nope;
-  loader.defineLoader('js', failLoader);
-  loader.defineLoader('css', failLoader);
   visit('/routable-engine-demo');
 
+  const jsLoader = this.loader.__assetLoaders.js;
+  const cssLoader = this.loader.__assetLoaders.css;
+  const failLoader = () => RSVP.reject('rejected');
+
+  Ember.Test.adapter.exception = () => {};
+  this.loader.defineLoader('js', failLoader);
+  this.loader.defineLoader('css', failLoader);
+
+  click('.blog-new:last');
+
   andThen(() => {
-    loader.defineLoader('js', jsLoader);
-    loader.defineLoader('css', cssLoader);
+    this.loader.defineLoader('js', jsLoader);
+    this.loader.defineLoader('css', cssLoader);
     click('.blog-new:last');
 
     andThen(() => {
       verifyInitialBlogRoute(assert, this.loadEvents, this.application);
-      Ember.Test.adapter.exception = adapterException;
       delete window.requirejs.entries['dummy/routes/application'];
     });
   });
@@ -200,13 +199,11 @@ test('it should bubble the bundle error to the application', function(assert) {
   assert.expect(1);
 
   const done = assert.async();
-  const adapterException = Ember.Test.adapter.exception;
-  const loader = this.application.__container__.lookup('service:asset-loader');
   const failLoader = () => RSVP.reject('rejected');
 
-  Ember.Test.adapter.exception = nope;
-  loader.defineLoader('js', failLoader);
-  loader.defineLoader('css', failLoader);
+  Ember.Test.adapter.exception = () => {};
+  this.loader.defineLoader('js', failLoader);
+  this.loader.defineLoader('css', failLoader);
 
   define('dummy/routes/application', () => (Ember.Route.extend({
       actions: {
@@ -221,7 +218,6 @@ test('it should bubble the bundle error to the application', function(assert) {
   visit('/routable-engine-demo/blog/new');
 
   andThen(() => {
-    Ember.Test.adapter.exception = adapterException;
     delete window.requirejs.entries['dummy/routes/application'];
   });
 });

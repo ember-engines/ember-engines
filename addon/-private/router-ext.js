@@ -215,7 +215,7 @@ Router.reopen({
       enginePromise = this._assetLoader.loadBundle(name).then(
         () => this._registerEngine(name),
         (error) => {
-          delete enginePromises[name][instanceId];
+          enginePromises[name][instanceId] = undefined;
           throw error;
         }
       );
