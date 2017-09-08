@@ -12,6 +12,8 @@
     "test": "ember try:testall",
     "test:ember": "ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup",
     "test:emberall": "ember try:each --skip-cleanup",
+    "test:lint": "eslint index.js addon addon-test-support app bin config lib node-tests tests vendor",
+    "test:lint:fix": "eslint --fix index.js addon addon-test-support app bin config lib node-tests tests vendor",
     "test:node": "mocha 'node-tests/**/*-test.js' --reporter tap",
     "test:windows": "ember try:one %EMBER_TRY_SCENARIO% test --skip-cleanup",
     "test:node:dev": "BUILD_DEV=true testem -f testem-node.js",
