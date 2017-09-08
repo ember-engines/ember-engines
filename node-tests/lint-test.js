@@ -4,6 +4,13 @@ const lint = require('mocha-eslint');
 
 lint([
   'index.js',
+  'addon',
+  'addon-test-support',
+  'app',
+  'bin',
+  'config',
   'lib',
-  'node-tests'
+  'node-tests',
+  'tests',
+  'vendor',
 ]);
