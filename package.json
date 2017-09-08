@@ -80,7 +80,7 @@
     "broccoli-merge-trees": "^1.0.0",
     "broccoli-test-helper": "^1.1.0",
     "calculate-cache-key-for-tree": "^1.0.0",
-    "ember-asset-loader": "^0.3.0",
+    "ember-asset-loader": "^0.3.1",
     "ember-cli-babel": "^6.7.1",
     "ember-cli-preprocess-registry": "^3.0.0",
     "ember-cli-string-utils": "^1.0.0",
