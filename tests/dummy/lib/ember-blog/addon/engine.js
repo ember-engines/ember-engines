@@ -9,13 +9,9 @@ const Eng = Engine.extend({
   modulePrefix,
   Resolver,
   dependencies: {
-    services: [
-      'data-store'
-    ],
-    externalRoutes: [
-      'home'
-    ]
-  }
+    services: ['data-store'],
+    externalRoutes: ['home'],
+  },
 });
 
 loadInitializers(Eng, modulePrefix);

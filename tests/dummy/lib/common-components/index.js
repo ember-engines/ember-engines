@@ -1,4 +1,5 @@
-/*jshint node:true*/
+'use strict';
+
 module.exports = {
   name: 'common-components',
 
@@ -8,5 +9,5 @@ module.exports = {
 
   hintingEnabled: function() {
     return false;
-  }
+  },
 };

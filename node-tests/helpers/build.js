@@ -19,9 +19,13 @@ class BuildOutput {
     }
 
     if (arguments.length === 1) {
-      throw new Error(`Expected file "${file}" to NOT be found in the build output, but it was.`);
+      throw new Error(
+        `Expected file "${file}" to NOT be found in the build output, but it was.`
+      );
     } else {
-      throw new Error(`Expected file "${file}" to NOT match "${matcher}", but it did.`);
+      throw new Error(
+        `Expected file "${file}" to NOT match "${matcher}", but it did.`
+      );
     }
   }
 
@@ -29,7 +33,9 @@ class BuildOutput {
     let fileContents = this.file(file);
 
     if (matcher && !matcher.test(fileContents)) {
-      throw new Error(`Expected file "${file}" to match "${matcher}", but it was not found.`);
+      throw new Error(
+        `Expected file "${file}" to match "${matcher}", but it was not found.`
+      );
     }
 
     return true;

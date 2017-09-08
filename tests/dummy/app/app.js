@@ -11,22 +11,18 @@ const App = Ember.Application.extend({
   engines: {
     emberBlog: {
       dependencies: {
-        services: [
-          {'data-store': 'store'}
-        ],
+        services: [{ 'data-store': 'store' }],
         externalRoutes: {
-          home: 'application'
-        }
-      }
+          home: 'application',
+        },
+      },
     },
     emberChat: {
       dependencies: {
-        services: [
-          'store'
-        ]
-      }
-    }
-  }
+        services: ['store'],
+      },
+    },
+  },
 });
 
 loadInitializers(App, config.modulePrefix);

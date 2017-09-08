@@ -9,10 +9,8 @@ const Eng = Engine.extend({
   modulePrefix,
   Resolver,
   dependencies: {
-    services: [
-      'store'
-    ]
-  }
+    services: ['store'],
+  },
 });
 
 loadInitializers(Eng, modulePrefix);

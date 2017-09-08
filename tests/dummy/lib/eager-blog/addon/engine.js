@@ -7,7 +7,7 @@ const { modulePrefix } = config;
 
 const Eng = Engine.extend({
   modulePrefix,
-  Resolver
+  Resolver,
 });
 
 loadInitializers(Eng, modulePrefix);

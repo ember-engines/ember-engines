@@ -1,14 +1,7 @@
 import Ember from 'ember';
 import { attributeMungingMethod } from '../-private/link-to-utils';
 
-const {
-  LinkComponent,
-  getOwner,
-  get,
-  set,
-  typeOf,
-  assert
-} = Ember;
+const { LinkComponent, getOwner, get, set, typeOf, assert } = Ember;
 
 export default LinkComponent.extend({
   [attributeMungingMethod]() {
@@ -44,7 +37,9 @@ export default LinkComponent.extend({
     if (prop === 'current-when') {
       // `current-when` is a space-separated list of routes
       namespacedPropValue = propValue.split(' ');
-      namespacedPropValue = namespacedPropValue.map((propValue) => this._namespacePropertyValue(prefix, propValue));
+      namespacedPropValue = namespacedPropValue.map(propValue =>
+        this._namespacePropertyValue(prefix, propValue)
+      );
       namespacedPropValue = namespacedPropValue.join(' ');
     } else {
       namespacedPropValue = this._namespacePropertyValue(prefix, propValue);
@@ -59,5 +54,5 @@ export default LinkComponent.extend({
     } else {
       return prefix + '.' + propValue;
     }
-  }
+  },
 });

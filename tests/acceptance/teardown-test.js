@@ -13,11 +13,11 @@ test('routeable engines clean up their container state', function(assert) {
 
   andThen(() => {
     assert.equal(currentURL(), '/routable-engine-demo/blog/new');
-    service = this.application.__container__.lookup('service:store').__exampleServiceForTesting;
+    service = this.application.__container__.lookup('service:store')
+      .__exampleServiceForTesting;
     destroyApp(this.application);
     assert.ok(service.isDestroyed, 'service got destroyed');
   });
-
 });
 
 test('routeless engines clean up their container state', function(assert) {
@@ -29,9 +29,9 @@ test('routeless engines clean up their container state', function(assert) {
 
   andThen(() => {
     assert.equal(currentURL(), '/routeless-engine-demo');
-    service = this.application.__container__.lookup('service:store').__exampleServiceForTesting;
+    service = this.application.__container__.lookup('service:store')
+      .__exampleServiceForTesting;
     destroyApp(this.application);
     assert.ok(service.isDestroyed, 'service got destroyed');
   });
-
 });

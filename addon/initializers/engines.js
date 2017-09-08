@@ -5,10 +5,9 @@ import '../-private/engine-ext';
 import '../-private/engine-instance-ext';
 
 // TODO: Move to ensure they run prior to instantiating Ember.Application
-export function initialize() {
-}
+export function initialize() {}
 
 export default {
   name: 'engines',
-  initialize
+  initialize,
 };

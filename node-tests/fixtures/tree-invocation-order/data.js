@@ -13,13 +13,13 @@ module.exports = {
           <circle cx="100" cy="100" r="100"/>
         </svg>
       `,
-      'other.css': `/* tree-invocation-order/addon/styles/other.css */`
+      'other.css': `/* tree-invocation-order/addon/styles/other.css */`,
     },
     templates: {
       'application.hbs': stripIndent`
         tree-invocation-order/addon/templates/application.hbs
         {{outlet}}
-      `
+      `,
     },
     'routes.js': stripIndent`
       import buildRoutes from 'ember-engines/routes';
@@ -30,20 +30,20 @@ module.exports = {
         return result;
       });
     `,
-    'tree-invocation-order-import-target.js': `export default {};`
+    'tree-invocation-order-import-target.js': `export default {};`,
   },
   public: {
-    'tree-invocation-order-public-asset.html': `tree-invocation-order/public/lazy-public-asset.html`
+    'tree-invocation-order-public-asset.html': `tree-invocation-order/public/lazy-public-asset.html`,
   },
   vendor: {
     css: {
       'tree-invocation-order-appimport.css': `/* tree-invocation-order/vendor/css/appimport.css */`,
-      'tree-invocation-order-thisimport.css': `/* tree-invocation-order/vendor/css/thisimport.css */`
+      'tree-invocation-order-thisimport.css': `/* tree-invocation-order/vendor/css/thisimport.css */`,
     },
     js: {
       'tree-invocation-order-appimport.js': `// tree-invocation-order/vendor/js/appimport.js`,
-      'tree-invocation-order-thisimport.js': `// tree-invocation-order/vendor/js/thisimport.js`
-    }
+      'tree-invocation-order-thisimport.js': `// tree-invocation-order/vendor/js/thisimport.js`,
+    },
   },
   // Since index.js is large and complicated, we keep it in a separate file
   'index.js': fs.readFileSync(path.join(__dirname, './index.js'), 'utf8'),
@@ -62,5 +62,5 @@ module.exports = {
         "ember-cli-htmlbars": "*"
       }
     }
-  `
+  `,
 };

@@ -14,5 +14,5 @@ module.exports = {
       export default buildRoutes(function() {
       });
     `,
-  }
+  },
 };

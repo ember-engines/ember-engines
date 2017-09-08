@@ -1,5 +1,5 @@
-/* jshint node:true */
+'use strict';
 
 module.exports = {
-  publish: true
+  publish: true,
 };

@@ -7,12 +7,12 @@ import { module, test } from 'qunit';
 import Resolver from '../../resolver';
 import config from '../../config/environment';
 
-const getEngineParent = emberRequire('ember-application/system/engine-parent', 'getEngineParent');
+const getEngineParent = emberRequire(
+  'ember-application/system/engine-parent',
+  'getEngineParent'
+);
 
-const {
-  Application,
-  run
-} = Ember;
+const { Application, run } = Ember;
 
 let App, app, appInstance;
 
@@ -23,7 +23,7 @@ module('Unit | EngineInstance', {
     App = Application.extend({
       Resolver,
       modulePrefix: config.modulePrefix,
-      router: null
+      router: null,
     });
 
     run(function() {
@@ -39,15 +39,17 @@ module('Unit | EngineInstance', {
     if (app) {
       run(app, 'destroy');
     }
-  }
+  },
 });
 
-test('it can build a child engine instance without parent dependencies defined', function(assert) {
+test('it can build a child engine instance without parent dependencies defined', function(
+  assert
+) {
   assert.expect(2);
 
   let BlogEngine = Engine.extend({
     router: null,
-    dependencies: {}
+    dependencies: {},
   });
 
   app.engines = undefined;
@@ -60,12 +62,18 @@ test('it can build a child engine instance without parent dependencies defined',
   let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
 
   assert.ok(blogEngineInstance);
-  assert.strictEqual(getEngineParent(blogEngineInstance), appInstance, 'parent is assigned');
+  assert.strictEqual(
+    getEngineParent(blogEngineInstance),
+    appInstance,
+    'parent is assigned'
+  );
 
   return blogEngineInstance.boot();
 });
 
-test('it can build a child engine instance with no dependencies', function(assert) {
+test('it can build a child engine instance with no dependencies', function(
+  assert
+) {
   assert.expect(2);
 
   let BlogEngine = Engine.extend({ router: null });
@@ -78,31 +86,33 @@ test('it can build a child engine instance with no dependencies', function(asser
   let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
 
   assert.ok(blogEngineInstance);
-  assert.strictEqual(getEngineParent(blogEngineInstance), appInstance, 'parent is assigned');
+  assert.strictEqual(
+    getEngineParent(blogEngineInstance),
+    appInstance,
+    'parent is assigned'
+  );
 
   return blogEngineInstance.boot();
 });
 
-test('it can build a child engine instance with dependencies', function(assert) {
+test('it can build a child engine instance with dependencies', function(
+  assert
+) {
   assert.expect(3);
 
   let BlogEngine = Engine.extend({
     router: null,
     dependencies: {
-      services: [
-        'store'
-      ]
-    }
+      services: ['store'],
+    },
   });
 
   app.engines = {
     blog: {
       dependencies: {
-        services: [
-          'store'
-        ]
-      }
-    }
+        services: ['store'],
+      },
+    },
   };
 
   app.register('engine:blog', BlogEngine);
@@ -113,7 +123,11 @@ test('it can build a child engine instance with dependencies', function(assert) 
   let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
 
   assert.ok(blogEngineInstance);
-  assert.strictEqual(getEngineParent(blogEngineInstance), appInstance, 'parent is assigned');
+  assert.strictEqual(
+    getEngineParent(blogEngineInstance),
+    appInstance,
+    'parent is assigned'
+  );
 
   return blogEngineInstance.boot().then(() => {
     assert.strictEqual(
@@ -124,26 +138,28 @@ test('it can build a child engine instance with dependencies', function(assert) 
   });
 });
 
-test('it can build a child engine instance with dependencies that are aliased', function(assert) {
+test('it can build a child engine instance with dependencies that are aliased', function(
+  assert
+) {
   assert.expect(3);
 
   let BlogEngine = Engine.extend({
     router: null,
     dependencies: {
       services: [
-        'data-store' // NOTE: Blog engine uses alias to 'store'
-      ]
-    }
+        'data-store', // NOTE: Blog engine uses alias to 'store'
+      ],
+    },
   });
 
   app.engines = {
     blog: {
       dependencies: {
         services: [
-          {'data-store': 'store'} // NOTE: Main engine provides alias
-        ]
-      }
-    }
+          { 'data-store': 'store' }, // NOTE: Main engine provides alias
+        ],
+      },
+    },
   };
 
   app.register('engine:blog', BlogEngine);
@@ -154,7 +170,11 @@ test('it can build a child engine instance with dependencies that are aliased', 
   let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
 
   assert.ok(blogEngineInstance);
-  assert.strictEqual(getEngineParent(blogEngineInstance), appInstance, 'parent is assigned');
+  assert.strictEqual(
+    getEngineParent(blogEngineInstance),
+    appInstance,
+    'parent is assigned'
+  );
 
   return blogEngineInstance.boot().then(() => {
     assert.strictEqual(

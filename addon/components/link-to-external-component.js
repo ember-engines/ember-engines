@@ -1,12 +1,7 @@
 import Ember from 'ember';
 import { attributeMungingMethod } from '../-private/link-to-utils';
 
-const {
-  LinkComponent,
-  getOwner,
-  get,
-  set
-} = Ember;
+const { LinkComponent, getOwner, get, set } = Ember;
 
 export default LinkComponent.extend({
   [attributeMungingMethod]() {
@@ -19,5 +14,5 @@ export default LinkComponent.extend({
       const externalRoute = owner._getExternalRoute(targetRouteName);
       set(this, 'targetRouteName', externalRoute);
     }
-  }
+  },
 });

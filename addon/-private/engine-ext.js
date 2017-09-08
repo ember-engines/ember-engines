@@ -15,5 +15,5 @@ Engine.reopen({
     }
 
     return registry;
-  }
+  },
 });

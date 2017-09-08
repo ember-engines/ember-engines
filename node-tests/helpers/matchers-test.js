@@ -8,10 +8,12 @@ describe('matchers', function() {
     it('matches module definitions for the specified name', function() {
       const matcher = matchers.module('foo/component/bar-baz');
 
-      const inputSingleQuotes = 'define(\'foo/component/bar-baz\', [], function(){});';
+      const inputSingleQuotes =
+        "define('foo/component/bar-baz', [], function(){});";
       expect(matcher.test(inputSingleQuotes)).to.be.true;
 
-      const inputDoubleQuotes = 'define("foo/component/bar-baz", [], function(){});';
+      const inputDoubleQuotes =
+        'define("foo/component/bar-baz", [], function(){});';
       expect(matcher.test(inputDoubleQuotes)).to.be.true;
     });
 
@@ -28,27 +30,40 @@ describe('matchers', function() {
 
   describe('reexport', function() {
     it('matches aliased module definitions', function() {
-      const matcher = matchers.reexport('foo/component/bar-baz', 'app/component/bar-baz');
+      const matcher = matchers.reexport(
+        'foo/component/bar-baz',
+        'app/component/bar-baz'
+      );
 
-      const inputSingleQuotes = 'define.alias(\'foo/component/bar-baz\', \'app/component/bar-baz\');';
+      const inputSingleQuotes =
+        "define.alias('foo/component/bar-baz', 'app/component/bar-baz');";
       expect(matcher.test(inputSingleQuotes)).to.be.true;
 
-      const inputDoubleQuotes = 'define.alias("foo/component/bar-baz", "app/component/bar-baz");';
+      const inputDoubleQuotes =
+        'define.alias("foo/component/bar-baz", "app/component/bar-baz");';
       expect(matcher.test(inputDoubleQuotes)).to.be.true;
     });
 
     it('does not match improperly aliased module definitions', function() {
-      const matcher = matchers.reexport('foo/component/bar-baz', 'app/component/bar-baz');
+      const matcher = matchers.reexport(
+        'foo/component/bar-baz',
+        'app/component/bar-baz'
+      );
 
-      const inputReversedAlias = 'define.alias("app/component/bar-baz", "foo/component/bar-baz");';
+      const inputReversedAlias =
+        'define.alias("app/component/bar-baz", "foo/component/bar-baz");';
       expect(matcher.test(inputReversedAlias)).to.be.false;
 
-      const inputOldAlias = 'define("foo/component/bar-baz", define.alias("foo/component/bar-baz"));';
+      const inputOldAlias =
+        'define("foo/component/bar-baz", define.alias("foo/component/bar-baz"));';
       expect(matcher.test(inputOldAlias)).to.be.false;
     });
 
     it('does not match normal module definitions', function() {
-      const matcher = matchers.reexport('foo/component/bar-baz', 'app/component/bar-baz');
+      const matcher = matchers.reexport(
+        'foo/component/bar-baz',
+        'app/component/bar-baz'
+      );
 
       const input1 = 'define("foo/component/bar-baz", [] function(){});';
       expect(matcher.test(input1)).to.be.false;
