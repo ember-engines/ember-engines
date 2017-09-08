@@ -21,7 +21,9 @@ module.exports = EngineAddon.extend({
     app.import('vendor/css/tree-invocation-order-appimport.css');
     app.import('vendor/js/tree-invocation-order-appimport.js');
     this.import('vendor/css/tree-invocation-order-thisimport.css');
-    this.import('vendor/js/tree-invocation-order-thisimport.js', { prepend: true });
+    this.import('vendor/js/tree-invocation-order-thisimport.js', {
+      prepend: true,
+    });
   },
 
   setupPreprocessorRegistry: function(type, registry) {
@@ -37,12 +39,12 @@ module.exports = EngineAddon.extend({
       toTree: function(tree) {
         // Save non-CSS assets so we can return them in treeForPublic
         addon.assetsFromStylesTree = stew.mv(
-          funnel(tree, {include: ['**/*.!(css)']}),
+          funnel(tree, { include: ['**/*.!(css)'] }),
           'tree-invocation-order/assets'
         );
 
         return tree;
-      }
+      },
     });
   },
 
@@ -50,10 +52,12 @@ module.exports = EngineAddon.extend({
     var tree = this._super.apply(this, arguments);
 
     if (this.assetsFromStylesTree) {
-      tree = tree ? merge([tree, this.assetsFromStylesTree]) : this.assetsFromStylesTree;
+      tree = tree
+        ? merge([tree, this.assetsFromStylesTree])
+        : this.assetsFromStylesTree;
       this.assetsFromStylesTree = null;
     }
 
     return tree;
-  }
+  },
 });

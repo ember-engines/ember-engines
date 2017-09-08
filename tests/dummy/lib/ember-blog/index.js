@@ -1,4 +1,5 @@
-/*jshint node:true*/
+'use strict';
+
 var EngineAddon = require('../../../../lib/engine-addon');
 
 module.exports = EngineAddon.extend({
@@ -12,5 +13,5 @@ module.exports = EngineAddon.extend({
     return false;
   },
 
-  lazyLoading: true
+  lazyLoading: true,
 });

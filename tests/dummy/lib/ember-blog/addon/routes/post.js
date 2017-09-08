@@ -2,11 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model(params) {
+    // eslint-disable-next-line
     console.log('ember-blog.post route model hook', params);
     return {
       user: this.modelFor('application'),
       id: params.id,
-      title: `Post ${params.id}`
+      title: `Post ${params.id}`,
     };
   },
 
@@ -15,18 +16,16 @@ export default Ember.Route.extend({
       this.transitionTo({ queryParams: { lang: 'Chinese' } });
     },
     transitionToHome() {
-      this.transitionToExternal('home')
-        .then(() => {
-          var postController = this.controllerFor(this.routeName);
-          postController.set('transitionedToExternal', true);
-        });
+      this.transitionToExternal('home').then(() => {
+        var postController = this.controllerFor(this.routeName);
+        postController.set('transitionedToExternal', true);
+      });
     },
     replaceWithHome() {
-      this.replaceWithExternal('home')
-        .then(() => {
-          var postController = this.controllerFor(this.routeName);
-          postController.set('replacedWithExternal', true);
-        });
-    }
-  }
+      this.replaceWithExternal('home').then(() => {
+        var postController = this.controllerFor(this.routeName);
+        postController.set('replacedWithExternal', true);
+      });
+    },
+  },
 });

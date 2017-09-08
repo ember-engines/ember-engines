@@ -1,9 +1,6 @@
 import Ember from 'ember';
 
-const {
-  Route,
-  getOwner
-} = Ember;
+const { Route, getOwner } = Ember;
 
 /*
   Creates an aliased form of a method that properly resolves external routes.
@@ -17,5 +14,5 @@ function externalAlias(methodName) {
 
 Route.reopen({
   transitionToExternal: externalAlias('transitionTo'),
-  replaceWithExternal: externalAlias('replaceWith')
+  replaceWithExternal: externalAlias('replaceWith'),
 });

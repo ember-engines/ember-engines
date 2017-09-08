@@ -34,5 +34,5 @@ function cssCommentMatcher(comment) {
 module.exports = {
   module: moduleMatcher,
   reexport: reexportMatcher,
-  cssComment: cssCommentMatcher
+  cssComment: cssCommentMatcher,
 };

@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
+    // eslint-disable-next-line
     console.log('ember-chat.new route model hook');
   },
 
@@ -12,6 +13,6 @@ export default Ember.Route.extend({
 
     goAwayViaURL() {
       this.transitionTo('/post/1');
-    }
-  }
+    },
+  },
 });

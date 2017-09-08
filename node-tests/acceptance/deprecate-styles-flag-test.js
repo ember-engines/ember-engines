@@ -14,64 +14,80 @@ describe('Acceptance', function() {
   describe('useDeprecatedIncorrectCSSProcessing flag', function() {
     this.timeout(300000);
 
-    it('when enabled with lazy engines that have dependencies with app/styles', co.wrap(function* () {
-      let app = new AddonTestApp();
-      let appName = 'engine-testing';
-      let engineName = 'lazy';
-      let addonName = 'nested';
+    it(
+      'when enabled with lazy engines that have dependencies with app/styles',
+      co.wrap(function*() {
+        let app = new AddonTestApp();
+        let appName = 'engine-testing';
+        let engineName = 'lazy';
+        let addonName = 'nested';
 
-      yield app.create(appName, { noFixtures: true });
-      let engine = yield InRepoEngine.generate(app, engineName, { lazy: true });
-      engine.writeFixture({
-        'index.js': stripIndent`
+        yield app.create(appName, { noFixtures: true });
+        let engine = yield InRepoEngine.generate(app, engineName, {
+          lazy: true,
+        });
+        engine.writeFixture({
+          'index.js': stripIndent`
           module.exports = {
             name: '${engineName}',
             lazyLoading: true,
             useDeprecatedIncorrectCSSProcessing: true
           };
-        `
-      });
+        `,
+        });
 
-      let addon = yield engine.generateNestedAddon(addonName);
+        let addon = yield engine.generateNestedAddon(addonName);
 
-      engine.nest(addon);
+        engine.nest(addon);
 
-      addon.writeFixture({
-        app: {
-          styles: {
-            [`${addonName}.css`]: `/* ${addonName}.css */`
-          }
-        }
-      });
+        addon.writeFixture({
+          app: {
+            styles: {
+              [`${addonName}.css`]: `/* ${addonName}.css */`,
+            },
+          },
+        });
 
-      let output = yield build(app);
+        let output = yield build(app);
 
-      output.contains(`assets/${addonName}.css`, cssCommentMatcher(`${addonName}.css`));
-    }));
+        output.contains(
+          `assets/${addonName}.css`,
+          cssCommentMatcher(`${addonName}.css`)
+        );
+      })
+    );
 
-    it('when disabled with lazy engines that have dependencies with app/styles', co.wrap(function* () {
-      let app = new AddonTestApp();
-      let appName = 'engine-testing';
-      let engineName = 'lazy';
-      let addonName = 'nested';
+    it(
+      'when disabled with lazy engines that have dependencies with app/styles',
+      co.wrap(function*() {
+        let app = new AddonTestApp();
+        let appName = 'engine-testing';
+        let engineName = 'lazy';
+        let addonName = 'nested';
 
-      yield app.create(appName, { noFixtures: true });
-      let engine = yield InRepoEngine.generate(app, engineName, { lazy: true });
-      let addon = yield engine.generateNestedAddon(addonName);
+        yield app.create(appName, { noFixtures: true });
+        let engine = yield InRepoEngine.generate(app, engineName, {
+          lazy: true,
+        });
+        let addon = yield engine.generateNestedAddon(addonName);
 
-      engine.nest(addon);
+        engine.nest(addon);
 
-      addon.writeFixture({
-        app: {
-          styles: {
-            [`${addonName}.css`]: `/* ${addonName}.css */`
-          }
-        }
-      });
+        addon.writeFixture({
+          app: {
+            styles: {
+              [`${addonName}.css`]: `/* ${addonName}.css */`,
+            },
+          },
+        });
 
-      let output = yield build(app);
+        let output = yield build(app);
 
-      output.contains(`engines-dist/${engineName}/assets/engine.css`, cssCommentMatcher(`${addonName}.css`));
-    }));
+        output.contains(
+          `engines-dist/${engineName}/assets/engine.css`,
+          cssCommentMatcher(`${addonName}.css`)
+        );
+      })
+    );
   });
 });

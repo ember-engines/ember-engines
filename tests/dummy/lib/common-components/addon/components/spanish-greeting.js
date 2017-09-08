@@ -3,5 +3,5 @@ import layout from '../templates/components/spanish-greeting';
 
 export default Ember.Component.extend({
   layout: layout,
-  name: null
+  name: null,
 });

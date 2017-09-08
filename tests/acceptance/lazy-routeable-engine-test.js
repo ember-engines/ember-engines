@@ -15,7 +15,9 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
 
     // We stub out the loader methods so that we can verify what they're doing.
     const module = this;
-    this.loader = this.application.__deprecatedInstance__.lookup('service:asset-loader');
+    this.loader = this.application.__deprecatedInstance__.lookup(
+      'service:asset-loader'
+    );
     this.loadEvents = [];
 
     this.loader.defineLoader('js', function(uri) {
@@ -43,37 +45,69 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
 
     window.requirejs.entries['ember-blog/engine'] = this._engineModule;
     Ember.Test.adapter.exception = this._adapterException;
-  }
+  },
 });
 
 function verifyInitialBlogRoute(assert, loadEvents, application) {
   assert.equal(loadEvents.length, 3, 'loaded 3 assets');
-  assert.deepEqual(loadEvents[0].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine-vendor.js' ], 'loaded engine vendor js');
-  assert.deepEqual(loadEvents[1].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine.css' ], 'loaded engine css');
-  assert.deepEqual(loadEvents[2].split(SEPARATORS), [ '', 'engines-dist', 'ember-blog', 'assets', 'engine.js' ], 'loaded engine js');
+  assert.deepEqual(
+    loadEvents[0].split(SEPARATORS),
+    ['', 'engines-dist', 'ember-blog', 'assets', 'engine-vendor.js'],
+    'loaded engine vendor js'
+  );
+  assert.deepEqual(
+    loadEvents[1].split(SEPARATORS),
+    ['', 'engines-dist', 'ember-blog', 'assets', 'engine.css'],
+    'loaded engine css'
+  );
+  assert.deepEqual(
+    loadEvents[2].split(SEPARATORS),
+    ['', 'engines-dist', 'ember-blog', 'assets', 'engine.js'],
+    'loaded engine js'
+  );
 
   assert.equal(currentURL(), '/routable-engine-demo/blog/new');
 
-  assert.equal(application.$('.routable-hello-world').text().trim(), 'Hello, world!');
-  assert.equal(application.$('.hello-name').text().trim(), 'Hello, Jerry!', 'Re-rendered hello-name component correctly');
+  assert.equal(
+    application
+      .$('.routable-hello-world')
+      .text()
+      .trim(),
+    'Hello, world!'
+  );
+  assert.equal(
+    application
+      .$('.hello-name')
+      .text()
+      .trim(),
+    'Hello, Jerry!',
+    'Re-rendered hello-name component correctly'
+  );
 }
 
-test('it should pause to load JS and CSS assets on deep link into a lazy Engine', function(assert) {
+test('it should pause to load JS and CSS assets on deep link into a lazy Engine', function(
+  assert
+) {
   assert.expect(7);
 
   visit('/routable-engine-demo/blog/new');
-  andThen(() => verifyInitialBlogRoute(assert, this.loadEvents, this.application));
+  andThen(() =>
+    verifyInitialBlogRoute(assert, this.loadEvents, this.application)
+  );
 });
 
-test('it should pause to load JS and CSS assets if previous deep link into a lazy Engine has failed', function(assert) {
+test('it should pause to load JS and CSS assets if previous deep link into a lazy Engine has failed', function(
+  assert
+) {
   assert.expect(7);
 
-  define('dummy/routes/application', () => (Ember.Route.extend({
+  define('dummy/routes/application', () =>
+    Ember.Route.extend({
       actions: {
-        error() {}
-      }
+        error() {},
+      },
     })
-  ));
+  );
 
   const jsLoader = this.loader.__assetLoaders.js;
   const cssLoader = this.loader.__assetLoaders.css;
@@ -96,23 +130,30 @@ test('it should pause to load JS and CSS assets if previous deep link into a laz
   });
 });
 
-test('it should pause to load JS and CSS assets on an initial transition into a lazy Engine', function(assert) {
+test('it should pause to load JS and CSS assets on an initial transition into a lazy Engine', function(
+  assert
+) {
   assert.expect(7);
 
   visit('/routable-engine-demo');
   click('.blog-new:last');
-  andThen(() => verifyInitialBlogRoute(assert, this.loadEvents, this.application));
+  andThen(() =>
+    verifyInitialBlogRoute(assert, this.loadEvents, this.application)
+  );
 });
 
-test('it should pause to load JS and CSS assets if previous transition into a lazy Engine has failed', function(assert) {
+test('it should pause to load JS and CSS assets if previous transition into a lazy Engine has failed', function(
+  assert
+) {
   assert.expect(7);
 
-  define('dummy/routes/application', () => (Ember.Route.extend({
+  define('dummy/routes/application', () =>
+    Ember.Route.extend({
       actions: {
-        error() {}
-      }
+        error() {},
+      },
     })
-  ));
+  );
 
   visit('/routable-engine-demo');
 
@@ -138,11 +179,15 @@ test('it should pause to load JS and CSS assets if previous transition into a la
   });
 });
 
-test('it should not pause to load assets on subsequent transitions into a lazy Engine', function(assert) {
+test('it should not pause to load assets on subsequent transitions into a lazy Engine', function(
+  assert
+) {
   assert.expect(10);
 
   visit('/routable-engine-demo/blog/new');
-  andThen(() => verifyInitialBlogRoute(assert, this.loadEvents, this.application));
+  andThen(() =>
+    verifyInitialBlogRoute(assert, this.loadEvents, this.application)
+  );
 
   click('.routeable-engine:last');
   andThen(() => {
@@ -156,11 +201,15 @@ test('it should not pause to load assets on subsequent transitions into a lazy E
   });
 });
 
-test('it should not pause to load assets on transition to a loaded, but not initialized instance of a lazy Engine (e.g., Engine mounted more than once)', function(assert) {
+test('it should not pause to load assets on transition to a loaded, but not initialized instance of a lazy Engine (e.g., Engine mounted more than once)', function(
+  assert
+) {
   assert.expect(10);
 
   visit('/routable-engine-demo/blog/new');
-  andThen(() => verifyInitialBlogRoute(assert, this.loadEvents, this.application));
+  andThen(() =>
+    verifyInitialBlogRoute(assert, this.loadEvents, this.application)
+  );
 
   click('.routeable-engine:last');
   andThen(() => {
@@ -174,7 +223,9 @@ test('it should not pause to load assets on transition to a loaded, but not init
   });
 });
 
-test('it should not pause to load assets on deep link into an eager Engine', function(assert) {
+test('it should not pause to load assets on deep link into an eager Engine', function(
+  assert
+) {
   assert.expect(2);
 
   visit('/routable-engine-demo/eager-blog');
@@ -184,7 +235,9 @@ test('it should not pause to load assets on deep link into an eager Engine', fun
   });
 });
 
-test('it should not pause to load assets on transition into an eager Engine', function(assert) {
+test('it should not pause to load assets on transition into an eager Engine', function(
+  assert
+) {
   assert.expect(2);
 
   visit('/routable-engine-demo');
@@ -205,15 +258,16 @@ test('it should bubble the bundle error to the application', function(assert) {
   this.loader.defineLoader('js', failLoader);
   this.loader.defineLoader('css', failLoader);
 
-  define('dummy/routes/application', () => (Ember.Route.extend({
+  define('dummy/routes/application', () =>
+    Ember.Route.extend({
       actions: {
         error(error) {
           assert.ok(error, 'the bundle error is bubbled to the application');
           done();
-        }
-      }
+        },
+      },
     })
-  ));
+  );
 
   visit('/routable-engine-demo/blog/new');
 

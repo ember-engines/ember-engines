@@ -1,3 +1,4 @@
+/* global require */
 import EmberResolver from 'ember-resolver';
 
 /**
@@ -19,7 +20,10 @@ import EmberResolver from 'ember-resolver';
  * @param {String} [modulePrefix]
  * @return {Resolver}
  */
-export default function engineResolverFor(engineName, modulePrefix = engineName) {
+export default function engineResolverFor(
+  engineName,
+  modulePrefix = engineName
+) {
   let Resolver;
 
   if (require.has(`${engineName}/resolver`)) {

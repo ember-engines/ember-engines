@@ -3,8 +3,8 @@
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'ember-blog',
-    environment: environment
-  }
+    environment: environment,
+  };
 
   return ENV;
 };

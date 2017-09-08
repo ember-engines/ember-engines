@@ -3,9 +3,7 @@ import emberRequire from './ext-require';
 
 const EngineInstance = emberRequire('ember-application/system/engine-instance');
 
-const {
-  assert
-} = Ember;
+const { assert } = Ember;
 
 EngineInstance.reopen({
   /**
@@ -49,7 +47,9 @@ EngineInstance.reopen({
 
   buildChildEngineInstance(name, options = {}) {
     // Check dependencies cached by engine name
-    let dependencies = this._dependenciesForChildEngines && this._dependenciesForChildEngines[name];
+    let dependencies =
+      this._dependenciesForChildEngines &&
+      this._dependenciesForChildEngines[name];
 
     // Prepare dependencies if none are cached
     if (!dependencies) {
@@ -57,13 +57,14 @@ EngineInstance.reopen({
 
       let camelizedName = Ember.String.camelize(name);
 
-      let engineConfiguration = this.base.engines && this.base.engines[camelizedName];
+      let engineConfiguration =
+        this.base.engines && this.base.engines[camelizedName];
 
       if (engineConfiguration) {
         let engineDependencies = engineConfiguration.dependencies;
 
         if (engineDependencies) {
-          ['services'].forEach((category) => {
+          ['services'].forEach(category => {
             if (engineDependencies[category]) {
               dependencies[category] = {};
               let dependencyType = this._dependencyTypeFromCategory(category);
@@ -83,13 +84,16 @@ EngineInstance.reopen({
                 let dependencyKey = `${dependencyType}:${dependencyNameInParent}`;
                 let dependency = this.lookup(dependencyKey);
 
-                assert(`Engine parent failed to lookup '${dependencyKey}' dependency, as declared in 'engines.${camelizedName}.dependencies.${category}'.`, dependency);
+                assert(
+                  `Engine parent failed to lookup '${dependencyKey}' dependency, as declared in 'engines.${camelizedName}.dependencies.${category}'.`,
+                  dependency
+                );
 
                 dependencies[category][dependencyName] = dependency;
               }
             }
           });
-          
+
           if (engineDependencies.externalRoutes) {
             dependencies.externalRoutes = engineDependencies.externalRoutes;
           }
@@ -97,7 +101,8 @@ EngineInstance.reopen({
       }
 
       // Cache dependencies for child engines for faster instantiation in the future
-      this._dependenciesForChildEngines = this._dependenciesForChildEngines || {};
+      this._dependenciesForChildEngines =
+        this._dependenciesForChildEngines || {};
       this._dependenciesForChildEngines[name] = dependencies;
     }
 
@@ -128,17 +133,22 @@ EngineInstance.reopen({
     let requiredDependencies = this.base.dependencies;
 
     if (requiredDependencies) {
-      Object.keys(requiredDependencies).forEach((category) => {
+      Object.keys(requiredDependencies).forEach(category => {
         let dependencyType = this._dependencyTypeFromCategory(category);
 
         if (category === 'externalRoutes') {
           this._externalRoutes = {};
         }
 
-        requiredDependencies[category].forEach((dependencyName) => {
-          let dependency = this.dependencies[category] && this.dependencies[category][dependencyName];
+        requiredDependencies[category].forEach(dependencyName => {
+          let dependency =
+            this.dependencies[category] &&
+            this.dependencies[category][dependencyName];
 
-          assert(`A dependency mapping for '${category}.${dependencyName}' must be declared on this engine's parent.`, dependency);
+          assert(
+            `A dependency mapping for '${category}.${dependencyName}' must be declared on this engine's parent.`,
+            dependency
+          );
 
           if (category === 'externalRoutes') {
             this._externalRoutes[dependencyName] = dependency;
@@ -152,13 +162,16 @@ EngineInstance.reopen({
   },
 
   _dependencyTypeFromCategory(category) {
-    switch(category) {
+    switch (category) {
       case 'services':
         return 'service';
       case 'externalRoutes':
         return 'externalRoute';
     }
-    assert(`Dependencies of category '${category}' can not be shared with engines.`, false);
+    assert(
+      `Dependencies of category '${category}' can not be shared with engines.`,
+      false
+    );
   },
 
   // mount(view) {

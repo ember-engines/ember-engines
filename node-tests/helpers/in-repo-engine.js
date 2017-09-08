@@ -4,7 +4,7 @@ const InRepoAddon = require('./in-repo-addon');
 
 class InRepoEngine extends InRepoAddon {
   static generate(app, name, options) {
-    let args = [ 'generate', 'in-repo-engine', name ];
+    let args = ['generate', 'in-repo-engine', name];
 
     if (typeof options.lazy !== 'undefined') {
       args.push('--lazy', options.lazy);
@@ -20,9 +20,9 @@ class InRepoEngine extends InRepoAddon {
       engine.writeFixture({
         addon: {
           styles: {
-            'app.css': `/* ${name}.css */`
-          }
-        }
+            'app.css': `/* ${name}.css */`,
+          },
+        },
       });
       return engine;
     });
@@ -30,16 +30,18 @@ class InRepoEngine extends InRepoAddon {
 
   generateNestedEngine(name) {
     // Generate another in-repo-engine at the app level...
-    let args = Array.prototype.slice.call(arguments)
+    let args = Array.prototype.slice.call(arguments);
     args.unshift(this.app);
-    return InRepoEngine.generate.apply(null, args).then((engine) => {
+    return InRepoEngine.generate.apply(null, args).then(engine => {
       // Remove the in-repo-engine from the app...
-      this.app.editPackageJSON((pkg) => {
-        pkg['ember-addon'].paths = pkg['ember-addon'].paths.filter((path) => path !== `lib/${name}`);
+      this.app.editPackageJSON(pkg => {
+        pkg['ember-addon'].paths = pkg['ember-addon'].paths.filter(
+          path => path !== `lib/${name}`
+        );
       });
 
       // Add the in-repo-engine to this engine.
-      this.editPackageJSON((pkg) => {
+      this.editPackageJSON(pkg => {
         pkg['ember-addon'] = pkg['ember-addon'] || {};
         pkg['ember-addon'].paths = pkg['ember-addon'].paths || [];
         pkg['ember-addon'].paths.push(`../${name}`);

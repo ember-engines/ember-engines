@@ -1,18 +1,12 @@
 import Ember from 'ember';
 import emberRequire from './ext-require';
 
-const hasDefaultSerialize = emberRequire('ember-routing/system/route', 'hasDefaultSerialize');
+const hasDefaultSerialize = emberRequire(
+  'ember-routing/system/route',
+  'hasDefaultSerialize'
+);
 
-const {
-  Logger: {
-    info
-  },
-  Router,
-  RSVP,
-  assert,
-  get,
-  getOwner
-} = Ember;
+const { Logger: { info }, Router, RSVP, assert, get, getOwner } = Ember;
 
 Router.reopen({
   init() {
@@ -53,16 +47,26 @@ Router.reopen({
     let seen = this._seenHandlers;
     let owner = getOwner(this);
 
-    return (name) => {
+    return name => {
       let engineInfo = this._engineInfoByRoute[name];
 
       if (engineInfo) {
         let engineInstance = this._getEngineInstance(engineInfo);
         if (engineInstance) {
-          return this._getHandlerForEngine(seen, name, engineInfo.localFullName, engineInstance);
+          return this._getHandlerForEngine(
+            seen,
+            name,
+            engineInfo.localFullName,
+            engineInstance
+          );
         } else {
-          return this._loadEngineInstance(engineInfo).then((instance) => {
-            return this._getHandlerForEngine(seen, name, engineInfo.localFullName, instance);
+          return this._loadEngineInstance(engineInfo).then(instance => {
+            return this._getHandlerForEngine(
+              seen,
+              name,
+              engineInfo.localFullName,
+              instance
+            );
           });
         }
       }
@@ -86,10 +90,17 @@ Router.reopen({
    * @return {EngineInstance} engineInstance
    */
   _getHandlerForEngine(seen, routeName, localRouteName, engineInstance) {
-    let handler = this._internalGetHandler(seen, routeName, localRouteName, engineInstance);
+    let handler = this._internalGetHandler(
+      seen,
+      routeName,
+      localRouteName,
+      engineInstance
+    );
 
     if (!hasDefaultSerialize(handler)) {
-      throw new Error('Defining a custom serialize method on an Engine route is not supported.');
+      throw new Error(
+        'Defining a custom serialize method on an Engine route is not supported.'
+      );
     }
 
     return handler;
@@ -118,7 +129,9 @@ Router.reopen({
     seen[routeName] = true;
 
     if (!handler) {
-      const DefaultRoute = routeOwner.factoryFor ? routeOwner.factoryFor('route:basic').class : routeOwner._lookupFactory('route:basic');
+      const DefaultRoute = routeOwner.factoryFor
+        ? routeOwner.factoryFor('route:basic').class
+        : routeOwner._lookupFactory('route:basic');
 
       routeOwner.register(fullRouteName, DefaultRoute.extend());
       handler = routeOwner.lookup(fullRouteName);
@@ -161,7 +174,10 @@ Router.reopen({
   _registerEngine(name) {
     let owner = getOwner(this);
     if (!owner.hasRegistration('engine:' + name)) {
-      owner.register('engine:' + name, window.require(name + '/engine').default);
+      owner.register(
+        'engine:' + name,
+        window.require(name + '/engine').default
+      );
     }
   },
 
@@ -214,16 +230,16 @@ Router.reopen({
       // The Engine is not loaded and has no Promise
       enginePromise = this._assetLoader.loadBundle(name).then(
         () => this._registerEngine(name),
-        (error) => {
+        error => {
           enginePromises[name][instanceId] = undefined;
           throw error;
         }
       );
     }
 
-    return enginePromises[name][instanceId] = enginePromise.then(() => {
+    return (enginePromises[name][instanceId] = enginePromise.then(() => {
       return this._constructEngineInstance({ name, instanceId, mountPoint });
-    });
+    }));
   },
 
   /**
@@ -242,7 +258,9 @@ Router.reopen({
     let owner = getOwner(this);
 
     assert(
-      'You attempted to mount the engine \'' + name + '\' in your router map, but the engine cannot be found.',
+      "You attempted to mount the engine '" +
+        name +
+        "' in your router map, but the engine cannot be found.",
       owner.hasRegistration(`engine:${name}`)
     );
 
@@ -254,14 +272,13 @@ Router.reopen({
 
     let engineInstance = owner.buildChildEngineInstance(name, {
       routable: true,
-      mountPoint
+      mountPoint,
     });
 
     engineInstances[name][instanceId] = engineInstance;
 
-    return engineInstance.boot()
-      .then(() => {
-        return engineInstance;
-      });
-  }
+    return engineInstance.boot().then(() => {
+      return engineInstance;
+    });
+  },
 });

@@ -3,7 +3,7 @@
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'eager-blog',
-    environment: environment
+    environment: environment,
   };
 
   return ENV;
