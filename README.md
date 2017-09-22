@@ -93,7 +93,9 @@ You must also declare in your Engine's `index.js` file whether or not the engine
 const EngineAddon = require('ember-engines/lib/engine-addon');
 module.exports = EngineAddon.extend({
   name: 'ember-blog',
-  lazyLoading: false
+  lazyLoading: {
+    enabled: false
+  }
 });
 ```
 
