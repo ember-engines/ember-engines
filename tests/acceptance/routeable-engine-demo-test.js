@@ -595,3 +595,13 @@ test('instance-initializers run after initializers', function(assert) {
     instanceInit.restore();
   });
 });
+
+test('errors thrown during transition into engine are rejected properly', function(assert) {
+  assert.expect(2);
+
+  visit('/routable-engine-demo/fails-loudly')
+    .catch((error) => {
+      debugger
+      error;
+    });
+});

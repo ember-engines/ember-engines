@@ -27,6 +27,8 @@ Router.map(function() {
     });
 
     this.mount('eager-blog', { resetNamespace: true });
+
+    this.mount('fails-loudly');
   });
 
   // Used to check for collisions with Post route in ember-blog
