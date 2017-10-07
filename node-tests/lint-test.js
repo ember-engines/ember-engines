@@ -11,6 +11,7 @@ lint([
   'config',
   'lib',
   'node-tests',
-  'tests',
+  'tests/**/*.js',
+  '!tests/**/node_modules/**/*.js',
   'vendor',
 ]);
