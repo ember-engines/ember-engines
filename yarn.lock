@@ -2106,9 +2106,9 @@ ember-ajax@^3.0.0:
   dependencies:
     ember-cli-babel "^6.0.0"
 
-ember-asset-loader@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/ember-asset-loader/-/ember-asset-loader-0.3.0.tgz#8a229422d830bba9949ff67b9cdfad5ea2cbfa75"
+ember-asset-loader@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/ember-asset-loader/-/ember-asset-loader-0.3.1.tgz#5fc0bbd3ac458da4997dc6454df4c91d75c09b5a"
   dependencies:
     broccoli-caching-writer "^3.0.3"
     broccoli-funnel "^1.0.8"
