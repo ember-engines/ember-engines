@@ -2106,9 +2106,9 @@ ember-ajax@^3.0.0:
   dependencies:
     ember-cli-babel "^6.0.0"
 
-ember-asset-loader@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/ember-asset-loader/-/ember-asset-loader-0.3.0.tgz#8a229422d830bba9949ff67b9cdfad5ea2cbfa75"
+ember-asset-loader@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/ember-asset-loader/-/ember-asset-loader-0.4.1.tgz#0f52fd8962b03304bf9e0a08b9b97ba32ee461fe"
   dependencies:
     broccoli-caching-writer "^3.0.3"
     broccoli-funnel "^1.0.8"
@@ -2122,14 +2122,14 @@ ember-asset-loader@^0.3.0:
 "ember-blog@file:./tests/dummy/lib/ember-blog":
   version "0.0.0"
   dependencies:
-    common-components "file:../common-components"
+    common-components "file:../../Library/Caches/Yarn/v1/common-components"
     ember-cli-babel "*"
     ember-cli-htmlbars "*"
 
 "ember-chat@file:./tests/dummy/lib/ember-chat":
   version "0.0.0"
   dependencies:
-    common-components "file:../common-components"
+    common-components "file:../../Library/Caches/Yarn/v1/common-components"
     ember-cli-babel "*"
     ember-cli-htmlbars "*"
 
