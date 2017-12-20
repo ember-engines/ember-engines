@@ -596,6 +596,26 @@ test('renders text', function(assert) {
 
 **Note: you could create a helper and then use it like `Resolver from ../helpers/appointments-manager/resolver`**
 
+### Testing for standalone engines
+
+If you have a lazy engine, you'll need to edit your `tests/test-helper.js` like this:
+
+```js
+import resolver from './helpers/resolver';
+import {
+  setResolver
+} from 'ember-qunit';
+import preloadAssets from 'ember-asset-loader/test-support/preload-assets';
+import manifest from 'dummy/config/asset-manifest';
+import { start } from 'ember-cli-qunit';
+
+setResolver(resolver);
+preloadAssets(manifest).then(start); // This ensures all engine resources are loaded before the tests
+```
+
+This should be enough to make integration & acceptance tests work.
+For unit tests, you'll need to use a custom resolver, as described in [Unit/Integration testing for standalone engines](#unitintegration-testing-for-in-repo-engines).
+
 ## Demo Projects
 
 * [ember-engines-demo](https://github.com/dgeb/ember-engines-demo) - an example of a parent application (consumer).
