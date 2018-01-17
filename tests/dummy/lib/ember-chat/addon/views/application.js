@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
   init() {
     // eslint-disable-next-line
     console.log('ChatEngine.ApplicationView - init');

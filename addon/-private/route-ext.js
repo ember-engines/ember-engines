@@ -1,6 +1,5 @@
-import Ember from 'ember';
-
-const { Route, getOwner } = Ember;
+import Route from '@ember/routing/route';
+import { getOwner } from '@ember/application';
 
 /*
   Creates an aliased form of a method that properly resolves external routes.

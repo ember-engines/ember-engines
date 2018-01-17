@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import Application from '@ember/application';
+import { run } from '@ember/runloop';
 import EnginesInitializer from '../../initializers/engines';
 import Engine from 'ember-engines/engine';
 import emberRequire from 'ember-engines/-private/ext-require';
@@ -11,8 +12,6 @@ const getEngineParent = emberRequire(
   'ember-application/system/engine-parent',
   'getEngineParent'
 );
-
-const { Application, run } = Ember;
 
 let App, app, appInstance;
 
@@ -49,7 +48,7 @@ test('it can build a child engine instance without parent dependencies defined',
 
   let BlogEngine = Engine.extend({
     router: null,
-    dependencies: {},
+    dependencies: Object.freeze({}),
   });
 
   app.engines = undefined;
@@ -102,9 +101,9 @@ test('it can build a child engine instance with dependencies', function(
 
   let BlogEngine = Engine.extend({
     router: null,
-    dependencies: {
+    dependencies: Object.freeze({
       services: ['store'],
-    },
+    }),
   });
 
   app.engines = {
@@ -145,11 +144,11 @@ test('it can build a child engine instance with dependencies that are aliased', 
 
   let BlogEngine = Engine.extend({
     router: null,
-    dependencies: {
+    dependencies: Object.freeze({
       services: [
         'data-store', // NOTE: Blog engine uses alias to 'store'
       ],
-    },
+    }),
   });
 
   app.engines = {

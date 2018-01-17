@@ -1,11 +1,11 @@
-import Ember from 'ember';
+import { later } from '@ember/runloop';
+import Route from '@ember/routing/route';
+import { Promise } from 'rsvp';
 
-const { RSVP: { Promise } } = Ember;
-
-export default Ember.Route.extend({
+export default Route.extend({
   model() {
     return new Promise(resolve => {
-      Ember.run.later(() => {
+      later(() => {
         resolve();
       }, 500);
     });

@@ -1,3 +1,8 @@
+import Router from '@ember/routing/router';
+import RSVP from 'rsvp';
+import { assert } from '@ember/debug';
+import { get } from '@ember/object';
+import { getOwner } from '@ember/application';
 import Ember from 'ember';
 import emberRequire from './ext-require';
 
@@ -6,7 +11,9 @@ const hasDefaultSerialize = emberRequire(
   'hasDefaultSerialize'
 );
 
-const { Logger: { info }, Router, RSVP, assert, get, getOwner } = Ember;
+const {
+  Logger: { info }
+} = Ember;
 
 Router.reopen({
   init() {

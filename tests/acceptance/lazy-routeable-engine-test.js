@@ -1,10 +1,12 @@
 /* global define, window */
+import Route from '@ember/routing/route';
+
+import RSVP from 'rsvp';
 import Ember from 'ember';
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 import App from '../../app';
 
-const { RSVP } = Ember;
 const SEPARATORS = /\/|\\/;
 
 moduleForAcceptance('Acceptance | lazy routable engine', {
@@ -102,7 +104,7 @@ test('it should pause to load JS and CSS assets if previous deep link into a laz
   assert.expect(7);
 
   define('dummy/routes/application', () =>
-    Ember.Route.extend({
+    Route.extend({
       actions: {
         error() {},
       },
@@ -148,7 +150,7 @@ test('it should pause to load JS and CSS assets if previous transition into a la
   assert.expect(7);
 
   define('dummy/routes/application', () =>
-    Ember.Route.extend({
+    Route.extend({
       actions: {
         error() {},
       },
@@ -259,7 +261,7 @@ test('it should bubble the bundle error to the application', function(assert) {
   this.loader.defineLoader('css', failLoader);
 
   define('dummy/routes/application', () =>
-    Ember.Route.extend({
+    Route.extend({
       actions: {
         error(error) {
           assert.ok(error, 'the bundle error is bubbled to the application');

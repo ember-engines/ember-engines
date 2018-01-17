@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import layout from '../templates/components/hello-world';
 
-export default Ember.Component.extend({
+export default Component.extend({
   layout: layout,
 
   name: null,

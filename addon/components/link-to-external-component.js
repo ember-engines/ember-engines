@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import LinkComponent from '@ember/routing/link-component';
+import { getOwner } from '@ember/application';
+import { set, get } from '@ember/object';
 import { attributeMungingMethod } from '../-private/link-to-utils';
-
-const { LinkComponent, getOwner, get, set } = Ember;
 
 export default LinkComponent.extend({
   [attributeMungingMethod]() {
