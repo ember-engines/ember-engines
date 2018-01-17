@@ -9,8 +9,6 @@ export default Route.extend({
     // confirm that it gets cleaned up
     this.get('exampleService');
 
-    // eslint-disable-next-line
-    console.log('ember-chat.application route model hook');
     return {
       name: 'Derek Zoolander',
     };

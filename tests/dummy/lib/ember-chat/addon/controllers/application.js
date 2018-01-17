@@ -9,10 +9,6 @@ export default Controller.extend({
   init() {
     this._super(...arguments);
     this.get('exampleService');
-
-    // eslint-disable-next-line
-    console.log('ember-chat application controller init');
-
     this.set('name', `ember-chat-${++count}`);
   },
 });

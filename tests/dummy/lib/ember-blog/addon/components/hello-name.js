@@ -1,4 +1,4 @@
-import { later } from '@ember/runloop';
+import { later, cancel } from '@ember/runloop';
 import Component from '@ember/component';
 import layout from '../templates/components/hello-name';
 
@@ -7,11 +7,15 @@ export default Component.extend({
   classNames: ['hello-name'],
   init() {
     this._super(...arguments);
-    later(() => {
+    this._later = later(() => {
       if (this.isDestroyed || this.isDestroying) {
         return;
       }
       this.set('name', 'Jerry');
-    }, 500);
+    }, 50);
   },
+  destroy() {
+    cancel(this._later);
+    this._super(...arguments);
+  }
 });
