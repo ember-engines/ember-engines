@@ -579,11 +579,11 @@ test('instance-initializers run after initializers', function(assert) {
   let appInitialized = false;
   let instanceInitialized = false;
 
-  let appInit = sinon.stub(Initializer, 'initialize', function() {
+  let appInit = sinon.stub(Initializer, 'initialize').callsFake(() => {
     appInitialized = true;
     assert.ok(!instanceInitialized, 'instance initialized has not run yet');
   });
-  let instanceInit = sinon.stub(InstanceInitializer, 'initialize', function() {
+  let instanceInit = sinon.stub(InstanceInitializer, 'initialize').callsFake(() => {
     instanceInitialized = true;
     assert.ok(appInitialized, 'initializer already ran');
   });
