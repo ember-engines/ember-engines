@@ -1,7 +1,7 @@
-/* jshint node: true */
+/* eslint-env node */
 'use strict';
 
-var ManifestGenerator = require('ember-asset-loader/lib/manifest-generator');
+const ManifestGenerator = require('ember-asset-loader/lib/manifest-generator');
 
 module.exports = ManifestGenerator.extend({
   name: 'ember-engines',

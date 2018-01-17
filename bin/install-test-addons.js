@@ -1,6 +1,7 @@
+/* eslint-env node */
 'use strict';
 
-var fs = require('fs-extra');
+const fs = require('fs-extra');
 
 fs.removeSync('node_modules/common-components');
 fs.symlinkSync(
