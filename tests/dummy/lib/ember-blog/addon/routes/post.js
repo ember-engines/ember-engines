@@ -1,9 +1,7 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   model(params) {
-    // eslint-disable-next-line
-    console.log('ember-blog.post route model hook', params);
     return {
       user: this.modelFor('application'),
       id: params.id,

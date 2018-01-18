@@ -8,10 +8,13 @@ const { modulePrefix } = config;
 const Eng = Engine.extend({
   modulePrefix,
   Resolver,
-  dependencies: {
-    services: ['data-store'],
-    externalRoutes: ['home'],
-  },
+  init() {
+    this._super(...arguments);
+    this.dependencies = {
+      services: ['data-store'],
+      externalRoutes: ['home'],
+    };
+  }
 });
 
 loadInitializers(Eng, modulePrefix);

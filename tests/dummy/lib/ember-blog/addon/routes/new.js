@@ -1,11 +1,6 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
-  model() {
-    // eslint-disable-next-line
-    console.log('ember-chat.new route model hook');
-  },
-
+export default Route.extend({
   actions: {
     goAway() {
       this.transitionTo('post', 1);

@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Service, { inject as service } from '@ember/service';
 
-export default Ember.Service.extend({
-  dataStore: Ember.inject.service(),
+export default Service.extend({
+  dataStore: service(),
   init() {
     // The store is provided by the containing application, so it's a convenient rendezvous point for our tests to be able to observe this instance.
     this.get('dataStore').__exampleServiceForTesting = this;

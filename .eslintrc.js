@@ -1,20 +1,63 @@
-'use strict';
-
 module.exports = {
   root: true,
-  extends: ['eslint:recommended', 'prettier'],
-  plugins: ['prettier'],
   parserOptions: {
     ecmaVersion: 2017,
+    sourceType: 'module'
   },
+  plugins: [
+    'ember'
+  ],
+  extends: [
+    'eslint:recommended',
+    'plugin:ember/recommended'
+  ],
   env: {
-    node: true,
+    browser: true
   },
   rules: {
-    strict: [2, 'global'],
-    'prettier/prettier': [
-      'error',
-      { singleQuote: true, trailingComma: 'es5' },
-    ],
   },
+  overrides: [
+    // node files
+    {
+      files: [
+        'index.js',
+        'testem.js',
+        'ember-cli-build.js',
+        'config/**/*.js',
+        'tests/dummy/config/**/*.js'
+      ],
+      excludedFiles: [
+        'app/**',
+        'addon/**',
+        'tests/dummy/**',
+        'node-tests/**/*'
+      ],
+      parserOptions: {
+        sourceType: 'script',
+        ecmaVersion: 2015
+      },
+      env: {
+        browser: false,
+        node: true
+      },
+      plugins: ['node'],
+      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
+        // add your custom rules and overrides for node files here
+      })
+    },
+    {
+      files: [
+        "node-tests/**/*"
+      ],
+      parserOptions: {
+        ecmaVersion: 2016,
+      },
+      env: {
+        node: true,
+        mocha: true,
+      },
+      rules: {
+      },
+    }
+  ]
 };

@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -9,7 +9,7 @@ moduleForComponent(
     integration: true,
 
     beforeEach() {
-      let testComponent = Ember.Component.extend();
+      let testComponent = Component.extend();
       this.registry.register('component:test-component', testComponent);
     },
   }

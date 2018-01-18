@@ -1,9 +1,8 @@
-import Ember from 'ember';
+import { camelize } from '@ember/string';
+import { assert } from '@ember/debug';
 import emberRequire from './ext-require';
 
 const EngineInstance = emberRequire('ember-application/system/engine-instance');
-
-const { assert } = Ember;
 
 EngineInstance.reopen({
   /**
@@ -55,7 +54,7 @@ EngineInstance.reopen({
     if (!dependencies) {
       dependencies = {};
 
-      let camelizedName = Ember.String.camelize(name);
+      let camelizedName = camelize(name);
 
       let engineConfiguration =
         this.base.engines && this.base.engines[camelizedName];
@@ -122,7 +121,7 @@ EngineInstance.reopen({
   _getExternalRoute(routeName) {
     const route = this._externalRoutes[routeName];
 
-    Ember.assert(`The external route ${routeName} does not exist`, route);
+    assert(`The external route ${routeName} does not exist`, route);
 
     return route;
   },

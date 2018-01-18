@@ -8,8 +8,11 @@ const { modulePrefix } = config;
 const Eng = Engine.extend({
   modulePrefix,
   Resolver,
-  dependencies: {
-    services: ['store'],
+  init() {
+    this._super(...arguments);
+    this.dependencies = {
+      services: ['store'],
+    };
   },
 });
 
