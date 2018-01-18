@@ -29,7 +29,8 @@ module.exports = {
       excludedFiles: [
         'app/**',
         'addon/**',
-        'tests/dummy/**'
+        'tests/dummy/**',
+        'node-tests/**/*'
       ],
       parserOptions: {
         sourceType: 'script',
@@ -43,6 +44,20 @@ module.exports = {
       rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
         // add your custom rules and overrides for node files here
       })
+    },
+    {
+      files: [
+        "node-tests/**/*"
+      ],
+      parserOptions: {
+        ecmaVersion: 2016,
+      },
+      env: {
+        node: true,
+        mocha: true,
+      },
+      rules: {
+      },
     }
   ]
 };
