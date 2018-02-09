@@ -27,7 +27,7 @@ describe('engine-addon', function() {
       });
     });
 
-    it('does not modify the manifest when lazyLoading is disabled', function() {
+    it('add config/environment file to the manifest when lazyLoading is disabled', function() {
       const addon = EngineAddon.extend({
         name: 'testing',
         lazyLoading: {
@@ -39,7 +39,11 @@ describe('engine-addon', function() {
       addon.updateFastBootManifest(manifest);
 
       expect(manifest).to.deep.equal({
-        vendorFiles: ['one.js', 'two.js'],
+        vendorFiles: [
+          'one.js',
+          'two.js',
+          'engines-dist/testing/config/environment.js',
+        ],
       });
     });
   });
