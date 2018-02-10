@@ -338,7 +338,7 @@ describe('Acceptance', function() {
         let output = yield build(app);
 
         // Verify we have the manifest
-        expect(output.manifest()).to.deep.equal(expectedManifests['eager']);
+        expect(output.manifest()).to.deep.equal(expectedManifests['eager-in-eager']);
         output.contains('assets/node-asset-manifest.js');
 
         output.contains(

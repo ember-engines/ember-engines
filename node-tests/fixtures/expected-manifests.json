@@ -1,6 +1,10 @@
 {
   "eager": {
-    "bundles": {}
+    "bundles": {
+      "eager": {
+        "assets": []
+      }
+    }
   },
 
   "lazy": {
@@ -24,8 +28,21 @@
     }
   },
 
+  "eager-in-eager": {
+    "bundles": {
+      "eager": {
+        "assets": []
+      },
+      "eager-in-eager": {
+        "assets": []
+      }
+    }
+  },
   "eager-in-lazy": {
     "bundles": {
+      "eager-in-lazy": {
+        "assets": []
+      },
       "lazy": {
         "assets": [
           {
@@ -51,6 +68,9 @@
 
   "lazy-in-eager": {
     "bundles": {
+      "eager": {
+        "assets": []
+      },
       "lazy-in-eager": {
         "assets": [
           {
