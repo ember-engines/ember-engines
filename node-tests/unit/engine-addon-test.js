@@ -7,7 +7,7 @@ describe('engine-addon', function() {
   describe('updateFastBootManifest', function() {
     it('adds necessary vendorFiles to the manifest when lazyLoading is enabled', function() {
 
-      /*eslint-disable*/
+      /*eslint-disable ember/avoid-leaking-state-in-ember-objects*/
       const addon = EngineAddon.extend({
         name: 'testing',
         lazyLoading: {
@@ -31,7 +31,7 @@ describe('engine-addon', function() {
     });
 
     it('add config/environment file to the manifest when lazyLoading is disabled', function() {
-      /*eslint-disable*/
+      /*eslint-disable ember/avoid-leaking-state-in-ember-objects*/
       const addon = EngineAddon.extend({
         name: 'testing',
         lazyLoading: {
