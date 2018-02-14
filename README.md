@@ -30,7 +30,7 @@ Support for the following concepts is under consideration:
 
 ## Important Note about Compatibility and Stability
 
-This addon should be considered experimental and used with caution.
+This addon should be considered experimental. But engines are production ready and many of the APIs are fully stable.
 
 The [master branch of this addon](https://github.com/ember-engines/ember-engines)
 is being developed against the master branch of Ember and Ember-CLI, and should
@@ -187,9 +187,14 @@ located via a route path:
 
 ```js
 // dummy/app/app.js
-const App = Ember.Application.extend({
-  modulePrefix,
-  podModulePrefix,
+import Application from '@ember/application';
+import Resolver from './resolver';
+import loadInitializers from 'ember-load-initializers';
+import config from './config/environment';
+
+const App = Application.extend({
+  modulePrefix: config.modulePrefix,
+  podModulePrefix: config.podModulePrefix,
   Resolver,
 
   engines: {
@@ -230,7 +235,9 @@ Since the links to your Engine are constructed before the Engine itself is loade
 For example, if you had a `Post` route defined like so:
 
 ```js
-export default Ember.Route.extend({
+import Route from "@ember/routing/route";
+
+export default Route.extend({
   serialize(model) {
     return { post_id: model.id };
   }
@@ -456,10 +463,10 @@ Routable engines should be mounted in your router's route map using the
 `mount()` method. For example:
 
 ```js
-import Ember from 'ember';
+import Route from "@ember/routing/route"
 import config from './config/environment';
 
-const Router = Ember.Router.extend({
+const Router = Router.extend({
   location: config.locationType
 });
 
@@ -527,18 +534,14 @@ An application that contains this engine must explicitly fulfill these
 dependencies. For example:
 
 ```js
-import Ember from 'ember';
-import Resolver from 'ember-resolver';
-import loadInitializers from 'ember/load-initializers';
+import Application from '@ember/application';
+import Resolver from './resolver';
+import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
 
-Ember.MODEL_FACTORY_INJECTIONS = true;
-
-const { modulePrefix, podModulePrefix } = config;
-
-const App = Ember.Application.extend({
-  modulePrefix,
-  podModulePrefix,
+const App = Application.extend({
+  modulePrefix: config.modulePrefix,
+  podModulePrefix: config.podModulePrefix,
   Resolver,
 
   engines: {
@@ -553,7 +556,7 @@ const App = Ember.Application.extend({
   }
 });
 
-loadInitializers(App, modulePrefix);
+loadInitializers(App, config.modulePrefix);
 
 export default App;
 ```
@@ -648,4 +651,4 @@ For more information on using ember-cli, visit [http://www.ember-cli.com/](http:
 
 ## License
 
-Copyright 2015-2016 Dan Gebhardt and Robert Jackson. MIT License (see LICENSE.md for details).
+Copyright 2015-2018 Dan Gebhardt and Robert Jackson. MIT License (see LICENSE.md for details).
