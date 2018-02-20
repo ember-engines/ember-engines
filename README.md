@@ -161,6 +161,36 @@ export default Eng;
 Currently, only services and route paths (see below) can be shared across the
 parent/engine boundary.
 
+### Sharing Components and More
+
+If you want to share components, helpers or utils between a parent and
+an engine, then create an addon and add it as a dependency of both
+your application and engine.
+
+```json
+{
+  "dependencies": {
+    "common-components": "1.0.0"
+  }
+}
+```
+
+In-repo addons can be consumed from an engine too. To do so, add it to the
+engine's `package.json`:
+
+```
+// lib/my-in-repo-engine/package.json
+  "ember-addon": {
+    "paths": [
+      "../shared-components"
+    ]
+  }
+```
+
+Keep in mind that this will break if you refactor the in-repo-engine
+into a separate engine. In that scenario, you'll need to publish the
+in-repo addon `shared-components` as a package in npm.
+
 ### Linking To External Routes
 
 Linking to routes outside of an Engine's isolated context is currently supported
