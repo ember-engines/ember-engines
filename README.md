@@ -37,6 +37,9 @@ is being developed against the master branch of Ember and Ember-CLI, and should
 be considered unstable. If you're planning to deploy to production, please use
 one of the stable releases.
 
+[v0.5.15 or higher](https://github.com/ember-engines/ember-engines/tree/v0.5.15)
+is compatible with FastBoot 1.0+.
+
 [v0.5 of this addon](https://github.com/ember-engines/ember-engines/tree/v0.5.0)
 is compatible with v2.12.x of both Ember and Ember-CLI.
 
