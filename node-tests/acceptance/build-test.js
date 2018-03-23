@@ -72,6 +72,7 @@ describe('Acceptance', function() {
         // Verify we have the manifest and the lazy engine assets
         expect(output.manifest()).to.deep.equal(expectedManifests['lazy']);
         output.contains('assets/node-asset-manifest.js');
+        output.contains(`engines-dist/${engineName}/config/environment.js`);
         output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`);
         output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`);
         output.contains(`engines-dist/${engineName}/assets/engine-vendor.map`);
@@ -337,7 +338,7 @@ describe('Acceptance', function() {
         let output = yield build(app);
 
         // Verify we have the manifest
-        expect(output.manifest()).to.deep.equal(expectedManifests['eager']);
+        expect(output.manifest()).to.deep.equal(expectedManifests['eager-in-eager']);
         output.contains('assets/node-asset-manifest.js');
 
         output.contains(
