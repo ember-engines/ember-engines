@@ -72,7 +72,11 @@ describe('Acceptance', function() {
         // Verify we have the manifest and the lazy engine assets
         expect(output.manifest()).to.deep.equal(expectedManifests['lazy']);
         output.contains('assets/node-asset-manifest.js');
-        output.contains(`engines-dist/${engineName}/config/environment.js`);
+        // Engine inherites its environment from the parent
+        output.contains(
+          `engines-dist/${engineName}/config/environment.js`,
+          /"environment":"development"/
+        );
         output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`);
         output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`);
         output.contains(`engines-dist/${engineName}/assets/engine-vendor.map`);
