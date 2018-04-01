@@ -607,15 +607,15 @@ test('renders text', function(assert) {
 If you have a lazy engine, you'll need to edit your `tests/test-helper.js` like this:
 
 ```js
-import resolver from './helpers/resolver';
-import {
-  setResolver
-} from 'ember-qunit';
+import Application from '../app';
+import config from '../config/environment';
+import { setApplication } from '@ember/test-helpers';
+import { start } from 'ember-qunit';
 import preloadAssets from 'ember-asset-loader/test-support/preload-assets';
-import manifest from 'dummy/config/asset-manifest';
-import { start } from 'ember-cli-qunit';
+import manifest from '<app-name>/config/asset-manifest';
 
-setResolver(resolver);
+setApplication(Application.create(config.APP));
+
 preloadAssets(manifest).then(start); // This ensures all engine resources are loaded before the tests
 ```
 
