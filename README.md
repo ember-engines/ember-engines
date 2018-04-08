@@ -1,7 +1,7 @@
 # ember-engines [![npm version](https://badge.fury.io/js/ember-engines.svg)](https://badge.fury.io/js/ember-engines) [![Build Status](https://travis-ci.org/ember-engines/ember-engines.svg?branch=master)](https://travis-ci.org/ember-engines/ember-engines)
 
 This Ember addon implements the functionality described in the [Ember Engines
-RFC](https://github.com/emberjs/rfcs/pull/10). Engines allow multiple logical
+RFC](https://github.com/emberjs/rfcs/blob/master/text/0010-engines.md). Engines allow multiple logical
 applications to be composed together into a single application from the user's
 perspective.
 
@@ -263,7 +263,7 @@ Note that route serializers are unique to Engines and won't work in normal appli
 
 #### Loading / Error Substates
 
-The loading and error substates work in a similar fashion to [substates in a normal Ember app](https://guides.emberjs.com/v2.6.0/routing/loading-and-error-substates/). The only difference is that lazily loaded Engines will enter a loading state while the assets for the Engine are loaded and can enter an error state when an asset fails to load.
+The loading and error substates work in a similar fashion to [substates in a normal Ember app](https://guides.emberjs.com/v3.0.0/routing/loading-and-error-substates/). The only difference is that lazily loaded Engines will enter a loading state while the assets for the Engine are loaded and can enter an error state when an asset fails to load.
 
 ### Accessing Engine Configuration Settings
 
