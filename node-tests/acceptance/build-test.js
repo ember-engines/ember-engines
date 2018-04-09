@@ -778,5 +778,71 @@ describe('Acceptance', function() {
         );
       })
     );
+
+    it(
+      'builds a lazy engines test-support in test builds',
+      co.wrap(function*() {
+        let app = new AddonTestApp();
+        let engineName = 'lazy';
+
+        yield app.create('engine-testing', { noFixtures: true });
+        yield InRepoEngine.generate(app, engineName, { lazy: true });
+
+        let output = yield build(app, 'test');
+
+        // Verify we have the manifest and the lazy engine assets
+        expect(output.manifest()).to.deep.equal(expectedManifests['lazy']);
+        output.contains('assets/node-asset-manifest.js');
+        // Engine inherites its environment from the parent
+        output.contains(
+          `engines-dist/${engineName}/config/environment.js`,
+          /"environment":"test"/
+        );
+        output.contains(`engines-dist/${engineName}/assets/engine-vendor.css`);
+        output.contains(`engines-dist/${engineName}/assets/engine-vendor.js`);
+        output.contains(`engines-dist/${engineName}/assets/engine-vendor.map`);
+        output.contains(
+          `engines-dist/${engineName}/assets/engine.css`,
+          cssCommentMatcher(`${engineName}.css`)
+        );
+        output.contains(`engines-dist/${engineName}/assets/engine.js`);
+        output.contains(`engines-dist/${engineName}/assets/engine.map`);
+        output.contains(`engines-dist/${engineName}/assets/test-support.js`);
+        output.contains(`engines-dist/${engineName}/assets/test-support.map`);
+        output.contains(
+          'assets/vendor.js',
+          moduleMatcher(`${engineName}/routes`)
+        );
+
+        DEFAULT_ROUTABLE_ENGINE_MODULES.forEach(module => {
+          // Check that all of the modules got merged into the engine.js file
+          output.contains(
+            `engines-dist/${engineName}/assets/engine.js`,
+            moduleMatcher(`${engineName}/${module}`)
+          );
+        });
+      })
+    );
+
+    it(
+      'doesn\'t build a lazy engines test-support in production builds',
+      co.wrap(function*() {
+        let app = new AddonTestApp();
+        let engineName = 'lazy';
+
+        yield app.create('engine-testing', { noFixtures: true });
+        yield InRepoEngine.generate(app, engineName, { lazy: true });
+
+        let output = yield build(app, 'production');
+
+        let lazyFiles = output.manifest().bundles.lazy.assets;
+
+        for (let file of lazyFiles) {
+          if (file.type === 'js' && file.uri.indexOf('test-support') !== -1) {
+            expect(false, 'found a test-support file').to.be.ok;
+          }
+        }
+      })
+    );
   });
 });
