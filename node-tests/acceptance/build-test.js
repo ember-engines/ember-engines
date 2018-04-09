@@ -3,6 +3,7 @@
 const co = require('co');
 const expect = require('chai').expect;
 const AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
+const stripIndent = require('common-tags').stripIndent;
 
 const build = require('../helpers/build');
 const InRepoAddon = require('../helpers/in-repo-addon');
@@ -775,6 +776,79 @@ describe('Acceptance', function() {
         output.doesNotContain(
           `engines-dist/${engineName}/assets/engine-vendor.css`,
           cssCommentMatcher(`${addonName}.css`)
+        );
+      })
+    );
+
+    it(
+      'excludes files from js engine bundle',
+      co.wrap(function*() {
+        const app = new AddonTestApp();
+        const appName = 'engine-testing';
+        const engineName = 'lazy';
+
+        yield app.create(appName, { noFixtures: true });
+        const engine = yield InRepoEngine.generate(app, engineName, {
+          lazy: true,
+        });
+
+        engine.writeFixture({
+          'index.js': stripIndent`
+            var EngineAddon = require('ember-engines/lib/engine-addon');
+            module.exports = EngineAddon.extend({
+              name: '${engineName}',
+              lazyLoading: true,
+              jsFunnel: {
+                exclude: {
+                  development: [
+                    '${engineName}/routes/examples/*',
+                    /(debug|fixture)/,
+                  ],
+                },
+              },
+            });
+          `,
+          addon: {
+            components: {
+              'debug.js': '// my example component',
+            },
+            templates: {
+              components: {
+                'debug.hbs': '<h1>debug component</h1>',
+              },
+            },
+            routes: {
+              examples: {
+                'one.js': `export default {}`,
+                'two.js': `export default {}`,
+              },
+              'bar.js': `export default {}`,
+            },
+          },
+        });
+
+        const output = yield build(app, 'development');
+        const engineJsFile = `engines-dist/${engineName}/assets/engine.js`;
+
+        output.contains(
+          engineJsFile,
+          moduleMatcher(`${engineName}/routes/bar`)
+        );
+        output.doesNotContain(
+          engineJsFile,
+          moduleMatcher(`${engineName}/components/debug`)
+        );
+        output.doesNotContain(
+          engineJsFile,
+          moduleMatcher(`${engineName}/templates/components/debug`)
+        );
+        output.doesNotContain(
+          engineJsFile,
+          moduleMatcher(`${engineName}/routes/examples/one`)
+        );
+        output.doesNotContain(
+          engineJsFile,
+          moduleMatcher(`${engineName}/routes/examples/two`)
         );
       })
     );
