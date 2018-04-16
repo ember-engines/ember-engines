@@ -238,7 +238,7 @@ Since the links to your Engine are constructed before the Engine itself is loade
 For example, if you had a `Post` route defined like so:
 
 ```js
-import Route from "@ember/routing/route";
+import Route from '@ember/routing/route';
 
 export default Route.extend({
   serialize(model) {
@@ -466,7 +466,7 @@ Routable engines should be mounted in your router's route map using the
 `mount()` method. For example:
 
 ```js
-import Route from "@ember/routing/route"
+import Route from '@ember/routing/route'
 import config from './config/environment';
 
 const Router = Router.extend({
