@@ -3,11 +3,11 @@
 module.exports = {
   name: 'common-components',
 
-  isDevelopingAddon: function() {
+  isDevelopingAddon() {
     return true;
   },
 
-  hintingEnabled: function() {
+  hintingEnabled() {
     return false;
   },
 };

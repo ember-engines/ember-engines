@@ -1,15 +1,15 @@
 'use strict';
 
-var EngineAddon = require('../../../../lib/engine-addon');
+const EngineAddon = require('../../../../lib/engine-addon');
 
 module.exports = EngineAddon.extend({
   name: 'ember-blog',
 
-  isDevelopingAddon: function() {
+  isDevelopingAddon() {
     return true;
   },
 
-  hintingEnabled: function() {
+  hintingEnabled() {
     return false;
   },
 
