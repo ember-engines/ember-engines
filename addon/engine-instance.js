@@ -1,7 +1,3 @@
-import emberRequire from './-private/ext-require';
+import EngineInstance from '@ember/engines/instance';
 
-// Because feature flags are only valid for Ember canary builds,
-// `Ember.EngineInstance` won't be exposed publicly for beta builds. This export
-// provides a means to use this module with any ember build which privately
-// includes the `engine-instance` module.
-export default emberRequire('ember-application/system/engine-instance');
+export default EngineInstance;
