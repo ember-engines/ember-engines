@@ -4,12 +4,11 @@ import { assert } from '@ember/debug';
 import { get } from '@ember/object';
 import { getOwner } from '@ember/application';
 import Ember from 'ember';
-import emberRequire from './ext-require';
+import Route from '@ember/routing/route';
 
-const hasDefaultSerialize = emberRequire(
-  'ember-routing/system/route',
-  'hasDefaultSerialize'
-);
+function hasDefaultSerialize(handler) {
+  handler.serialize === Route.prototype.serialize;
+}
 
 const {
   Logger: { info }

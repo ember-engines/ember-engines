@@ -1,9 +1,7 @@
 import Application from '@ember/application';
 import EngineScopedLinkComponent from '../components/link-to-component';
 import ExternalLinkComponent from '../components/link-to-external-component';
-import emberRequire from './ext-require';
-
-const Engine = emberRequire('ember-application/system/engine');
+import Engine from '@ember/engine';
 
 Engine.reopen({
   buildRegistry() {

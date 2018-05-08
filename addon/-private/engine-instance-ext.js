@@ -1,8 +1,6 @@
 import { camelize } from '@ember/string';
 import { assert } from '@ember/debug';
-import emberRequire from './ext-require';
-
-const EngineInstance = emberRequire('ember-application/system/engine-instance');
+import EngineInstance from '@ember/engine/instance';
 
 EngineInstance.reopen({
   /**
