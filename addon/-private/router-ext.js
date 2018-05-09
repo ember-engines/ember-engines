@@ -6,8 +6,9 @@ import { getOwner } from '@ember/application';
 import Ember from 'ember';
 import Route from '@ember/routing/route';
 
+const defaultSerialize = Route.proto().serialize;
 function hasDefaultSerialize(handler) {
-  handler.serialize === Route.prototype.serialize;
+  return handler.serialize === defaultSerialize;
 }
 
 const {
