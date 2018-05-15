@@ -1,16 +1,20 @@
 import Ember from 'ember';
 import { test } from 'qunit';
-import sinon from 'sinon';
+import { default as _sinon } from 'sinon';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 import Initializer from 'ember-blog/initializers/ember-blog-initializer';
 import InstanceInitializer from 'ember-blog/instance-initializers/ember-blog-instance-initializer';
 
 let originalExceptionHandler;
+let sinon;
+
 moduleForAcceptance('Acceptance | routable engine demo',{
   beforeEach() {
     originalExceptionHandler = Ember.Test.adapter.exception;
+    sinon = _sinon.createSandbox();
   },
   afterEach() {
+    sinon.restore();
     Ember.Test.adapter.exception = originalExceptionHandler;
   }
 });
@@ -512,7 +516,6 @@ test('initializers run within engine', async function(assert) {
   await visit('/routable-engine-demo/blog/new');
 
   assert.ok(stub.calledOnce, 'Initializer ran once');
-  stub.restore();
 });
 
 test('instance initializers run within engine', async function(assert) {
@@ -523,7 +526,6 @@ test('instance initializers run within engine', async function(assert) {
   await visit('/routable-engine-demo/blog/new');
 
   assert.ok(stub.calledOnce, 'Instance initializer ran once');
-  stub.restore();
 });
 
 test('instance-initializers run after initializers', async function(assert) {
