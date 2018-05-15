@@ -1,4 +1,4 @@
-/* global define, window */
+/* global define, self */
 import Route from '@ember/routing/route';
 
 import RSVP from 'rsvp';
@@ -12,8 +12,8 @@ const SEPARATORS = /\/|\\/;
 moduleForAcceptance('Acceptance | lazy routable engine', {
   beforeEach() {
     // Remove the ember-blog to fake it having "not loaded".
-    this._engineModule = window.requirejs.entries['ember-blog/engine'];
-    delete window.requirejs.entries['ember-blog/engine'];
+    this._engineModule = self.requirejs.entries['ember-blog/engine'];
+    delete self.requirejs.entries['ember-blog/engine'];
 
     // We stub out the loader methods so that we can verify what they're doing.
     const module = this;
@@ -27,7 +27,7 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
 
       // "Load" the engine module.
       if (uri.indexOf('engine.js') !== -1) {
-        window.requirejs.entries['ember-blog/engine'] = module._engineModule;
+        self.requirejs.entries['ember-blog/engine'] = module._engineModule;
       }
 
       return RSVP.resolve();
@@ -45,7 +45,7 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
     // Reset this initializer so subsequent tests don't blow up.
     delete App.instanceInitializers['stub-loader-methods'];
 
-    window.requirejs.entries['ember-blog/engine'] = this._engineModule;
+    self.requirejs.entries['ember-blog/engine'] = this._engineModule;
     Ember.Test.adapter.exception = this._adapterException;
   },
 });
@@ -87,18 +87,17 @@ function verifyInitialBlogRoute(assert, loadEvents, application) {
   );
 }
 
-test('it should pause to load JS and CSS assets on deep link into a lazy Engine', function(
+test('it should pause to load JS and CSS assets on deep link into a lazy Engine', async function(
   assert
 ) {
   assert.expect(7);
 
-  visit('/routable-engine-demo/blog/new');
-  andThen(() =>
-    verifyInitialBlogRoute(assert, this.loadEvents, this.application)
-  );
+  await visit('/routable-engine-demo/blog/new');
+
+  verifyInitialBlogRoute(assert, this.loadEvents, this.application)
 });
 
-test('it should pause to load JS and CSS assets if previous deep link into a lazy Engine has failed', function(
+test('it should pause to load JS and CSS assets if previous deep link into a lazy Engine has failed', async function(
   assert
 ) {
   assert.expect(7);
@@ -116,35 +115,33 @@ test('it should pause to load JS and CSS assets if previous deep link into a laz
   const failLoader = () => RSVP.reject('rejected');
 
   Ember.Test.adapter.exception = () => {};
+
   this.loader.defineLoader('js', failLoader);
   this.loader.defineLoader('css', failLoader);
-  visit('/routable-engine-demo/blog/new');
 
-  andThen(() => {
-    this.loader.defineLoader('js', jsLoader);
-    this.loader.defineLoader('css', cssLoader);
-    visit('/routable-engine-demo/blog/new');
+  await visit('/routable-engine-demo/blog/new');
 
-    andThen(() => {
-      verifyInitialBlogRoute(assert, this.loadEvents, this.application);
-      delete window.requirejs.entries['dummy/routes/application'];
-    });
-  });
+  this.loader.defineLoader('js', jsLoader);
+  this.loader.defineLoader('css', cssLoader);
+
+  await visit('/routable-engine-demo/blog/new');
+
+  verifyInitialBlogRoute(assert, this.loadEvents, this.application);
+  delete self.requirejs.entries['dummy/routes/application'];
 });
 
-test('it should pause to load JS and CSS assets on an initial transition into a lazy Engine', function(
+test('it should pause to load JS and CSS assets on an initial transition into a lazy Engine', async function(
   assert
 ) {
   assert.expect(7);
 
-  visit('/routable-engine-demo');
-  click('.blog-new:last');
-  andThen(() =>
-    verifyInitialBlogRoute(assert, this.loadEvents, this.application)
-  );
+  await visit('/routable-engine-demo');
+  await click('.blog-new:last');
+
+  verifyInitialBlogRoute(assert, this.loadEvents, this.application)
 });
 
-test('it should pause to load JS and CSS assets if previous transition into a lazy Engine has failed', function(
+test('it should pause to load JS and CSS assets if previous transition into a lazy Engine has failed', async function(
   assert
 ) {
   assert.expect(7);
@@ -157,106 +154,98 @@ test('it should pause to load JS and CSS assets if previous transition into a la
     })
   );
 
-  visit('/routable-engine-demo');
+  await visit('/routable-engine-demo');
 
   const jsLoader = this.loader.__assetLoaders.js;
   const cssLoader = this.loader.__assetLoaders.css;
   const failLoader = () => RSVP.reject('rejected');
 
   Ember.Test.adapter.exception = () => {};
+
   this.loader.defineLoader('js', failLoader);
   this.loader.defineLoader('css', failLoader);
 
-  click('.blog-new:last');
+  await click('.blog-new:last');
 
-  andThen(() => {
-    this.loader.defineLoader('js', jsLoader);
-    this.loader.defineLoader('css', cssLoader);
-    click('.blog-new:last');
+  this.loader.defineLoader('js', jsLoader);
+  this.loader.defineLoader('css', cssLoader);
 
-    andThen(() => {
-      verifyInitialBlogRoute(assert, this.loadEvents, this.application);
-      delete window.requirejs.entries['dummy/routes/application'];
-    });
-  });
+  await click('.blog-new:last');
+
+  verifyInitialBlogRoute(assert, this.loadEvents, this.application);
+  delete self.requirejs.entries['dummy/routes/application'];
 });
 
-test('it should not pause to load assets on subsequent transitions into a lazy Engine', function(
+test('it should not pause to load assets on subsequent transitions into a lazy Engine', async function(
   assert
 ) {
   assert.expect(10);
 
-  visit('/routable-engine-demo/blog/new');
-  andThen(() =>
-    verifyInitialBlogRoute(assert, this.loadEvents, this.application)
-  );
+  await visit('/routable-engine-demo/blog/new');
 
-  click('.routeable-engine:last');
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo');
-  });
+  verifyInitialBlogRoute(assert, this.loadEvents, this.application)
 
-  click('.blog-new');
-  andThen(() => {
-    assert.equal(this.loadEvents.length, 3, 'did not load additional assets');
-    assert.equal(currentURL(), '/routable-engine-demo/blog/new');
-  });
+  await click('.routeable-engine:last');
+
+  assert.equal(currentURL(), '/routable-engine-demo');
+
+  await click('.blog-new');
+
+  assert.equal(this.loadEvents.length, 3, 'did not load additional assets');
+  assert.equal(currentURL(), '/routable-engine-demo/blog/new');
 });
 
-test('it should not pause to load assets on transition to a loaded, but not initialized instance of a lazy Engine (e.g., Engine mounted more than once)', function(
+test('it should not pause to load assets on transition to a loaded, but not initialized instance of a lazy Engine (e.g., Engine mounted more than once)', async function(
   assert
 ) {
   assert.expect(10);
 
-  visit('/routable-engine-demo/blog/new');
-  andThen(() =>
-    verifyInitialBlogRoute(assert, this.loadEvents, this.application)
-  );
+  await visit('/routable-engine-demo/blog/new');
 
-  click('.routeable-engine:last');
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo');
-  });
+  verifyInitialBlogRoute(assert, this.loadEvents, this.application)
 
-  click('.ember-blog-new:last');
-  andThen(() => {
-    assert.equal(this.loadEvents.length, 3, 'did not load additional assets');
-    assert.equal(currentURL(), '/routable-engine-demo/ember-blog/new');
-  });
+  await click('.routeable-engine:last');
+
+  assert.equal(currentURL(), '/routable-engine-demo');
+
+  await click('.ember-blog-new:last');
+
+  assert.equal(this.loadEvents.length, 3, 'did not load additional assets');
+  assert.equal(currentURL(), '/routable-engine-demo/ember-blog/new');
 });
 
-test('it should not pause to load assets on deep link into an eager Engine', function(
+test('it should not pause to load assets on deep link into an eager Engine', async function(
   assert
 ) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/eager-blog');
-  andThen(() => {
-    assert.equal(this.loadEvents.length, 0, 'no load events occured');
-    assert.equal(currentURL(), '/routable-engine-demo/eager-blog');
-  });
+  await visit('/routable-engine-demo/eager-blog');
+
+  assert.equal(this.loadEvents.length, 0, 'no load events occured');
+  assert.equal(currentURL(), '/routable-engine-demo/eager-blog');
 });
 
-test('it should not pause to load assets on transition into an eager Engine', function(
+test('it should not pause to load assets on transition into an eager Engine', async function(
   assert
 ) {
   assert.expect(2);
 
-  visit('/routable-engine-demo');
-  click('.eager-blog:last');
-  andThen(() => {
-    assert.equal(this.loadEvents.length, 0, 'no load events occured');
-    assert.equal(currentURL(), '/routable-engine-demo/eager-blog');
-  });
+  await visit('/routable-engine-demo');
+  await click('.eager-blog:last');
+
+  assert.equal(this.loadEvents.length, 0, 'no load events occured');
+  assert.equal(currentURL(), '/routable-engine-demo/eager-blog');
 });
 
-test('it should bubble the bundle error to the application', function(assert) {
+test('it should bubble the bundle error to the application', async function(assert) {
   assert.expect(1);
 
-  const done = assert.async();
+  let done;
+  let end = new Promise(resolve => done = resolve);
   const failLoader = () => RSVP.reject('rejected');
 
   Ember.Test.adapter.exception = () => {};
+
   this.loader.defineLoader('js', failLoader);
   this.loader.defineLoader('css', failLoader);
 
@@ -271,9 +260,9 @@ test('it should bubble the bundle error to the application', function(assert) {
     })
   );
 
-  visit('/routable-engine-demo/blog/new');
+  await visit('/routable-engine-demo/blog/new');
 
-  andThen(() => {
-    delete window.requirejs.entries['dummy/routes/application'];
-  });
+  delete self.requirejs.entries['dummy/routes/application'];
+
+  await end;
 });
