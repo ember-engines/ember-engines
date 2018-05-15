@@ -20,17 +20,20 @@ module.exports = {
     // node files
     {
       files: [
+        'ember-cli-build.js',
         'index.js',
         'testem.js',
-        'ember-cli-build.js',
+        'testem-node.js',
         'config/**/*.js',
         'tests/dummy/config/**/*.js'
       ],
       excludedFiles: [
-        'app/**',
         'addon/**',
-        'tests/dummy/**',
-        'node-tests/**/*'
+        'addon-test-support/**',
+        'app/**',
+        'blueprints/*/files/**',
+        'node-tests/**/*',
+        'tests/dummy/**'
       ],
       parserOptions: {
         sourceType: 'script',

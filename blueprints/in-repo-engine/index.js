@@ -81,7 +81,7 @@ module.exports = Object.assign({}, InRepoAddon, {
     this.routeBlueprint.afterUninstall.call(this, options);
   },
 
-  _generatePackageJson: function(options, isInstall) {
+  _generatePackageJson: function(/* options, isInstall*/) {
     InRepoAddon._generatePackageJson.apply(this, arguments);
   }
 });
