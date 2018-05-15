@@ -5,505 +5,467 @@ import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 import Initializer from 'ember-blog/initializers/ember-blog-initializer';
 import InstanceInitializer from 'ember-blog/instance-initializers/ember-blog-instance-initializer';
 
-moduleForAcceptance('Acceptance | routable engine demo');
-
-test('can invoke components', function(assert) {
-  visit('/routable-engine-demo/blog/new');
-
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/blog/new');
-
-    assert.equal(
-      this.application
-        .$('.routable-hello-world')
-        .text()
-        .trim(),
-      'Hello, world!'
-    );
-    assert.equal(
-      this.application
-        .$('.hello-name')
-        .text()
-        .trim(),
-      'Hello, Jerry!',
-      'Re-rendered hello-name component correctly'
-    );
-  });
+let originalExceptionHandler;
+moduleForAcceptance('Acceptance | routable engine demo',{
+  beforeEach() {
+    originalExceptionHandler = Ember.Test.adapter.exception;
+  },
+  afterEach() {
+    Ember.Test.adapter.exception = originalExceptionHandler;
+  }
 });
 
-test("can deserialize a route's params", function(assert) {
+test('can invoke components', async function(assert) {
+  await visit('/routable-engine-demo/blog/new');
+
+  assert.equal(currentURL(), '/routable-engine-demo/blog/new');
+
+  assert.equal(
+    this.application
+    .$('.routable-hello-world')
+    .text()
+    .trim(),
+    'Hello, world!'
+  );
+  assert.equal(
+    this.application
+    .$('.hello-name')
+    .text()
+    .trim(),
+    'Hello, Jerry!',
+    'Re-rendered hello-name component correctly'
+  );
+});
+
+test("can deserialize a route's params", async function(assert) {
   assert.expect(3);
 
-  visit('/routable-engine-demo/blog/post/1');
+  await visit('/routable-engine-demo/blog/post/1');
 
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1');
+  assert.equal(currentURL(), '/routable-engine-demo/blog/post/1');
 
-    assert.equal(
-      this.application
-        .$('h3.post-title')
-        .text()
-        .trim(),
-      'Post 1'
-    );
-    assert.equal(
-      this.application
-        .$('p.author')
-        .text()
-        .trim(),
-      'Derek Zoolander'
-    );
-  });
+  assert.equal(
+    this.application
+    .$('h3.post-title')
+    .text()
+    .trim(),
+    'Post 1'
+  );
+  assert.equal(
+    this.application
+    .$('p.author')
+    .text()
+    .trim(),
+    'Derek Zoolander'
+  );
 });
 
-test('can link-to application route of Engine', function(assert) {
-  visit('/routable-engine-demo/blog/post/new');
-  click('.routable-post-blog-home-link-app');
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/blog');
-    assert.equal(currentPath(), 'routable-engine-demo.blog.index');
-  });
+test('can link-to application route of Engine', async function(assert) {
+  await visit('/routable-engine-demo/blog/post/new');
+  await click('.routable-post-blog-home-link-app');
+
+  assert.equal(currentURL(), '/routable-engine-demo/blog');
+  assert.equal(currentPath(), 'routable-engine-demo.blog.index');
 });
 
-test('correctly handles navigation with query param in initial url', function(
+test('correctly handles navigation with query param in initial url', async function(
   assert
 ) {
   assert.expect(9);
 
-  visit('/routable-engine-demo/blog/post/1?lang=English');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1?lang=English',
-      'url is visited properly'
-    );
-    assert.equal(
-      this.application
-        .$('p.language')
-        .text()
-        .trim(),
-      'English',
-      'query param value is passed through correctly - 1'
-    );
-  });
+  await visit('/routable-engine-demo/blog/post/1?lang=English');
 
-  click('.routable-post-comments-link');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1/comments?lang=English',
-      'query param is carried to sub-route'
-    );
-    assert.equal(
-      this.application
-        .$('p.language')
-        .text()
-        .trim(),
-      'English',
-      'query param value is passed through correctly - 2'
-    );
-  });
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1?lang=English',
+    'url is visited properly'
+  );
+  assert.equal(
+    this.application
+    .$('p.language')
+    .text()
+    .trim(),
+    'English',
+    'query param value is passed through correctly - 1'
+  );
 
-  click('.back-to-post-link');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1?lang=English',
-      'query param is carried back to original route properly'
-    );
-    assert.equal(
-      this.application
-        .$('p.language')
-        .text()
-        .trim(),
-      'English',
-      'query param value is passed through correctly - 3'
-    );
-  });
+  await click('.routable-post-comments-link');
 
-  click('.routable-post-blog-home-link');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog',
-      'query param is removed when changing route hierarchy'
-    );
-  });
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1/comments?lang=English',
+    'query param is carried to sub-route'
+  );
+  assert.equal(
+    this.application
+    .$('p.language')
+    .text()
+    .trim(),
+    'English',
+    'query param value is passed through correctly - 2'
+  );
 
-  click('.routable-post-1-link');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1?lang=English',
-      'query param is rehydrated in url'
-    );
-    assert.equal(
-      this.application
-        .$('p.language')
-        .text()
-        .trim(),
-      'English',
-      'query param value is passed through correctly - 4'
-    );
-  });
+  await click('.back-to-post-link');
+
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1?lang=English',
+    'query param is carried back to original route properly'
+  );
+  assert.equal(
+    this.application
+    .$('p.language')
+    .text()
+    .trim(),
+    'English',
+    'query param value is passed through correctly - 3'
+  );
+
+  await click('.routable-post-blog-home-link');
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog',
+    'query param is removed when changing route hierarchy'
+  );
+
+  await click('.routable-post-1-link');
+
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1?lang=English',
+    'query param is rehydrated in url'
+  );
+  assert.equal(
+    this.application
+    .$('p.language')
+    .text()
+    .trim(),
+    'English',
+    'query param value is passed through correctly - 4'
+  );
 });
 
-test('can link-to a route with query params from outside an Engine', function(
+test('can link-to a route with query params from outside an Engine', async function(
   assert
 ) {
   assert.expect(2);
 
-  visit('/routable-engine-demo');
-  click('.blog-post-1-link-jp');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1?lang=Japanese'
-    );
-    assert.equal(
-      this.application
-        .$('p.language')
-        .text()
-        .trim(),
-      'Japanese'
-    );
-  });
+  await visit('/routable-engine-demo');
+  await click('.blog-post-1-link-jp');
+
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1?lang=Japanese'
+  );
+  assert.equal(
+    this.application
+    .$('p.language')
+    .text()
+    .trim(),
+    'Japanese'
+  );
 });
 
-test('can programmatically transition to a route with query params from outside an Engine', function(
+test('can programmatically transition to a route with query params from outside an Engine', async function(
   assert
 ) {
   assert.expect(2);
 
-  visit('/routable-engine-demo');
-  click('.blog-post-1-link-ch');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1?lang=Chinese'
-    );
-    assert.equal(
-      this.application
-        .$('p.language')
-        .text()
-        .trim(),
-      'Chinese'
-    );
-  });
+  await visit('/routable-engine-demo');
+  await click('.blog-post-1-link-ch');
+
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1?lang=Chinese'
+  );
+  assert.equal(
+    this.application
+    .$('p.language')
+    .text()
+    .trim(),
+    'Chinese'
+  );
 });
 
-test('can link-to a route with query params within an Engine', function(
+test('can link-to a route with query params within an Engine', async function(
   assert
 ) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/blog');
-  click('.routable-post-1-link-jp');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1?lang=Japanese'
-    );
-    assert.equal(
-      this.application
-        .$('p.language')
-        .text()
-        .trim(),
-      'Japanese'
-    );
-  });
+  await visit('/routable-engine-demo/blog');
+  await click('.routable-post-1-link-jp');
+
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1?lang=Japanese'
+  );
+  assert.equal(
+    this.application
+    .$('p.language')
+    .text()
+    .trim(),
+    'Japanese'
+  );
 });
 
-test('can programmatically transition to a route with query params within an Engine', function(
+test('can programmatically transition to a route with query params within an Engine', async function(
   assert
 ) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/blog');
-  click('.routable-post-1-link-ch');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1?lang=Chinese'
-    );
-    assert.equal(
-      this.application
-        .$('p.language')
-        .text()
-        .trim(),
-      'Chinese'
-    );
-  });
+  await visit('/routable-engine-demo/blog');
+  await click('.routable-post-1-link-ch');
+
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1?lang=Chinese'
+  );
+  assert.equal(
+    this.application
+    .$('p.language')
+    .text()
+    .trim(),
+    'Chinese'
+  );
 });
 
-test('can perform a QP-only link-to transition', function(assert) {
+test('can perform a QP-only link-to transition', async function(assert) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/blog/post/1?lang=English');
-  click('.routable-post-jp-link');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1?lang=Japanese',
-      'URL is updated properly'
-    );
-    assert.equal(
-      this.application
-        .$('p.language')
-        .text()
-        .trim(),
-      'Japanese',
-      'DOM is updated properly'
-    );
-  });
+  await visit('/routable-engine-demo/blog/post/1?lang=English');
+  await click('.routable-post-jp-link');
+
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1?lang=Japanese',
+    'URL is updated properly'
+  );
+  assert.equal(
+    this.application
+    .$('p.language')
+    .text()
+    .trim(),
+    'Japanese',
+    'DOM is updated properly'
+  );
 });
 
-test('can perform a QP-only transitionTo', function(assert) {
+test('can perform a QP-only transitionTo', async function(assert) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/blog/post/1?lang=English');
-  click('.routable-post-ch-link');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1?lang=Chinese',
-      'URL is updated properly'
-    );
-    assert.equal(
-      this.application
-        .$('p.language')
-        .text()
-        .trim(),
-      'Chinese',
-      'DOM is updated properly'
-    );
-  });
+  await visit('/routable-engine-demo/blog/post/1?lang=English');
+  await click('.routable-post-ch-link');
+
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1?lang=Chinese',
+    'URL is updated properly'
+  );
+  assert.equal(
+    this.application
+    .$('p.language')
+    .text()
+    .trim(),
+    'Chinese',
+    'DOM is updated properly'
+  );
 });
 
-test('can perform a redirect transition with QP', function(assert) {
+test('can perform a redirect transition with QP', async function(assert) {
   assert.expect(1);
 
-  visit('/routable-engine-demo/redirect');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1?lang=English'
-    );
-  });
+  await visit('/routable-engine-demo/redirect');
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1?lang=English'
+  );
 });
 
-test('can perform an afterModel transition with QP', function(assert) {
+test('can perform an afterModel transition with QP', async function(assert) {
   assert.expect(1);
 
-  visit('/routable-engine-demo/after-model/3');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/3?lang=English'
-    );
-  });
+  await visit('/routable-engine-demo/after-model/3');
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/3?lang=English'
+  );
 });
 
-test('query param bucket cache does not collide when starting outside Engine', function(
+test('query param bucket cache does not collide when starting outside Engine', async function(
   assert
 ) {
   assert.expect(2);
 
-  visit('/post/1?lang=English');
-  click('.blog-post-no-qp');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1',
-      'URL does not have any query params'
-    );
-  });
+  await visit('/post/1?lang=English');
+  await click('.blog-post-no-qp');
 
-  click('.non-blog-post');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/post/1?lang=English',
-      'URL has original query params'
-    );
-  });
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1',
+    'URL does not have any query params'
+  );
+
+  await click('.non-blog-post');
+  assert.equal(
+    currentURL(),
+    '/post/1?lang=English',
+    'URL has original query params'
+  );
 });
 
-test('query param bucket cache does not collide when starting inside Engine', function(
+test('query param bucket cache does not collide when starting inside Engine', async function(
   assert
 ) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/blog/post/1?lang=English');
-  click('.non-blog-post');
-  andThen(() => {
-    assert.equal(currentURL(), '/post/1', 'URL does not have any query params');
-  });
+  await visit('/routable-engine-demo/blog/post/1?lang=English');
+  await click('.non-blog-post');
 
-  click('.blog-post-no-qp');
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/blog/post/1?lang=English',
-      'URL has original query params'
-    );
-  });
+  assert.equal(currentURL(), '/post/1', 'URL does not have any query params');
+
+  await click('.blog-post-no-qp');
+
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/blog/post/1?lang=English',
+    'URL has original query params'
+  );
 });
 
-test("a route can lookup another route's model", function(assert) {
+test("a route can lookup another route's model", async function(assert) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/blog/post/1/comments');
+  await visit('/routable-engine-demo/blog/post/1/comments');
 
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/comments');
+  assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/comments');
 
-    assert.equal(
-      this.application
-        .$('h4.comments')
-        .text()
-        .trim(),
-      'Comments for Post 1'
-    );
-  });
+  assert.equal(
+    this.application
+    .$('h4.comments')
+    .text()
+    .trim(),
+    'Comments for Post 1'
+  );
 });
 
-test('can render a link', function(assert) {
+test('can render a link', async function(assert) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/blog/post/1');
+  await visit('/routable-engine-demo/blog/post/1');
 
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1');
+  assert.equal(currentURL(), '/routable-engine-demo/blog/post/1');
 
-    assert.equal(
-      this.application.$('a.routable-post-comments-link').attr('href'),
-      '/routable-engine-demo/blog/post/1/comments'
-    );
-  });
+  assert.equal(
+    this.application.$('a.routable-post-comments-link').attr('href'),
+    '/routable-engine-demo/blog/post/1/comments'
+  );
 });
 
-test('link-to current-when attribute prepends engine mount point', function(
+test('link-to current-when attribute prepends engine mount point', async function(
   assert
 ) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/eager-blog/post/1');
+  await visit('/routable-engine-demo/eager-blog/post/1');
 
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/eager-blog/post/1');
-    assert.ok(
-      this.application.$('a.current-when-test-link').hasClass('active')
-    );
-  });
+  assert.equal(currentURL(), '/routable-engine-demo/eager-blog/post/1');
+  assert.ok(
+    this.application.$('a.current-when-test-link').hasClass('active')
+  );
 });
 
-test('internal links can be clicked', function(assert) {
+test('internal links can be clicked', async function(assert) {
   assert.expect(1);
 
-  visit('/routable-engine-demo/blog/post/1');
-  click('.routable-post-home-link');
+  await visit('/routable-engine-demo/blog/post/1');
+  await click('.routable-post-home-link');
 
-  andThen(() => {
-    assert.equal(currentURL(), '/');
-  });
+  assert.equal(currentURL(), '/');
 });
 
-test('external links can be clicked', function(assert) {
+test('external links can be clicked', async function(assert) {
   assert.expect(1);
 
-  visit('/routable-engine-demo/blog/post/1');
-  click('.routable-post-comments-link');
+  await visit('/routable-engine-demo/blog/post/1');
+  await click('.routable-post-comments-link');
 
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/comments');
-  });
+  assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/comments');
 });
 
-test('a route can use transitionTo to transition to internal route', function(
+test('a route can use transitionTo to transition to internal route', async function(
   assert
 ) {
   assert.expect(1);
 
-  visit('/routable-engine-demo/blog/new');
-  click('.trigger-transition-to');
+  await visit('/routable-engine-demo/blog/new');
+  await click('.trigger-transition-to');
 
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1');
-  });
+  assert.equal(currentURL(), '/routable-engine-demo/blog/post/1');
 });
 
-test('internal links can be clicked', function(assert) {
+test('internal links can be clicked', async function(assert) {
   assert.expect(1);
 
-  visit('/routable-engine-demo/special-admin-blog-here/post/1');
-  click('.routable-post-comments-link');
+  await visit('/routable-engine-demo/special-admin-blog-here/post/1');
+  await click('.routable-post-comments-link');
 
-  andThen(() => {
-    assert.equal(
-      currentURL(),
-      '/routable-engine-demo/special-admin-blog-here/post/1/comments'
-    );
-  });
+  assert.equal(
+    currentURL(),
+    '/routable-engine-demo/special-admin-blog-here/post/1/comments'
+  );
 });
 
-test('transitionTo works properly within parent application', function(assert) {
+test('transitionTo works properly within parent application', async function(assert) {
   assert.expect(1);
 
-  visit('/routable-engine-demo/normal-route');
+  await visit('/routable-engine-demo/normal-route');
 
-  andThen(() => {
-    assert.equal(currentURL(), '/routeless-engine-demo');
-  });
+  assert.equal(currentURL(), '/routeless-engine-demo');
 });
 
-test('transitionToExternal transitions to the parent application from within an engine and returns a thenable Transition object', function(
+test('transitionToExternal transitions to the parent application from within an engine and returns a thenable Transition object', async function(
   assert
 ) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/ember-blog/post/1');
-  click('.routable-post-transition-to-home-button');
-  andThen(() => {
-    assert.equal(currentURL(), '/');
-  });
+  await visit('/routable-engine-demo/ember-blog/post/1');
+  await click('.routable-post-transition-to-home-button');
 
-  click('.routeable-engine');
-  click('.ember-blog-new');
-  click('.trigger-transition-to');
-  andThen(() => {
-    assert.ok(
-      this.application
-        .$('.routable-post-transition-to-home-button')
-        .hasClass('transitioned-to-external')
-    );
-  });
+  assert.equal(currentURL(), '/');
+
+  await click('.routeable-engine');
+  await click('.ember-blog-new');
+  await click('.trigger-transition-to');
+
+  assert.ok(
+    this.application
+    .$('.routable-post-transition-to-home-button')
+    .hasClass('transitioned-to-external')
+  );
 });
 
-test('replaceWithExternal transitions to the parent application from within an engine and returns a thenable Transition object', function(
+test('replaceWithExternal transitions to the parent application from within an engine and returns a thenable Transition object', async function(
   assert
 ) {
   assert.expect(2);
 
-  visit('/routable-engine-demo/ember-blog/post/1');
-  click('.routable-post-replace-with-home-button');
-  andThen(() => {
-    assert.equal(currentURL(), '/');
-  });
+  await visit('/routable-engine-demo/ember-blog/post/1');
+  await click('.routable-post-replace-with-home-button');
 
-  click('.routeable-engine');
-  click('.ember-blog-new');
-  click('.trigger-transition-to');
-  andThen(() => {
-    assert.ok(
-      this.application
-        .$('.routable-post-replace-with-home-button')
-        .hasClass('replaced-with-external')
-    );
-  });
+  assert.equal(currentURL(), '/');
+
+  await click('.routeable-engine');
+  await click('.ember-blog-new');
+  await click('.trigger-transition-to');
+
+  assert.ok(
+    this.application
+    .$('.routable-post-replace-with-home-button')
+    .hasClass('replaced-with-external')
+  );
 });
 
-test('loading routes and intermediateTransitionTo work within an engine', function(
+test('loading routes and intermediateTransitionTo work within an engine', async function(
   assert
 ) {
   assert.expect(2);
@@ -515,19 +477,17 @@ test('loading routes and intermediateTransitionTo work within an engine', functi
     },
   });
 
-  visit('/routable-engine-demo/blog/post/1/comments');
-  click('.routable-post-likes-link');
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/likes');
-  });
+  await visit('/routable-engine-demo/blog/post/1/comments');
+  await click('.routable-post-likes-link');
+
+  assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/likes');
 });
 
-test('error routes and intermediateTransitionTo work within an engine', function(
+test('error routes and intermediateTransitionTo work within an engine', async function(
   assert
 ) {
   assert.expect(3);
 
-  let originalExceptionHandler = Ember.Test.adapter.exception;
   Ember.Test.adapter.exception = () => {};
 
   this.application.__container__.lookup('router:main').reopen({
@@ -537,43 +497,36 @@ test('error routes and intermediateTransitionTo work within an engine', function
     },
   });
 
-  visit('/routable-engine-demo/blog/post/1/comments');
-  click('.routable-post-diggs-link');
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/comments');
-    assert.equal(find('.error-message').text(), 'Error: Nope!');
+  await visit('/routable-engine-demo/blog/post/1/comments');
+  await click('.routable-post-diggs-link');
 
-    Ember.Test.adapter.exception = originalExceptionHandler;
-  });
+  assert.equal(currentURL(), '/routable-engine-demo/blog/post/1/comments');
+  assert.equal(find('.error-message').text(), 'Error: Nope!');
 });
 
-test('initializers run within engine', function(assert) {
+test('initializers run within engine', async function(assert) {
   assert.expect(1);
 
   let stub = sinon.stub(Initializer, 'initialize');
 
-  visit('/routable-engine-demo/blog/new');
+  await visit('/routable-engine-demo/blog/new');
 
-  andThen(() => {
-    assert.ok(stub.calledOnce, 'Initializer ran once');
-    stub.restore();
-  });
+  assert.ok(stub.calledOnce, 'Initializer ran once');
+  stub.restore();
 });
 
-test('instance initializers run within engine', function(assert) {
+test('instance initializers run within engine', async function(assert) {
   assert.expect(1);
 
   let stub = sinon.stub(InstanceInitializer, 'initialize');
 
-  visit('/routable-engine-demo/blog/new');
+  await visit('/routable-engine-demo/blog/new');
 
-  andThen(() => {
-    assert.ok(stub.calledOnce, 'Instance initializer ran once');
-    stub.restore();
-  });
+  assert.ok(stub.calledOnce, 'Instance initializer ran once');
+  stub.restore();
 });
 
-test('instance-initializers run after initializers', function(assert) {
+test('instance-initializers run after initializers', async function(assert) {
   assert.expect(2);
 
   let appInitialized = false;
@@ -583,15 +536,14 @@ test('instance-initializers run after initializers', function(assert) {
     appInitialized = true;
     assert.ok(!instanceInitialized, 'instance initialized has not run yet');
   });
+
   let instanceInit = sinon.stub(InstanceInitializer, 'initialize').callsFake(() => {
     instanceInitialized = true;
     assert.ok(appInitialized, 'initializer already ran');
   });
 
-  visit('/routable-engine-demo/blog/new');
+  await visit('/routable-engine-demo/blog/new');
 
-  andThen(() => {
-    appInit.restore();
-    instanceInit.restore();
-  });
+  appInit.restore();
+  instanceInit.restore();
 });

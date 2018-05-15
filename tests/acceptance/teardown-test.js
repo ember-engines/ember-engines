@@ -4,34 +4,34 @@ import destroyApp from '../helpers/destroy-app';
 
 module('Acceptance | teardown test');
 
-test('routeable engines clean up their container state', function(assert) {
+test('routeable engines clean up their container state', async function(assert) {
   let service;
   assert.expect(2);
   this.application = startApp();
 
-  visit('/routable-engine-demo/blog/new');
+  await visit('/routable-engine-demo/blog/new');
 
-  andThen(() => {
-    assert.equal(currentURL(), '/routable-engine-demo/blog/new');
-    service = this.application.__container__.lookup('service:store')
-      .__exampleServiceForTesting;
-    destroyApp(this.application);
-    assert.ok(service.isDestroyed, 'service got destroyed');
-  });
+  assert.equal(currentURL(), '/routable-engine-demo/blog/new');
+  service = this.application.__container__.lookup('service:store')
+    .__exampleServiceForTesting;
+
+  destroyApp(this.application);
+
+  assert.ok(service.isDestroyed, 'service got destroyed');
 });
 
-test('routeless engines clean up their container state', function(assert) {
+test('routeless engines clean up their container state', async function(assert) {
   let service;
   assert.expect(2);
   this.application = startApp();
 
-  visit('/routeless-engine-demo');
+  await visit('/routeless-engine-demo');
 
-  andThen(() => {
-    assert.equal(currentURL(), '/routeless-engine-demo');
-    service = this.application.__container__.lookup('service:store')
-      .__exampleServiceForTesting;
-    destroyApp(this.application);
-    assert.ok(service.isDestroyed, 'service got destroyed');
-  });
+  assert.equal(currentURL(), '/routeless-engine-demo');
+  service = this.application.__container__.lookup('service:store')
+    .__exampleServiceForTesting;
+
+  destroyApp(this.application);
+
+  assert.ok(service.isDestroyed, 'service got destroyed');
 });
