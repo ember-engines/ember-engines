@@ -1,6 +1,7 @@
 import Ember from 'ember';
 // LAME, but ¯\_(ツ)_/¯
 export default function hasEmberVersion(major, minor) {
+  // eslint-disable-next-line
   var numbers = Ember.VERSION.split('-')[0].split('.');
   var actualMajor = parseInt(numbers[0], 10);
   var actualMinor = parseInt(numbers[1], 10);
