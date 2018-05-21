@@ -22,6 +22,10 @@
           {
             "uri": "/engines-dist/lazy/assets/engine.js",
             "type": "js"
+          },
+          {
+            "uri": "/engines-dist/lazy/assets/test-support.js",
+            "type": "js"
           }
         ]
       }
@@ -60,6 +64,10 @@
           {
             "uri": "/engines-dist/lazy/assets/engine.js",
             "type": "js"
+          },
+          {
+            "uri": "/engines-dist/lazy/assets/test-support.js",
+            "type": "js"
           }
         ]
       }
@@ -84,6 +92,10 @@
           {
             "uri": "/engines-dist/lazy-in-eager/assets/engine.js",
             "type": "js"
+          },
+          {
+            "uri": "/engines-dist/lazy-in-eager/assets/test-support.js",
+            "type": "js"
           }
         ]
       }
@@ -105,6 +117,10 @@
           {
             "uri": "/engines-dist/lazy-in-lazy/assets/engine.js",
             "type": "js"
+          },
+          {
+            "uri": "/engines-dist/lazy-in-lazy/assets/test-support.js",
+            "type": "js"
           }
         ]
       },
@@ -120,6 +136,10 @@
           },
           {
             "uri": "/engines-dist/lazy/assets/engine.js",
+            "type": "js"
+          },
+          {
+            "uri": "/engines-dist/lazy/assets/test-support.js",
             "type": "js"
           }
         ]
@@ -145,6 +165,10 @@
           },
           {
             "uri": "/engines-dist/tree-invocation-order/assets/engine.js",
+            "type": "js"
+          },
+          {
+            "uri": "/engines-dist/tree-invocation-order/assets/test-support.js",
             "type": "js"
           }
         ]
