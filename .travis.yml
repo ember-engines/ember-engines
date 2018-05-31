@@ -19,7 +19,7 @@ env:
     # See https://git.io/vdao3 for details.
     - JOBS=1
 
-    - TEST_SCRIPT=test:emberall
+    - TEST_SCRIPT=test:ember
     - TEST_SCRIPT=test:node
 
   matrix:
