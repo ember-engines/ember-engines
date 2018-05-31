@@ -53,7 +53,7 @@ module.exports = {
         "node-tests/**/*"
       ],
       parserOptions: {
-        ecmaVersion: 2016,
+        ecmaVersion: 2017,
       },
       env: {
         node: true,

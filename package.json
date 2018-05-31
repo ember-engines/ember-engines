@@ -34,7 +34,6 @@
   "devDependencies": {
     "broccoli-asset-rev": "^2.7.0",
     "chai": "^4.1.2",
-    "co": "^4.6.0",
     "common-tags": "^1.8.0",
     "eager-blog": "file:./tests/dummy/lib/eager-blog",
     "ember-ajax": "^3.1.0",
