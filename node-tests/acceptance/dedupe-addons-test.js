@@ -24,6 +24,7 @@ describe('Acceptance', function() {
         let addonName = 'nested';
 
         await app.create(appName, { noFixtures: true });
+
         let addon = await InRepoAddon.generate(app, addonName);
         let engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
