@@ -3,10 +3,9 @@ import { getOwner } from '@ember/application';
 import { set, get } from '@ember/object';
 import { typeOf } from '@ember/utils';
 import { assert } from '@ember/debug';
-import { attributeMungingMethod } from '../-private/link-to-utils';
 
 export default LinkComponent.extend({
-  [attributeMungingMethod]() {
+  didReceiveAttrs() {
     this._super(...arguments);
 
     let owner = getOwner(this);

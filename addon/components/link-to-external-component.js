@@ -1,10 +1,9 @@
 import LinkComponent from '@ember/routing/link-component';
 import { getOwner } from '@ember/application';
 import { set, get } from '@ember/object';
-import { attributeMungingMethod } from '../-private/link-to-utils';
 
 export default LinkComponent.extend({
-  [attributeMungingMethod]() {
+  didReceiveAttrs() {
     this._super(...arguments);
 
     const owner = getOwner(this);
