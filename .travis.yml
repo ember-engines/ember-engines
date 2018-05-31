@@ -19,9 +19,6 @@ env:
     # See https://git.io/vdao3 for details.
     - JOBS=1
 
-    - TEST_SCRIPT=test:ember
-    - TEST_SCRIPT=test:node
-
   matrix:
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
@@ -46,4 +43,5 @@ install:
   - yarn install --no-lockfile --non-interactive
 script:
   - yarn lint:js
-  - yarn run $TEST_SCRIPT
+  - yarn run test:ember
+  - yarn run test:node
