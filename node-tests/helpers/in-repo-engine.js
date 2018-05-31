@@ -2,7 +2,8 @@
 
 const InRepoAddon = require('./in-repo-addon');
 
-class InRepoEngine extends InRepoAddon {
+
+module.exports = class InRepoEngine extends InRepoAddon {
   static generate(app, name, options) {
     let args = ['generate', 'in-repo-engine', name];
 
@@ -50,6 +51,4 @@ class InRepoEngine extends InRepoAddon {
       return engine;
     });
   }
-}
-
-module.exports = InRepoEngine;
+};

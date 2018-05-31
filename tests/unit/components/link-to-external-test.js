@@ -1,11 +1,12 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('link-to-external', 'Unit | Component | link-to-external', {
-  unit: true,
-});
+module('Integration | Component | pretty color', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders properly', function(assert) {
-  let component = this.subject({ params: ['index'] });
-  this.render();
-  assert.ok(component.element, 'render an element');
+  test('it renders properly', async function(assert) {
+    await this.render(hbs`{{link-to-external 'home' 'home'}}`);
+    assert.equal(this.element.querySelector('a').textContent, 'home');
+  });
 });

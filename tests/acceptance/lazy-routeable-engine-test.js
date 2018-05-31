@@ -8,6 +8,7 @@ import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 import App from '../../app';
 
 const SEPARATORS = /\/|\\/;
+const onerror = Ember.onerror;
 
 moduleForAcceptance('Acceptance | lazy routable engine', {
   beforeEach() {
@@ -42,8 +43,11 @@ moduleForAcceptance('Acceptance | lazy routable engine', {
   },
 
   afterEach() {
+    Ember.onerror = onerror;
+
     // Reset this initializer so subsequent tests don't blow up.
     delete App.instanceInitializers['stub-loader-methods'];
+    delete self.requirejs.entries['dummy/routes/application'];
 
     self.requirejs.entries['ember-blog/engine'] = this._engineModule;
     Ember.Test.adapter.exception = this._adapterException;
@@ -100,26 +104,16 @@ test('it should pause to load JS and CSS assets on deep link into a lazy Engine'
 test('it should pause to load JS and CSS assets if previous deep link into a lazy Engine has failed', async function(
   assert
 ) {
-  assert.expect(7);
-
-  define('dummy/routes/application', () =>
-    Route.extend({
-      actions: {
-        error() {},
-      },
-    })
-  );
+  assert.expect(8);
 
   const jsLoader = this.loader.__assetLoaders.js;
   const cssLoader = this.loader.__assetLoaders.css;
   const failLoader = () => RSVP.reject('rejected');
 
-  Ember.Test.adapter.exception = () => {};
-
   this.loader.defineLoader('js', failLoader);
   this.loader.defineLoader('css', failLoader);
 
-  await visit('/routable-engine-demo/blog/new');
+  await assert.rejects(visit('/routable-engine-demo/blog/new'), 'The bundle "ember-blog" failed to load.');
 
   this.loader.defineLoader('js', jsLoader);
   this.loader.defineLoader('css', cssLoader);
@@ -127,7 +121,6 @@ test('it should pause to load JS and CSS assets if previous deep link into a laz
   await visit('/routable-engine-demo/blog/new');
 
   verifyInitialBlogRoute(assert, this.loadEvents, this.application);
-  delete self.requirejs.entries['dummy/routes/application'];
 });
 
 test('it should pause to load JS and CSS assets on an initial transition into a lazy Engine', async function(
@@ -144,8 +137,9 @@ test('it should pause to load JS and CSS assets on an initial transition into a 
 test('it should pause to load JS and CSS assets if previous transition into a lazy Engine has failed', async function(
   assert
 ) {
-  assert.expect(7);
+  assert.expect(11);
 
+  let didError = false;
   define('dummy/routes/application', () =>
     Route.extend({
       actions: {
@@ -154,18 +148,25 @@ test('it should pause to load JS and CSS assets if previous transition into a la
     })
   );
 
+  Ember.onerror = function(error) {
+    didError = true;
+    // expect only BundleLoadErrors we expect
+    assert.equal(error.toString(), 'BundleLoadError: The bundle "ember-blog" failed to load.');
+  };
+
   await visit('/routable-engine-demo');
 
   const jsLoader = this.loader.__assetLoaders.js;
   const cssLoader = this.loader.__assetLoaders.css;
   const failLoader = () => RSVP.reject('rejected');
 
-  Ember.Test.adapter.exception = () => {};
-
   this.loader.defineLoader('js', failLoader);
   this.loader.defineLoader('css', failLoader);
 
+  assert.notOk(didError, 'expected no global error yet');
   await click('.blog-new:last');
+  assert.ok(didError, 'expected global error');
+
 
   this.loader.defineLoader('js', jsLoader);
   this.loader.defineLoader('css', cssLoader);
@@ -173,7 +174,6 @@ test('it should pause to load JS and CSS assets if previous transition into a la
   await click('.blog-new:last');
 
   verifyInitialBlogRoute(assert, this.loadEvents, this.application);
-  delete self.requirejs.entries['dummy/routes/application'];
 });
 
 test('it should not pause to load assets on subsequent transitions into a lazy Engine', async function(
@@ -238,31 +238,37 @@ test('it should not pause to load assets on transition into an eager Engine', as
 });
 
 test('it should bubble the bundle error to the application', async function(assert) {
-  assert.expect(1);
+  assert.expect(8);
 
-  let done;
-  let end = new Promise(resolve => done = resolve);
   const failLoader = () => RSVP.reject('rejected');
 
-  Ember.Test.adapter.exception = () => {};
-
-  this.loader.defineLoader('js', failLoader);
   this.loader.defineLoader('css', failLoader);
+
+  let routeDidError = false;
+  let routeError;
 
   define('dummy/routes/application', () =>
     Route.extend({
       actions: {
         error(error) {
-          assert.ok(error, 'the bundle error is bubbled to the application');
-          done();
+          routeDidError = true;
+          routeError = error;
         },
       },
     })
   );
 
-  await visit('/routable-engine-demo/blog/new');
+  await assert.rejects(visit('/routable-engine-demo/blog/new'), function(error) {
+    assert.equal(error.name, 'BundleLoadError');
+    assert.equal(error.message, 'The bundle "ember-blog" failed to load.');
+    assert.equal(error.errors.length, 1, 'expects only one error');
+    let nestedError = error.errors[0];
+    assert.equal(nestedError.name, 'AssetLoadError');
+    assert.equal(nestedError.message, 'The css asset with uri "/engines-dist/ember-blog/assets/engine.css" failed to load with the error: rejected.');
 
-  delete self.requirejs.entries['dummy/routes/application'];
+    assert.ok(routeDidError, 'expected dummy/routes/application actions.error to have been invoked');
+    assert.equal(error, routeError, 'expected dummy/routes/application actions.error to have the same argument as the visit rejects with');
 
-  await end;
+    return true;
+  });
 });

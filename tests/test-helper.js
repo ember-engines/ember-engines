@@ -1,8 +1,10 @@
-import resolver from './helpers/resolver';
-import { setResolver } from 'ember-qunit';
 import preloadAssets from 'ember-asset-loader/test-support/preload-assets';
 import manifest from '../config/asset-manifest';
 import { start } from 'ember-cli-qunit';
+import config from '../config/environment';
 
-setResolver(resolver);
+import Application from '../app';
+import { setApplication } from '@ember/test-helpers';
+setApplication(Application.create(config.APP));
+
 preloadAssets(manifest).then(start);

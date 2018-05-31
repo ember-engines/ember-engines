@@ -1,6 +1,5 @@
 'use strict';
 
-const co = require('co');
 const AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 
 const build = require('../helpers/build');
@@ -18,15 +17,16 @@ describe('Acceptance', function() {
 
     it(
       'in lazy engines that are direct dependencies of the engine',
-      co.wrap(function*() {
+      async function() {
         let app = new AddonTestApp();
         let appName = 'engine-testing';
         let engineName = 'lazy';
         let addonName = 'nested';
 
-        yield app.create(appName, { noFixtures: true });
-        let addon = yield InRepoAddon.generate(app, addonName);
-        let engine = yield InRepoEngine.generate(app, engineName, {
+        await app.create(appName, { noFixtures: true });
+
+        let addon = await InRepoAddon.generate(app, addonName);
+        let engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
         });
 
@@ -54,7 +54,7 @@ describe('Acceptance', function() {
           },
         });
 
-        let output = yield build(app);
+        let output = await build(app);
 
         // Verify all the files are in the host's assets
         output.contains(
@@ -97,24 +97,23 @@ describe('Acceptance', function() {
           `engines-dist/${engineName}/assets/engine-vendor.css`,
           cssCommentMatcher(`${addonName}.css`)
         );
-      })
-    );
+      });
 
     it.skip(
       'in lazy engines that are nested dependencies of the engine',
-      co.wrap(function*() {
+      async function() {
         let app = new AddonTestApp();
         let appName = 'engine-testing';
         let engineName = 'lazy';
         let engineAddonName = 'addon-in-lazy';
         let addonName = 'nested';
 
-        yield app.create(appName, { noFixtures: true });
-        let addon = yield InRepoAddon.generate(app, addonName);
-        let engine = yield InRepoEngine.generate(app, engineName, {
+        await app.create(appName, { noFixtures: true });
+        let addon = await InRepoAddon.generate(app, addonName);
+        let engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
         });
-        let engineAddon = yield engine.generateNestedAddon(engineAddonName, {
+        let engineAddon = await engine.generateNestedAddon(engineAddonName, {
           lazy: true,
         });
 
@@ -142,7 +141,7 @@ describe('Acceptance', function() {
           },
         });
 
-        let output = yield build(app);
+        let output = await build(app);
 
         // Verify all the files are in the host's assets
         output.contains(
@@ -185,24 +184,23 @@ describe('Acceptance', function() {
           `engines-dist/${engineName}/assets/engine-vendor.css`,
           cssCommentMatcher(`${addonName}.css`)
         );
-      })
-    );
+      });
 
     it(
       'in deeply nested lazy engines that appear in host application',
-      co.wrap(function*() {
+      async function() {
         let app = new AddonTestApp();
         let appName = 'engine-testing';
         let engineName = 'lazy';
         let nestedEngineName = 'lazy-in-lazy';
         let addonName = 'nested';
 
-        yield app.create(appName, { noFixtures: true });
-        let addon = yield InRepoAddon.generate(app, addonName);
-        let engine = yield InRepoEngine.generate(app, engineName, {
+        await app.create(appName, { noFixtures: true });
+        let addon = await InRepoAddon.generate(app, addonName);
+        let engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
         });
-        let nestedEngine = yield engine.generateNestedEngine(nestedEngineName, {
+        let nestedEngine = await engine.generateNestedEngine(nestedEngineName, {
           lazy: true,
         });
 
@@ -230,7 +228,7 @@ describe('Acceptance', function() {
           },
         });
 
-        let output = yield build(app);
+        let output = await build(app);
 
         // Verify all the files are in the host's assets
         output.contains(
@@ -296,24 +294,23 @@ describe('Acceptance', function() {
           `engines-dist/${nestedEngineName}/assets/engine-vendor.css`,
           cssCommentMatcher(`${addonName}.css`)
         );
-      })
-    );
+      });
 
     it(
       'in deeply nested lazy engines that appear in host lazy engine',
-      co.wrap(function*() {
+      async function() {
         let app = new AddonTestApp();
         let appName = 'engine-testing';
         let engineName = 'lazy';
         let nestedEngineName = 'lazy-in-lazy';
         let addonName = 'nested';
 
-        yield app.create(appName, { noFixtures: true });
-        let engine = yield InRepoEngine.generate(app, engineName, {
+        await app.create(appName, { noFixtures: true });
+        let engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
         });
-        let addon = yield engine.generateNestedAddon(addonName);
-        let nestedEngine = yield engine.generateNestedEngine(nestedEngineName, {
+        let addon = await engine.generateNestedAddon(addonName);
+        let nestedEngine = await engine.generateNestedEngine(nestedEngineName, {
           lazy: true,
         });
 
@@ -341,7 +338,7 @@ describe('Acceptance', function() {
           },
         });
 
-        let output = yield build(app);
+        let output = await build(app);
 
         // Verify all the files are NOT in the host application's assets
         output.doesNotContain(
@@ -406,7 +403,6 @@ describe('Acceptance', function() {
           `engines-dist/${nestedEngineName}/assets/engine-vendor.css`,
           cssCommentMatcher(`${addonName}.css`)
         );
-      })
-    );
+      });
   });
 });

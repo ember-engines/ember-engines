@@ -1,6 +1,5 @@
 'use strict';
 
-const co = require('co');
 const expect = require('chai').expect;
 const createTempDir = require('broccoli-test-helper').createTempDir;
 const shouldCompactReexports = require('../../../lib/utils/should-compact-reexports');
@@ -28,11 +27,9 @@ describe('shouldCompactReexports', function() {
     });
   }
 
-  beforeEach(
-    co.wrap(function*() {
-      fixture = yield createTempDir();
-    })
-  );
+  beforeEach(async function() {
+    fixture = await createTempDir();
+  });
 
   afterEach(function() {
     return fixture.dispose();

@@ -19,23 +19,19 @@ env:
     # See https://git.io/vdao3 for details.
     - JOBS=1
 
-    - TEST_SCRIPT=test:emberall
-    - TEST_SCRIPT=test:node
-
   matrix:
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
-    - EMBER_TRY_SCENARIO=ember-lts-2.16
     - EMBER_TRY_SCENARIO=ember-lts-2.18
     - EMBER_TRY_SCENARIO=ember-release
     - EMBER_TRY_SCENARIO=ember-beta
     - EMBER_TRY_SCENARIO=ember-canary
     - EMBER_TRY_SCENARIO=ember-default
+    - NODE_JOB=true
+    - LINT_JOB=true
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - env: EMBER_TRY_SCENARIO=ember-canary
 
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
@@ -44,6 +40,8 @@ before_install:
 
 install:
   - yarn install --no-lockfile --non-interactive
+
 script:
-  - yarn lint:js
-  - yarn run $TEST_SCRIPT
+  - if [[ $LINT_JOB ]]; then yarn lint:js; fi
+  - if [[ $EMBER_TRY_SCENARIO ]]; then yarn run test:ember; fi
+  - if [[ $NODE_JOB ]]; then yarn run test:node; fi

@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import Application from '@ember/application';
 import { run } from '@ember/runloop';
 import EnginesInitializer from '../../initializers/engines';
@@ -7,8 +6,6 @@ import { module, test } from 'qunit';
 
 import Resolver from '../../resolver';
 import config from '../../config/environment';
-
-const getEngineParent = Ember.__loader.require('ember-application/system/engine-parent').getEngineParent;
 
 let App, app, appInstance;
 
@@ -41,7 +38,7 @@ module('Unit | EngineInstance', {
 test('it can build a child engine instance without parent dependencies defined', function(
   assert
 ) {
-  assert.expect(2);
+  assert.expect(1);
 
   let BlogEngine = Engine.extend({
     router: null,
@@ -58,11 +55,6 @@ test('it can build a child engine instance without parent dependencies defined',
   let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
 
   assert.ok(blogEngineInstance);
-  assert.strictEqual(
-    getEngineParent(blogEngineInstance),
-    appInstance,
-    'parent is assigned'
-  );
 
   return blogEngineInstance.boot();
 });
@@ -70,7 +62,7 @@ test('it can build a child engine instance without parent dependencies defined',
 test('it can build a child engine instance with no dependencies', function(
   assert
 ) {
-  assert.expect(2);
+  assert.expect(1);
 
   let BlogEngine = Engine.extend({ router: null });
 
@@ -82,11 +74,6 @@ test('it can build a child engine instance with no dependencies', function(
   let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
 
   assert.ok(blogEngineInstance);
-  assert.strictEqual(
-    getEngineParent(blogEngineInstance),
-    appInstance,
-    'parent is assigned'
-  );
 
   return blogEngineInstance.boot();
 });
@@ -94,7 +81,7 @@ test('it can build a child engine instance with no dependencies', function(
 test('it can build a child engine instance with dependencies', function(
   assert
 ) {
-  assert.expect(3);
+  assert.expect(2);
 
   let BlogEngine = Engine.extend({
     router: null,
@@ -119,11 +106,6 @@ test('it can build a child engine instance with dependencies', function(
   let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
 
   assert.ok(blogEngineInstance);
-  assert.strictEqual(
-    getEngineParent(blogEngineInstance),
-    appInstance,
-    'parent is assigned'
-  );
 
   return blogEngineInstance.boot().then(() => {
     assert.strictEqual(
@@ -137,7 +119,7 @@ test('it can build a child engine instance with dependencies', function(
 test('it can build a child engine instance with dependencies that are aliased', function(
   assert
 ) {
-  assert.expect(3);
+  assert.expect(2);
 
   let BlogEngine = Engine.extend({
     router: null,
@@ -166,11 +148,6 @@ test('it can build a child engine instance with dependencies that are aliased', 
   let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
 
   assert.ok(blogEngineInstance);
-  assert.strictEqual(
-    getEngineParent(blogEngineInstance),
-    appInstance,
-    'parent is assigned'
-  );
 
   return blogEngineInstance.boot().then(() => {
     assert.strictEqual(

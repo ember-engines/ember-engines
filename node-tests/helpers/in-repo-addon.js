@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const fixturify = require('fixturify');
 
-class InRepoAddon {
+module.exports = class InRepoAddon {
   static generate(app, name) {
     let args = ['generate', 'in-repo-addon', name];
     return app.runEmberCommand.apply(app, args).then(() => {
@@ -63,6 +63,4 @@ class InRepoAddon {
       return addon;
     });
   }
-}
-
-module.exports = InRepoAddon;
+};
