@@ -374,7 +374,7 @@ describe('Acceptance', function() {
       })
     );
 
-    it(
+    it.only(
       'correctly builds addon in eager engine',
       co.wrap(function*() {
         let app = new AddonTestApp();
