@@ -67,7 +67,6 @@
     "fs-extra": "^7.0.0",
     "loader.js": "^4.7.0",
     "mocha": "^5.2.0",
-    "mocha-eslint": "^4.1.0",
     "prettier": "^1.13.7",
     "walk-sync": "^0.3.1"
   },
