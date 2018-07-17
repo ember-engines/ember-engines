@@ -1,5 +1,2 @@
 lib/engine-config-from-meta.js
 lib/engine-config-node-module.js
-blueprints/*/files/**/*.js
-blueprints/*/index.js
-blueprints/**/lib/**/*.js
