@@ -2,6 +2,7 @@
 
 const expect = require('chai').expect;
 const maybeMergeTrees = require('../../../lib/utils/maybe-merge-trees');
+const mergeTrees = require('ember-cli/lib/broccoli/merge-trees');
 
 describe('maybeMergeTrees', function() {
 
@@ -10,9 +11,11 @@ describe('maybeMergeTrees', function() {
 
     let first = maybeMergeTrees([]);
     let second = maybeMergeTrees([]);
+    let third = maybeMergeTrees(mergeTrees([]));
 
     expect(first).to.equal(expected);
     expect(second).to.equal(expected);
+    expect(third).to.equal(expected);
   });
 
   it('returns the first item when merging single item array', function() {
