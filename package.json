@@ -38,7 +38,7 @@
     "ember-ajax": "^3.1.0",
     "ember-blog": "link:./tests/dummy/lib/ember-blog",
     "ember-chat": "link:./tests/dummy/lib/ember-chat",
-    "ember-cli": "~3.3.0",
+    "ember-cli": "~3.4.0-beta.2",
     "ember-cli-addon-tests": "^0.11.0",
     "ember-cli-app-version": "^3.2.0",
     "ember-cli-dependency-checker": "^3.0.0",
