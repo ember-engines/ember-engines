@@ -13,28 +13,47 @@ addons:
 
 cache:
   yarn: true
-  
+
 branches:
   only:
     - master
     # npm version tags
     - /^v\d+\.\d+\.\d+/
-    
-env:
-  global:
-    # See https://git.io/vdao3 for details.
-    - JOBS=1
 
-  matrix:
+jobs:
+  fail_fast: true
+  allow_failures:
+      - env: EMBER_TRY_SCENARIO=ember-canary
+
+  include:
+    # runs linting and tests with current locked deps
+
+    - stage: "Tests"
+      name: "yarn lint:js && yarn test"
+      install:
+        - yarn install --non-interactive
+      script:
+        - yarn lint:js
+        - yarn test
+
+    - name: "yarn test:node"
+      install:
+        - yarn install --non-interactive
+      script:
+        - yarn test:node
+
+    - name: "yarn test (without yarn.lock)"
+      script:
+        - yarn test
+
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
-    - EMBER_TRY_SCENARIO=ember-lts-2.18
-    - EMBER_TRY_SCENARIO=ember-release
-    - EMBER_TRY_SCENARIO=ember-beta
-    - EMBER_TRY_SCENARIO=ember-canary
-    - EMBER_TRY_SCENARIO=ember-default
-    - NODE_JOB=true
-    - LINT_JOB=true
+    - stage: "Additional Tests (EMBER_TRY_SCENARIO's)"
+    - env: EMBER_TRY_SCENARIO=ember-lts-2.18
+    - env: EMBER_TRY_SCENARIO=ember-release
+    - env: EMBER_TRY_SCENARIO=ember-beta
+    - env: EMBER_TRY_SCENARIO=ember-canary
+    - env: EMBER_TRY_SCENARIO=ember-default-with-jquery
 
 matrix:
   fast_finish: true
@@ -48,6 +67,4 @@ install:
   - yarn install --no-lockfile --non-interactive
 
 script:
-  - if [[ $LINT_JOB ]]; then yarn lint:js; fi
-  - if [[ $EMBER_TRY_SCENARIO ]]; then yarn run test:ember; fi
-  - if [[ $NODE_JOB ]]; then yarn run test:node; fi
+  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
