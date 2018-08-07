@@ -37,7 +37,6 @@ describe('shouldCompactReexports', function() {
 
   it('returns true with recent versions of ember-cli-babel, ember-cli, and loader.js', function() {
     let addon = new FakeAddonWithDeps(fixture, {
-      'ember-cli': '2.13.0',
       'ember-cli-babel': '6.0.0',
       'loader.js': '4.4.0',
     });
@@ -47,17 +46,7 @@ describe('shouldCompactReexports', function() {
 
   it('returns false when the version of ember-cli-babel is < 6.0.0', function() {
     let addon = new FakeAddonWithDeps(fixture, {
-      'ember-cli': '2.13.0',
       'ember-cli-babel': '5.0.0',
-      'loader.js': '4.4.0',
-    });
-    expect(shouldCompactReexports(addon)).to.equal(false);
-  });
-
-  it('returns false when the version of ember-cli is < 2.13.0', function() {
-    let addon = new FakeAddonWithDeps(fixture, {
-      'ember-cli': '2.12.0',
-      'ember-cli-babel': '6.0.0',
       'loader.js': '4.4.0',
     });
     expect(shouldCompactReexports(addon)).to.equal(false);
@@ -65,7 +54,6 @@ describe('shouldCompactReexports', function() {
 
   it('returns false when the version of loader.js is < 4.4.0', function() {
     let addon = new FakeAddonWithDeps(fixture, {
-      'ember-cli': '2.13.0',
       'ember-cli-babel': '6.0.0',
       'loader.js': '4.3.0',
     });
