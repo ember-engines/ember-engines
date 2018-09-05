@@ -19,6 +19,7 @@
     "test:lint": "eslint index.js addon addon-test-support app bin config lib node-tests tests vendor",
     "test:lint:fix": "eslint --fix index.js addon addon-test-support app bin config lib node-tests tests vendor",
     "test:node": "mocha 'node-tests/**/*-test.js' --reporter tap",
+    "test:node:debug": "mocha --inspect-brk 'node-tests/**/*-test.js' --reporter tap",
     "test:windows": "ember try:one %EMBER_TRY_SCENARIO% test --skip-cleanup",
     "test:node:dev": "BUILD_DEV=true testem -f testem-node.js",
     "test:null": "echo 'no appropriate changes detected, not running tests'"
