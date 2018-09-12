@@ -11,6 +11,6 @@
   "dependencies": {
     "ember-cli-htmlbars": "*",
     "ember-cli-babel": "*",
-    "common-components": "file:../common-components"
+    "common-components": "link:../common-components"
   }
 }
