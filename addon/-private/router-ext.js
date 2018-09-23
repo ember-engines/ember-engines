@@ -15,6 +15,13 @@ const {
   Logger: { info }
 } = Ember;
 
+// NOTE:
+// This needed because we need to infer the setup of the router.js
+// Prior to https://github.com/emberjs/ember.js/pull/16974 we used to
+// call `_getHandlerFunction` to get the closed over function to resolve
+// a name to a handler. PR#16974 removed this private method.
+let newSetup = true;
+
 Router.reopen({
   init() {
     this._super(...arguments);
@@ -51,12 +58,26 @@ Router.reopen({
    * @override
    */
   _getHandlerFunction() {
+    newSetup = false;
+    return this._handlerResolver();
+  },
+
+  setupRouter() {
+    let isSetup = this._super(...arguments);
+    if (newSetup) {
+      // This method used to be called `getHandler` and it is going to be called `getRoute`.
+      if (this._routerMicrolib.getHandler !== undefined) {
+        this._routerMicrolib.getHandler = this._handlerResolver();
+      }
+    }
+    return isSetup;
+  },
+
+  _handlerResolver() {
     let seen = this._seenHandlers;
     let owner = getOwner(this);
-
     return name => {
       let engineInfo = this._engineInfoByRoute[name];
-
       if (engineInfo) {
         let engineInstance = this._getEngineInstance(engineInfo);
         if (engineInstance) {
