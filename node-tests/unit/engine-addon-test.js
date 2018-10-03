@@ -29,6 +29,7 @@ describe('engine-addon', function() {
       expect(addon.engineConfig('bar')).to.eql(addon.engineConfig('bar'));
     });
   });
+
   describe('updateFastBootManifest', function() {
     it('adds necessary vendorFiles to the manifest when lazyLoading is enabled', function() {
       const addon = EngineAddon.extend({
