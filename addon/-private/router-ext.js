@@ -3,17 +3,12 @@ import RSVP from 'rsvp';
 import { assert } from '@ember/debug';
 import { get } from '@ember/object';
 import { getOwner } from '@ember/application';
-import Ember from 'ember';
 import Route from '@ember/routing/route';
 
 const defaultSerialize = Route.proto().serialize;
 function hasDefaultSerialize(handler) {
   return handler.serialize === defaultSerialize;
 }
-
-const {
-  Logger: { info }
-} = Ember;
 
 // NOTE:
 // This needed because we need to infer the setup of the router.js
@@ -165,7 +160,8 @@ Router.reopen({
       handler = routeOwner.lookup(fullRouteName);
 
       if (get(this, 'namespace.LOG_ACTIVE_GENERATION')) {
-        info(`generated -> ${fullRouteName}`, { fullName: fullRouteName });
+        // eslint-disable-next-line no-console
+        console.info(`generated -> ${fullRouteName}`, { fullName: fullRouteName });
       }
     }
 
