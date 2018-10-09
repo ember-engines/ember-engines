@@ -1662,11 +1662,9 @@ commander@~2.16.0:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.16.0.tgz#f16390593996ceb4f3eeb020b31d78528f7f8a50"
 
-"common-components@file:tests/dummy/lib/common-components":
+"common-components@link:tests/dummy/lib/common-components":
   version "0.0.0"
-  dependencies:
-    ember-cli-babel "*"
-    ember-cli-htmlbars "*"
+  uid ""
 
 common-tags@^1.4.0, common-tags@^1.8.0:
   version "1.8.0"
