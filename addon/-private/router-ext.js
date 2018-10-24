@@ -61,7 +61,9 @@ Router.reopen({
     let isSetup = this._super(...arguments);
     if (newSetup) {
       // This method used to be called `getHandler` and it is going to be called `getRoute`.
-      if (this._routerMicrolib.getHandler !== undefined) {
+      if (this._routerMicrolib.getRoute !== undefined) {
+        this._routerMicrolib.getRoute = this._handlerResolver();
+      } else if (this._routerMicrolib.getHandler !== undefined) {
         this._routerMicrolib.getHandler = this._handlerResolver();
       }
     }
