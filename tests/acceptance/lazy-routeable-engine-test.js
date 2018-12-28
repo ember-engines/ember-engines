@@ -135,7 +135,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
     assert.expect(7);
 
     await visit('/routable-engine-demo');
-    await click('.blog-new:last');
+    await click('.blog-new');
 
     verifyInitialBlogRoute(assert, this.loadEvents)
   });
@@ -157,7 +157,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
     Ember.onerror = function (error) {
       didError = true;
       // expect only BundleLoadErrors we expect
-      assert.equal(error.toString(), 'BundleLoadError: The bundle "ember-blog" failed to load.');
+      assert.equal(error.toString(), 'BundleLoadError: The bundle "ember-blog" failed to load.', 'filed load bundle');
     };
 
     await visit('/routable-engine-demo');
@@ -170,14 +170,14 @@ module('Acceptance | lazy routable engine', function (hooks) {
     this.loader.defineLoader('css', failLoader);
 
     assert.notOk(didError, 'expected no global error yet');
-    await click('.blog-new:last');
+    await click('.blog-new');
     assert.ok(didError, 'expected global error');
 
 
     this.loader.defineLoader('js', jsLoader);
     this.loader.defineLoader('css', cssLoader);
 
-    await click('.blog-new:last');
+    await click('.blog-new');
 
     verifyInitialBlogRoute(assert, this.loadEvents);
   });
@@ -191,7 +191,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
 
     verifyInitialBlogRoute(assert, this.loadEvents)
 
-    await click('.routeable-engine:last');
+    await click('.routeable-engine');
 
     assert.equal(currentURL(), '/routable-engine-demo');
 
@@ -210,11 +210,11 @@ module('Acceptance | lazy routable engine', function (hooks) {
 
     verifyInitialBlogRoute(assert, this.loadEvents)
 
-    await click('.routeable-engine:last');
+    await click('.routeable-engine');
 
     assert.equal(currentURL(), '/routable-engine-demo');
 
-    await click('.ember-blog-new:last');
+    await click('.ember-blog-new');
 
     assert.equal(this.loadEvents.length, 3, 'did not load additional assets');
     assert.equal(currentURL(), '/routable-engine-demo/ember-blog/new');
@@ -237,14 +237,14 @@ module('Acceptance | lazy routable engine', function (hooks) {
     assert.expect(2);
 
     await visit('/routable-engine-demo');
-    await click('.eager-blog:last');
+    await click('.eager-blog');
 
     assert.equal(this.loadEvents.length, 0, 'no load events occured');
     assert.equal(currentURL(), '/routable-engine-demo/eager-blog');
   });
 
   test('it should bubble the bundle error to the application', async function (assert) {
-    assert.expect(8);
+    assert.expect(7);
 
     const failLoader = () => RSVP.reject('rejected');
 
@@ -253,18 +253,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
     let routeDidError = false;
     let routeError;
 
-    define('dummy/routes/application', () =>
-      Route.extend({
-        actions: {
-          error(error) {
-            routeDidError = true;
-            routeError = error;
-          },
-        },
-      })
-    );
-
-    await assert.rejects(visit('/routable-engine-demo/blog/new'), function (error) {
+    Ember.onerror = function (error) {
       assert.equal(error.name, 'BundleLoadError');
       assert.equal(error.message, 'The bundle "ember-blog" failed to load.');
       assert.equal(error.errors.length, 1, 'expects only one error');
@@ -274,8 +263,20 @@ module('Acceptance | lazy routable engine', function (hooks) {
 
       assert.ok(routeDidError, 'expected dummy/routes/application actions.error to have been invoked');
       assert.equal(error, routeError, 'expected dummy/routes/application actions.error to have the same argument as the visit rejects with');
+    };
 
-      return true;
-    });
+    define('dummy/routes/application', () =>
+      Route.extend({
+        actions: {
+          error(error) {
+            routeDidError = true;
+            routeError = error;
+            return routeError;
+          },
+        },
+      })
+    );
+
+    await visit('/routable-engine-demo/blog/new');
   });
 });
