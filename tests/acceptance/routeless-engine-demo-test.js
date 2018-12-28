@@ -35,6 +35,6 @@ module('Acceptance | routeless engine demo', function (hooks) {
 
     await click('button.clicker');
 
-    assert.equal($clickCount.text().trim(), '1');
+    assert.equal($clickCount.textContent.trim(), '1');
   });
 });
