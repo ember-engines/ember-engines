@@ -107,6 +107,11 @@ module('Acceptance | lazy routable engine', function (hooks) {
   ) {
     assert.expect(9);
 
+    Ember.onerror = function (error) {
+      // expect only BundleLoadErrors we expect
+      assert.equal(error.toString(), 'BundleLoadError: The bundle "ember-blog" failed to load.');
+    };
+
     const jsLoader = this.loader.__assetLoaders.js;
     const cssLoader = this.loader.__assetLoaders.css;
     const failLoader = () => RSVP.reject('rejected');
