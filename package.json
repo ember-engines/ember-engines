@@ -74,7 +74,7 @@
   ],
   "dependencies": {
     "amd-name-resolver": "1.2.0",
-    "babel-plugin-compact-reexports": "^1.0.0",
+    "babel-plugin-compact-reexports": "^1.1.0",
     "broccoli-babel-transpiler": "^6.4.3",
     "broccoli-concat": "^3.4.0",
     "broccoli-debug": "^0.6.4",
