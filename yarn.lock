@@ -462,9 +462,10 @@ babel-plugin-check-es2015-constants@^6.22.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-compact-reexports@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-compact-reexports/-/babel-plugin-compact-reexports-1.0.0.tgz#2b9034c79fe0b3a89c0846f147da281152f95489"
+babel-plugin-compact-reexports@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-compact-reexports/-/babel-plugin-compact-reexports-1.1.0.tgz#d329cf70ff882e1b3c916da15b312338caf29490"
+  integrity sha512-+KgjNJ5yMeZzJxYZdLEy9m82m92aL7FLvNJcK6dYJbW06t+UTpFJ2FVSs35zMfURcPnrQELYhLG4VC+kt/4gvw==
 
 babel-plugin-debug-macros@^0.1.10:
   version "0.1.11"
