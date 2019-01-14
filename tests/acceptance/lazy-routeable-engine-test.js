@@ -137,7 +137,7 @@ test('it should pause to load JS and CSS assets on an initial transition into a 
 test('it should pause to load JS and CSS assets if previous transition into a lazy Engine has failed', async function(
   assert
 ) {
-  assert.expect(11);
+  assert.expect(9);
 
   let didError = false;
   define('dummy/routes/application', () =>
@@ -151,7 +151,9 @@ test('it should pause to load JS and CSS assets if previous transition into a la
   Ember.onerror = function(error) {
     didError = true;
     // expect only BundleLoadErrors we expect
-    assert.equal(error.toString(), 'BundleLoadError: The bundle "ember-blog" failed to load.');
+    if (error.toString() !== 'BundleLoadError: The bundle "ember-blog" failed to load.') {
+      assert.ok(false, 'unexpected bundle error');
+    }
   };
 
   await visit('/routable-engine-demo');
@@ -166,7 +168,6 @@ test('it should pause to load JS and CSS assets if previous transition into a la
   assert.notOk(didError, 'expected no global error yet');
   await click('.blog-new:last');
   assert.ok(didError, 'expected global error');
-
 
   this.loader.defineLoader('js', jsLoader);
   this.loader.defineLoader('css', cssLoader);
