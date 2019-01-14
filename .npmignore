@@ -1,6 +1,7 @@
 /bower_components
 /config/ember-try.js
 /dist
+/node-tests
 /tests
 /tmp
 **/.gitkeep
@@ -14,6 +15,8 @@
 bower.json
 ember-cli-build.js
 testem.js
+testem-node.js
+yarn.lock
 
 # ember-try
 .node_modules.ember-try/
