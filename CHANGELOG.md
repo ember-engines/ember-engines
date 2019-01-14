@@ -1,3 +1,13 @@
+## v0.5.26 (2019-01-14)
+
+#### :bug: Bug Fix
+* [#609](https://github.com/ember-engines/ember-engines/pull/609) fix(engine-addon): only call `_requireBuildPackages`, if it exists ([@buschtoens](https://github.com/buschtoens))
+* [#607](https://github.com/ember-engines/ember-engines/pull/607) fix(route-ext): try `Route#_router` and `Route#router` ([@buschtoens](https://github.com/buschtoens))
+
+#### Committers: 1
+- Jan Buschtöns ([@buschtoens](https://github.com/buschtoens))
+
+
 ## v0.5.25 (2018-12-21)
 
 #### :bug: Bug Fix
