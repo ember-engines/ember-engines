@@ -7,7 +7,8 @@ import { getOwner } from '@ember/application';
 function externalAlias(methodName) {
   return function _externalAliasMethod(routeName, ...args) {
     let externalRoute = getOwner(this)._getExternalRoute(routeName);
-    return this.router[methodName](externalRoute, ...args);
+    let router = this._router || this.router;
+    return router[methodName](externalRoute, ...args);
   };
 }
 

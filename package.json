@@ -1,6 +1,6 @@
 {
   "name": "ember-engines",
-  "version": "0.5.25",
+  "version": "0.5.26",
   "description": "Experimental support for Ember Engines",
   "directories": {
     "doc": "doc",
@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "ember build",
+    "changelog": "lerna-changelog",
     "lint:js": "eslint ./*.js addon addon-test-support app config lib tests",
     "start": "ember serve",
     "test": "ember test",
@@ -64,6 +65,7 @@
     "execa": "^0.10.0",
     "fixturify": "^0.3.4",
     "fs-extra": "^7.0.0",
+    "lerna-changelog": "^0.8.2",
     "loader.js": "^4.7.0",
     "mocha": "^5.2.0",
     "prettier": "^1.13.7",
@@ -74,7 +76,7 @@
   ],
   "dependencies": {
     "amd-name-resolver": "1.2.0",
-    "babel-plugin-compact-reexports": "^1.0.0",
+    "babel-plugin-compact-reexports": "^1.1.0",
     "broccoli-babel-transpiler": "^6.4.3",
     "broccoli-concat": "^3.4.0",
     "broccoli-debug": "^0.6.4",
