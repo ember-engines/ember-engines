@@ -69,6 +69,7 @@
     "loader.js": "^4.7.0",
     "mocha": "^5.2.0",
     "prettier": "^1.13.7",
+    "rewire": "^4.0.1",
     "walk-sync": "^0.3.1"
   },
   "keywords": [
