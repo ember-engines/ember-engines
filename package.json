@@ -59,6 +59,7 @@
     "ember-sinon": "^3.1.0",
     "ember-source": "~3.8.0",
     "ember-source-channel-url": "^1.1.0",
+    "ember-try": "^1.1.0",
     "eslint": "^5.14.1",
     "eslint-config-prettier": "^4.0.0",
     "eslint-plugin-ember": "^6.2.0",
@@ -94,7 +95,6 @@
     "ember-cli-string-utils": "^1.1.0",
     "ember-cli-version-checker": "^3.0.1",
     "ember-maybe-import-regenerator": "^0.1.6",
-    "ember-try": "^1.1.0",
     "lodash": "^4.17.11"
   },
   "engines": {
