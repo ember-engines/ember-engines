@@ -1,3 +1,28 @@
+## 0.6.0 (2019-03-12)
+
+#### :boom: Breaking Change
+* [#622](https://github.com/ember-engines/ember-engines/pull/622) Drop Node 4 support. ([@rwjblue](https://github.com/rwjblue))
+* [#619](https://github.com/ember-engines/ember-engines/pull/619) Upgrade dependencies and addon blueprint to match ember-cli 3.8 ([@dgeb](https://github.com/dgeb))
+
+#### :rocket: Enhancement
+* [#605](https://github.com/ember-engines/ember-engines/pull/605) Issue warning when an engine does not have ember-addon and ember-engine keywords in package.json ([@villander](https://github.com/villander))
+
+#### :bug: Bug Fix
+* [#621](https://github.com/ember-engines/ember-engines/pull/621) fix(deps): move ember-try to devDependencies ([@dfreeman](https://github.com/dfreeman))
+* [#615](https://github.com/ember-engines/ember-engines/pull/615) Fix typos ([@dgeb](https://github.com/dgeb))
+* [#610](https://github.com/ember-engines/ember-engines/pull/610) Fix find-host utils with lazyLoading hash ([@villander](https://github.com/villander))
+
+#### :house: Internal
+* [#618](https://github.com/ember-engines/ember-engines/pull/618) Remove unnecessary file ([@astronomersiva](https://github.com/astronomersiva))
+* [#612](https://github.com/ember-engines/ember-engines/pull/612) Add more to npmignore file. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 5
+- Dan Freeman ([@dfreeman](https://github.com/dfreeman))
+- Dan Gebhardt ([@dgeb](https://github.com/dgeb))
+- Michael Villander ([@villander](https://github.com/villander))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Sivasubramanyam A ([@astronomersiva](https://github.com/astronomersiva))
+
 ## v0.5.26 (2019-01-14)
 
 #### :bug: Bug Fix
