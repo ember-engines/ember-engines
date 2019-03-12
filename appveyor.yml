@@ -14,7 +14,6 @@ environment:
 install:
   - git rev-parse HEAD
   - npm version
-  - npm install phantomjs-prebuilt
   - npm install
 
 cache:
