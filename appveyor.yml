@@ -2,7 +2,7 @@
 
 # Test against these versions of Node.js.
 environment:
-  nodejs_version: "4"
+  nodejs_version: "6"
   matrix:
     - TEST_SCRIPT: test:windows
       EMBER_TRY_SCENARIO: ember-canary
