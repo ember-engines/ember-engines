@@ -1,3 +1,11 @@
+## v0.6.3 (2019-03-26)
+
+#### :bug: Bug Fix
+* [#631](https://github.com/ember-engines/ember-engines/pull/631) Avoid errors when keywords array is not present. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
 ## v0.6.2 (2019-03-26)
 
 #### :bug: Bug Fix
