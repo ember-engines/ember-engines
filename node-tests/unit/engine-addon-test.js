@@ -1,6 +1,8 @@
 'use strict';
 
 const EngineAddon = require('../../lib/engine-addon');
+const EmberAddon = require('ember-cli/lib/models/addon');
+const MockProject = require('ember-cli/tests/helpers/mock-project');
 const expect = require('chai').expect;
 const path = require('path');
 
@@ -27,6 +29,43 @@ describe('engine-addon', function() {
 
       expect(addon.engineConfig('test')).to.eql(addon.engineConfig('test'));
       expect(addon.engineConfig('bar')).to.eql(addon.engineConfig('bar'));
+    });
+  });
+
+  describe('keyword warning', function() {
+    let Addon, project, pkg;
+
+    beforeEach(function() {
+      pkg = {};
+
+      Addon = EmberAddon.extend(
+        EngineAddon.extend({
+          name: 'testing',
+          // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
+          lazyLoading: { enabled: true }
+        })
+      );
+
+      Addon = Addon.extend({
+        root: path.join(__dirname, '../fixtures/engine-config/'),
+        pkg,
+      });
+
+      project = new MockProject();
+    });
+
+    it('warns to the console when pkg.keywords does not include ember-engines', function() {
+      pkg.keywords = ['ember-addon'];
+      new Addon(project, project);
+
+      expect(project.ui.output).to.include('keywords section');
+    });
+
+    it('warns to the console when pkg.keywords does not exist', function() {
+      pkg.keywords = undefined;
+      new Addon(project, project);
+
+      expect(project.ui.output).to.include('keywords section');
     });
   });
 
