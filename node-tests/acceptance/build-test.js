@@ -281,14 +281,10 @@ describe('Acceptance', function() {
           `engines-dist/${nestedEngineName}/assets/engine-vendor.js`
         );
         output.contains(
-          `engines-dist/${nestedEngineName}/assets/engine-vendor.map`
-        );
-        output.contains(
           `engines-dist/${nestedEngineName}/assets/engine.css`,
           cssCommentMatcher(`${nestedEngineName}.css`)
         );
         output.contains(`engines-dist/${nestedEngineName}/assets/engine.js`);
-        output.contains(`engines-dist/${nestedEngineName}/assets/engine.map`);
 
         output.contains(
           'assets/vendor.js',
