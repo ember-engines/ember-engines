@@ -12,7 +12,7 @@
       "lazy": {
         "assets": [
           {
-           "uri": "/engines-dist/lazy/assets/engine-vendor.js",
+            "uri": "/engines-dist/lazy/assets/engine-vendor.js",
             "type": "js"
           },
           {
