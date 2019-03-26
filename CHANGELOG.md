@@ -1,3 +1,20 @@
+## v0.6.2 (2019-03-26)
+
+#### :bug: Bug Fix
+* [#588](https://github.com/ember-engines/ember-engines/pull/588) [Closes [#546](https://github.com/ember-engines/ember-engines/issues/546)] respects it’s host apps source-map config. ([@stefanpenner](https://github.com/stefanpenner))
+
+#### Committers: 1
+- Stefan Penner ([@stefanpenner](https://github.com/stefanpenner))
+
+
+## v0.6.1 (2019-03-12)
+
+#### :rocket: Enhancement
+* [#623](https://github.com/ember-engines/ember-engines/pull/623) upgrade ember-asset-loader ([@stefanpenner](https://github.com/stefanpenner))
+
+#### Committers: 1
+- Stefan Penner ([@stefanpenner](https://github.com/stefanpenner))
+
 ## 0.6.0 (2019-03-12)
 
 #### :boom: Breaking Change
