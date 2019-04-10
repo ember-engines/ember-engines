@@ -3205,16 +3205,15 @@ ember-assign-polyfill@^2.6.0:
   version "0.0.0"
   uid ""
 
-ember-cli-addon-tests@^0.11.0:
+"ember-cli-addon-tests@github:kiwiupover/ember-cli-addon-tests#test-against-ember-data-release":
   version "0.11.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-addon-tests/-/ember-cli-addon-tests-0.11.0.tgz#7f5a07ce91317b9b06c792274e6d6a2cc43f1ee9"
-  integrity sha1-f1oHzpExe5sGx5InTm1qLMQ/Huk=
+  resolved "https://codeload.github.com/kiwiupover/ember-cli-addon-tests/tar.gz/738ef5f5f8a7029f40310b84da202100cd7f31fe"
   dependencies:
     chalk "^2.0.1"
     debug "^3.0.0"
     denodeify "^1.2.1"
     findup-sync "^2.0.0"
-    fs-extra "^4.0.2"
+    fs-extra "^5.0.0"
     lodash "^4.0.0"
     semver "^5.3.0"
     symlink-or-copy "^1.1.3"
