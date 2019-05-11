@@ -99,9 +99,10 @@ describe('Acceptance', function() {
         );
       });
 
-    it.skip(
+    it(
       'in lazy engines that are nested dependencies of the engine',
       async function() {
+        process.env.EMBER_ENGINES_ADDON_DEDUPE = 1;
         let app = new AddonTestApp();
         let appName = 'engine-testing';
         let engineName = 'lazy';
@@ -165,7 +166,7 @@ describe('Acceptance', function() {
         // App folder should still be merged into the Engine's namespace
         output.contains(
           `engines-dist/${engineName}/assets/engine.js`,
-          moduleMatcher(`${engineName}/foo`)
+          reexportMatcher(`${addonName}/components/foo`, `${engineName}/foo`)
         );
 
         // All other files should not be included
@@ -184,6 +185,7 @@ describe('Acceptance', function() {
           `engines-dist/${engineName}/assets/engine-vendor.css`,
           cssCommentMatcher(`${addonName}.css`)
         );
+        delete process.env.EMBER_ENGINES_ADDON_DEDUPE;
       });
 
     it(

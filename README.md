@@ -417,6 +417,11 @@ be loaded by the asset loading service. That will be generated at
 `/dist/asset-manifest.json` at build time. It will also by default be inserted
 into a meta tag config inside of the host application's `index.html`.
 
+#### Nested addon deduplication
+Use `EMBER_ENGINES_ADDON_DEDUPE` environment variable to deduplicate the nested
+addons of lazy engine which are also host app addons.
+More details at [#595](https://github.com/ember-engines/ember-engines/pull/595).
+
 ### Nested Eager Engines
 
 Nested eager engines will be built into their host engine or application.
