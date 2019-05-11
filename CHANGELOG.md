@@ -1,3 +1,10 @@
+##  v0.7.1 (2019-05-11)
+
+#### :rocket: Enhancement
+* [#595](https://github.com/ember-engines/ember-engines/pull/595) Deduplicate addons in lazy engines that are nested dependencies of the engine (behind the EMBER_ENGINES_ADDON_DEDUPE environment flag ) ([@2hu12](https://github.com/2hu12))
+
+#### Committers: 1
+- 2hu ([@2hu12](https://github.com/2hu12))
 
 ## v0.7.0 (2019-04-01)
 
