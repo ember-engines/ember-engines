@@ -433,6 +433,19 @@ describe('Acceptance', function() {
               },
             },
           },
+          prebuilt_vendor: {
+            'external_dependency.js': `define("external_dependency", ["exports"], function (_exports) {});`
+          },
+          'index.js': `module.exports = {
+             name: '${addonName}',
+             treeForVendor() {
+               return '${addon.path}/prebuilt_vendor';
+             },
+             included: function(app) {
+               this._super.included.apply(this, arguments);
+               app.import('vendor/external_dependency.js');
+             }
+           }`,
         });
 
         let output = await build(app);
@@ -451,6 +464,10 @@ describe('Acceptance', function() {
         output.contains(
           `engines-dist/${engineName}/assets/engine-vendor.js`,
           moduleMatcher(`${addonName}/templates/components/bar`)
+        );
+        output.contains(
+          `engines-dist/${engineName}/assets/engine-vendor.js`,
+          moduleMatcher('external_dependency')
         );
       });
 
