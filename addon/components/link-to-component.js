@@ -16,8 +16,13 @@ export default LinkComponent.extend({
     );
 
     if (owner.mountPoint) {
-      // Prepend engine mount point to targetRouteName
+      // [Ember <= 3.9] Prepend engine mount point to targetRouteName
+      // (for {{link-to "..."}})
       this._prefixProperty(owner.mountPoint, 'targetRouteName');
+
+      // [Ember >= 3.10] Prepend engine mount point to route
+      // (for <LinkTo @route="...">)
+      this._prefixProperty(owner.mountPoint, 'route');
 
       // Prepend engine mount point to current-when if set
       if (get(this, 'current-when') !== null) {

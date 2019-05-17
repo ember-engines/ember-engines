@@ -9,8 +9,10 @@ export default LinkComponent.extend({
     const owner = getOwner(this);
 
     if (owner.mountPoint) {
-      const targetRouteName = get(this, 'targetRouteName');
+      // `route` for Ember >= 3.10, `targetRouteName` for Ember <= 3.9
+      const targetRouteName =  get(this, 'route') || get(this, 'targetRouteName');
       const externalRoute = owner._getExternalRoute(targetRouteName);
+      set(this, 'route', externalRoute);
       set(this, 'targetRouteName', externalRoute);
     }
   },
