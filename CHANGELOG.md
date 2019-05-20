@@ -1,3 +1,13 @@
+
+## v0.7.0 (2019-04-01)
+
+#### :boom: Breaking Change
+
+* [#629](https://github.com/ember-engines/ember-engines/pull/629) Removes useDeprecatedIncorrectCSSProcessing ([@villander](https://github.com/villander))
+
+#### Committers: 1
+- Michael Villander ([@villander](https://github.com/villander))
+-
 ## v0.6.3 (2019-03-26)
 
 #### :bug: Bug Fix
