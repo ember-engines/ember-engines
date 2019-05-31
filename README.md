@@ -460,8 +460,7 @@ For example, the following template renders the `ember-chat` engine:
 {{mount "ember-chat"}}
 ```
 
-Currently, the engine name is the only argument that can be passed to
-`{{mount}}`.
+A model argument can also be passed to the `{{mount}}` helper. See the [mount helper documentation](https://api.emberjs.com/ember/release/classes/Ember.Templates.helpers) for exact syntax.
 
 ### Routable Engines
 
