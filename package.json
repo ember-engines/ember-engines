@@ -1,6 +1,6 @@
 {
   "name": "ember-engines",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Experimental support for Ember Engines",
   "directories": {
     "doc": "doc",
@@ -102,6 +102,7 @@
     "node": "6.* || 8.* || >= 10.*"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "before": "broccoli-asset-rev"
   }
 }
