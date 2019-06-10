@@ -26,7 +26,7 @@ perspective.
   * [Sharing Components and More](http://ember-engines.com/guide/linking-and-external-links)
   * [Lazy Loading](http://ember-engines.com/guide/lazy-loading)
 * [Engines & Addons](http://ember-engines.com/guide/addons)
-* [Deploy An Engine](http://ember-engines.com/guide/deploying-engines)
+* [Deploying and Fastboot](deploying-and-fastboot)
 * [Testing](http://ember-engines.com/guide/testing)
 
 **Other Resources**
@@ -37,7 +37,7 @@ perspective.
 
 ## Important Note about Compatibility and Stability
 
-This addon should be considered experimental. But engines are production ready and many of the APIs are fully stable.
+Ember engines are production ready. All APIs described in the RFC are implemented and can be considered stable.
 
 The [master branch of this addon](https://github.com/ember-engines/ember-engines)
 is being developed against the master branch of Ember and Ember-CLI, and should
