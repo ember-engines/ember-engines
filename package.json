@@ -1,7 +1,7 @@
 {
   "name": "ember-engines",
   "version": "0.7.1",
-  "description": "Experimental support for Ember Engines",
+  "description": "Composable applications for ambitious user experiences",
   "directories": {
     "doc": "doc",
     "test": "tests"
