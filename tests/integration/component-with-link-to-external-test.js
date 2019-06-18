@@ -1,6 +1,7 @@
 import Component from '@ember/component';
-import { moduleForComponent, test } from 'ember-qunit';
+import { moduleForComponent, test, skip } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import { gte } from 'ember-compatibility-helpers';
 
 moduleForComponent(
   'component-with-link-to-external',
@@ -11,11 +12,11 @@ moduleForComponent(
     beforeEach() {
       let testComponent = Component.extend();
       this.registry.register('component:test-component', testComponent);
-    },
+    }
   }
 );
 
-test('component renders with link-to-external', function(assert) {
+test('component renders with link-to-external [curly braces]', function(assert) {
   assert.expect(1);
 
   this.render(hbs`
@@ -27,3 +28,19 @@ test('component renders with link-to-external', function(assert) {
 
   assert.equal(this.$().length, 1);
 });
+
+(gte('3.10.0-beta.1') ? test : skip)(
+  'component renders with link-to-external [angle brackets]',
+  function(assert) {
+    assert.expect(1);
+
+    this.render(hbs`
+    <TestComponent>
+      <LinkTo @route="view">Link To</LinkTo>
+      <LinkToExternal @route="view">Link To External</LinkToExternal>
+    </TestComponent>
+  `);
+
+    assert.equal(this.$().length, 1);
+  }
+);

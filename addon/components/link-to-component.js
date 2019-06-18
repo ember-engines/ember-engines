@@ -16,8 +16,11 @@ export default LinkComponent.extend({
     );
 
     if (owner.mountPoint) {
+      // https://emberjs.github.io/rfcs/0459-angle-bracket-built-in-components.html
+      const routeKey = 'targetRouteName' in this ? 'targetRouteName' : 'route';
+
       // Prepend engine mount point to targetRouteName
-      this._prefixProperty(owner.mountPoint, 'targetRouteName');
+      this._prefixProperty(owner.mountPoint, routeKey);
 
       // Prepend engine mount point to current-when if set
       if (get(this, 'current-when') !== null) {
@@ -55,5 +58,5 @@ export default LinkComponent.extend({
     } else {
       return prefix + '.' + propValue;
     }
-  },
+  }
 });
