@@ -35,18 +35,6 @@ perspective.
 * [Engines 1.0 Roadmap](https://discuss.emberjs.com/t/engines-1-0-roadmap/14914)
 
 
-## Important Note about Compatibility and Stability
-
-Ember engines are production ready. All APIs described in the RFC are implemented and can be considered stable.
-
-The [master branch of this addon](https://github.com/ember-engines/ember-engines)
-is being developed against the master branch of Ember and Ember-CLI, and should
-be considered unstable. If you're planning to deploy to production, please use
-one of the stable releases.
-
-[v0.5.15 or higher](https://github.com/ember-engines/ember-engines/tree/v0.5.15)
-is compatible with FastBoot 1.0+.
-
 ## Introduction Video
 
 [![Introduction to Ember Engines at Global Ember Meetup](https://i.vimeocdn.com/video/559400541_640x360.jpg)](https://vimeo.com/157688181)
