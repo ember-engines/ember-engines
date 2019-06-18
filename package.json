@@ -103,7 +103,6 @@
     "node": "6.* || 8.* || >= 10.*"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config",
-    "before": "broccoli-asset-rev"
+    "configPath": "tests/dummy/config"
   }
 }
