@@ -60,7 +60,7 @@ Install the appropriate version of Ember as noted above.
 ### Installation
 
 * `git clone` this repository
-* `npm install`
+* `yarn install`
 
 ### Running
 
@@ -69,7 +69,7 @@ Install the appropriate version of Ember as noted above.
 
 ### Running Tests
 
-* `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
+* `yarn test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
 * `ember test`
 * `ember test --server`
 
@@ -81,4 +81,4 @@ For more information on using ember-cli, visit [http://www.ember-cli.com/](http:
 
 ## License
 
-Copyright 2015-2018 Dan Gebhardt and Robert Jackson. MIT License (see LICENSE.md for details).
+Copyright 2015-2019 Dan Gebhardt and Robert Jackson. MIT License (see [LICENSE.md](LICENSE.md) for details).
