@@ -9,9 +9,11 @@ export default LinkComponent.extend({
     const owner = getOwner(this);
 
     if (owner.mountPoint) {
-      const targetRouteName = get(this, 'targetRouteName');
-      const externalRoute = owner._getExternalRoute(targetRouteName);
-      set(this, 'targetRouteName', externalRoute);
+      // https://emberjs.github.io/rfcs/0459-angle-bracket-built-in-components.html
+      const routeKey = 'targetRouteName' in this ? 'targetRouteName' : 'route';
+      const routeName = get(this, routeKey);
+      const externalRoute = owner._getExternalRoute(routeName);
+      set(this, routeKey, externalRoute);
     }
-  },
+  }
 });
