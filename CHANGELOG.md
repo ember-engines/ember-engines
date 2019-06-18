@@ -1,3 +1,18 @@
+## v0.7.2 (2019-06-18)
+
+#### :bug: Bug Fix
+* [#642](https://github.com/ember-engines/ember-engines/pull/642) Fix issues with `{{link-to}}` and `{{link-to-external}}` with Ember 3.10 ([@buschtoens](https://github.com/buschtoens))
+* [#640](https://github.com/ember-engines/ember-engines/pull/640) Update blueprints to avoid linting errors with recent versions of eslint-plugin-ember ([@villander](https://github.com/villander))
+
+#### :memo: Documentation
+* [#641](https://github.com/ember-engines/ember-engines/pull/641) Update README with table of contents ([@villander](https://github.com/villander))
+* [#650](https://github.com/ember-engines/ember-engines/pull/650) Update {{mount}} documentation to indicate a `model` named argument can be passed ([@garjust](https://github.com/garjust))
+
+#### Committers: 3
+- Jan Buschtöns ([@buschtoens](https://github.com/buschtoens))
+- Justin Garbutt ([@garjust](https://github.com/garjust))
+- Michael Villander ([@villander](https://github.com/villander))
+
 ##  v0.7.1 (2019-05-11)
 
 #### :rocket: Enhancement
