@@ -26,7 +26,7 @@ perspective.
   * [Sharing Components and More](http://ember-engines.com/guide/linking-and-external-links)
   * [Lazy Loading](http://ember-engines.com/guide/lazy-loading)
 * [Engines & Addons](http://ember-engines.com/guide/addons)
-* [Deploying and Fastboot](deploying-and-fastboot)
+* [Deploying and Fastboot](http://ember-engines.com/guide/deploying-and-fastboot)
 * [Testing](http://ember-engines.com/guide/testing)
 
 **Other Resources**
