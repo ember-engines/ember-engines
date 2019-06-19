@@ -4,10 +4,15 @@ const EngineAddon = require('../../lib/engine-addon');
 const EmberAddon = require('ember-cli/lib/models/addon');
 const MockProject = require('ember-cli/tests/helpers/mock-project');
 const expect = require('chai').expect;
+const sinon = require('sinon');
+const rewire = require('rewire');
 const path = require('path');
+const memoize = require('../../lib/utils/memoize');
 
 describe('engine-addon', function() {
   describe('engineConfig', function() {
+    const EngineAddon = require('../../lib/engine-addon');
+
     it('caches per environment', function() {
       // TODO: EngineAddon is crazy, it will need to be refactored to cleanup this test
       const addon = EngineAddon.extend({
@@ -70,6 +75,8 @@ describe('engine-addon', function() {
   });
 
   describe('updateFastBootManifest', function() {
+    const EngineAddon = require('../../lib/engine-addon');
+
     it('adds necessary vendorFiles to the manifest when lazyLoading is enabled', function() {
       const addon = EngineAddon.extend({
         name: 'testing',
@@ -108,6 +115,45 @@ describe('engine-addon', function() {
           'engines-dist/testing/config/environment.js',
         ],
       });
+    });
+  });
+
+  describe('buildExternalTree', function() {
+    const memoizeStub = sinon.stub(memoize, 'memoize').callsFake((func) => { return func; });
+    const EngineAddon = rewire('../../lib/engine-addon');
+    const buildExternalTree = EngineAddon.__get__('buildExternalTree');
+
+    beforeEach(function() {
+      this.treePaths = { vendor: 'config' };
+      this.root = path.join(__dirname, '../fixtures/engine-config/');
+      this._nodeModules = new Map();
+      this._customTransformsMap = new Map();
+
+      this._nodeModules.set('/mock/path/one', { name: 'mock-module-one', path: '/mock/path/one' });
+      this._nodeModules.set('/mock/path/two', { name: 'mock-module-two', path: '/mock/path/two' });
+      this._customTransformsMap.set('amd', {
+        files: [],
+        options: {},
+        callback: () => {},
+        processOptions: () => {}
+      });
+    });
+
+    after(function() {
+      memoizeStub.reset();
+    });
+
+    it('does not add vendor path if tree path is empty', function() {
+      this.treePaths = { vendor: 'doesNotExist' };
+      const tree = buildExternalTree.call(this);
+
+      expect(tree._inputNodes.length).to.equal(2);
+    });
+
+    it('adds vendor path, node modules and transforms to external trees', function() {
+      const tree = buildExternalTree.call(this);
+
+      expect(tree._inputNodes.length).to.equal(3);
     });
   });
 });
