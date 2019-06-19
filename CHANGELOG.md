@@ -1,6 +1,6 @@
 ## v0.8.0 (2019-06-19)
 
-#### :boom: Breaking Change
+(#### :boom: Breaking Change
 * [#659](https://github.com/ember-engines/ember-engines/pull/659) Drop support for Node 6 and 11. ([@rwjblue](https://github.com/rwjblue))
 
 #### :rocket: Enhancement
@@ -9,7 +9,11 @@
 #### :bug: Bug Fix
 * [#646](https://github.com/ember-engines/ember-engines/pull/646) Fix vendor tree usage inside a nested lazy loaded engine ([@2hu12](https://github.com/2hu12))
 
+#### :memo: Documentation
+* [#654](https://github.com/ember-engines/ember-engines/pull/654) Removes label `experimental`  of ember-engines ([@villander](https://github.com/villander))
+
 #### :house: Internal
+* [#660](https://github.com/ember-engines/ember-engines/pull/660) Update ember-asset-loader to ^0.6.0 ([@villander](https://github.com/villander))
 * [#658](https://github.com/ember-engines/ember-engines/pull/658) Update dependencies to latest versions. ([@rwjblue](https://github.com/rwjblue))
 * [#657](https://github.com/ember-engines/ember-engines/pull/657) Add Ember 3.8 LTS to CI configuration. ([@rwjblue](https://github.com/rwjblue))
 
