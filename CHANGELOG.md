@@ -1,3 +1,23 @@
+## v0.8.0 (2019-06-19)
+
+#### :boom: Breaking Change
+* [#659](https://github.com/ember-engines/ember-engines/pull/659) Drop support for Node 6 and 11. ([@rwjblue](https://github.com/rwjblue))
+
+#### :rocket: Enhancement
+* [#630](https://github.com/ember-engines/ember-engines/pull/630) Allow `app.import`ing from `node_modules` in lazy engines ([@villander](https://github.com/villander))
+
+#### :bug: Bug Fix
+* [#646](https://github.com/ember-engines/ember-engines/pull/646) Fix vendor tree usage inside a nested lazy loaded engine ([@2hu12](https://github.com/2hu12))
+
+#### :house: Internal
+* [#658](https://github.com/ember-engines/ember-engines/pull/658) Update dependencies to latest versions. ([@rwjblue](https://github.com/rwjblue))
+* [#657](https://github.com/ember-engines/ember-engines/pull/657) Add Ember 3.8 LTS to CI configuration. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 3
+- 2hu ([@2hu12](https://github.com/2hu12))
+- Michael Villander ([@villander](https://github.com/villander))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
 ## v0.7.2 (2019-06-18)
 
 #### :bug: Bug Fix
