@@ -1,46 +1,45 @@
-import Component from '@ember/component';
-import { moduleForComponent, test, skip } from 'ember-qunit';
+import { module, test, skip } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
+import Component from '@ember/component';
 import { gte } from 'ember-compatibility-helpers';
 
-moduleForComponent(
-  'component-with-link-to-external',
-  'Integration | Component | component-with-link-to-external',
-  {
-    integration: true,
+module('Integration | Component | component-with-link-to-external', function (hooks) {
+  setupRenderingTest(hooks);
 
-    beforeEach() {
-      let testComponent = Component.extend();
-      this.registry.register('component:test-component', testComponent);
-    }
-  }
-);
+  hooks.beforeEach(function() {
+    let testComponent = Component.extend();
+    this.owner.register('component:test-component', testComponent);
+  });
 
-test('component renders with link-to-external [curly braces]', function(assert) {
-  assert.expect(1);
+  test('component renders with link-to-external [curly braces]', async function (assert) {
+    assert.expect(1);
 
-  this.render(hbs`
+    await render(hbs`
     {{#test-component}}
       {{#link-to "view"}}Link To{{/link-to}}
       {{#link-to-external "view"}}Link To External{{/link-to-external}}
     {{/test-component}}
   `);
 
-  assert.equal(this.$().length, 1);
-});
+    assert.equal(this.$().length, 1);
+  });
 
-(gte('3.10.0-beta.1') ? test : skip)(
-  'component renders with link-to-external [angle brackets]',
-  function(assert) {
-    assert.expect(1);
+  (gte('3.10.0-beta.1') ? test : skip)(
+    'component renders with link-to-external [angle brackets]',
+    async function (assert) {
+      assert.expect(1);
 
-    this.render(hbs`
+      await render(hbs`
     <TestComponent>
       <LinkTo @route="view">Link To</LinkTo>
       <LinkToExternal @route="view">Link To External</LinkToExternal>
     </TestComponent>
   `);
 
-    assert.equal(this.$().length, 1);
-  }
-);
+      assert.equal(this.$().length, 1);
+    }
+  );
+
+});
