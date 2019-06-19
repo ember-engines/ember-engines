@@ -26,7 +26,7 @@ perspective.
   * [Sharing Components and More](http://ember-engines.com/guide/linking-and-external-links)
   * [Lazy Loading](http://ember-engines.com/guide/lazy-loading)
 * [Engines & Addons](http://ember-engines.com/guide/addons)
-* [Deploy An Engine](http://ember-engines.com/guide/deploying-engines)
+* [Deploying and Fastboot](http://ember-engines.com/guide/deploying-and-fastboot)
 * [Testing](http://ember-engines.com/guide/testing)
 
 **Other Resources**
@@ -34,18 +34,6 @@ perspective.
 * [Engine API Documentation](https://api.emberjs.com/ember/release/classes/Engine)
 * [Engines 1.0 Roadmap](https://discuss.emberjs.com/t/engines-1-0-roadmap/14914)
 
-
-## Important Note about Compatibility and Stability
-
-This addon should be considered experimental. But engines are production ready and many of the APIs are fully stable.
-
-The [master branch of this addon](https://github.com/ember-engines/ember-engines)
-is being developed against the master branch of Ember and Ember-CLI, and should
-be considered unstable. If you're planning to deploy to production, please use
-one of the stable releases.
-
-[v0.5.15 or higher](https://github.com/ember-engines/ember-engines/tree/v0.5.15)
-is compatible with FastBoot 1.0+.
 
 ## Introduction Video
 
@@ -72,7 +60,7 @@ Install the appropriate version of Ember as noted above.
 ### Installation
 
 * `git clone` this repository
-* `npm install`
+* `yarn install`
 
 ### Running
 
@@ -81,7 +69,7 @@ Install the appropriate version of Ember as noted above.
 
 ### Running Tests
 
-* `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
+* `yarn test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
 * `ember test`
 * `ember test --server`
 
@@ -93,4 +81,4 @@ For more information on using ember-cli, visit [http://www.ember-cli.com/](http:
 
 ## License
 
-Copyright 2015-2018 Dan Gebhardt and Robert Jackson. MIT License (see LICENSE.md for details).
+Copyright 2015-2019 Dan Gebhardt and Robert Jackson. MIT License (see [LICENSE.md](LICENSE.md) for details).
