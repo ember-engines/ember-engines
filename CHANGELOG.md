@@ -1,6 +1,6 @@
 ## v0.8.0 (2019-06-19)
 
-(#### :boom: Breaking Change
+#### :boom: Breaking Change
 * [#659](https://github.com/ember-engines/ember-engines/pull/659) Drop support for Node 6 and 11. ([@rwjblue](https://github.com/rwjblue))
 
 #### :rocket: Enhancement
