@@ -347,9 +347,10 @@ module('Acceptance | routeless engine demo', function (hooks) {
 
     assert.equal(currentURL(), '/routable-engine-demo/blog/post/1');
 
-    assert.deepEqual(
-      find('a.routable-post-comments-link').href,
-      'http://localhost:4200/routable-engine-demo/blog/post/1/comments'
+    let contentLink = find('a.routable-post-comments-link').href;
+
+    assert.ok(
+      contentLink.includes('/routable-engine-demo/blog/post/1/comments')
     );
   });
 
