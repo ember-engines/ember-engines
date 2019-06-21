@@ -1,3 +1,15 @@
+## v0.8.1 (2019-06-21)
+
+#### :bug: Bug Fix
+* [#665](https://github.com/ember-engines/ember-engines/pull/665) Avoid shipping regenerator-runtime to production ([@scalvert](https://github.com/scalvert))
+
+#### :house: Internal
+* [#661](https://github.com/ember-engines/ember-engines/pull/661) Update deps that were blocked on dropping Node 6. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+
 ## v0.8.0 (2019-06-19)
 
 #### :boom: Breaking Change
