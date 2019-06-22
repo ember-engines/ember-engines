@@ -1,3 +1,11 @@
+## v0.8.2 (2019-06-22)
+
+#### :bug: Bug Fix
+* [#666](https://github.com/ember-engines/ember-engines/pull/666) Use ember-asset-loader v0.6.1 at a minimum ([@ecoutlee-hortau](https://github.com/ecoutlee-hortau))
+
+#### Committers: 1
+- [@ecoutlee-hortau](https://github.com/ecoutlee-hortau)
+
 ## v0.8.1 (2019-06-21)
 
 #### :bug: Bug Fix
