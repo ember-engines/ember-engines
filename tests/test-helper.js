@@ -7,4 +7,4 @@ import Application from '../app';
 import { setApplication } from '@ember/test-helpers';
 setApplication(Application.create(config.APP));
 
-preloadAssets(manifest).then(start);
+preloadAssets(manifest).then(start); // This ensures all engine resources are loaded before the tests
