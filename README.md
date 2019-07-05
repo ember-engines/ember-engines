@@ -19,7 +19,7 @@ perspective.
 **Core Feature Guides**
 
 * [Create an Engine](http://ember-engines.com/guide/creating-an-engine)
-* [Mouting An Engine](http://ember-engines.com/guide/mounting-engines)
+* [Mounting An Engine](http://ember-engines.com/guide/mounting-engines)
   * [Linking And External Links](http://ember-engines.com/guide/linking-and-external-links)
   * [Sharing Services](http://ember-engines.com/guide/linking-and-external-links)
   * [Linking And External Links](http://ember-engines.com/guide/linking-and-external-links)
