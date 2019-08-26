@@ -11,7 +11,7 @@ Engine.reopen({
     if (!(this instanceof Application)) {
       registry.register('component:link-to', EngineScopedLinkComponent);
       registry.register('component:link-to-external', ExternalLinkComponent);
-      registry.register('service:engineRouterService', EngineRouterService);
+      registry.register('service:router', EngineRouterService);
     }
 
     return registry;

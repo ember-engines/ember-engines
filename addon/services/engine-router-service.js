@@ -16,31 +16,30 @@ function getEngineParent(engine) {
 }
 
 export default Service.extend({
-  engine: computed(function () {
-    return getOwner(this);
-  }),
+  init() {
+    this._super(...arguments);
 
-  externalRoutes: reads('engine._externalRoutes'),
-
-  mountPoint: reads('engine.mountPoint'),
+    this.set('_externalRoutes', getOwner(this)._externalRoutes);
+    this.set('_mountPoint', getOwner(this).mountPoint);
+  },
 
   rootURL: reads('externalRouter.rootURL'),
 
   currentURL: reads('externalRouter.currentURL'),
 
   currentRouteName: computed('externalRouter.currentRouteName', function () {
-    if (this.externalRouter.currentRouteName === this.mountPoint) {
+    if (this.externalRouter.currentRouteName === this._mountPoint) {
       return 'application';
     }
-    return this.externalRouter.currentRouteName.slice(this.mountPoint.length + 1);
+    return this.externalRouter.currentRouteName.slice(this._mountPoint.length + 1);
   }),
 
   externalRouter: computed(function () {
     return this.rootApplication.lookup('service:router');
   }),
 
-  rootApplication: computed('engine', function () {
-    let parent = getEngineParent(this.engine);
+  rootApplication: computed(function () {
+    let parent = getEngineParent(getOwner(this));
     while (getEngineParent(parent)) {
       parent = getEngineParent(parent);
     }
@@ -50,17 +49,17 @@ export default Service.extend({
   getInternalRouteName(internalRouteName) {
     // https://github.com/ember-engines/ember-engines/blob/ec4d1ae7a413a7e5d9e57a4e3b2e0f0d19a0afcd/addon/components/link-to-component.js#L52-L57
     if (internalRouteName === 'application') {
-      return this.mountPoint;
+      return this._mountPoint;
     }
-    return `${this.mountPoint}.${internalRouteName}`;
+    return `${this._mountPoint}.${internalRouteName}`;
   },
 
   getExternalRouteName(externalRouteName) {
     assert(
       `External route '${externalRouteName}' is unknown.`,
-      externalRouteName in this.externalRoutes
+      externalRouteName in this._externalRoutes
     );
-    return this.externalRoutes[externalRouteName];
+    return this._externalRoutes[externalRouteName];
   },
 
   transitionTo(routeName, ...args) {
