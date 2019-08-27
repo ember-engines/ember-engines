@@ -4,6 +4,7 @@ import { assert } from '@ember/debug';
 import { computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
+import { namespaceEngineRouteName } from '../utils/namespace-engine-route-name';
 
 // @HACK: since `getEngineParent` is not exported
 function getEngineParent(engine) {
@@ -46,14 +47,6 @@ export default Service.extend({
     return parent;
   }),
 
-  getInternalRouteName(internalRouteName) {
-    // https://github.com/ember-engines/ember-engines/blob/ec4d1ae7a413a7e5d9e57a4e3b2e0f0d19a0afcd/addon/components/link-to-component.js#L52-L57
-    if (internalRouteName === 'application') {
-      return this._mountPoint;
-    }
-    return `${this._mountPoint}.${internalRouteName}`;
-  },
-
   getExternalRouteName(externalRouteName) {
     assert(
       `External route '${externalRouteName}' is unknown.`,
@@ -64,7 +57,7 @@ export default Service.extend({
 
   transitionTo(routeName, ...args) {
     return this.externalRouter.transitionTo(
-      this.getInternalRouteName(routeName),
+      namespaceEngineRouteName(this._mountPoint, routeName),
       ...args
     );
   },
@@ -78,7 +71,7 @@ export default Service.extend({
 
   replaceWith(routeName, ...args) {
     return this.externalRouter.replaceWith(
-      this.getInternalRouteName(routeName),
+      namespaceEngineRouteName(this._mountPoint, routeName),
       ...args
     );
   },
@@ -92,7 +85,7 @@ export default Service.extend({
 
   urlFor(routeName, ...args) {
     return this.externalRouter.urlFor(
-      this.getInternalRouteName(routeName),
+      namespaceEngineRouteName(this._mountPoint, routeName),
       ...args
     );
   },
@@ -106,7 +99,7 @@ export default Service.extend({
 
   isActive(routeName, ...args) {
     return this.externalRouter.isActive(
-      this.getInternalRouteName(routeName),
+      namespaceEngineRouteName(this._mountPoint, routeName),
       ...args
     );
   },
