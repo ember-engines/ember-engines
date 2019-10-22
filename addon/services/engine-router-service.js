@@ -1,20 +1,10 @@
-import Ember from 'ember';
 import Service from '@ember/service';
 import { assert } from '@ember/debug';
 import { computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 import { namespaceEngineRouteName } from '../utils/namespace-engine-route-name';
-
-// @HACK: since `getEngineParent` is not exported
-function getEngineParent(engine) {
-  const symbolPrefix = `__ENGINE_PARENT${Ember.GUID_KEY}`;
-  const symbol = Object.keys(engine).find(k => k.startsWith(symbolPrefix));
-  if (!symbol) {
-    return null;
-  }
-  return engine[symbol];
-}
+import { getRootOwner } from '../utils/owner';
 
 export default Service.extend({
   init() {
@@ -22,6 +12,7 @@ export default Service.extend({
 
     this.set('_externalRoutes', getOwner(this)._externalRoutes);
     this.set('_mountPoint', getOwner(this).mountPoint);
+    this.set('rootApplication', getRootOwner(this));
   },
 
   rootURL: reads('externalRouter.rootURL'),
@@ -37,14 +28,6 @@ export default Service.extend({
 
   externalRouter: computed(function () {
     return this.rootApplication.lookup('service:router');
-  }),
-
-  rootApplication: computed(function () {
-    let parent = getEngineParent(getOwner(this));
-    while (getEngineParent(parent)) {
-      parent = getEngineParent(parent);
-    }
-    return parent;
   }),
 
   getExternalRouteName(externalRouteName) {
