@@ -1,19 +1,21 @@
-import { module, test, skip } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
-import hbs from 'htmlbars-inline-precompile';
-import Component from '@ember/component';
-import { gte } from 'ember-compatibility-helpers';
+import { module, test, skip } from "qunit";
+import { setupRenderingTest } from "ember-qunit";
+import { render } from "@ember/test-helpers";
+import hbs from "htmlbars-inline-precompile";
+import Component from "@ember/component";
+import { gte } from "ember-compatibility-helpers";
 
-module('Integration | Component | component-with-link-to-external', function (hooks) {
+module("Integration | Component | component-with-link-to-external", function(
+  hooks
+) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function() {
     let testComponent = Component.extend();
-    this.owner.register('component:test-component', testComponent);
+    this.owner.register("component:test-component", testComponent);
   });
 
-  test('component renders with link-to-external [curly braces]', async function (assert) {
+  test("component renders with link-to-external [curly braces]", async function(assert) {
     assert.expect(1);
 
     await render(hbs`
@@ -23,12 +25,12 @@ module('Integration | Component | component-with-link-to-external', function (ho
     {{/test-component}}
   `);
 
-    assert.equal(this.$().length, 1);
+    assert.ok(this.element);
   });
 
-  (gte('3.10.0-beta.1') ? test : skip)(
-    'component renders with link-to-external [angle brackets]',
-    async function (assert) {
+  (gte("3.10.0-beta.1") ? test : skip)(
+    "component renders with link-to-external [angle brackets]",
+    async function(assert) {
       assert.expect(1);
 
       await render(hbs`
@@ -38,8 +40,7 @@ module('Integration | Component | component-with-link-to-external', function (ho
     </TestComponent>
   `);
 
-      assert.equal(this.$().length, 1);
+      assert.ok(this.element);
     }
   );
-
 });
