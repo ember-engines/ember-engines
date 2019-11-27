@@ -1,1 +1,1 @@
-export { default } from 'ember-engines/components/link-to-external-component';
+export { default } from 'ember-engines/components/link-to-external';
