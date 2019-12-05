@@ -105,5 +105,8 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }
