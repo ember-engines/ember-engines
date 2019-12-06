@@ -105,5 +105,16 @@ describe('shouldCompactReexports', function() {
         "ember-cli-babel": { compileModules: false }
       })
     ).to.equal(false);
-  })
+  }),
+
+  it('returns false if Embroider is a dependency', function() {
+    let addon = new FakeAddonWithDeps(fixture, {
+      'ember-cli': '3.3.0',
+      'ember-cli-babel': '7.0.0-beta.1',
+      'loader.js': '4.4.0',
+      'embroider': 'latest'
+    });
+
+    expect(shouldCompactReexports(addon, options)).to.equal(false);
+  });
 });
