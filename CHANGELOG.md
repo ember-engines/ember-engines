@@ -1,3 +1,11 @@
+##  v0.8.4 (2019-12-10)
+
+#### :rocket: Enhancement
+* [#686](https://github.com/ember-engines/ember-engines/pull/686) Req. compileModules:true to use compact-reexports ([@tmquinn](https://github.com/tmquinn))
+
+#### Committers: 1
+- Quinn Hoyer ([@tmquinn](https://github.com/tmquinn))
+
 ## v0.8.3 (2019-11-27)
 
 #### :rocket: Enhancement
