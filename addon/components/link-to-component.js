@@ -49,7 +49,8 @@ export default LinkComponent.extend({
       namespacedPropValue = this._namespacePropertyValue(prefix, propValue);
     }
 
-    set(this, prop, namespacedPropValue);
+    // cannot use `set()` to update property after using it in a computation
+    this[prop] = namespacedPropValue;
   },
 
   _namespacePropertyValue(prefix, propValue) {
