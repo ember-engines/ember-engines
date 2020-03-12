@@ -1,6 +1,7 @@
 import Application from '@ember/application';
 import EngineScopedLinkComponent from '../components/link-to-component';
 import ExternalLinkComponent from '../components/link-to-external';
+import EngineRouterService from '../services/engine-router-service';
 import Engine from '@ember/engine';
 
 Engine.reopen({
