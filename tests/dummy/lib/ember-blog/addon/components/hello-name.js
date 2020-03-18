@@ -1,10 +1,8 @@
 import { later, cancel } from '@ember/runloop';
 import Component from '@ember/component';
 import layout from '../templates/components/hello-name';
-import { inject as service } from '@ember/service';
 
 export default Component.extend({
-  router: service(),
   layout: layout,
   classNames: ['hello-name'],
   init() {
@@ -19,10 +17,5 @@ export default Component.extend({
   destroy() {
     cancel(this._later);
     this._super(...arguments);
-  },
-  actions: {
-    something() {
-      this.router.transitionToExternal('home')
-    }
   }
 });
