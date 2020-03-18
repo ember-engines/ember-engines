@@ -27,3 +27,28 @@
 <button {{action "replaceWithHome"}} class="routable-post-replace-with-home-button {{if replacedWithExternal 'replaced-with-external'}}">
     Also goes home programmatically
 </button>
+
+{{!-- {{post-actions}} --}}
+
+<button {{action "transitionToHomeByService"}} class="routable-transition-external-button {{if transitionToExternal 'transitioned-to-external'}}">
+    Go home (Engine Router Service)
+</button>
+
+<button {{action "replaceWithHomeByService"}} class="routable-replace-external-button {{if replaceWithExternal 'replaced-with-external'}}">
+    Go home progammatically (Engine Router Service)
+</button>
+
+
+
+<button {{action "copyPostURL"}} class="routable-url-for-external-button {{if urlForExternal 'url-for-external'}}">
+    Copy URL by (Engine Router Service)
+</button>
+<div>
+  {{this.urlForExternal}}
+</div>
+
+
+
+<button {{action "checkActiveState"}} class="routable-is-active-external-button {{if isActiveExternal 'is-active-external'}}">
+    isActive in (Engine Router Service)
+</button>

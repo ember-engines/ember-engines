@@ -14,25 +14,7 @@ export default Service.extend(Evented, {
     this.set('_externalRoutes', getOwner(this)._externalRoutes);
     this.set('_mountPoint', getOwner(this).mountPoint);
     this.set('rootApplication', getRootOwner(this));
-
-    this.externalRouter.on('routeWillChange', this.onRouteWillChange);
-    this.externalRouter.on('routeDidChange', this.onRouteDidChange);
   },
-
-  willDestroy() {
-    this.externalRouter.off('routeWillChange', this.onRouteWillChange);
-    this.externalRouter.off('routeDidChange', this.onRouteDidChange);
-
-    this._super(...arguments);
-  },
-
-  onRouteWillChange: action(function(...args) {
-    this.trigger('routeWillChange', ...args);
-  }),
-
-  onRouteDidChange: action(function(...args) {
-    this.trigger('routeDidChange', ...args);
-  }),
 
   rootURL: reads('externalRouter.rootURL'),
 
