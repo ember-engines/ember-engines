@@ -1,32 +1,51 @@
 import Service from '@ember/service';
 import { assert } from '@ember/debug';
-import { computed } from '@ember/object';
+import { action, computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 import { namespaceEngineRouteName } from '../utils/namespace-engine-route-name';
 import { getRootOwner } from '../utils/owner';
+import Evented from '@ember/object/evented';
 
-export default Service.extend({
+export default Service.extend(Evented, {
   init() {
     this._super(...arguments);
 
     this.set('_externalRoutes', getOwner(this)._externalRoutes);
     this.set('_mountPoint', getOwner(this).mountPoint);
     this.set('rootApplication', getRootOwner(this));
+
+    this.externalRouter.on('routeWillChange', this.onRouteWillChange);
+    this.externalRouter.on('routeDidChange', this.onRouteDidChange);
   },
+
+  willDestroy() {
+    this.externalRouter.off('routeWillChange', this.onRouteWillChange);
+    this.externalRouter.off('routeDidChange', this.onRouteDidChange);
+
+    this._super(...arguments);
+  },
+
+  onRouteWillChange: action(function(...args) {
+    this.trigger('routeWillChange', ...args);
+  }),
+
+  onRouteDidChange: action(function(...args) {
+    this.trigger('routeDidChange', ...args);
+  }),
 
   rootURL: reads('externalRouter.rootURL'),
 
   currentURL: reads('externalRouter.currentURL'),
 
-  currentRouteName: computed('externalRouter.currentRouteName', function () {
+  currentRouteName: computed('externalRouter.currentRouteName', function() {
     if (this.externalRouter.currentRouteName === this._mountPoint) {
       return 'application';
     }
     return this.externalRouter.currentRouteName.slice(this._mountPoint.length + 1);
   }),
 
-  externalRouter: computed(function () {
+  externalRouter: computed(function() {
     return this.rootApplication.lookup('service:router');
   }),
 
