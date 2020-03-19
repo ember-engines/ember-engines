@@ -5,9 +5,8 @@ import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 import { namespaceEngineRouteName } from '../utils/namespace-engine-route-name';
 import { getRootOwner } from '../utils/owner';
-import Evented from '@ember/object/evented';
 
-export default Service.extend(Evented, {
+export default Service.extend({
   init() {
     this._super(...arguments);
 
