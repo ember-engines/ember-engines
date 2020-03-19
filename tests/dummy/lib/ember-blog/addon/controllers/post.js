@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import { set, get } from '@ember/object';
 
 export default Controller.extend({
   queryParams: ['lang'],
@@ -7,31 +8,31 @@ export default Controller.extend({
   actions: {
     goHomeProgrammatically() {
       this.transitionToRouteExternal('home').then(() => {
-        this.set('transitionedToRouteExternal', true);
+        set(this, 'transitionedToRouteExternal', true);
       });
     },
 
     transitionToHomeByService() {
-      this.router.transitionToExternal('home').then(() => {
-        this.set('transitionToExternal', true);
+      get(this, 'router').transitionToExternal('home').then(() => {
+        set(this, 'transitionToExternal', true);
       });
     },
 
     replaceWithHomeByService() {
-      this.router.replaceWithExternal('home').then(() => {
-        this.set('replaceWithExternal', true);
+      get(this, 'router').replaceWithExternal('home').then(() => {
+        set(this, 'replaceWithExternal', true);
       });
     },
 
     copyPostURL() {
-      const url = this.router.urlForExternal('home');
-      this.set('urlForExternal', url);
+      const url = get(this, 'router').urlForExternal('home');
+      set(this, 'urlForExternal', url);
       // Clipboard now has "/"
     },
 
     checkActiveState() {
-      if (this.router.isActiveExternal('home')) {
-        this.set('isActiveExternal', true);
+      if (get(this, 'router').isActiveExternal('home')) {
+        set(this, 'isActiveExternal', true);
       }
     }
   }
