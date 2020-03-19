@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import { assert } from '@ember/debug';
-import { action, computed } from '@ember/object';
+import { computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 import { namespaceEngineRouteName } from '../utils/namespace-engine-route-name';
