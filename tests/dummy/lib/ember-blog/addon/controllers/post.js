@@ -6,12 +6,6 @@ export default Controller.extend({
   queryParams: ['lang'],
   router: service(),
   actions: {
-    goHomeProgrammatically() {
-      this.transitionToRouteExternal('home').then(() => {
-        set(this, 'transitionedToRouteExternal', true);
-      });
-    },
-
     transitionToHomeByService() {
       get(this, 'router').transitionToExternal('home').then(() => {
         set(this, 'transitionToExternal', true);
