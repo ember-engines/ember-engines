@@ -21,6 +21,11 @@
 <button {{action "transitionToHome"}} class="routable-post-transition-to-home-button {{if transitionedToExternal 'transitioned-to-external'}}">
     Go home programmatically
 </button>
+
+<button {{action "goHomeProgrammatically"}} class="routable-post-transition-to-route-home-button {{if transitionedToRouteExternal 'transitioned-to-route-external'}}">
+    Go home by controller
+</button>
+
 <button {{action "replaceWithHome"}} class="routable-post-replace-with-home-button {{if replacedWithExternal 'replaced-with-external'}}">
     Also goes home programmatically
 </button>
