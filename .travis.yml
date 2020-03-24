@@ -32,17 +32,10 @@ jobs:
     - stage: "Tests"
       name: "yarn lint:js"
       script: yarn lint:js
-    - name: "yarn test"
-      script: yarn test
+    - name: "yarn test:ember"
+      script: yarn test:ember
     - name: "yarn test:node"
       script: yarn test:node
-
-    - stage: "Additional Tests"
-      name: "Floating Dependencies"
-      install:
-        - yarn install --no-lockfile --non-interactive
-      script:
-        - yarn test:ember
 
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
