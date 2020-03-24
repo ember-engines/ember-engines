@@ -37,6 +37,13 @@ jobs:
     - name: "yarn test:node"
       script: yarn test:node
 
+    - stage: "Additional Tests"
+      name: "Floating Dependencies"
+      install:
+        - yarn install --no-lockfile --non-interactive
+      script:
+        - yarn test:ember
+
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
     - env: EMBER_TRY_SCENARIO=ember-lts-3.12
