@@ -20,6 +20,7 @@ module.exports = {
   env: {
     browser: true
   },
+  ignorePatterns: ["node_modules/"],
   rules: {
     'ember/no-jquery': 'error'
   },
