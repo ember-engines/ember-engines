@@ -450,7 +450,7 @@ module('Acceptance | routeless engine demo', function (hooks) {
     await click('.trigger-transition-to');
 
     assert.ok(
-      find('.routable-post-transition-to-route-home-button').classList.contains('transitioned-to-route-external')
+      find('.routable-post-transition-to-route-home-button').classList.contains('transitioned-to-external-route')
     );
   });
 
