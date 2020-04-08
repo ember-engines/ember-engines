@@ -435,7 +435,7 @@ module('Acceptance | routeless engine demo', function (hooks) {
     );
   });
 
-  test('transitionToExternalRoute transitions to the parent application from within an engine and returns a thenable Transition object', async function (
+  test("transitionToExternalRoute transitions to the parent application from within an engine's controller and returns a thenable Transition object", async function (
     assert
   ) {
     assert.expect(2);
