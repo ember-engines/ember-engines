@@ -5,7 +5,7 @@ export default Controller.extend({
   queryParams: ['lang'],
 
   actions: {
-    goHomeProgrammatically() {
+    transitionToHomeFromController() {
       this.transitionToExternalRoute('home').then(() => {
         set(this, 'transitionedToExternalRoute', true);
       });
