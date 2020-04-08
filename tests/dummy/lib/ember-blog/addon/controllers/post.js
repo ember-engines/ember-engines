@@ -7,7 +7,7 @@ export default Controller.extend({
   actions: {
     goHomeProgrammatically() {
       this.transitionToExternalRoute('home').then(() => {
-        set(this, 'transitionedToRouteExternal', true);
+        set(this, 'transitionedToExternalRoute', true);
       });
     },
   }
