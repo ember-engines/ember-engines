@@ -4,13 +4,13 @@
 
 * `git clone <repository-url>`
 * `cd my-addon`
-* `npm install`
+* `yarn install`
 
 ## Linting
 
-* `npm run lint:hbs`
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
+* `yarn run lint:hbs`
+* `yarn run lint:js`
+* `yarn run lint:js -- --fix`
 
 ## Running tests
 

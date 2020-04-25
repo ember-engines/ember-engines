@@ -80,4 +80,4 @@ For more information on using ember-cli, visit [http://www.ember-cli.com/](http:
 
 ## License
 
-Copyright 2015-2019 Dan Gebhardt and Robert Jackson. MIT License (see [LICENSE.md](LICENSE.md) for details).
+Copyright 2015-2010 Dan Gebhardt and Robert Jackson. MIT License (see [LICENSE.md](LICENSE.md) for details).
