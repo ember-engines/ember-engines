@@ -21,7 +21,7 @@ ember install ember-engines
 
 ## Documentation
 
-Please refer to the [Ember Engines guides](http://ember-engines.com/) for help using Ember Engines.
+Check the full documentation at [Ember Engines Guides](http://ember-engines.com/)
 
 ## Demo Projects
 
