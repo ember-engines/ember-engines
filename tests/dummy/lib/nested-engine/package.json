@@ -1,0 +1,12 @@
+{
+  "name": "nested-engine",
+  "version": "0.0.0",
+  "keywords": [
+    "ember-addon",
+    "ember-engine"
+  ],
+  "dependencies": {
+    "ember-cli-babel": "*",
+    "ember-cli-htmlbars": "*"
+  }
+}
