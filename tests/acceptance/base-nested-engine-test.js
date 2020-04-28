@@ -1,11 +1,11 @@
-import { module, test, only } from 'qunit';
+import { module, test } from 'qunit';
 import { visit, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 
 module('Acceptance | base + nested engines', function(hooks) {
   setupApplicationTest(hooks);
 
-  only('visiting /base-engine', async function(assert) {
+  test('visiting /base-engine', async function(assert) {
     await visit('/base-engine');
 
     assert.equal(
