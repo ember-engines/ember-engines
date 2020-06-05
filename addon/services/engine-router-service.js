@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import { assert } from '@ember/debug';
-import { action, computed, get } from '@ember/object';
+import { action, computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 import Evented from '@ember/object/evented';
@@ -42,10 +42,10 @@ export default class EngineRouterService extends Service.extend(Evented) {
 
   @computed('externalRouter.currentRouteName')
   get currentRouteName() {
-    if (get(this, 'externalRouter').currentRouteName === this._mountPoint) {
+    if (this.externalRouter.currentRouteName === this._mountPoint) {
       return 'application';
     }
-    return get(this, 'externalRouter').currentRouteName.slice(this._mountPoint.length + 1);
+    return this.externalRouter.currentRouteName.slice(this._mountPoint.length + 1);
   }
 
   get externalRouter() {
@@ -61,56 +61,56 @@ export default class EngineRouterService extends Service.extend(Evented) {
   }
 
   transitionTo(routeName, ...args) {
-    return get(this, 'externalRouter').transitionTo(
+    return this.externalRouter.transitionTo(
       namespaceEngineRouteName(this._mountPoint, routeName),
       ...args
     );
   }
 
   transitionToExternal(routeName, ...args) {
-    return get(this, 'externalRouter').transitionTo(
+    return this.externalRouter.transitionTo(
       this.getExternalRouteName(routeName),
       ...args
     );
   }
 
   replaceWith(routeName, ...args) {
-    return get(this, 'externalRouter').replaceWith(
+    return this.externalRouter.replaceWith(
       namespaceEngineRouteName(this._mountPoint, routeName),
       ...args
     );
   }
 
   replaceWithExternal(routeName, ...args) {
-    return get(this, 'externalRouter').replaceWith(
+    return this.externalRouter.replaceWith(
       this.getExternalRouteName(routeName),
       ...args
     );
   }
 
   urlFor(routeName, ...args) {
-    return get(this, 'externalRouter').urlFor(
+    return this.externalRouter.urlFor(
       namespaceEngineRouteName(this._mountPoint, routeName),
       ...args
     );
   }
 
   urlForExternal(routeName, ...args) {
-    return get(this, 'externalRouter').urlFor(
+    return this.externalRouter.urlFor(
       this.getExternalRouteName(routeName),
       ...args
     );
   }
 
   isActive(routeName, ...args) {
-    return get(this, 'externalRouter').isActive(
+    return this.externalRouter.isActive(
       namespaceEngineRouteName(this._mountPoint, routeName),
       ...args
     );
   }
 
   isActiveExternal(routeName, ...args) {
-    return get(this, 'externalRouter').isActive(
+    return this.externalRouter.isActive(
       this.getExternalRouteName(routeName),
       ...args
     );
