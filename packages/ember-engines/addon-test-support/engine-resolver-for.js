@@ -22,7 +22,8 @@ import EmberResolver from 'ember-resolver';
  */
 export default function engineResolverFor(
   engineName,
-  modulePrefix = engineName
+  modulePrefix = engineName,
+  podModulePrefix = `${engineName}/pods`
 ) {
   let Resolver;
 
@@ -31,5 +32,5 @@ export default function engineResolverFor(
   } else {
     Resolver = EmberResolver;
   }
-  return Resolver.create({ namespace: { modulePrefix } });
+  return Resolver.create({ namespace: { modulePrefix, podModulePrefix } });
 }
