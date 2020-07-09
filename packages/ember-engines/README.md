@@ -5,14 +5,19 @@ RFC](https://github.com/emberjs/rfcs/blob/master/text/0010-engines.md). Engines 
 applications to be composed together into a single application from the user's
 perspective.
 
-## Packages
+## Compatibility
 
-This project is a monorepo managed by yarn workspaces. All packages are
-organized in the [/packages/](./packages/) directory.
+* Ember.js v3.12 or above
+* Ember CLI v3.12 or above
+* Node.js v10 or above
 
-The only public package is [ember-engines](./packages/ember-engines/). Other
-packages are private to this repo and are used to support testing
-`ember-engines`.
+## Installation
+
+From your Ember CLI project's root directory, run the following:
+
+```sh
+ember install ember-engines
+```
 
 ## Documentation
 

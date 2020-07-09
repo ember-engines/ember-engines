@@ -14,6 +14,7 @@
     "build": "yarn workspace ember-engines build",
     "lint": "yarn workspace ember-engines lint",
     "lint:js": "yarn workspace ember-engines lint:js",
+    "lint:hbs": "yarn workspace ember-engines lint:hbs",
     "start": "yarn workspace ember-engines start",
     "test": "yarn workspace ember-engines test",
     "test:ember": "yarn workspace ember-engines test:ember",
