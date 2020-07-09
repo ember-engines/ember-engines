@@ -1,5 +1,6 @@
 'use strict';
 
 module.exports = {
-  extends: 'octane'
+  // TODO - "Octanify" templates
+  // extends: 'octane'
 };
