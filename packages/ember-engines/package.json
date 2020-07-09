@@ -23,7 +23,8 @@
     "test:node:debug": "mocha --inspect-brk 'node-tests/**/*-test.js' --reporter tap",
     "test:windows": "ember try:one %EMBER_TRY_SCENARIO% test --skip-cleanup",
     "test:node:dev": "BUILD_DEV=true testem -f testem-node.js",
-    "test:null": "echo 'no appropriate changes detected, not running tests'"
+    "test:null": "echo 'no appropriate changes detected, not running tests'",
+    "try": "ember try:one"
   },
   "repository": {
     "type": "git",

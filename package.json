@@ -17,7 +17,8 @@
     "start": "yarn workspace ember-engines start",
     "test": "yarn workspace ember-engines test",
     "test:ember": "yarn workspace ember-engines test:ember",
-    "test:node": "yarn workspace ember-engines test:node"
+    "test:node": "yarn workspace ember-engines test:node",
+    "try": "yarn workspace ember-engines try"
   },
   "engines": {
     "node": "10.* || >= 12"

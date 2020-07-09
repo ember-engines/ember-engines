@@ -11,55 +11,53 @@ addons:
 cache:
   yarn: true
 
+env:
+  global:
+    # See https://git.io/vdao3 for details.
+    - JOBS=1
+
 branches:
   only:
     - master
     # npm version tags
     - /^v\d+\.\d+\.\d+/
 
-jobs:
-  fast_finish: true
-  allow_failures:
-    - env: EMBER_TRY_SCENARIO=ember-canary
-  env:
-    global:
-      # See https://git.io/vdao3 for details.
-      - JOBS=1
-  include:
-    # runs linting and tests with current locked deps
-    - stage: "Tests"
-      name: "yarn lint:js"
-      script: yarn lint:js
-    - name: "yarn test:ember"
-      script: yarn test:ember
-    - name: "yarn test:node"
-      script: yarn test:node
-
-    - stage: "Additional Tests"
-      name: "Floating Dependencies"
-      install:
-        - yarn install --no-lockfile --non-interactive
-      script:
-        - yarn test:ember
-
-    # we recommend new addons test the current and previous LTS
-    # as well as latest stable release (bonus points to beta/canary)
-    - env: EMBER_TRY_SCENARIO=ember-lts-3.12
-    - env: EMBER_TRY_SCENARIO=ember-lts-3.16
-    - env: EMBER_TRY_SCENARIO=ember-release
-    - env: EMBER_TRY_SCENARIO=ember-beta
-    - env: EMBER_TRY_SCENARIO=ember-canary
-    - env: EMBER_TRY_SCENARIO=ember-default-with-jquery
-    - env: EMBER_TRY_SCENARIO=ember-classic
-
-before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - export PATH=$HOME/.yarn/bin:$PATH
-
 install:
-  - yarn install --no-lockfile --non-interactive
+  - yarn install
 
 script:
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
-  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
+  - yarn try $EMBER_TRY_SCENARIO --skip-cleanup
+
+jobs:
+  fail_fast: true
+
+  allow_failures:
+    - env: EMBER_TRY_SCENARIO=ember-canary
+
+  include:
+    - stage: Locked Dependencies
+      name: Lint
+      script: yarn lint:js
+    - name: Tests
+      script: yarn test:ember
+    - name: Node Tests
+      script: yarn test:node
+
+    - stage: Floating Dependencies
+      name: Tests
+      script: yarn test:ember
+      env: EMBER_TRY_SCENARIO=ember-default
+    - name: Node Tests
+      install: yarn install --no-lockfile --non-interactive
+      script: yarn test:node
+
+    - stage: Scenarios
+      env: EMBER_TRY_SCENARIO=ember-release
+    - env: EMBER_TRY_SCENARIO=ember-beta
+    - env: EMBER_TRY_SCENARIO=ember-canary
+    - env: EMBER_TRY_SCENARIO=ember-lts-3.12
+    - env: EMBER_TRY_SCENARIO=ember-lts-3.16
+    - env: EMBER_TRY_SCENARIO=ember-default-with-jquery
+    - env: EMBER_TRY_SCENARIO=ember-classic
