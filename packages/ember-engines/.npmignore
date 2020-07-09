@@ -2,11 +2,7 @@
 /dist/
 /tmp/
 
-# dependencies
-/bower_components/
-
 # misc
-/.bowerrc
 /.editorconfig
 /.ember-cli
 /.env*

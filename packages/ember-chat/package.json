@@ -1,6 +1,7 @@
 {
   "name": "ember-chat",
   "version": "0.0.0",
+  "private": true,
   "keywords": [
     "ember-addon",
     "ember-engine"
@@ -8,6 +9,6 @@
   "dependencies": {
     "ember-cli-babel": "*",
     "ember-cli-htmlbars": "*",
-    "common-components": "link:../common-components"
+    "common-components": "*"
   }
 }
