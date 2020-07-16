@@ -4614,7 +4614,9 @@ commander@^4.1.1:
 
 "common-components@link:tests/dummy/lib/common-components":
   version "0.0.0"
-  uid ""
+  dependencies:
+    ember-cli-babel "*"
+    ember-cli-htmlbars "*"
 
 common-tags@^1.4.0, common-tags@^1.8.0:
   version "1.8.0"
@@ -5217,7 +5219,9 @@ duplexify@^3.4.2, duplexify@^3.6.0:
 
 "eager-blog@link:./tests/dummy/lib/eager-blog":
   version "0.0.0"
-  uid ""
+  dependencies:
+    ember-cli-babel "*"
+    ember-cli-htmlbars "*"
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"
@@ -5317,11 +5321,17 @@ ember-auto-import@^1.5.3:
 
 "ember-blog@link:./tests/dummy/lib/ember-blog":
   version "0.0.0"
-  uid ""
+  dependencies:
+    common-components "link:tests/dummy/lib/common-components"
+    ember-cli-babel "*"
+    ember-cli-htmlbars "*"
 
 "ember-chat@link:./tests/dummy/lib/ember-chat":
   version "0.0.0"
-  uid ""
+  dependencies:
+    common-components "link:tests/dummy/lib/common-components"
+    ember-cli-babel "*"
+    ember-cli-htmlbars "*"
 
 ember-cli-addon-tests@^0.11.1:
   version "0.11.1"
@@ -9003,15 +9013,10 @@ lodash.values@~2.3.0:
   dependencies:
     lodash.keys "~2.3.0"
 
-lodash@^4.0.0, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.3.0, lodash@^4.6.1:
-  version "4.17.11"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
-  integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
-
-lodash@^4.17.10, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+lodash@^4.0.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.4, lodash@^4.3.0, lodash@^4.6.1:
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 log-symbols@2.2.0, log-symbols@^2.2.0:
   version "2.2.0"
