@@ -1,6 +1,7 @@
 {
   "name": "eager-blog",
   "version": "0.0.0",
+  "private": true,
   "keywords": [
     "ember-addon",
     "ember-engine"

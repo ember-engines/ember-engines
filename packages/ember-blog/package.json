@@ -1,6 +1,7 @@
 {
   "name": "ember-blog",
   "version": "0.0.0",
+  "private": true,
   "keywords": [
     "ember-addon",
     "ember-engine"
@@ -11,6 +12,6 @@
   "dependencies": {
     "ember-cli-htmlbars": "*",
     "ember-cli-babel": "*",
-    "common-components": "link:../common-components"
+    "common-components": "*"
   }
 }
