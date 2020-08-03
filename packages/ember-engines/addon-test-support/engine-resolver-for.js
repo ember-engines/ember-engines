@@ -15,15 +15,19 @@ import EmberResolver from 'ember-resolver';
  * You can optionally specify a modulePrefix in the event that the modulePrefix
  * differs from the engineName.
  *
+ * You can optionally specify a podModulePrefix in the event that you're using
+ * the pods structure.
+ *
  * @method engineResolverFor
  * @param {String} engineName
  * @param {String} [modulePrefix]
+ * @param {String} [podModulePrefix]
  * @return {Resolver}
  */
 export default function engineResolverFor(
   engineName,
   modulePrefix = engineName,
-  podModulePrefix = `${engineName}/pods`
+  podModulePrefix = undefined
 ) {
   let Resolver;
 
