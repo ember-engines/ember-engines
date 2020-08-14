@@ -10,6 +10,10 @@
   "workspaces": [
     "packages/*"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ember-engines/ember-engines.git"
+  },
   "scripts": {
     "build": "yarn workspace ember-engines build",
     "lint": "yarn workspace ember-engines lint",
