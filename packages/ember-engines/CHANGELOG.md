@@ -1,17 +1,45 @@
+## v0.8.6 (2020-08-14)
+
+#### :rocket: Enhancement
+
+- [#716](https://github.com/ember-engines/ember-engines/pull/716) Add pods structure support for tests ([@nadavshatz](https://github.com/nadavshatz))
+- [#697](https://github.com/ember-engines/ember-engines/pull/697) Add transitionToExternalRoute to controllers ([@villander](https://github.com/villander))
+
+#### :memo: Documentation
+
+- [#706](https://github.com/ember-engines/ember-engines/pull/706) [DOC] Update & Simplify informations ([@villander](https://github.com/villander))
+
+#### :house: Internal
+
+- [#719](https://github.com/ember-engines/ember-engines/pull/719) Convert project to use yarn workspaces ([@dgeb](https://github.com/dgeb))
+- [#698](https://github.com/ember-engines/ember-engines/pull/698) Update project to ember-cli 3.17.0 ([@villander](https://github.com/villander))
+- [#695](https://github.com/ember-engines/ember-engines/pull/695) travis ci config fix ([@bartocc](https://github.com/bartocc))
+
+#### Committers: 4
+
+- Dan Gebhardt ([@dgeb](https://github.com/dgeb))
+- Julien Palmas ([@bartocc](https://github.com/bartocc))
+- Michael Villander ([@villander](https://github.com/villander))
+- Nadav Shatz ([@nadavshatz](https://github.com/nadavshatz))
+
 ## v0.8.5 (2019-12-10)
 
 #### :rocket: Enhancement
-* [#686](https://github.com/ember-engines/ember-engines/pull/686) Req. compileModules:true to use compact-reexports ([@tmquinn](https://github.com/tmquinn))
+
+- [#686](https://github.com/ember-engines/ember-engines/pull/686) Req. compileModules:true to use compact-reexports ([@tmquinn](https://github.com/tmquinn))
 
 #### Committers: 1
+
 - Quinn Hoyer ([@tmquinn](https://github.com/tmquinn))
 
-##  v0.8.4 (2019-12-10)
+## v0.8.4 (2019-12-10)
 
 #### :rocket: Enhancement
-* [#686](https://github.com/ember-engines/ember-engines/pull/686) Req. compileModules:true to use compact-reexports ([@tmquinn](https://github.com/tmquinn))
+
+- [#686](https://github.com/ember-engines/ember-engines/pull/686) Req. compileModules:true to use compact-reexports ([@tmquinn](https://github.com/tmquinn))
 
 #### Committers: 1
+
 - Quinn Hoyer ([@tmquinn](https://github.com/tmquinn))
 
 ## v0.8.3 (2019-11-27)
