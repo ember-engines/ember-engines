@@ -22,7 +22,7 @@
     Go home programmatically
 </button>
 
-<button {{action "transitionToHomeFromController"}} class="routable-post-transition-to-route-home-button {{if transitionedToExternalRoute 'transitioned-to-external-route'}}">
+<button {{on "click" this.transitionToHomeFromController}} class="routable-post-transition-to-route-home-button {{if transitionedToExternalRoute 'transitioned-to-external-route'}}">
     Go home by controller
 </button>
 
@@ -32,17 +32,17 @@
 
 {{!-- {{post-actions}} --}}
 
-<button {{action "transitionToHomeByService"}} class="routable-transition-external-button {{if transitionToExternal 'transitioned-to-external'}}">
+<button {{on 'click' this.transitionToHomeByService}} class="routable-transition-external-button {{if transitionToExternal 'transitioned-to-external'}}">
     Go home (Engine Router Service)
 </button>
 
-<button {{action "replaceWithHomeByService"}} class="routable-replace-external-button {{if replaceWithExternal 'replaced-with-external'}}">
+<button {{on 'click' this.replaceWithHomeByService}} class="routable-replace-external-button {{if replaceWithExternal 'replaced-with-external'}}">
     Go home progammatically (Engine Router Service)
 </button>
 
 
 
-<button {{action "copyPostURL"}} class="routable-url-for-external-button {{if urlForExternal 'url-for-external'}}">
+<button {{on 'click' this.copyPostURL}} class="routable-url-for-external-button {{if urlForExternal 'url-for-external'}}">
     Copy URL by (Engine Router Service)
 </button>
 <div>
