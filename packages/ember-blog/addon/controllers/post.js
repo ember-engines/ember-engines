@@ -10,34 +10,34 @@ export default class PostController extends Controller {
   @action
   transitionToHomeFromController() {
     this.transitionToExternalRoute('home').then(() => {
-      set(this, 'transitionedToExternalRoute', true);
+      this.transitionedToExternalRoute = true;
     });
   }
   @action
   transitionToHomeByService() {
     this.router.transitionToExternal('home').then(() => {
-      set(this, 'transitionToExternal', true);
+      this.transitionToExternal = true;
     });
   }
 
   @action
   replaceWithHomeByService() {
     this.router.replaceWithExternal('home').then(() => {
-      set(this, 'replaceWithExternal', true);
+      this.replaceWithExternal = true;
     });
   }
 
   @action
   copyPostURL() {
     const url = this.router.urlForExternal('home');
-    set(this, 'urlForExternal', url);
+    this.urlForExternal = url;
     // Clipboard now has "/"
   }
 
   @action
   checkActiveState() {
     if (this.router.isActiveExternal('home')) {
-      set(this, 'isActiveExternal', true);
+      this.isActiveExternal = true;
     }
   }
 }
