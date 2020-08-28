@@ -19,11 +19,11 @@ export default class EngineRouterService extends Service.extend(Evented) {
     this.externalRouter.on('routeDidChange', this.onRouteDidChange);
   }
 
-  destroy() {
+  willDestroy() {
     this.externalRouter.off('routeWillChange', this.onRouteWillChange);
     this.externalRouter.off('routeDidChange', this.onRouteDidChange);
 
-    super.destroy();
+    super.willDestroy();
   }
 
   @action
