@@ -1,3 +1,19 @@
+## v0.8.7 (2020-10-09)
+
+#### :rocket: Enhancement
+* `ember-engines`
+  * [#730](https://github.com/ember-engines/ember-engines/pull/730) Upgrade ember-cli-htmlbars to v5 ([@nlfurniss](https://github.com/nlfurniss))
+
+#### :house: Internal
+* `ember-engines`
+  * [#731](https://github.com/ember-engines/ember-engines/pull/731) Add release automation. ([@rwjblue](https://github.com/rwjblue))
+  * [#729](https://github.com/ember-engines/ember-engines/pull/729) Re-enable routeless engine container cleanup test. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v0.8.6 (2020-08-14)
 
 #### :rocket: Enhancement
