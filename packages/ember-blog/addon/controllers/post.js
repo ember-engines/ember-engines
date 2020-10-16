@@ -1,11 +1,28 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { set, get, action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 export default class PostController extends Controller {
   queryParams = ['lang'];
+  @tracked hasRouteDidChange = false;
+  @tracked hasRouteDidChange = false;
 
   @service router;
+
+  constructor() {
+    super(...arguments);
+
+    this._super(...arguments);
+
+    this.router.on('routeWillChange', () => {
+      this.hasRouteWillChange = true;
+    });
+
+    this.router.on('routeDidChange', () => {
+      this.hasRouteDidChange = true;
+    });
+  }
 
   @action
   transitionToHomeFromController() {

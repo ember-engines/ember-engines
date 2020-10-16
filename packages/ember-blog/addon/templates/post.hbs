@@ -49,6 +49,8 @@
   {{this.urlForExternal}}
 </div>
 
+<p class="route-event-one {{if this.hasRouteWillChange 'route-will-change'}}">routeWillChange - Event</p>
+<p class="route-event-two {{if this.hasRouteDidChange 'route-did-change'}}">routeDidChange - Event</p>
 
 
 <button {{action "checkActiveState"}} class="routable-is-active-external-button {{if isActiveExternal 'is-active-external'}}">

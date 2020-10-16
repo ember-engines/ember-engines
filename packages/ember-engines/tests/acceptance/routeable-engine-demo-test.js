@@ -631,6 +631,29 @@ module('Acceptance | routeless engine demo', function (hooks) {
         find('.routable-is-active-external-button').classList.contains('is-active-external')
       );
     });
+
+    test('Router Service - events `onRouteWillChange` and `onRouteDidChange` are fired on transitions', async function (
+      assert
+    ) {
+      assert.expect(3);
+
+      await visit('/routable-engine-demo/ember-blog/post/1');
+      await click('.routable-transition-external-button');
+
+      assert.equal(currentURL(), '/');
+
+      await click('.routeable-engine');
+      await click('.ember-blog-new');
+      await click('.trigger-transition-to');
+
+      assert.ok(
+        find('.route-event-one').classList.contains('route-will-change')
+      );
+
+      assert.ok(
+        find('.route-event-two').classList.contains('route-did-change')
+      );
+    });
   });
 
 });
