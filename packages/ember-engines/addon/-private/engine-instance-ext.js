@@ -81,6 +81,13 @@ EngineInstance.reopen({
                 let dependencyKey = `${dependencyType}:${dependencyNameInParent}`;
                 let dependency = this.lookup(dependencyKey);
 
+                if (category === 'services' && dependencyName === 'router') {
+                  assert(
+                    `A service named '${dependencyName}' can not be shared with engines.`,
+                    dependency
+                  );
+                }
+
                 assert(
                   `Engine parent failed to lookup '${dependencyKey}' dependency, as declared in 'engines.${camelizedName}.dependencies.${category}'.`,
                   dependency
