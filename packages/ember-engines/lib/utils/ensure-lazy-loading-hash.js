@@ -8,11 +8,15 @@
  * @return {Object}
  */
 module.exports = function ensureLazyLoadingHash(context) {
-  if (typeof context.lazyLoading === 'boolean') {
+  if (
+    typeof context.lazyLoading === 'boolean' ||
+    typeof context.lazyLoading === 'undefined'
+  ) {
     context.lazyLoading = {
-      enabled: context.lazyLoading
+      enabled: context.lazyLoading,
     };
   }
 
   return context;
-}
+};
+
