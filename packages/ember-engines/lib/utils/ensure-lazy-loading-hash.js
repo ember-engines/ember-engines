@@ -10,13 +10,12 @@
 module.exports = function ensureLazyLoadingHash(context) {
   if (
     typeof context.lazyLoading === 'boolean' ||
-    typeof context.lazyLoading === 'undefined'
+    context.lazyLoading === undefined
   ) {
     context.lazyLoading = {
-      enabled: context.lazyLoading,
+      enabled: Boolean(context.lazyLoading),
     };
   }
 
   return context;
 };
-
