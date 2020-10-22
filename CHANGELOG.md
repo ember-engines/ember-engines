@@ -1,17 +1,74 @@
+## v0.8.8 (2020-10-22)
+
+#### :bug: Bug Fix
+* `ember-blog`, `ember-engines`
+  * [#735](https://github.com/ember-engines/ember-engines/pull/735) Add mount prefix to route via computed instead of set ([@elwayman02](https://github.com/elwayman02))
+* `ember-engines`
+  * [#734](https://github.com/ember-engines/ember-engines/pull/734) fix: findHost and findHostHost should allow undefined lazyLoading config ([@xg-wang](https://github.com/xg-wang))
+
+#### Committers: 2
+- Jordan Hawker ([@elwayman02](https://github.com/elwayman02))
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+
+
+## v0.8.7 (2020-10-09)
+
+#### :rocket: Enhancement
+* `ember-engines`
+  * [#730](https://github.com/ember-engines/ember-engines/pull/730) Upgrade ember-cli-htmlbars to v5 ([@nlfurniss](https://github.com/nlfurniss))
+
+#### :house: Internal
+* `ember-engines`
+  * [#731](https://github.com/ember-engines/ember-engines/pull/731) Add release automation. ([@rwjblue](https://github.com/rwjblue))
+  * [#729](https://github.com/ember-engines/ember-engines/pull/729) Re-enable routeless engine container cleanup test. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
+## v0.8.6 (2020-08-14)
+
+#### :rocket: Enhancement
+
+- [#716](https://github.com/ember-engines/ember-engines/pull/716) Add pods structure support for tests ([@nadavshatz](https://github.com/nadavshatz))
+- [#697](https://github.com/ember-engines/ember-engines/pull/697) Add transitionToExternalRoute to controllers ([@villander](https://github.com/villander))
+
+#### :memo: Documentation
+
+- [#706](https://github.com/ember-engines/ember-engines/pull/706) [DOC] Update & Simplify informations ([@villander](https://github.com/villander))
+
+#### :house: Internal
+
+- [#719](https://github.com/ember-engines/ember-engines/pull/719) Convert project to use yarn workspaces ([@dgeb](https://github.com/dgeb))
+- [#698](https://github.com/ember-engines/ember-engines/pull/698) Update project to ember-cli 3.17.0 ([@villander](https://github.com/villander))
+- [#695](https://github.com/ember-engines/ember-engines/pull/695) travis ci config fix ([@bartocc](https://github.com/bartocc))
+
+#### Committers: 4
+
+- Dan Gebhardt ([@dgeb](https://github.com/dgeb))
+- Julien Palmas ([@bartocc](https://github.com/bartocc))
+- Michael Villander ([@villander](https://github.com/villander))
+- Nadav Shatz ([@nadavshatz](https://github.com/nadavshatz))
+
 ## v0.8.5 (2019-12-10)
 
 #### :rocket: Enhancement
-* [#686](https://github.com/ember-engines/ember-engines/pull/686) Req. compileModules:true to use compact-reexports ([@tmquinn](https://github.com/tmquinn))
+
+- [#686](https://github.com/ember-engines/ember-engines/pull/686) Req. compileModules:true to use compact-reexports ([@tmquinn](https://github.com/tmquinn))
 
 #### Committers: 1
+
 - Quinn Hoyer ([@tmquinn](https://github.com/tmquinn))
 
-##  v0.8.4 (2019-12-10)
+## v0.8.4 (2019-12-10)
 
 #### :rocket: Enhancement
-* [#686](https://github.com/ember-engines/ember-engines/pull/686) Req. compileModules:true to use compact-reexports ([@tmquinn](https://github.com/tmquinn))
+
+- [#686](https://github.com/ember-engines/ember-engines/pull/686) Req. compileModules:true to use compact-reexports ([@tmquinn](https://github.com/tmquinn))
 
 #### Committers: 1
+
 - Quinn Hoyer ([@tmquinn](https://github.com/tmquinn))
 
 ## v0.8.3 (2019-11-27)

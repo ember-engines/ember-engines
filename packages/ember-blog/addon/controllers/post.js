@@ -5,6 +5,8 @@ import { tracked } from '@glimmer/tracking';
 
 export default class PostController extends Controller {
   queryParams = ['lang'];
+  commentsRoute = 'post.comments'; // Added to demonstrate that dynamic route names work
+
   @tracked hasRouteDidChange = false;
   @tracked hasRouteDidChange = false;
 

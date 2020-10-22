@@ -1,11 +1,11 @@
 {
   "name": "ember-engines-workspace",
-  "description": "Workspace for ember-engines project",
   "private": true,
-  "authors": [
-    "Dan Gebhardt",
-    "Robert Jackson"
-  ],
+  "description": "Workspace for ember-engines project",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ember-engines/ember-engines.git"
+  },
   "license": "MIT",
   "workspaces": [
     "packages/*"
@@ -13,18 +13,48 @@
   "scripts": {
     "build": "yarn workspace ember-engines build",
     "lint": "yarn workspace ember-engines lint",
-    "lint:js": "yarn workspace ember-engines lint:js",
     "lint:hbs": "yarn workspace ember-engines lint:hbs",
+    "lint:js": "yarn workspace ember-engines lint:js",
     "start": "yarn workspace ember-engines start",
     "test": "yarn workspace ember-engines test",
     "test:ember": "yarn workspace ember-engines test:ember",
     "test:node": "yarn workspace ember-engines test:node",
     "try": "yarn workspace ember-engines try"
   },
+  "prettier": {
+    "singleQuote": true
+  },
+  "devDependencies": {
+    "release-it": "^14.0.2",
+    "release-it-lerna-changelog": "^2.4.0",
+    "release-it-yarn-workspaces": "^1.5.0"
+  },
   "engines": {
     "node": "10.* || >= 12"
   },
-  "prettier": {
-    "singleQuote": true
-  }
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "authors": [
+    "Dan Gebhardt",
+    "Robert Jackson"
+  ],
+  "release-it": {
+    "plugins": {
+      "release-it-lerna-changelog": {
+        "infile": "CHANGELOG.md",
+        "launchEditor": true
+      },
+      "release-it-yarn-workspaces": true
+    },
+    "git": {
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true,
+      "tokenRef": "GITHUB_AUTH"
+    },
+    "npm": false
+  },
+  "version": "0.8.8"
 }

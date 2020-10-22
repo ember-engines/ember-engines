@@ -11,6 +11,12 @@ describe('ensureLazyLoadingHash', function () {
     expect(ensureLazyLoadingHash(lazyLoading)).to.deep.equal({ lazyLoading: { enabled: true } });
   });
 
+  it('returns a object with `enabled` key when lazyLoading is not passed', function () {
+    let lazyLoading = {};
+
+    expect(ensureLazyLoadingHash(lazyLoading)).to.deep.equal({ lazyLoading: { enabled: false } });
+  });
+
   it('returns the same object if lazyLoading is passed as object', function () {
     let lazyLoading = { lazyLoading: { enabled: true } };
 
