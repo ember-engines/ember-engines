@@ -10,7 +10,7 @@ import { currentURL, visit, find, click } from '@ember/test-helpers';
 let originalExceptionHandler;
 let sinon;
 
-module('Acceptance | routeless engine demo', function (hooks) {
+module('Acceptance | routable engine demo', function (hooks) {
   setupApplicationTest(hooks);
 
   hooks.beforeEach(function () {
