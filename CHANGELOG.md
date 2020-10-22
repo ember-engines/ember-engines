@@ -1,3 +1,16 @@
+## v0.8.8 (2020-10-22)
+
+#### :bug: Bug Fix
+* `ember-blog`, `ember-engines`
+  * [#735](https://github.com/ember-engines/ember-engines/pull/735) Add mount prefix to route via computed instead of set ([@elwayman02](https://github.com/elwayman02))
+* `ember-engines`
+  * [#734](https://github.com/ember-engines/ember-engines/pull/734) fix: findHost and findHostHost should allow undefined lazyLoading config ([@xg-wang](https://github.com/xg-wang))
+
+#### Committers: 2
+- Jordan Hawker ([@elwayman02](https://github.com/elwayman02))
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+
+
 ## v0.8.7 (2020-10-09)
 
 #### :rocket: Enhancement
