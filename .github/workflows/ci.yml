@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - 'v*'
+  pull_request:
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+      - run: yarn test:ember
+      - run: yarn test:node
+
+  floating-dependencies:
+    name: "Floating Dependencies"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: yarn install --no-lockfile
+      - run: yarn test:ember
+
+  try-scenarios:
+    name: "Try: ${{ matrix.ember-try-scenario }}"
+
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    strategy:
+      fail-fast: true
+      matrix:
+        ember-try-scenario:
+          - ember-lts-3.12
+          - ember-lts-3.16
+          - ember-release
+          - ember-beta
+          - ember-canary
+          - ember-classic
+          - ember-default-with-jquery
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: install dependencies
+        run: yarn install --frozen-lockfile
+      - name: test
+        run: yarn try ${{ matrix.ember-try-scenario }} --skip-cleanup
