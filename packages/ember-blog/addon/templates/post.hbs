@@ -18,14 +18,41 @@
 
 {{#link-to (query-params lang="Japanese") class="routable-post-jp-link"}}Go to Japanese version{{/link-to}}
 <button {{action "goToChineseVersion"}} class="routable-post-ch-link">Go to Chinese version</button>
-<button {{action "transitionToHome"}} class="routable-post-transition-to-home-button {{if transitionedToExternal 'transitioned-to-external'}}">
+<button {{action "transitionToHome"}} class="routable-post-transition-to-home-button {{if this.transitionedToExternal 'transitioned-to-external'}}">
     Go home programmatically
 </button>
 
-<button {{action "transitionToHomeFromController"}} class="routable-post-transition-to-route-home-button {{if transitionedToExternalRoute 'transitioned-to-external-route'}}">
+<button {{on "click" this.transitionToHomeFromController}} class="routable-post-transition-to-route-home-button {{if this.transitionedToExternalRoute 'transitioned-to-external-route'}}">
     Go home by controller
 </button>
 
-<button {{action "replaceWithHome"}} class="routable-post-replace-with-home-button {{if replacedWithExternal 'replaced-with-external'}}">
+<button {{action "replaceWithHome"}} class="routable-post-replace-with-home-button {{if this.replacedWithExternal 'replaced-with-external'}}">
     Also goes home programmatically
+</button>
+
+{{!-- {{post-actions}} --}}
+
+<button {{on 'click' this.transitionToHomeByService}} class="routable-transition-external-button {{if this.transitionToExternal 'transitioned-to-external'}}">
+    Go home (Engine Router Service)
+</button>
+
+<button {{on 'click' this.replaceWithHomeByService}} class="routable-replace-external-button {{if this.replaceWithExternal 'replaced-with-external'}}">
+    Go home progammatically (Engine Router Service)
+</button>
+
+
+
+<button {{on 'click' this.copyPostURL}} class="routable-url-for-external-button {{if this.urlForExternal 'url-for-external'}}">
+    Copy URL by (Engine Router Service)
+</button>
+<div>
+  {{this.urlForExternal}}
+</div>
+
+<p class="route-event-one {{if this.hasRouteWillChange 'route-will-change'}}">routeWillChange - Event</p>
+<p class="route-event-two {{if this.hasRouteDidChange 'route-did-change'}}">routeDidChange - Event</p>
+
+
+<button {{action "checkActiveState"}} class="routable-is-active-external-button {{if isActiveExternal 'is-active-external'}}">
+    isActive in (Engine Router Service)
 </button>

@@ -554,4 +554,106 @@ module('Acceptance | routable engine demo', function (hooks) {
     instanceInit.restore();
   });
 
+  module('Engine Router Service', function() {
+
+    test('transitionToExternal transitions to the parent application from within an engine and returns a thenable Transition object', async function (
+      assert
+    ) {
+      assert.expect(2);
+
+      await visit('/routable-engine-demo/ember-blog/post/1');
+      await click('.routable-transition-external-button');
+
+      assert.equal(currentURL(), '/');
+
+      await click('.routeable-engine');
+      await click('.ember-blog-new');
+      await click('.trigger-transition-to');
+
+      assert.ok(
+        find('.routable-transition-external-button').classList.contains('transitioned-to-external')
+      );
+    });
+
+    test('replaceWithExternal transitions to the parent application from within an engine and returns a thenable Transition object', async function (
+      assert
+    ) {
+      assert.expect(2);
+
+      await visit('/routable-engine-demo/ember-blog/post/1');
+      await click('.routable-replace-external-button');
+
+      assert.equal(currentURL(), '/');
+
+      await click('.routeable-engine');
+      await click('.ember-blog-new');
+      await click('.trigger-transition-to');
+
+      assert.ok(
+        find('.routable-replace-external-button').classList.contains('replaced-with-external')
+      );
+    });
+
+    test('urlForExternal Generate a URL based on the external route name', async function (
+      assert
+    ) {
+      assert.expect(2);
+
+      await visit('/routable-engine-demo/ember-blog/post/1');
+      await click('.routable-url-for-external-button');
+
+      assert.equal(currentURL(), '/routable-engine-demo/ember-blog/post/1');
+
+      await click('.routeable-engine');
+      await click('.ember-blog-new');
+      await click('.trigger-transition-to');
+
+      assert.ok(
+        find('.routable-url-for-external-button').classList.contains('url-for-external')
+      );
+    });
+
+    test('isActiveExternal Determines whether a parent external route is active', async function (
+      assert
+    ) {
+      assert.expect(2);
+
+      await visit('/routable-engine-demo/ember-blog/post/1');
+      await click('.routable-is-active-external-button');
+
+      assert.equal(currentURL(), '/routable-engine-demo/ember-blog/post/1');
+
+      await click('.routeable-engine');
+      await click('.ember-blog-new');
+      await click('.trigger-transition-to');
+
+      assert.ok(
+        find('.routable-is-active-external-button').classList.contains('is-active-external')
+      );
+    });
+
+    test('Router Service - events `onRouteWillChange` and `onRouteDidChange` are fired on transitions', async function (
+      assert
+    ) {
+      assert.expect(3);
+
+      await visit('/routable-engine-demo/ember-blog/post/1');
+      await click('.routable-transition-external-button');
+
+      assert.equal(currentURL(), '/');
+
+      await click('.routeable-engine');
+      await click('.ember-blog-new');
+      await click('.trigger-transition-to');
+
+      assert.ok(
+        find('.route-event-one').classList.contains('route-will-change')
+      );
+
+      assert.ok(
+        find('.route-event-two').classList.contains('route-did-change')
+      );
+    });
+  });
+
 });

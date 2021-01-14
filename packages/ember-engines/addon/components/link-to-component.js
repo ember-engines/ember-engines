@@ -3,6 +3,7 @@ import { getOwner } from '@ember/application';
 import { computed, get, set } from '@ember/object';
 import { typeOf } from '@ember/utils';
 import { assert } from '@ember/debug';
+import { namespaceEngineRouteName } from '../utils/namespace-engine-route-name';
 
 export default LinkComponent.extend({
   _route: computed('route', '_mountPoint', '_currentRouteState', function () {
@@ -10,7 +11,7 @@ export default LinkComponent.extend({
     let mountPoint = get(this, '_mountPoint');
 
     if (mountPoint && routeName !== get(this, '_currentRoute')) {
-      return this._namespacePropertyValue(mountPoint, routeName);
+      return namespaceEngineRouteName(mountPoint, routeName);
     }
 
     return routeName;
@@ -56,21 +57,13 @@ export default LinkComponent.extend({
       // `current-when` is a space-separated list of routes
       namespacedPropValue = propValue.split(' ');
       namespacedPropValue = namespacedPropValue.map(propValue =>
-        this._namespacePropertyValue(prefix, propValue)
+        namespaceEngineRouteName(prefix, propValue)
       );
       namespacedPropValue = namespacedPropValue.join(' ');
     } else {
-      namespacedPropValue = this._namespacePropertyValue(prefix, propValue);
+      namespacedPropValue = namespaceEngineRouteName(prefix, propValue);
     }
 
     set(this, prop, namespacedPropValue);
-  },
-
-  _namespacePropertyValue(prefix, propValue) {
-    if (propValue === 'application') {
-      return prefix;
-    } else {
-      return prefix + '.' + propValue;
-    }
   }
 });
