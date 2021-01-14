@@ -42,6 +42,12 @@ EngineInstance.reopen({
   */
   _dependenciesForChildEngines: null,
 
+  init() {
+    this._super(...arguments);
+
+    this._externalRoutes = {};
+  },
+
   buildChildEngineInstance(name, options = {}) {
     // Check dependencies cached by engine name
     let dependencies =
@@ -132,10 +138,6 @@ EngineInstance.reopen({
     if (requiredDependencies) {
       Object.keys(requiredDependencies).forEach(category => {
         let dependencyType = this._dependencyTypeFromCategory(category);
-
-        if (category === 'externalRoutes') {
-          this._externalRoutes = {};
-        }
 
         requiredDependencies[category].forEach(dependencyName => {
           let dependency =

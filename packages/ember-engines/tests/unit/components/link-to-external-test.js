@@ -6,6 +6,11 @@ import { gte } from 'ember-compatibility-helpers';
 module('Integration | Component | pretty color', function(hooks) {
   setupRenderingTest(hooks);
 
+  hooks.beforeEach(function() {
+    // setup an external route manually
+    this.owner._externalRoutes['home'] = 'application';
+  });
+
   test('it renders properly [curly braces]', async function(assert) {
     await this.render(hbs`{{link-to-external 'home' 'home'}}`);
     assert.equal(this.element.querySelector('a').textContent, 'home');
