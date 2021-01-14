@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.8.9 (2021-01-14)
+
+#### :bug: Bug Fix
+* `ember-engines`
+  * [#742](https://github.com/ember-engines/ember-engines/pull/742) Fix compatibility with Ember 3.24+ ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#741](https://github.com/ember-engines/ember-engines/pull/741) Migrate to GitHub Actions for CI. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v0.8.8 (2020-10-22)
 
 #### :bug: Bug Fix
