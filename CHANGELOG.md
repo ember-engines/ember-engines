@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.8.10 (2021-01-14)
+
+#### :rocket: Enhancement
+* `ember-engines`
+  * [#744](https://github.com/ember-engines/ember-engines/pull/744) Remove custom `<LinkTo />` override with Ember >= 3.24.1. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* `ember-engines`
+  * [#745](https://github.com/ember-engines/ember-engines/pull/745) Update the default ember-source version to 3.24.1. ([@rwjblue](https://github.com/rwjblue))
+  * [#743](https://github.com/ember-engines/ember-engines/pull/743) Remove ember-compatibility-helpers. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v0.8.9 (2021-01-14)
 
 #### :bug: Bug Fix
