@@ -1,10 +1,9 @@
-import { module, test, skip } from "qunit";
+import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
 import { render } from "@ember/test-helpers";
 import hbs from "htmlbars-inline-precompile";
 import Component from "@ember/component";
 import EmberRouter from '@ember/routing/router';
-import { gte } from "ember-compatibility-helpers";
 
 module("Integration | Component | component-with-link-to-external", function(
   hooks
@@ -38,19 +37,16 @@ module("Integration | Component | component-with-link-to-external", function(
     assert.ok(this.element);
   });
 
-  (gte("3.10.0-beta.1") ? test : skip)(
-    "component renders with link-to-external [angle brackets]",
-    async function(assert) {
-      assert.expect(1);
+  test("component renders with link-to-external [angle brackets]", async function(assert) {
+    assert.expect(1);
 
-      await render(hbs`
-    <TestComponent>
-      <LinkTo @route="view">Link To</LinkTo>
-      <LinkToExternal @route="home">Link To External</LinkToExternal>
-    </TestComponent>
-  `);
+    await render(hbs`
+      <TestComponent>
+        <LinkTo @route="view">Link To</LinkTo>
+        <LinkToExternal @route="home">Link To External</LinkToExternal>
+      </TestComponent>
+    `);
 
-      assert.ok(this.element);
-    }
-  );
+    assert.ok(this.element);
+  });
 });
