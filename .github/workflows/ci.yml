@@ -43,10 +43,11 @@ jobs:
         ember-try-scenario:
           - ember-lts-3.12
           - ember-lts-3.16
-            # disabled due to CI failures for Ember 3.24+ (https://github.com/ember-engines/ember-engines/issues/740)
-            # - ember-release
-            # - ember-beta
-            # - ember-canary
+          - ember-lts-3.20
+          - ember-lts-3.24
+          - ember-release
+          - ember-beta
+          - ember-canary
           - ember-classic
           - ember-default-with-jquery
 
