@@ -1,0 +1,9 @@
+{
+  "name": "lazy-engine-project-dep",
+  "ember-addon": {
+    "paths": [
+      "../../test-addons/test-lazy-engine",
+      "../../test-addons/addon-depends-on-lazy-engine"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "lazy-engine-depends-on-lazy-engine",
+  "keywords": [
+    "ember-addon",
+    "ember-engine"
+  ],
+  "ember-addon": {
+    "paths": [
+      "../test-lazy-engine",
+      "../addon-depends-on-lazy-engine"
+    ]
+  }
+}
