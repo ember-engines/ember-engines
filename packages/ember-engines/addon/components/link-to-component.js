@@ -3,12 +3,11 @@ import { getOwner } from '@ember/application';
 import { computed, get, set } from '@ember/object';
 import { typeOf } from '@ember/utils';
 import { assert, deprecate } from '@ember/debug';
-
-import { macroCondition, dependencySatisfies } from '@embroider/macros';
+import { gte } from 'ember-compatibility-helpers';
 
 let LinkTo;
 
-if (macroCondition(dependencySatisfies('ember-source', '>= 3.24.1'))) {
+if (gte('ember-source', '3.24.1')) {
   deprecate(
     `Importing from 'ember-engines/components/link-to-component' is deprecated, please use '@ember/routing/link-component' directly`,
     false,
@@ -23,7 +22,7 @@ if (macroCondition(dependencySatisfies('ember-source', '>= 3.24.1'))) {
   );
 
   LinkTo = LinkComponent;
-} else if (macroCondition(dependencySatisfies('ember-source', '> 3.24.0-alpha.1'))) {
+} else if (gte('ember-source', '3.24.0-alpha.1')) {
   LinkTo = class EnginesLinkComponent extends LinkComponent {
     // temporarily work around an issue in Ember 3.24.0 where when a route name is
     // **not** defined (e.g. a QP only transition) we re-wrap the current name (essentially

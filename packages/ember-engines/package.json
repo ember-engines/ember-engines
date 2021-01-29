@@ -1,6 +1,6 @@
 {
   "name": "ember-engines",
-  "version": "0.8.10",
+  "version": "0.8.11",
   "description": "Composable applications for ambitious user experiences",
   "directories": {
     "doc": "doc",
@@ -43,10 +43,10 @@
     "broccoli-asset-rev": "^3.0.0",
     "chai": "^4.2.0",
     "common-tags": "^1.8.0",
-    "eager-blog": "0.8.10",
+    "eager-blog": "0.8.11",
     "ember-auto-import": "^1.5.3",
-    "ember-blog": "0.8.10",
-    "ember-chat": "0.8.10",
+    "ember-blog": "0.8.11",
+    "ember-chat": "0.8.11",
     "ember-cli": "~3.17.0",
     "ember-cli-addon-tests": "^0.11.1",
     "ember-cli-app-version": "^3.2.0",
@@ -85,7 +85,6 @@
     "ember-addon"
   ],
   "dependencies": {
-    "@embroider/macros": "^0.35.1",
     "amd-name-resolver": "1.3.1",
     "babel-plugin-compact-reexports": "^1.1.0",
     "broccoli-babel-transpiler": "^7.2.0",
@@ -102,7 +101,8 @@
     "ember-cli-htmlbars": "^5.3.1",
     "ember-cli-preprocess-registry": "^3.3.0",
     "ember-cli-string-utils": "^1.1.0",
-    "ember-cli-version-checker": "^5.1.2",
+    "ember-cli-version-checker": "^3.1.3",
+    "ember-compatibility-helpers": "^1.2.2",
     "lodash": "^4.17.11"
   },
   "engines": {
