@@ -326,9 +326,9 @@ module.exports = {
       let hostAddons = hostIsEngine
         ? Object.assign({}, host.ancestorHostAddons())
         : {};
-        let queue = hostIsEngine
-          ? host.addons.slice()
-          : host.project.addons.slice();
+      let queue = hostIsEngine
+        ? host.addons.slice()
+        : host.project.addons.slice();
 
       // Do a breadth-first walk of the addons in the host, ignoring those that
       // have a different host (e.g., lazy engine)

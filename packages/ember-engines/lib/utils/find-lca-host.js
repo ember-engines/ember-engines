@@ -89,6 +89,8 @@ function findLCAHost(engine) {
   }
 
   // only compute once for a given engine
+  // we're using the engine name as the cache key here because regardless of its
+  // version, lazy engines will always get output to: `engines-dist/${engineName}`
   const commonHost = cache.get(engineName);
 
   if (commonHost) {
@@ -156,7 +158,9 @@ function findLCAHost(engine) {
 
   // this should never be triggered
   throw new Error(
-    `[ember-engines] Could not find a common host for: \`${engineName}\``
+    `[ember-engines] Could not find a common host for: \`${engineName}\`; its locations are: \`${allEngines
+      .map(engine => engine.root)
+      .join(', ')}\``
   );
 }
 
