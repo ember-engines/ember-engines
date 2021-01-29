@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.8.12 (2021-01-29)
+
+#### :bug: Bug Fix
+* `ember-engines`
+  * [#750](https://github.com/ember-engines/ember-engines/pull/750) Compute LCA host for engines ([@brendenpalmer](https://github.com/brendenpalmer))
+
+#### :house: Internal
+* `ember-engines`
+  * [#751](https://github.com/ember-engines/ember-engines/pull/751) Ensure ember-engines are parallelizable. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Brenden Palmer ([@brendenpalmer](https://github.com/brendenpalmer))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v0.8.11 (2021-01-29)
 
 #### :bug: Bug Fix
