@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.8.11 (2021-01-29)
+
+#### :bug: Bug Fix
+* `ember-engines`
+  * [#752](https://github.com/ember-engines/ember-engines/pull/752) Revert usage of `@embroider/macros` ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v0.8.10 (2021-01-14)
 
 #### :rocket: Enhancement
