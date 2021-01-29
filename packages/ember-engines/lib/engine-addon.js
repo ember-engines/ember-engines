@@ -19,6 +19,7 @@ const p = require('ember-cli-preprocess-registry/preprocessors');
 const shouldCompactReexports = require('./utils/should-compact-reexports');
 const appendCompactReexportsIfNeeded = require('./utils/append-compact-reexports-if-needed');
 const ensureLazyLoadingHash = require('./utils/ensure-lazy-loading-hash');
+const { findLCAHost } = require('./utils/find-lca-host');
 const preprocessCss = p.preprocessCss;
 const preprocessMinifyCss = p.preprocessMinifyCss;
 const BroccoliDebug = require('broccoli-debug');
@@ -41,8 +42,8 @@ const DEFAULT_CONFIG = {
 
 const findRoot = require('./utils/find-root');
 const findHost = require('./utils/find-host');
-const findHostsHost = require('./utils/find-hosts-host');
 const processBabel = require('./utils/process-babel');
+
 const buildExternalTree = memoize(function buildExternalTree() {
   const treePath = this.treePaths['vendor'];
   const vendorPath = treePath ? path.resolve(this.root, treePath) : null;
@@ -308,15 +309,13 @@ module.exports = {
     /**
      * Gets a map of all the addons that are used by all hosts above
      * the current host.
-     *
-     * The key is the name of the addon and the value is first encountered instance of this addon.
      */
     options.ancestorHostAddons = function() {
       if (this._hostAddons) {
         return this._hostAddons;
       }
 
-      let host = findHostsHost.call(this);
+      let host = findLCAHost(this);
 
       if (!host) {
         return {};
@@ -666,7 +665,7 @@ module.exports = {
         let vendorCSSTree = buildVendorCSSTree.call(this, vendorTree);
         let engineStylesOutputDir = 'engines-dist/' + this.name + '/assets/';
 
-        let hostOptions = findHostsHost.call(this).options || {};
+        let hostOptions = findLCAHost(this).options || {};
         let sourceMapConfig = hostOptions.sourcemaps;
 
         // if the user specified `minifyCSS.enabled` at all, use their value
@@ -787,7 +786,7 @@ module.exports = {
       // We'll take advantage of that.
       let originalTreeForPublic = this.treeForPublic;
       this.treeForPublic = function() {
-        let hostOptions = findHostsHost.call(this).options || {};
+        let hostOptions = findLCAHost(this).options || {};
         let sourceMapConfig = hostOptions.sourcemaps;
 
         let configTemplatePath = path.join(

@@ -1,0 +1,8 @@
+{
+  "name": "common-lazy-engine-host",
+  "ember-addon": {
+    "paths": [
+      "../../test-addons/lazy-engine-depends-on-lazy-engine"
+    ]
+  }
+}
