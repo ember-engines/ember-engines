@@ -10,6 +10,26 @@ const path = require('path');
 const memoize = require('../../lib/utils/memoize');
 
 describe('engine-addon', function() {
+  describe('building an engine', function() {
+    it('using the `extend` function', function() {
+      const EngineAddon = require('../../lib/engine-addon');
+      const engine = EngineAddon.extend({
+        name: 'testing',
+      });
+
+      expect(engine.name).to.eql('testing');
+    });
+
+    it('using the `buildEngine` function', function() {
+      const { buildEngine } = require('../../lib/engine-addon');
+      const engine = buildEngine({
+        name: 'testing',
+      });
+
+      expect(engine.name).to.eql('testing');
+    });
+  });
+
   describe('engineConfig', function() {
     const EngineAddon = require('../../lib/engine-addon');
 
