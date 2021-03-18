@@ -1,5 +1,5 @@
 import { camelize } from '@ember/string';
-import { assert } from '@ember/debug';
+import { assert, deprecate } from '@ember/debug';
 import EngineInstance from '@ember/engine/instance';
 
 EngineInstance.reopen({
@@ -58,10 +58,26 @@ EngineInstance.reopen({
     if (!dependencies) {
       dependencies = {};
 
-      let camelizedName = camelize(name);
+      let engineConfigurations = this.base.engines || {};
+      let engineConfigurationKey = name;
+      let engineConfiguration = engineConfigurations[engineConfigurationKey];
 
-      let engineConfiguration =
-        this.base.engines && this.base.engines[camelizedName];
+      if (!engineConfiguration) {
+        engineConfigurationKey = camelize(name);
+        engineConfiguration = engineConfigurations[engineConfigurationKey];
+
+        deprecate(
+          `Support for camelized engine names has been deprecated. Please use '${name}' instead of '${engineConfigurationKey}'.`,
+          typeof engineConfiguration !== 'object',
+          {
+            id: 'ember-engines.deprecation-camelized-engine-names',
+            for: 'ember-engines',
+            until: '0.9.0',
+            since: {
+              enabled: '0.8.13',
+            },
+          });
+      }
 
       if (engineConfiguration) {
         let engineDependencies = engineConfiguration.dependencies;
@@ -88,7 +104,7 @@ EngineInstance.reopen({
                 let dependency = this.lookup(dependencyKey);
 
                 assert(
-                  `Engine parent failed to lookup '${dependencyKey}' dependency, as declared in 'engines.${camelizedName}.dependencies.${category}'.`,
+                  `Engine parent failed to lookup '${dependencyKey}' dependency, as declared in 'engines.${engineConfigurationKey}.dependencies.${category}'.`,
                   dependency
                 );
 
