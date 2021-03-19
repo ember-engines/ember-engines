@@ -157,3 +157,69 @@ test('it can build a child engine instance with dependencies that are aliased', 
     );
   });
 });
+
+test('it deprecates support for camelized engine names', async function(assert) {
+  assert.expect(6);
+
+  let NormalBlogEngine = Engine.extend({
+    router: null,
+    dependencies: Object.freeze({
+      services: ['store'],
+    }),
+  });
+
+  let SuperBlogEngine = Engine.extend({
+    router: null,
+    dependencies: Object.freeze({
+      services: ['store'],
+    }),
+  });
+
+  app.engines = {
+    'normal-blog': {
+      dependencies: {
+        services: ['store'],
+      },
+    },
+    superBlog: {
+      dependencies: {
+        services: ['store'],
+      },
+    },
+  };
+
+  app.register('engine:normal-blog', NormalBlogEngine);
+  app.register('engine:super-blog', SuperBlogEngine);
+
+  let appInstance = app.buildInstance();
+  appInstance.setupRegistry();
+
+  let normalBlogEngineInstance = appInstance.buildChildEngineInstance('normal-blog');
+  assert.deprecationsExclude(
+    `Support for camelized engine names has been deprecated. Please use 'normal-blog' instead of 'normalBlog'.`
+  );
+
+  let superBlogEngineInstance = appInstance.buildChildEngineInstance('super-blog');
+  assert.deprecationsInclude(
+    `Support for camelized engine names has been deprecated. Please use 'super-blog' instead of 'superBlog'.`
+  );
+
+  assert.ok(normalBlogEngineInstance);
+  assert.ok(superBlogEngineInstance);
+
+  await normalBlogEngineInstance.boot().then(() => {
+    assert.strictEqual(
+      normalBlogEngineInstance.lookup('service:store'),
+      appInstance.lookup('service:store'),
+      'services are identical'
+    );
+  });
+
+  return superBlogEngineInstance.boot().then(() => {
+    assert.strictEqual(
+      superBlogEngineInstance.lookup('service:store'),
+      appInstance.lookup('service:store'),
+      'services are identical'
+    );
+  });
+});
