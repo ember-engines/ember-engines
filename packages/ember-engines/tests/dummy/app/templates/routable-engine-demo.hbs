@@ -1,7 +1,7 @@
 <div>
-  {{link-to "Blog New" "blog.new" class="blog-new"}} |
-  {{link-to "Ember Blog New" "routable-engine-demo.ember-blog.new" class="ember-blog-new"}} |
-  {{link-to "Eager Blog" "eager-blog" class="eager-blog"}}
+  <LinkTo @route="blog.new" class="blog-new">Blog New</LinkTo> |
+  <LinkTo @route="routable-engine-demo.ember-blog.new" class="ember-blog-new">Ember Blog New</LinkTo> |
+  <LinkTo @route="eager-blog" class="eager-blog">Eager Blog</LinkTo>
 </div>
 
 {{outlet}}
