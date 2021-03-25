@@ -13,6 +13,10 @@ if (gte('ember-source', '3.24.0-alpha.1')) {
 
       return externalRoute;
     }
+
+    // override LinkTo's assertLinkToOrigin method to noop. In LinkTo, this assertion
+    // checks to make sure LinkTo is not being used inside a routeless engine
+    assertLinkToOrigin() {}
   };
 } else {
   LinkToExternal = LinkComponent.extend({
