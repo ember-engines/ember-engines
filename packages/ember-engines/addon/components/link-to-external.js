@@ -16,6 +16,7 @@ if (gte('ember-source', '3.24.0-alpha.1')) {
 
     // override LinkTo's assertLinkToOrigin method to noop. In LinkTo, this assertion
     // checks to make sure LinkTo is not being used inside a routeless engine
+    // See this PR here for more details: https://github.com/emberjs/ember.js/pull/19477
     assertLinkToOrigin() {}
   };
 } else {
