@@ -1,6 +1,7 @@
 import { camelize } from '@ember/string';
 import { assert, deprecate } from '@ember/debug';
 import EngineInstance from '@ember/engine/instance';
+import { deprecate } from '@ember/debug';
 
 EngineInstance.reopen({
   /**
@@ -102,6 +103,18 @@ EngineInstance.reopen({
 
                 let dependencyKey = `${dependencyType}:${dependencyNameInParent}`;
                 let dependency = this.lookup(dependencyKey);
+
+                deprecate(
+                  `Support for the host's router service has been deprecated. Please use a different name as 'hostRouter' or 'appRouter' instead of '${dependencyName}'.`,
+                  category === 'services' && dependencyName === 'router',
+                  {
+                    id: 'ember-engines.deprecation-router-service-from-host',
+                    for: 'ember-engines',
+                    until: '0.9.0',
+                    since: {
+                      enabled: '0.8.13',
+                    },
+                  });
 
                 assert(
                   `Engine parent failed to lookup '${dependencyKey}' dependency, as declared in 'engines.${engineConfigurationKey}.dependencies.${category}'.`,
