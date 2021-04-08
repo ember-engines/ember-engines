@@ -1,7 +1,6 @@
 import { camelize } from '@ember/string';
 import { assert, deprecate } from '@ember/debug';
 import EngineInstance from '@ember/engine/instance';
-import { deprecate } from '@ember/debug';
 
 EngineInstance.reopen({
   /**
