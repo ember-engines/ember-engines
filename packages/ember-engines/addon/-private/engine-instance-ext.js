@@ -2,6 +2,21 @@ import { camelize } from '@ember/string';
 import { assert, deprecate } from '@ember/debug';
 import EngineInstance from '@ember/engine/instance';
 
+function deprecateHostRouterService(routerName) {
+  deprecate(
+    `Support for the host's router service has been deprecated. Please use a different name as 'hostRouter' or 'appRouter' instead of '${routerName}'.`,
+    false,
+    {
+      id: 'ember-engines.deprecation-router-service-from-host',
+      for: 'ember-engines',
+      until: '0.9.0',
+      url: 'https://ember-engines.com/docs/deprecations#host-router-service',
+      since: {
+        enabled: '0.8.13',
+      },
+    });
+}
+
 EngineInstance.reopen({
   /**
     The root DOM element of the `EngineInstance` as an element or a
@@ -46,6 +61,11 @@ EngineInstance.reopen({
     this._super(...arguments);
 
     this._externalRoutes = {};
+  },
+
+  lookup(fullName, options) {
+    deprecateHostRouterService(fullName);
+    return this._super(fullName, options);
   },
 
   buildChildEngineInstance(name, options = {}) {
@@ -103,18 +123,9 @@ EngineInstance.reopen({
                 let dependencyKey = `${dependencyType}:${dependencyNameInParent}`;
                 let dependency = this.lookup(dependencyKey);
 
-                deprecate(
-                  `Support for the host's router service has been deprecated. Please use a different name as 'hostRouter' or 'appRouter' instead of '${dependencyName}'.`,
-                  category === 'services' && dependencyName === 'router',
-                  {
-                    id: 'ember-engines.deprecation-router-service-from-host',
-                    for: 'ember-engines',
-                    until: '0.9.0',
-                    url: 'https://ember-engines.com/docs/deprecations#host-router-service',
-                    since: {
-                      enabled: '0.8.13',
-                    },
-                  });
+                if (category === 'services' && dependencyName === 'router') {
+                  deprecateHostRouterService(dependencyName);
+                }
 
                 assert(
                   `Engine parent failed to lookup '${dependencyKey}' dependency, as declared in 'engines.${engineConfigurationKey}.dependencies.${category}'.`,
