@@ -110,6 +110,7 @@ EngineInstance.reopen({
                     id: 'ember-engines.deprecation-router-service-from-host',
                     for: 'ember-engines',
                     until: '0.9.0',
+                    url: 'https://ember-engines.com/docs/deprecations#host-router-service',
                     since: {
                       enabled: '0.8.13',
                     },
