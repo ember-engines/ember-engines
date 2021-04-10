@@ -119,7 +119,7 @@ test('it can build a child engine instance with dependencies', function(
 test('it deprecates support for `router` service from host', function(
   assert
 ) {
-  assert.expect(3);
+  assert.expect(4);
 
   let BlogEngine = Engine.extend({
     router: null,
@@ -151,6 +151,13 @@ test('it deprecates support for `router` service from host', function(
 
   return blogEngineInstance.boot().then(() => {
     blogEngineInstance.lookup('service:router');
+
+    assert.deprecationsInclude(
+      `Support for the host's router service has been deprecated. Please use a different name as 'hostRouter' or 'appRouter' instead of 'router'.`,
+    );
+    
+    // app router from root application
+    blogEngineInstance.lookup('router:main');
 
     assert.deprecationsInclude(
       `Support for the host's router service has been deprecated. Please use a different name as 'hostRouter' or 'appRouter' instead of 'router'.`,
