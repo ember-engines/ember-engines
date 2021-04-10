@@ -13,7 +13,7 @@ function deprecateHostRouterService(routerName) {
       url: 'https://ember-engines.com/docs/deprecations#host-router-service',
       since: {
         enabled: '0.8.13',
-      },
+      }
     });
 }
 
