@@ -64,7 +64,9 @@ EngineInstance.reopen({
   },
 
   lookup(fullName, options) {
-    deprecateHostRouterService(fullName);
+    if (fullName === 'router') {
+      deprecateHostRouterService(fullName);
+    }
     return this._super(fullName, options);
   },
 
