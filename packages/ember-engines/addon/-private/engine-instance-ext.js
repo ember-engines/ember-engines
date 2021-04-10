@@ -2,9 +2,9 @@ import { camelize } from '@ember/string';
 import { assert, deprecate } from '@ember/debug';
 import EngineInstance from '@ember/engine/instance';
 
-function deprecateHostRouterService(routerName) {
+function deprecateHostRouterService() {
   deprecate(
-    `Support for the host's router service has been deprecated. Please use a different name as 'hostRouter' or 'appRouter' instead of '${routerName}'.`,
+    `Support for the host's router service has been deprecated. Please use a different name as 'hostRouter' or 'appRouter' instead of 'router'.`,
     false,
     {
       id: 'ember-engines.deprecation-router-service-from-host',
@@ -64,8 +64,8 @@ EngineInstance.reopen({
   },
 
   lookup(fullName, options) {
-    if (fullName === 'router') {
-      deprecateHostRouterService(fullName);
+    if (['service:router', 'router:main'].includes(fullName)) {
+      deprecateHostRouterService();
     }
     return this._super(fullName, options);
   },
@@ -126,7 +126,7 @@ EngineInstance.reopen({
                 let dependency = this.lookup(dependencyKey);
 
                 if (category === 'services' && dependencyName === 'router') {
-                  deprecateHostRouterService(dependencyName);
+                  deprecateHostRouterService();
                 }
 
                 assert(
