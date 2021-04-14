@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.8.13 (2021-04-14)
+
+#### :rocket: Enhancement
+* `ember-engines`
+  * [#759](https://github.com/ember-engines/ember-engines/pull/759) Support non-camelized engine names (deprecate camelization) ([@bertdeblock](https://github.com/bertdeblock))
+  * [#758](https://github.com/ember-engines/ember-engines/pull/758) Expose a `buildEngine` function (avoid the appearance of being an `Ember.Object`) ([@bertdeblock](https://github.com/bertdeblock))
+
+#### :bug: Bug Fix
+* `ember-engines`
+  * [#766](https://github.com/ember-engines/ember-engines/pull/766) Update `broccoli-concat` to address a major issue with cache invalidation ([@brendenpalmer](https://github.com/brendenpalmer))
+
+#### Committers: 2
+- Bert De Block ([@bertdeblock](https://github.com/bertdeblock))
+- Brenden Palmer ([@brendenpalmer](https://github.com/brendenpalmer))
+
+
 ## v0.8.12 (2021-01-29)
 
 #### :bug: Bug Fix
