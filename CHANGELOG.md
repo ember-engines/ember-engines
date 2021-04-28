@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.8.14 (2021-04-28)
+
+#### :bug: Bug Fix
+* `ember-engines`
+  * [#761](https://github.com/ember-engines/ember-engines/pull/761) [BUGFIX LTS] override assertLinkToOrigin method to noop in ember-engines ([@hmajoros](https://github.com/hmajoros))
+
+#### Committers: 1
+- Hank Majoros ([@hmajoros](https://github.com/hmajoros))
+
+
 ## v0.8.13 (2021-04-14)
 
 #### :rocket: Enhancement
