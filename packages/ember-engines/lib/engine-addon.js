@@ -44,6 +44,27 @@ const findRoot = require('./utils/find-root');
 const findHost = require('./utils/find-host');
 const processBabel = require('./utils/process-babel');
 
+// support addon bundle caching; we need to use the `TARGET_INSTANCE`
+// symbol to access the real addon when computing `ancestorHostAddons`
+// for more information, see the original PR in `ember-cli` adding this
+// optimization: https://github.com/ember-cli/ember-cli/pull/9487
+let TARGET_INSTANCE_SYMBOL = null;
+
+try {
+  const targetInstanceModule = require('ember-cli/lib/models/per-bundle-addon-cache/target-instance');
+
+  if (targetInstanceModule) {
+    TARGET_INSTANCE_SYMBOL = targetInstanceModule.TARGET_INSTANCE;
+  }
+} catch (e) {
+  // we only want to handle the error when this module isn't found; i.e.,
+  // when a consumer of `ember-engines` is using an old version of `ember-cli`
+  // (less than `ember-cli` 3.28)
+  if (!e || !e.message || !e.message.startsWith('Cannot find module')) {
+    throw e;
+  }
+}
+
 const buildExternalTree = memoize(function buildExternalTree() {
   const treePath = this.treePaths['vendor'];
   const vendorPath = treePath ? path.resolve(this.root, treePath) : null;
@@ -343,7 +364,13 @@ function buildEngine(options) {
       }
 
       hostAddons[addon.name] = addon;
-      queue.push.apply(queue, addon.addons);
+
+      queue.push.apply(
+        queue,
+        TARGET_INSTANCE_SYMBOL && addon[TARGET_INSTANCE_SYMBOL]
+          ? addon[TARGET_INSTANCE_SYMBOL].addons
+          : addon.addons
+      );
     }
 
     this._hostAddons = hostAddons;
