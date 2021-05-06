@@ -60,7 +60,7 @@ try {
   // we only want to handle the error when this module isn't found; i.e.,
   // when a consumer of `ember-engines` is using an old version of `ember-cli`
   // (less than `ember-cli` 3.28)
-  if (!e || !e.message || !e.message.startsWith('Cannot find module')) {
+  if (!e || e.code !== 'MODULE_NOT_FOUND') {
     throw e;
   }
 }
@@ -365,12 +365,11 @@ function buildEngine(options) {
 
       hostAddons[addon.name] = addon;
 
-      queue.push.apply(
-        queue,
-        TARGET_INSTANCE_SYMBOL && addon[TARGET_INSTANCE_SYMBOL]
-          ? addon[TARGET_INSTANCE_SYMBOL].addons
-          : addon.addons
-      );
+      let addons = TARGET_INSTANCE_SYMBOL && addon[TARGET_INSTANCE_SYMBOL]
+        ? addon[TARGET_INSTANCE_SYMBOL].addons
+        : addon.addons;
+
+      queue.push(...addons);
     }
 
     this._hostAddons = hostAddons;
