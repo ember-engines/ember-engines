@@ -103,7 +103,7 @@
     "ember-cli-string-utils": "^1.1.0",
     "ember-cli-version-checker": "^5.1.2",
     "ember-compatibility-helpers": "^1.2.2",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.21"
   },
   "engines": {
     "node": "10.* || >= 12"
