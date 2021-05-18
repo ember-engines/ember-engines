@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.8.15 (2021-05-18)
+
+#### :rocket: Enhancement
+* `ember-engines`
+  * [#769](https://github.com/ember-engines/ember-engines/pull/769) Support addon bundle caching as part of `ancestorHostAddons` ([@brendenpalmer](https://github.com/brendenpalmer))
+
+#### Committers: 1
+- Brenden Palmer ([@brendenpalmer](https://github.com/brendenpalmer))
+
+
 ## v0.8.14 (2021-04-28)
 
 #### :bug: Bug Fix

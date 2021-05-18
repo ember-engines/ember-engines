@@ -1,6 +1,6 @@
 {
   "name": "ember-engines-workspace",
-  "version": "0.8.14",
+  "version": "0.8.15",
   "private": true,
   "description": "Workspace for ember-engines project",
   "repository": {
