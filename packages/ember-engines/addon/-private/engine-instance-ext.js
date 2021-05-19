@@ -63,13 +63,6 @@ EngineInstance.reopen({
     this._externalRoutes = {};
   },
 
-  lookup(fullName, options) {
-    if (['service:router', 'router:main'].includes(fullName)) {
-      deprecateHostRouterService();
-    }
-    return this._super(fullName, options);
-  },
-
   buildChildEngineInstance(name, options = {}) {
     // Check dependencies cached by engine name
     let dependencies =
