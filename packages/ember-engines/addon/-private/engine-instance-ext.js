@@ -12,7 +12,7 @@ function deprecateHostRouterService() {
       until: '0.9.0',
       url: 'https://ember-engines.com/docs/deprecations#-use-alias-for-inject-router-service-from-host-application',
       since: {
-        enabled: '0.8.13',
+        enabled: '0.8.16',
       }
     });
 }
