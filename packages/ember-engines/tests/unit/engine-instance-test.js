@@ -116,6 +116,40 @@ test('it can build a child engine instance with dependencies', function(
   });
 });
 
+test('it deprecates support for `router` service from host', function(
+  assert
+) {
+  assert.expect(2);
+
+  let BlogEngine = Engine.extend({
+    router: null,
+    dependencies: Object.freeze({
+      services: ['router'],
+    }),
+  });
+
+  app.engines = {
+    blog: {
+      dependencies: {
+        services: ['router'],
+      },
+    },
+  };
+
+  app.register('engine:blog', BlogEngine);
+
+  let appInstance = app.buildInstance();
+  appInstance.setupRegistry();
+
+  let blogEngineInstance = appInstance.buildChildEngineInstance('blog');
+
+  assert.ok(blogEngineInstance);
+
+  assert.deprecationsInclude(
+    `Support for the host's router service has been deprecated. Please use a different name as 'hostRouter' or 'appRouter' instead of 'router'.`
+  );
+});
+
 test('it can build a child engine instance with dependencies that are aliased', function(
   assert
 ) {
