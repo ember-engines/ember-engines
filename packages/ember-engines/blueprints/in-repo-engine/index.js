@@ -73,12 +73,16 @@ module.exports = Object.assign({}, InRepoAddon, {
   afterInstall: function(options) {
     options.identifier = 'mount';
     InRepoAddon.afterInstall.call(this, options);
-    this.routeBlueprint.afterInstall.call(this, options);
+    if (options.type === 'routable') {
+      this.routeBlueprint.afterInstall.call(this, options);
+    }
   },
 
   afterUninstall: function(options) {
     options.identifier = 'mount';
-    this.routeBlueprint.afterUninstall.call(this, options);
+    if (options.type === 'routable') {
+      this.routeBlueprint.afterUninstall.call(this, options);
+    }
   },
 
   _generatePackageJson: function(/* options, isInstall*/) {
