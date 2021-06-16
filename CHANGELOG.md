@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.8.16 (2021-06-16)
+
+#### :bug: Bug Fix
+* `ember-engines`
+  * [#777](https://github.com/ember-engines/ember-engines/pull/777) Fix Embroider builds when using Ember older than 3.24 ([@thoov](https://github.com/thoov))
+  * [#775](https://github.com/ember-engines/ember-engines/pull/775) Fix blueprint to routeless in-repo-engine ([@villander](https://github.com/villander))
+
+#### :memo: Documentation
+* `ember-engines`
+  * [#764](https://github.com/ember-engines/ember-engines/pull/764) Add deprecation warning to router service from host ([@villander](https://github.com/villander))
+
+#### :house: Internal
+* `ember-engines`
+  * [#760](https://github.com/ember-engines/ember-engines/pull/760) Octanify dummy templates ([@bertdeblock](https://github.com/bertdeblock))
+
+#### Committers: 4
+- Bert De Block ([@bertdeblock](https://github.com/bertdeblock))
+- Michael Villander ([@villander](https://github.com/villander))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Travis Hoover ([@thoov](https://github.com/thoov))
+
+
 ## v0.8.15 (2021-05-18)
 
 #### :rocket: Enhancement
