@@ -11,7 +11,7 @@ Engine.reopen({
 
     if (!(this instanceof Application)) {
       if (!gte('ember-source', '3.24.1')) {
-        const EngineScopedLinkComponent = require('../components/link-to-component').default;
+        const EngineScopedLinkComponent = require('ember-engines/components/link-to-component').default;
         registry.register('component:link-to', EngineScopedLinkComponent);
       }
       registry.register('component:link-to-external', ExternalLinkComponent);
