@@ -1,11 +1,11 @@
 import LinkComponent from '@ember/routing/link-component';
 import { getOwner } from '@ember/application';
 import { set, get } from '@ember/object';
-import { gte } from 'ember-compatibility-helpers';
+import { macroCondition, dependencySatisfies } from '@embroider/macros';
 
 let LinkToExternal;
 
-if (gte('ember-source', '3.24.0-alpha.1')) {
+if (macroCondition(dependencySatisfies('ember-source', '> 3.24.0-alpha.1'))) {
   LinkToExternal = class LinkToExternal extends LinkComponent {
     _namespaceRoute(targetRouteName) {
       const owner = getOwner(this);
