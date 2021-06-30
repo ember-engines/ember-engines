@@ -1,4 +1,4 @@
-  import LinkComponent from '@ember/routing/link-component';
+import LinkComponent from '@ember/routing/link-component';
 import { getOwner } from '@ember/application';
 import { computed, get, set } from '@ember/object';
 import { typeOf } from '@ember/utils';
