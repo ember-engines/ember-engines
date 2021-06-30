@@ -9,7 +9,7 @@ describe('index', function() {
       const AddonClass = EmberEngines.extend({
         root: process.cwd(),
       });
-      const addon = new AddonClass();
+      const addon = new AddonClass({}, {});
       const manifest = { vendorFiles: ['one.js', 'two.js'] };
 
       addon.updateFastBootManifest(manifest);
