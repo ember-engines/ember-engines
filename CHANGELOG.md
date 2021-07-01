@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.8.17 (2021-07-01)
+
+#### :rocket: Enhancement
+* `ember-engines`
+  * [#780](https://github.com/ember-engines/ember-engines/pull/780) Improve Embroider compatibility by bringing back `@embroider/macros` usage (instead of `ember-compatibility-helpers`) ([@thoov](https://github.com/thoov))
+
+#### Committers: 1
+- Travis Hoover ([@thoov](https://github.com/thoov))
+
+
 ## v0.8.16 (2021-06-16)
 
 #### :bug: Bug Fix
