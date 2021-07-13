@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.8.18 (2021-07-13)
+
+#### :bug: Bug Fix
+* `ember-engines`
+  * [#782](https://github.com/ember-engines/ember-engines/pull/782) Bump to `@embroider/macros@0.43.0` to fix parallelization with production builds ([@thoov](https://github.com/thoov))
+
+#### Committers: 1
+- Travis Hoover ([@thoov](https://github.com/thoov))
+
+
 ## v0.8.17 (2021-07-01)
 
 #### :rocket: Enhancement
