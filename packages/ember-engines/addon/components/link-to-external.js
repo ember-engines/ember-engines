@@ -11,7 +11,7 @@ if (macroCondition(dependencySatisfies('ember-source', '> 3.24.0-alpha.1'))) {
       const owner = getOwner(this);
       
       if (!owner.mountPoint) {
-        return this._super(...arguments);
+        return super._namespaceRoute(...arguments);
       }
       
       const externalRoute = owner._getExternalRoute(targetRouteName);
