@@ -1,6 +1,6 @@
 {
   "name": "common-components",
-  "version": "0.8.18",
+  "version": "0.8.19",
   "private": true,
   "keywords": [
     "ember-addon"

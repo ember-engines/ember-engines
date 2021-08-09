@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.8.19 (2021-08-09)
+
+#### :bug: Bug Fix
+* `ember-engines`
+  * [#785](https://github.com/ember-engines/ember-engines/pull/785) Bump @embroider/macros 0.43.5 ([@thoov](https://github.com/thoov))
+
+#### :memo: Documentation
+* `ember-engines`
+  * [#778](https://github.com/ember-engines/ember-engines/pull/778) [DOC] Update Contributing Section and date info ([@villander](https://github.com/villander))
+
+#### Committers: 2
+- Michael Villander ([@villander](https://github.com/villander))
+- Travis Hoover ([@thoov](https://github.com/thoov))
+
+
 ## v0.8.18 (2021-07-13)
 
 #### :bug: Bug Fix
