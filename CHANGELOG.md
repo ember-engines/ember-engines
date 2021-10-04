@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.8.20 (2021-10-04)
+
+#### :bug: Bug Fix
+* `ember-engines`
+  * [#783](https://github.com/ember-engines/ember-engines/pull/783) [BUGFIX] Fallback to LinkTo behavior when outside an engine ([@elwayman02](https://github.com/elwayman02))
+
+#### Committers: 1
+- Jordan Hawker ([@elwayman02](https://github.com/elwayman02))
+
+
 ## v0.8.19 (2021-08-09)
 
 #### :bug: Bug Fix
