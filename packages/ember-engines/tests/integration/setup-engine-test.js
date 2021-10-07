@@ -28,7 +28,7 @@ module('Integration | Starting Engines', function () {
       // set the outer context to red
       this.set('colorValue', 'red');
 
-      await render(hbs`{{pretty-color name=colorValue}}`);
+      await render(hbs`{{pretty-color name=colorValue}}`, { owner: this.engine });
 
       assert.equal(this.element.querySelector('div').getAttribute('style'), 'color: red', 'starts as red');
 
