@@ -1,20 +1,24 @@
 import { module, test } from 'qunit';
-import startApp from '../helpers/start-app';
-import destroyApp from '../helpers/destroy-app';
+import { currentURL, visit, setupContext, setupApplicationContext, teardownContext } from '@ember/test-helpers';
 
-module('Acceptance | teardown test', function() {
+module('Acceptance | teardown test', function(hooks) {
+  hooks.beforeEach(async function() {
+    this.testContext = {};
+
+    await setupContext(this.testContext);
+    await setupApplicationContext(this.testContext);
+  });
+
   test('routeable engines clean up their container state', async function(assert) {
     let service;
     assert.expect(2);
-    this.application = startApp();
 
     await visit('/routable-engine-demo/blog/new');
 
     assert.equal(currentURL(), '/routable-engine-demo/blog/new');
-    service = this.application.__container__.lookup('service:store')
-      .__exampleServiceForTesting;
+    service = this.testContext.owner.lookup('service:store').__exampleServiceForTesting;
 
-    destroyApp(this.application);
+    await teardownContext(this.testContext);
 
     assert.ok(service.isDestroyed, 'service got destroyed');
   });
@@ -22,15 +26,13 @@ module('Acceptance | teardown test', function() {
   test('routeless engines clean up their container state', async function(assert) {
     let service;
     assert.expect(2);
-    this.application = startApp();
 
     await visit('/routeless-engine-demo');
 
     assert.equal(currentURL(), '/routeless-engine-demo');
-    service = this.application.__container__.lookup('service:store')
-      .__exampleServiceForTesting;
+    service = this.testContext.owner.lookup('service:store').__exampleServiceForTesting;
 
-    destroyApp(this.application);
+    await teardownContext(this.testContext);
 
     assert.ok(service.isDestroyed, 'service got destroyed');
   });
