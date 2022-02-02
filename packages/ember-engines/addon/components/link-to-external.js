@@ -1,22 +1,38 @@
-import LinkComponent from '@ember/routing/link-component';
+import GlimmerComponent from '@glimmer/component';
+import { setComponentTemplate } from '@glimmer/manager';
 import { getOwner } from '@ember/application';
 import { set, get } from '@ember/object';
-import { macroCondition, dependencySatisfies } from '@embroider/macros';
+import { macroCondition, dependencySatisfies, importSync } from '@embroider/macros';
+import template from '../templates/link-to-external';
 
 let LinkToExternal;
 
-if (macroCondition(dependencySatisfies('ember-source', '> 3.24.0-alpha.1'))) {
+if (macroCondition(dependencySatisfies('ember-source', '>= v4.0.0-beta.9'))) {
+  LinkToExternal = class LinkToExternal extends GlimmerComponent {
+    get route () {
+      const owner = getOwner(this);
+
+      if (!owner.mountPoint) {
+        return this.args.route;
+      }
+
+      return owner._getExternalRoute(this.args.route);
+    }
+  };
+
+  setComponentTemplate(template, LinkToExternal);
+} else if (macroCondition(dependencySatisfies('ember-source', '> 3.24.0-alpha.1'))) {
+  const LinkComponent = importSync('@ember/routing/link-component');
+
   LinkToExternal = class LinkToExternal extends LinkComponent {
     _namespaceRoute(targetRouteName) {
       const owner = getOwner(this);
-      
+
       if (!owner.mountPoint) {
         return super._namespaceRoute(...arguments);
       }
-      
-      const externalRoute = owner._getExternalRoute(targetRouteName);
 
-      return externalRoute;
+      return owner._getExternalRoute(targetRouteName);
     }
 
     // override LinkTo's assertLinkToOrigin method to noop. In LinkTo, this assertion
@@ -25,6 +41,8 @@ if (macroCondition(dependencySatisfies('ember-source', '> 3.24.0-alpha.1'))) {
     assertLinkToOrigin() {}
   };
 } else {
+  const LinkComponent = importSync('@ember/routing/link-component');
+
   LinkToExternal = LinkComponent.extend({
     didReceiveAttrs() {
       this._super(...arguments);
