@@ -17,6 +17,7 @@ module('Unit | EngineInstance', function(hooks) {
       Resolver,
       modulePrefix: config.modulePrefix,
       router: null,
+      autoboot: false
     });
 
     run(function() {
