@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import TestAdapter from '@ember/test/adapter';
 import { module, test } from 'qunit';
 import { default as _sinon } from 'sinon';
 import Initializer from 'ember-blog/initializers/ember-blog-initializer';
@@ -14,13 +14,13 @@ module('Acceptance | routable engine demo', function (hooks) {
   setupApplicationTest(hooks);
 
   hooks.beforeEach(function () {
-    originalExceptionHandler = Ember.Test.adapter.exception;
+    originalExceptionHandler = TestAdapter.exception;
     sinon = _sinon.createSandbox();
   });
 
   hooks.afterEach(function () {
     sinon.restore();
-    Ember.Test.adapter.exception = originalExceptionHandler;
+    TestAdapter.exception = originalExceptionHandler;
   });
 
   test('can invoke components', async function (assert) {
@@ -496,7 +496,7 @@ module('Acceptance | routable engine demo', function (hooks) {
   ) {
     assert.expect(3);
 
-    Ember.Test.adapter.exception = () => { };
+    TestAdapter.exception = () => { };
 
     this.owner.lookup('router:main').reopen({
       intermediateTransitionTo(routeName) {
