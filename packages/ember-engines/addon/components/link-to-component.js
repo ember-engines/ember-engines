@@ -1,11 +1,19 @@
-import LinkComponent from '@ember/routing/link-component';
+import RoutingLinkComponent from '@ember/routing/link-component';
 import { getOwner } from '@ember/application';
 import { computed, get, set } from '@ember/object';
 import { typeOf } from '@ember/utils';
 import { assert, deprecate } from '@ember/debug';
-import { macroCondition, dependencySatisfies } from '@embroider/macros';
+import { macroCondition, dependencySatisfies, importSync } from '@embroider/macros';
 
 let LinkTo;
+let LinkComponent;
+
+if (macroCondition(dependencySatisfies('@ember/legacy-built-in-components', '*'))) {
+  let { LinkComponent: LegacyLinkComponent } = importSync('@ember/legacy-built-in-components');
+  LinkComponent = LegacyLinkComponent;
+} else {
+  LinkComponent = RoutingLinkComponent;
+}
 
 if (macroCondition(dependencySatisfies('ember-source', '>= 3.24.1'))) {
   deprecate(
@@ -22,24 +30,6 @@ if (macroCondition(dependencySatisfies('ember-source', '>= 3.24.1'))) {
   );
 
   LinkTo = LinkComponent;
-} else if (macroCondition(dependencySatisfies('ember-source', '> 3.24.0-alpha.1'))) {
-  LinkTo = class EnginesLinkComponent extends LinkComponent {
-    // temporarily work around an issue in Ember 3.24.0 where when a route name is
-    // **not** defined (e.g. a QP only transition) we re-wrap the current name (essentially
-    // double namespacing it)
-    //
-    // can be removed once https://github.com/emberjs/ember.js/pull/19337 is landed and released as 3.24.1
-    @computed('route', '_currentRouterState')
-    get _route() {
-      let { route } = this;
-
-      if (route.toString() === 'UNDEFINED') {
-        return this._currentRoute;
-      } else {
-        return this._namespaceRoute(route);
-      }
-    }
-  };
 } else {
   LinkTo = LinkComponent.extend({
     _route: computed('route', '_mountPoint', '_currentRouteState', function () {
