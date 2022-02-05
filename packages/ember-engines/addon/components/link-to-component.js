@@ -1,3 +1,5 @@
+// this file is only used when ember is older than 3.24
+// ember-engines/addon/-private/engine-ext.js
 import RoutingLinkComponent from '@ember/routing/link-component';
 import { getOwner } from '@ember/application';
 import { computed, get, set } from '@ember/object';

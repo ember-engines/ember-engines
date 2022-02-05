@@ -31,42 +31,6 @@ if (macroCondition(dependencySatisfies('ember-source', '> 3.24.0-alpha.1'))) {
     // checks to make sure LinkTo is not being used inside a routeless engine
     // See this PR here for more details: https://github.com/emberjs/ember.js/pull/19477
     assertLinkToOrigin() {}
-
-    _invoke() {
-      // This patches @ember/legacy-built-in-components
-      // @ember/legacy-built-in-components don't call the generated transition resulting in nothing.
-      // Likely this is a bug caused because the addon doesn't have acces to flaggedInstrument function
-      // imported from glimmer which is triggering the transition
-      // https://github.com/emberjs/ember-legacy-built-in-components/blob/v0.4.0/addon/components/link-to.ts#L804
-      // https://github.com/emberjs/ember.js/blob/v3.28.8/packages/%40ember/-internals/glimmer/lib/components/-link-to.ts#L767
-      if (macroCondition(dependencySatisfies('@ember/legacy-built-in-components', '*'))) {
-        const result = super._invoke(...arguments);
-
-        let {
-          _route: routeName,
-          _models: models,
-          _query: queryParams,
-          replace: shouldReplace,
-        } = this;
-
-        let payload = {
-          queryParams,
-          routeName,
-        };
-
-        this._generateTransition(
-          payload,
-          routeName,
-          models,
-          queryParams,
-          shouldReplace
-        )();
-
-        return result;
-      }
-
-      return super._invoke(...arguments);
-    }
   };
 } else {
   LinkToExternal = LinkComponent.extend({
