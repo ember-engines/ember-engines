@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { render, visit, currentURL } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { setupTest, setupRenderingTest, setupApplicationTest } from 'ember-qunit';
-import { setupEngineTest } from 'ember-engines/test-support';
+import { setupEngine } from 'ember-engines/test-support';
 
 module('Integration | Starting Engines', function () {
 

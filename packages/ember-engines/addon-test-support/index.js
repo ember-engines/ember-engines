@@ -7,14 +7,14 @@ import { getContext } from '@ember/test-helpers';
  *   Responsible for:
  *     - create an engine object and set it on the provided context (e.g. `this.engine`)
  *
- * @method setupEngineTest
+ * @method setupEngine
  * @param {NestedHooks} hooks
  * @param {String} engineName
  * @public
  */
 
 export async function setupEngine(hooks, engineName) {
-  hooks.beforeEach(function() {
+  hooks.beforeEach(async function() {
     if (this.engine !== undefined) {
       throw new Error('You cannot use `setupEngine` twice for the same test setup. If you need to setup multiple engines, use `loadEngine` directly.');
     }
@@ -25,7 +25,7 @@ export async function setupEngine(hooks, engineName) {
 }
 
 function ownerHasEngine(owner, engineName) {
-  return Boolean(owner.factorFor(`engine:${engineName}`));
+  return Boolean(owner.factoryFor(`engine:${engineName}`));
 }
 
 async function buildEngineOwner(owner, engineName) {
@@ -33,7 +33,7 @@ async function buildEngineOwner(owner, engineName) {
 
   if (ownerHasEngine(owner, engineName)) {
     // eager engines
-    engineInstance = this.owner.buildChildEngineInstance(engineName, {
+    engineInstance = owner.buildChildEngineInstance(engineName, {
       routable: false,
       mountPoint: engineName,
     });
@@ -49,12 +49,11 @@ async function buildEngineOwner(owner, engineName) {
 
 async function loadEngine(engineName) {
   let { owner } = getContext();
-
-  if (!ownerHasEngine(owner, engineName) {
+  if (!ownerHasEngine(owner, engineName)) {
     // ensure that the assets are fully loaded
     let assetLoader = owner.lookup('service:asset-loader');
 
-    await this._assetLoader.loadBundle(name);
+    await assetLoader.loadBundle(name);
   }
 
   return buildEngineOwner(owner, engineName);
