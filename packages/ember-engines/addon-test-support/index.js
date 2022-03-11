@@ -1,7 +1,7 @@
 import { getContext } from '@ember/test-helpers';
 
 /**
- * Used to set up engine test. Must be called after one of the `ember-qunit`
+ * Used to set up engine for use. Must be called after one of the `ember-qunit`
  * `setup*Test()` methods.
  *
  *   Responsible for:
