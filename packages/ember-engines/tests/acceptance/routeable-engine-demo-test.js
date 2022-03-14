@@ -1,4 +1,3 @@
-import TestAdapter from '@ember/test/adapter';
 import { module, test } from 'qunit';
 import { default as _sinon } from 'sinon';
 import Initializer from 'ember-blog/initializers/ember-blog-initializer';
@@ -7,20 +6,17 @@ import { setupApplicationTest } from 'ember-qunit';
 import { currentURL, visit, find, click } from '@ember/test-helpers';
 
 
-let originalExceptionHandler;
 let sinon;
 
 module('Acceptance | routable engine demo', function (hooks) {
   setupApplicationTest(hooks);
 
   hooks.beforeEach(function () {
-    originalExceptionHandler = TestAdapter.exception;
     sinon = _sinon.createSandbox();
   });
 
   hooks.afterEach(function () {
     sinon.restore();
-    TestAdapter.exception = originalExceptionHandler;
   });
 
   test('can invoke components', async function (assert) {
@@ -495,8 +491,6 @@ module('Acceptance | routable engine demo', function (hooks) {
     assert
   ) {
     assert.expect(3);
-
-    TestAdapter.exception = () => { };
 
     this.owner.lookup('router:main').reopen({
       intermediateTransitionTo(routeName) {
