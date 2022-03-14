@@ -13,7 +13,7 @@ if (macroCondition(dependencySatisfies('@ember/legacy-built-in-components', '*')
   LinkComponent = RoutingLinkComponent;
 }
 
-if (macroCondition(dependencySatisfies('ember-source', '> 3.24.0-alpha.1'))) {
+if (macroCondition(dependencySatisfies('ember-source', '>=3.24.1 || >=4.x'))) {
   LinkToExternal = class LinkToExternal extends LinkComponent {
     _namespaceRoute(targetRouteName) {
       const owner = getOwner(this);

@@ -17,7 +17,7 @@ if (macroCondition(dependencySatisfies('@ember/legacy-built-in-components', '*')
   LinkComponent = RoutingLinkComponent;
 }
 
-if (macroCondition(dependencySatisfies('ember-source', '>= 3.24.1'))) {
+if (macroCondition(dependencySatisfies('ember-source', '>= 3.24.1 || >=4.x'))) {
   deprecate(
     `Importing from 'ember-engines/components/link-to-component' is deprecated, please use '@ember/routing/link-component' directly`,
     false,
