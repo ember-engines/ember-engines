@@ -13,5 +13,8 @@ export default buildRoutes(function() {
 
     // The diggs route throws an error to test error states
     this.route('diggs');
+
+    this.route('post-reset-namespace', { resetNamespace: true }, function() {
+    });
   });
 });
