@@ -12,6 +12,8 @@ const moduleMatcher = matchers.module;
 const reexportMatcher = matchers.reexport;
 const cssCommentMatcher = matchers.cssComment;
 
+const CreateOptions = { noFixtures: true, emberVersion: '^3.28.0' };
+
 describe('Acceptance', function() {
   describe('build', function() {
     this.timeout(450000);
@@ -29,7 +31,7 @@ describe('Acceptance', function() {
         let app = new AddonTestApp();
         let engineName = 'eager';
 
-        await app.create('engine-testing', { noFixtures: true });
+        await app.create('engine-testing', CreateOptions);
         await InRepoEngine.generate(app, engineName, { lazy: false });
 
         let output = await build(app);
@@ -61,7 +63,7 @@ describe('Acceptance', function() {
         let app = new AddonTestApp();
         let engineName = 'lazy';
 
-        await app.create('engine-testing', { noFixtures: true });
+        await app.create('engine-testing', CreateOptions);
         await InRepoEngine.generate(app, engineName, { lazy: true });
 
         let output = await build(app);
@@ -100,7 +102,7 @@ describe('Acceptance', function() {
         let app = new AddonTestApp();
         let engineName = 'lazy';
 
-        await app.create('engine-testing', { noFixtures: true });
+        await app.create('engine-testing', CreateOptions);
         await InRepoEngine.generate(app, engineName, { lazy: true });
 
         let output = await build(app, 'production');
@@ -126,7 +128,7 @@ describe('Acceptance', function() {
         let engineName = 'lazy';
         let nestedEngineName = 'eager-in-lazy';
 
-        await app.create('engine-testing', { noFixtures: true });
+        await app.create('engine-testing', CreateOptions);
         let engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
         });
@@ -184,7 +186,7 @@ describe('Acceptance', function() {
         let engineName = 'eager';
         let nestedEngineName = 'lazy-in-eager';
 
-        await app.create('engine-testing', { noFixtures: true });
+        await app.create('engine-testing', CreateOptions);
         let engine = await InRepoEngine.generate(app, engineName, {
           lazy: false,
         });
@@ -249,7 +251,7 @@ describe('Acceptance', function() {
         var engineName = 'lazy';
         var nestedEngineName = 'lazy-in-lazy';
 
-        await app.create('engine-testing', { noFixtures: true });
+        await app.create('engine-testing', CreateOptions);
         var engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
         });
@@ -317,7 +319,7 @@ describe('Acceptance', function() {
         let engineName = 'eager';
         let nestedEngineName = 'eager-in-eager';
 
-        await app.create('engine-testing', { noFixtures: true });
+        await app.create('engine-testing', CreateOptions);
         let engine = await InRepoEngine.generate(app, engineName, {
           lazy: false,
         });
@@ -365,7 +367,7 @@ describe('Acceptance', function() {
         let engineName = 'eager';
         let addonName = 'nested';
 
-        await app.create('engine-testing', { noFixtures: true });
+        await app.create('engine-testing', CreateOptions);
         let engine = await InRepoEngine.generate(app, engineName, {
           lazy: false,
         });
@@ -413,7 +415,7 @@ describe('Acceptance', function() {
         let engineName = 'lazy';
         let addonName = 'nested';
 
-        await app.create('engine-testing', { noFixtures: true });
+        await app.create('engine-testing', CreateOptions);
         let engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
         });
@@ -477,7 +479,7 @@ describe('Acceptance', function() {
         let app = new AddonTestApp();
         let engineName = 'tree-invocation-order';
 
-        await app.create('engine-testing', { noFixtures: true });
+        await app.create('engine-testing', CreateOptions);
         let engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
         });
@@ -551,7 +553,7 @@ describe('Acceptance', function() {
         let app = new AddonTestApp();
         let engineName = 'routes-hoisting';
 
-        await app.create('engine-testing', { noFixtures: true });
+        await app.create('engine-testing', CreateOptions);
         let engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
         });
@@ -582,7 +584,7 @@ describe('Acceptance', function() {
         let app = new AddonTestApp();
         let engineName = 'separate-routes';
 
-        await app.create('engine-testing', { noFixtures: true });
+        await app.create('engine-testing', CreateOptions);
         let engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
         });
@@ -615,7 +617,7 @@ describe('Acceptance', function() {
         let engineName = 'lazy';
         let addonName = 'nested';
 
-        await app.create(appName, { noFixtures: true });
+        await app.create(appName, CreateOptions);
         let addon = await InRepoAddon.generate(app, addonName);
         let engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
@@ -698,7 +700,7 @@ describe('Acceptance', function() {
         let engineName = 'lazy';
         let addonName = 'nested';
 
-        await app.create(appName, { noFixtures: true });
+        await app.create(appName, CreateOptions);
         let addon = await InRepoAddon.generate(app, addonName);
         let engine = await InRepoEngine.generate(app, engineName, {
           lazy: true,
