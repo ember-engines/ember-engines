@@ -53,7 +53,7 @@ async function loadEngine(engineName) {
     // ensure that the assets are fully loaded
     let assetLoader = owner.lookup('service:asset-loader');
 
-    await assetLoader.loadBundle(name);
+    await assetLoader.loadBundle(engineName);
   }
 
   return buildEngineOwner(owner, engineName);
