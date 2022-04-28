@@ -1,6 +1,17 @@
 # Changelog
 
 
+
+## v0.8.22 (2022-04-28)
+
+#### :rocket: Enhancement
+* `eager-blog`, `ember-blog`, `ember-chat`, `ember-engines`
+  * [#798](https://github.com/ember-engines/ember-engines/pull/798) Ember 4 compatibility ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 1
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+
+
 ## v0.8.21 (2022-04-28)
 
 #### :bug: Bug Fix
