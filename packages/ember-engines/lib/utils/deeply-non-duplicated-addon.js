@@ -1,5 +1,10 @@
 'use strict';
 
+// Array of addon names that should not be deduped.
+const ADDONS_TO_EXCLUDE_FROM_DEDUPE = [
+  'ember-cli-babel',
+];
+
 /**
  * Deduplicate one addon's children addons recursively from hostAddons.
  *
@@ -20,6 +25,10 @@ module.exports = function deeplyNonDuplicatedAddon(hostAddons, dedupedAddon, tre
       return true;
     }
 
+    if (ADDONS_TO_EXCLUDE_FROM_DEDUPE.includes(addon.name)) {
+      return true;
+    }
+    
     if (addon.addons.length > 0) {
       addon._orginalAddons = addon.addons;
       deeplyNonDuplicatedAddon(hostAddons, addon, treeName);

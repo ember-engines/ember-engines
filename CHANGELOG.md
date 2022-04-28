@@ -1,5 +1,23 @@
 # Changelog
 
+
+## v0.8.21 (2022-04-28)
+
+#### :bug: Bug Fix
+* `ember-engines`
+  * [#804](https://github.com/ember-engines/ember-engines/pull/804) Add exclude list to addon dedupe logic ([@nlfurniss](https://github.com/nlfurniss))
+  * [#794](https://github.com/ember-engines/ember-engines/pull/794) Fix usage of dependencySatisfies with a peerDependency ([@anehx](https://github.com/anehx))
+
+#### :house: Internal
+* `eager-blog`, `ember-engines`
+  * [#797](https://github.com/ember-engines/ember-engines/pull/797) Update to ember qunit 5 ([@BobrImperator](https://github.com/BobrImperator))
+
+#### Committers: 3
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- Jonas Metzener ([@anehx](https://github.com/anehx))
+- Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
+
+
 ## v0.8.20 (2021-10-04)
 
 #### :bug: Bug Fix

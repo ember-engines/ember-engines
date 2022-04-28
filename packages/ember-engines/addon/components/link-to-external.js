@@ -1,15 +1,23 @@
-import LinkComponent from '@ember/routing/link-component';
+import { LinkTo as RoutingLinkComponent } from '@ember/routing';
 import { getOwner } from '@ember/application';
 import { set, get } from '@ember/object';
-import { macroCondition, dependencySatisfies } from '@embroider/macros';
+import { macroCondition, dependencySatisfies, importSync } from '@embroider/macros';
 
 let LinkToExternal;
+let LinkComponent;
 
-if (macroCondition(dependencySatisfies('ember-source', '> 3.24.0-alpha.1'))) {
+if (macroCondition(dependencySatisfies('@ember/legacy-built-in-components', '*'))) {
+  let { LinkComponent: LegacyLinkComponent } = importSync('@ember/legacy-built-in-components');
+  LinkComponent = LegacyLinkComponent;
+} else {
+  LinkComponent = RoutingLinkComponent;
+}
+
+if (macroCondition(dependencySatisfies('ember-source', '>=3.24.1 || >=4.x'))) {
   LinkToExternal = class LinkToExternal extends LinkComponent {
     _namespaceRoute(targetRouteName) {
       const owner = getOwner(this);
-      
+     
       if (!owner.mountPoint) {
         return super._namespaceRoute(...arguments);
       }

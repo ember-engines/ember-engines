@@ -1,37 +1,39 @@
 import { module, test } from 'qunit';
-import startApp from '../helpers/start-app';
-import destroyApp from '../helpers/destroy-app';
+import { currentURL, visit, setupContext, setupApplicationContext, teardownContext } from '@ember/test-helpers';
 
-module('Acceptance | teardown test');
+module('Acceptance | teardown test', function(hooks) {
+  hooks.beforeEach(async function() {
+    this.testContext = {};
 
-test('routeable engines clean up their container state', async function(assert) {
-  let service;
-  assert.expect(2);
-  this.application = startApp();
+    await setupContext(this.testContext);
+    await setupApplicationContext(this.testContext);
+  });
 
-  await visit('/routable-engine-demo/blog/new');
+  test('routeable engines clean up their container state', async function(assert) {
+    let service;
+    assert.expect(2);
 
-  assert.equal(currentURL(), '/routable-engine-demo/blog/new');
-  service = this.application.__container__.lookup('service:store')
-    .__exampleServiceForTesting;
+    await visit('/routable-engine-demo/blog/new');
 
-  destroyApp(this.application);
+    assert.equal(currentURL(), '/routable-engine-demo/blog/new');
+    service = this.testContext.owner.lookup('service:store').__exampleServiceForTesting;
 
-  assert.ok(service.isDestroyed, 'service got destroyed');
-});
+    await teardownContext(this.testContext);
 
-test('routeless engines clean up their container state', async function(assert) {
-  let service;
-  assert.expect(2);
-  this.application = startApp();
+    assert.ok(service.isDestroyed, 'service got destroyed');
+  });
 
-  await visit('/routeless-engine-demo');
+  test('routeless engines clean up their container state', async function(assert) {
+    let service;
+    assert.expect(2);
 
-  assert.equal(currentURL(), '/routeless-engine-demo');
-  service = this.application.__container__.lookup('service:store')
-    .__exampleServiceForTesting;
+    await visit('/routeless-engine-demo');
 
-  destroyApp(this.application);
+    assert.equal(currentURL(), '/routeless-engine-demo');
+    service = this.testContext.owner.lookup('service:store').__exampleServiceForTesting;
 
-  assert.ok(service.isDestroyed, 'service got destroyed');
+    await teardownContext(this.testContext);
+
+    assert.ok(service.isDestroyed, 'service got destroyed');
+  });
 });

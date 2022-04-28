@@ -9,7 +9,7 @@ Engine.reopen({
     let registry = this._super(...arguments);
 
     if (!(this instanceof Application)) {
-      if (macroCondition(!dependencySatisfies('ember-source', '>= 3.24.1'))) {
+      if (macroCondition(!dependencySatisfies('ember-source', '>= 3.24.1 || >=4.x'))) {
         const EngineScopedLinkComponent = importSync('ember-engines/components/link-to-component').default;
         registry.register('component:link-to', EngineScopedLinkComponent);
       }
