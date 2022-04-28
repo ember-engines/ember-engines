@@ -1,6 +1,6 @@
 {
   "name": "ember-engines",
-  "version": "0.8.20",
+  "version": "0.8.21",
   "description": "Composable applications for ambitious user experiences",
   "directories": {
     "doc": "doc",
@@ -44,10 +44,10 @@
     "broccoli-asset-rev": "^3.0.0",
     "chai": "^4.2.0",
     "common-tags": "^1.8.0",
-    "eager-blog": "0.8.20",
+    "eager-blog": "0.8.21",
     "ember-auto-import": "^2.2.0",
-    "ember-blog": "0.8.20",
-    "ember-chat": "0.8.20",
+    "ember-blog": "0.8.21",
+    "ember-chat": "0.8.21",
     "ember-cli": "~3.17.0",
     "ember-cli-addon-tests": "^0.11.1",
     "ember-cli-app-version": "^3.2.0",
