@@ -13,12 +13,12 @@ module('Unit | EngineInstance', function(hooks) {
   hooks.beforeEach(function() {
     EnginesInitializer.initialize();
 
-    App = Application.extend({
-      Resolver,
-      modulePrefix: config.modulePrefix,
-      router: null,
-      autoboot: false
-    });
+    App = class EmberApp extends Application {
+      Resolver = Resolver
+      modulePrefix = config.modulePrefix
+      router = null
+      autoboot = false
+    }
 
     run(function() {
       app = App.create();
@@ -40,10 +40,11 @@ module('Unit | EngineInstance', function(hooks) {
   ) {
     assert.expect(1);
 
-    let BlogEngine = Engine.extend({
-      router: null,
-      dependencies: Object.freeze({}),
-    });
+    class BlogEngine extends Engine {
+      Resolver = Resolver;
+      router = null
+      dependencies = Object.freeze({})
+    }
 
     app.engines = undefined;
 
@@ -64,7 +65,10 @@ module('Unit | EngineInstance', function(hooks) {
   ) {
     assert.expect(1);
 
-    let BlogEngine = Engine.extend({ router: null });
+    class BlogEngine extends Engine {
+      Resolver = Resolver;
+      router = null
+    }
 
     app.register('engine:blog', BlogEngine);
 
@@ -83,12 +87,13 @@ module('Unit | EngineInstance', function(hooks) {
   ) {
     assert.expect(2);
 
-    let BlogEngine = Engine.extend({
-      router: null,
-      dependencies: Object.freeze({
+    class BlogEngine extends Engine {
+      Resolver = Resolver
+      router = null
+      dependencies = Object.freeze({
         services: ['store'],
-      }),
-    });
+      })
+    }
 
     app.engines = {
       blog: {
@@ -121,12 +126,13 @@ module('Unit | EngineInstance', function(hooks) {
   ) {
     assert.expect(2);
 
-    let BlogEngine = Engine.extend({
-      router: null,
-      dependencies: Object.freeze({
+    class BlogEngine extends Engine {
+      Resolver = Resolver
+      router = null
+      dependencies = Object.freeze({
         services: ['router'],
-      }),
-    });
+      })
+    }
 
     app.engines = {
       blog: {
@@ -155,14 +161,15 @@ module('Unit | EngineInstance', function(hooks) {
   ) {
     assert.expect(2);
 
-    let BlogEngine = Engine.extend({
-      router: null,
-      dependencies: Object.freeze({
+    class BlogEngine extends Engine {
+      Resolver = Resolver
+      router = null
+      dependencies = Object.freeze({
         services: [
           'data-store', // NOTE: Blog engine uses alias to 'store'
-        ],
-      }),
-    });
+        ]
+      })
+    }
 
     app.engines = {
       blog: {
@@ -195,19 +202,20 @@ module('Unit | EngineInstance', function(hooks) {
   test('it deprecates support for camelized engine names', async function(assert) {
     assert.expect(6);
 
-    let NormalBlogEngine = Engine.extend({
-      router: null,
-      dependencies: Object.freeze({
+    class NormalBlogEngine extends Engine {
+      Resolver = Resolver
+      router = null
+      dependencies = Object.freeze({
         services: ['store'],
-      }),
-    });
-
-    let SuperBlogEngine = Engine.extend({
-      router: null,
-      dependencies: Object.freeze({
+      })
+    }
+    class SuperBlogEngine extends Engine {
+      Resolver = Resolver
+      router = null
+      dependencies = Object.freeze({
         services: ['store'],
-      }),
-    });
+      })
+    }
 
     app.engines = {
       'normal-blog': {

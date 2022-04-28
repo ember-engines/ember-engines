@@ -29,7 +29,7 @@ module("Integration | Component | component-with-link-to-external", function(
 
     await render(hbs`
     {{#test-component}}
-      {{#link-to "view"}}Link To{{/link-to}}
+      {{#link-to route="view"}}Link To{{/link-to}}
       {{#link-to-external "home"}}Link To External{{/link-to-external}}
     {{/test-component}}
   `);

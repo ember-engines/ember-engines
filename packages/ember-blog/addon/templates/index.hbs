@@ -1,5 +1,5 @@
 <ul>
-  <li>{{#link-to "post" 1 class="routable-post-1-link"}}Go to post #1{{/link-to}}</li>
-  <li>{{#link-to "post" 1 (query-params lang="Japanese") class="routable-post-1-link-jp"}}Go to post #1 with Japanese as language{{/link-to}}</li>
+  <li><LinkTo @route="post" @model=1 class="routable-post-1-link">Go to post #1</LinkTo></li>
   <li><button {{action "goToPostWithChinese"}} class="routable-post-1-link-ch">Go to post #1 with Chinese as language programmatically</button></li>
+  <li><LinkTo @route="post" @model=1 @query={{hash lang="Japanese"}} class="routable-post-1-link-jp"> Go to post #1 with Japanese as language</LinkTo></li>
 </ul>

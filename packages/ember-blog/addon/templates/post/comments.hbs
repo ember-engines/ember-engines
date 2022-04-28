@@ -1,5 +1,5 @@
-<h4 class="comments">Comments for {{model.title}}</h4>
+<h4 class="comments">Comments for {{this.model.title}}</h4>
 
-{{#link-to "post" class="back-to-post-link"}}
+<LinkTo @route="post" class="back-to-post-link">
   Back to Post
-{{/link-to}}
+</LinkTo>
