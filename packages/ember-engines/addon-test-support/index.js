@@ -34,7 +34,7 @@ async function buildEngineOwner(owner, engineName) {
   if (ownerHasEngine(owner, engineName)) {
     // eager engines
     engineInstance = owner.buildChildEngineInstance(engineName, {
-      routable: false,
+      routable: true,
       mountPoint: engineName,
     });
 

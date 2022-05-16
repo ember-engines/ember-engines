@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { render, visit, currentURL } from '@ember/test-helpers';
+import { render, click, visit, currentURL } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { setupTest, setupRenderingTest, setupApplicationTest } from 'ember-qunit';
 import { setupEngine } from 'ember-engines/test-support';
@@ -28,13 +28,26 @@ module('Integration | Starting Engines', function () {
       // set the outer context to red
       this.set('colorValue', 'red');
 
-      await render(hbs`{{pretty-color name=colorValue}}`, { owner: this.engine });
+      await render(hbs`<PrettyColor @name={{this.colorValue}} />`, { owner: this.engine });
 
-      assert.equal(this.element.querySelector('div').getAttribute('style'), 'color: red', 'starts as red');
+      assert.equal(this.element.querySelector('[data-test-pretty-color]').textContent.trim(), 'Pretty Color: red', 'starts as red');
 
       this.set('colorValue', 'blue');
 
-      assert.equal(this.element.querySelector('div').getAttribute('style'), 'color: blue', 'updates to blue');
+      assert.equal(this.element.querySelector('[data-test-pretty-color]').textContent.trim(), 'Pretty Color: blue', 'updates to blue');
+    });
+
+    test('should update title on button click', async function(assert) {
+      assert.expect(2);
+
+      await render(hbs`<MagicTitle />`, { owner: this.engine });
+
+      assert.equal(this.element.querySelector('h2').textContent.trim(), 'Hello World', 'initial text is hello world');
+
+      // Click on the button
+      await click('[data-test-title-button]');
+
+      assert.equal(this.element.querySelector('h2').textContent.trim(), 'This is Magic', 'title changes after click');
     });
   });
 
