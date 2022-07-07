@@ -1,3 +1,4 @@
+/* global require */
 import { getContext } from '@ember/test-helpers';
 
 /**
@@ -13,7 +14,7 @@ import { getContext } from '@ember/test-helpers';
  * @public
  */
 
-export async function setupEngine(hooks, engineName) {
+export function setupEngine(hooks, engineName) {
   hooks.beforeEach(async function() {
     if (this.engine !== undefined) {
       throw new Error('You cannot use `setupEngine` twice for the same test setup. If you need to setup multiple engines, use `loadEngine` directly.');
@@ -25,7 +26,7 @@ export async function setupEngine(hooks, engineName) {
 }
 
 function ownerHasEngine(owner, engineName) {
-  return Boolean(owner.factoryFor(`engine:${engineName}`));
+  return owner.hasRegistration(`engine:${engineName}`);
 }
 
 async function buildEngineOwner(owner, engineName) {
@@ -54,6 +55,10 @@ async function loadEngine(engineName) {
     let assetLoader = owner.lookup('service:asset-loader');
 
     await assetLoader.loadBundle(engineName);
+
+    // ownerHasEngine does registry lookup and caches "miss".
+    // With register() we tell registry that module is now available.
+    owner.register(`engine:${engineName}`, require(`${engineName}/engine`).default);
   }
 
   return buildEngineOwner(owner, engineName);
