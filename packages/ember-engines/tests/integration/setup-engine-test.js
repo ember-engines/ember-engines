@@ -4,7 +4,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { setupTest, setupRenderingTest, setupApplicationTest } from 'ember-qunit';
 import { setupEngine } from 'ember-engines/test-support';
 
-module('Integration | Starting Engines', function () {
+module('Integration | setupEngine', function () {
 
   module('setupEngineTest', function (hooks) {
     setupTest(hooks);
