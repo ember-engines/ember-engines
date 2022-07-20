@@ -72,7 +72,7 @@ async function buildEngineOwner(owner, engineName) {
   return engineInstance;
 }
 
-async function loadEngine(engineName) {
+export async function loadEngine(engineName) {
   let { owner } = getContext();
   if (!ownerHasEngine(owner, engineName)) {
     // ensure that the assets are fully loaded
