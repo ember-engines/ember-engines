@@ -2,6 +2,17 @@
 
 
 
+
+## v0.8.23 (2022-07-28)
+
+#### :rocket: Enhancement
+* `ember-blog`, `ember-engines`
+  * [#653](https://github.com/ember-engines/ember-engines/pull/653) Improve Test API for Engines ([@villander](https://github.com/villander))
+
+#### Committers: 2
+- Dan Gebhardt ([@dgeb](https://github.com/dgeb))
+- Michael Villander ([@villander](https://github.com/villander))
+
 ## v0.8.22 (2022-04-28)
 
 #### :rocket: Enhancement
