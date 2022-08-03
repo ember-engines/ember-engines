@@ -1,5 +1,3 @@
-import Component from '@glimmer/component';
-import { setComponentTemplate } from '@glimmer/manager';
 import { LinkTo as RoutingLinkComponent } from '@ember/routing';
 import { getOwner } from '@ember/application';
 import { set, get } from '@ember/object';
@@ -16,13 +14,16 @@ if (macroCondition(dependencySatisfies('@ember/legacy-built-in-components', '*')
   LinkComponent = RoutingLinkComponent;
 }
 if (macroCondition(dependencySatisfies('ember-source', '>= v4.0.0-beta.9'))) {
+  const { default: Component } = importSync('@glimmer/component');
+  const { setComponentTemplate } = importSync('@glimmer/manager');
+
   LinkToExternal = class LinkToExternal extends Component {
     get route () {
       return getOwner(this)._getExternalRoute(this.args.route);
     }
   };
-  setComponentTemplate(template, LinkToExternal);
 
+  setComponentTemplate(template, LinkToExternal);
 } else if (macroCondition(dependencySatisfies('ember-source', '>=3.24.1 || >=4.x'))) {
   LinkToExternal = class LinkToExternal extends LinkComponent {
     _namespaceRoute(targetRouteName) {
