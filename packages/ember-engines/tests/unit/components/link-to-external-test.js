@@ -11,11 +11,6 @@ module('Integration | Component | pretty color', function(hooks) {
     this.owner._externalRoutes['home'] = 'application';
   });
 
-  test('it renders properly [curly braces]', async function(assert) {
-    await render(hbs`{{link-to-external 'home' 'home'}}`);
-    assert.equal(this.element.querySelector('a').textContent, 'home');
-  });
-
   test('it renders properly [angle brackets]', async function(assert) {
     await render(hbs`<LinkToExternal @route='home'>home</LinkToExternal>`);
     assert.equal(this.element.querySelector('a').textContent, 'home');

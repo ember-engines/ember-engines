@@ -24,19 +24,6 @@ module("Integration | Component | component-with-link-to-external", function(
     this.owner._externalRoutes['home'] = 'application';
   });
 
-  test("component renders with link-to-external [curly braces]", async function(assert) {
-    assert.expect(1);
-
-    await render(hbs`
-    {{#test-component}}
-      {{#link-to route="view"}}Link To{{/link-to}}
-      {{#link-to-external "home"}}Link To External{{/link-to-external}}
-    {{/test-component}}
-  `);
-
-    assert.ok(this.element);
-  });
-
   test("component renders with link-to-external [angle brackets]", async function(assert) {
     assert.expect(1);
 
