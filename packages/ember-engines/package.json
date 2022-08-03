@@ -109,8 +109,7 @@
     "lodash": "^4.17.11"
   },
   "peerDependencies": {
-    "ember-source": "^3.12 || 4",
-    "@ember/legacy-built-in-components": "*"
+    "ember-source": "^3.12 || 4"
   },
   "engines": {
     "node": "10.* || >= 12"

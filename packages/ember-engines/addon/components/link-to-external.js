@@ -5,14 +5,7 @@ import { macroCondition, dependencySatisfies, importSync } from '@embroider/macr
 import template from '../templates/link-to-external-template';
 
 let LinkToExternal;
-let LinkComponent;
 
-if (macroCondition(dependencySatisfies('@ember/legacy-built-in-components', '*'))) {
-  let { LinkComponent: LegacyLinkComponent } = importSync('@ember/legacy-built-in-components');
-  LinkComponent = LegacyLinkComponent;
-} else {
-  LinkComponent = RoutingLinkComponent;
-}
 if (macroCondition(dependencySatisfies('ember-source', '>= v4.0.0-beta.9'))) {
   const { default: Component } = importSync('@glimmer/component');
   const { setComponentTemplate } = importSync('@glimmer/manager');
@@ -25,7 +18,7 @@ if (macroCondition(dependencySatisfies('ember-source', '>= v4.0.0-beta.9'))) {
 
   setComponentTemplate(template, LinkToExternal);
 } else if (macroCondition(dependencySatisfies('ember-source', '>=3.24.1 || >=4.x'))) {
-  LinkToExternal = class LinkToExternal extends LinkComponent {
+  LinkToExternal = class LinkToExternal extends RoutingLinkComponent {
     _namespaceRoute(targetRouteName) {
       const owner = getOwner(this);
      
@@ -44,7 +37,7 @@ if (macroCondition(dependencySatisfies('ember-source', '>= v4.0.0-beta.9'))) {
     assertLinkToOrigin() {}
   };
 } else {
-  LinkToExternal = LinkComponent.extend({
+  LinkToExternal = RoutingLinkComponent.extend({
     didReceiveAttrs() {
       this._super(...arguments);
 
