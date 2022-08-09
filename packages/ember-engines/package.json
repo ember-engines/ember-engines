@@ -32,7 +32,8 @@
   },
   "authors": [
     "Dan Gebhardt",
-    "Robert Jackson"
+    "Robert Jackson",
+    "Michael Villander"
   ],
   "license": "MIT",
   "devDependencies": {
