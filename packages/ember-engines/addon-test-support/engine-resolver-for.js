@@ -31,7 +31,7 @@ export default function engineResolverFor(
   podModulePrefix = undefined
 ) {
   deprecate(
-    "Use of `engineResolverFor` has been deprecated. Instead use `setupEngine(hooks, 'engine-name')` imported from `ember-engines/test-support` to load and setup the engine you need",
+    "Use of `engineResolverFor` has been deprecated. Instead use `setupEngine(hooks, 'engine-name')` imported from `ember-engines/test-support` to load the engine you need.",
     false,
     {
       id: 'ember-engines.addon-test-support.engine-resolver-for',
@@ -42,6 +42,7 @@ export default function engineResolverFor(
         available: '0.8.23',
       }
     });
+
   let Resolver;
 
   if (require.has(`${engineName}/resolver`)) {
