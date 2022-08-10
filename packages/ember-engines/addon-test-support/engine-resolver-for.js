@@ -1,5 +1,6 @@
 /* global require */
 import EmberResolver from 'ember-resolver';
+import { deprecate } from '@ember/debug';
 
 /**
  * Gets the resolver class used by an Engine and creates an instance to be used
@@ -29,6 +30,18 @@ export default function engineResolverFor(
   modulePrefix = engineName,
   podModulePrefix = undefined
 ) {
+  deprecate(
+    "Use of `engineResolverFor` has been deprecated. Instead use `setupEngine(hooks, 'engine-name')` imported from `ember-engines/test-support` to load and setup the engine you need",
+    false,
+    {
+      id: 'ember-engines.addon-test-support.engine-resolver-for',
+      for: 'ember-engines',
+      until: '1.0.0',
+      since: {
+        enabled: '0.8.23',
+        available: '0.8.23',
+      }
+    });
   let Resolver;
 
   if (require.has(`${engineName}/resolver`)) {
