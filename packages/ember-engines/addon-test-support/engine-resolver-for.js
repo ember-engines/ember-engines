@@ -38,8 +38,8 @@ export default function engineResolverFor(
       for: 'ember-engines',
       until: '1.0.0',
       since: {
-        enabled: '0.8.23',
-        available: '0.8.23',
+        enabled: '0.8.24',
+        available: '0.8.24',
       }
     });
 
