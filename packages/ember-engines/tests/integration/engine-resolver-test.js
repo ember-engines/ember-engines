@@ -16,4 +16,14 @@ module("Integration | Component | engine-resolver-for | hello-name", function(
 
     assert.equal(this.element.innerText.trim(), "Hello, Jerry!");
   });
+
+  test("it deprecates support for `engineResolveFor()`", async function(assert) {
+    assert.expect(1);
+
+    setupRenderingTest(hooks, { resolver: engineResolverFor("eager-blog") });
+
+    assert.deprecationsInclude(
+      "Use of `engineResolverFor` has been deprecated. Instead use `setupEngine(hooks, 'engine-name')` imported from `ember-engines/test-support` to load the engine you need."
+    );
+  });
 });
