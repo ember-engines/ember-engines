@@ -15,6 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
       - run: yarn install --frozen-lockfile
       - run: yarn lint
       - run: yarn test:ember
@@ -27,6 +29,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
       - run: yarn install --no-lockfile
       - run: yarn test:ember
 
