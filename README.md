@@ -1,4 +1,4 @@
-# ember-engines [![npm version](https://badge.fury.io/js/ember-engines.svg)](https://badge.fury.io/js/ember-engines) [![Build Status](https://travis-ci.org/ember-engines/ember-engines.svg?branch=master)](https://travis-ci.org/ember-engines/ember-engines)
+# ember-engines [![npm version](https://badge.fury.io/js/ember-engines.svg)](https://badge.fury.io/js/ember-engines) [![Build Status](https://github.com/ember-engines/ember-engines/actions/workflows/ci.yml/badge.svg)](https://github.com/ember-engines/ember-engines/actions/workflows/ci.yml)
 
 This Ember addon implements the functionality described in the [Ember Engines
 RFC](https://github.com/emberjs/rfcs/blob/master/text/0010-engines.md). Engines allow multiple logical
