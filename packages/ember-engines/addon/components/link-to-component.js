@@ -5,17 +5,9 @@ import { getOwner } from '@ember/application';
 import { computed, get, set } from '@ember/object';
 import { typeOf } from '@ember/utils';
 import { assert, deprecate } from '@ember/debug';
-import { macroCondition, dependencySatisfies, importSync } from '@embroider/macros';
+import { macroCondition, dependencySatisfies } from '@embroider/macros';
 
 let LinkTo;
-let LinkComponent;
-
-if (macroCondition(dependencySatisfies('@ember/legacy-built-in-components', '*'))) {
-  let { LinkComponent: LegacyLinkComponent } = importSync('@ember/legacy-built-in-components');
-  LinkComponent = LegacyLinkComponent;
-} else {
-  LinkComponent = RoutingLinkComponent;
-}
 
 if (macroCondition(dependencySatisfies('ember-source', '>= 3.24.1 || >=4.x'))) {
   deprecate(
@@ -31,9 +23,9 @@ if (macroCondition(dependencySatisfies('ember-source', '>= 3.24.1 || >=4.x'))) {
     }
   );
 
-  LinkTo = LinkComponent;
+  LinkTo = RoutingLinkComponent;
 } else {
-  LinkTo = LinkComponent.extend({
+  LinkTo = RoutingLinkComponent.extend({
     _route: computed('route', '_mountPoint', '_currentRouteState', function () {
       let routeName = this._super(...arguments);
       let mountPoint = get(this, '_mountPoint');
