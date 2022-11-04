@@ -13,10 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 14.x
+          cache: 'yarn'
       - run: yarn install --frozen-lockfile
       - run: yarn lint
       - run: yarn test:ember
@@ -27,18 +28,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 14.x
+          cache: 'yarn'
       - run: yarn install --no-lockfile
       - run: yarn test:ember
 
   try-scenarios:
     name: "Try: ${{ matrix.ember-try-scenario }}"
-
     runs-on: ubuntu-latest
-
     needs: test
 
     strategy:
@@ -58,10 +58,11 @@ jobs:
           - ember-default-with-jquery
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 14.x
+          cache: 'yarn'
       - name: install dependencies
         run: yarn install --frozen-lockfile
       - name: test
