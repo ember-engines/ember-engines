@@ -112,6 +112,11 @@
     "ember-source": "^3.12 || 4",
     "@ember/legacy-built-in-components": "*"
   },
+  "peerDependenciesMeta": {
+    "@ember/legacy-built-in-components": {
+      "optional": true
+    }
+  },
   "engines": {
     "node": "14.* || 16.* || >= 18"
   },
