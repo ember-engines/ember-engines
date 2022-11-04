@@ -13,7 +13,10 @@
 /.template-lintrc.js
 /.travis.yml
 /.watchmanconfig
+/appveyor.yml
 /bower.json
+/CONTRIBUTING.md
+/bin
 /config/ember-try.js
 /dist
 /node-tests
