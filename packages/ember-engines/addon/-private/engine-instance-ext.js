@@ -1,4 +1,3 @@
-import { camelize } from '@ember/string';
 import { assert, deprecate } from '@ember/debug';
 import EngineInstance from '@ember/engine/instance';
 
@@ -76,23 +75,6 @@ EngineInstance.reopen({
       let engineConfigurations = this.base.engines || {};
       let engineConfigurationKey = name;
       let engineConfiguration = engineConfigurations[engineConfigurationKey];
-
-      if (!engineConfiguration) {
-        engineConfigurationKey = camelize(name);
-        engineConfiguration = engineConfigurations[engineConfigurationKey];
-
-        deprecate(
-          `Support for camelized engine names has been deprecated. Please use '${name}' instead of '${engineConfigurationKey}'.`,
-          typeof engineConfiguration !== 'object',
-          {
-            id: 'ember-engines.deprecation-camelized-engine-names',
-            for: 'ember-engines',
-            until: '0.9.0',
-            since: {
-              enabled: '0.8.13',
-            },
-          });
-      }
 
       if (engineConfiguration) {
         let engineDependencies = engineConfiguration.dependencies;
