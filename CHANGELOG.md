@@ -3,6 +3,31 @@
 
 
 
+
+## v0.9.0 (2022-11-17)
+
+#### :boom: Breaking Change
+
+* [#825](https://github.com/ember-engines/ember-engines/pull/825) Drop support for Ember < 3.24.1 and importing from 'ember-engines/com… ([@SergeAstapov](https://github.com/SergeAstapov))
+* [#824](https://github.com/ember-engines/ember-engines/pull/824) Drop support for camelized engine names in Engine Config ([@SergeAstapov](https://github.com/SergeAstapov))
+* [#818](https://github.com/ember-engines/ember-engines/pull/818) Drop unsupported Node.js versions < 14 ([@SergeAstapov](https://github.com/SergeAstapov))
+
+#### :rocket: Enhancement
+
+* [#827](https://github.com/ember-engines/ember-engines/pull/827) Make @ember/legacy-built-in-components optional peer dependency ([@SergeAstapov](https://github.com/SergeAstapov))
+* [#808](https://github.com/ember-engines/ember-engines/pull/808) Move broccoli-test-helper to devDependencies ([@ginomiglio](https://github.com/ginomiglio))
+
+#### :house: Internal
+
+* [#828](https://github.com/ember-engines/ember-engines/pull/828) Update .npmignore to add few entries ([@SergeAstapov](https://github.com/SergeAstapov))
+
+#### Committers: 5
+- Chris Krycho ([@chriskrycho](https://github.com/chriskrycho))
+- Gino ([@ginomiglio](https://github.com/ginomiglio))
+- Matthew Irish ([@meirish](https://github.com/meirish))
+- Michael Villander ([@villander](https://github.com/villander))
+- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))
+
 ## v0.8.23 (2022-07-28)
 
 #### :rocket: Enhancement
