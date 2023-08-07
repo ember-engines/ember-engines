@@ -577,6 +577,28 @@ describe('Acceptance', function() {
           );
         });
       });
+      
+    it('correctly ignores app re-exports', async function() {
+      let app = new AddonTestApp();
+      let engineName = 'app-exports';
+
+      await app.create('engine-testing', CreateOptions);
+      let engine = await InRepoEngine.generate(app, engineName, {
+        lazy: true
+      });
+
+      engine.writeFixture(require(`../fixtures/${engineName}/data`));
+
+      let output = await build(app);
+
+      let inAppScope = moduleMatcher(`engine-testing/components/cant-see-me`);
+      let inEngineScope = moduleMatcher(`${engineName}/components/cant-see-me`);
+      output.doesNotContain(`assets/engine-testing.js`, inAppScope);
+      output.contains(
+        `engines-dist/${engineName}/assets/engine.js`,
+        inEngineScope
+      );
+    });
 
     it(
       'correctly separates routes.js and its imports when lazyLoading.includeRoutesInApplication is false',

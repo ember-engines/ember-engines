@@ -641,6 +641,11 @@ function buildEngine(options) {
       return engineRoutesTree;
     };
 
+    // Replace `treeForApp` so no engine files leak into app namespace
+    // This prevents accidental usage of engine components/helpers/utilities
+    // inside of a host app
+    this.treeForApp = function() {};
+
     // Replace `treeForAddon` so that we control how this engine gets built.
     // We may or may not want it to be combined like a default addon.
     this.treeForAddon = function() {
