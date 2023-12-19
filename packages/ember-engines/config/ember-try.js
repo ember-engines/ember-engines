@@ -29,7 +29,6 @@ module.exports = async function() {
             "ember-source": "^4.4.0-alpha.1",
             "ember-cli": "~3.28.0",
             "ember-cli-app-version": "^5.0.0",
-            '@ember/legacy-built-in-components': "~0.4.0",
           }
         }
       },
@@ -39,8 +38,8 @@ module.exports = async function() {
           devDependencies: {
             "ember-source": await getChannelURL("release"),
             "ember-cli": "~3.28.0",
+            "@ember/string": "*",
             "ember-cli-app-version": "^5.0.0",
-            '@ember/legacy-built-in-components': "~0.4.0",
           }
         }
       },
@@ -50,8 +49,8 @@ module.exports = async function() {
           devDependencies: {
             "ember-source": await getChannelURL("beta"),
             "ember-cli": "~3.28.0",
+            "@ember/string": "*",
             "ember-cli-app-version": "^5.0.0",
-            '@ember/legacy-built-in-components': "~0.4.0",
           }
         }
       },
@@ -61,8 +60,8 @@ module.exports = async function() {
           devDependencies: {
             "ember-source": await getChannelURL("canary"),
             "ember-cli": "~3.28.0",
+            "@ember/string": "*",
             "ember-cli-app-version": "^5.0.0",
-            '@ember/legacy-built-in-components': "~0.4.0",
           }
         }
       },
