@@ -7,8 +7,8 @@ perspective.
 
 ## Compatibility
 
-* Ember.js v3.12 or above
-* Ember CLI v3.12 or above
+* Ember.js v3.24.1 or above
+* Ember CLI v3.24.1 or above
 * Node.js v14 or above
 
 ## Installation
@@ -19,10 +19,14 @@ From your Ember CLI project's root directory, run the following:
 ember install ember-engines
 ```
 
+## Upgrade guide
+
+* [0.9.0 -> 0.10.0](UPGRADE.md#0100)
+
 ## Documentation
 
 Check the full documentation in the [Ember Engines
-Guides](http://ember-engines.com/).
+Guides](https://ember-engines.com/).
 
 ## Support
 
