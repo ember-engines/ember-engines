@@ -102,7 +102,7 @@
     "calculate-cache-key-for-tree": "^2.0.0",
     "ember-asset-loader": "^1.0.0",
     "ember-cli-babel": "^7.18.0",
-    "ember-cli-htmlbars": "^5.3.2",
+    "ember-cli-htmlbars": "^6.3.0",
     "ember-cli-preprocess-registry": "^3.3.0",
     "ember-cli-string-utils": "^1.1.0",
     "ember-cli-version-checker": "^5.1.2",
