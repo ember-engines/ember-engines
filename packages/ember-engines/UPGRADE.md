@@ -13,3 +13,10 @@
     if the `link-to-external` component is not used then this is not required
 
 2. `@ember/legacy-built-in-components` no longer required for ember engines; it can be removed from your app if it's the only reason it was added
+
+3. add [ember-engines-router-service](https://github.com/villander/ember-engines-router-service) as a peer dependency to enable `@service router;` injection
+
+4. in line with [RFC 674](https://rfcs.emberjs.com/id/0674-deprecate-transition-methods-of-controller-and-route/) dropping support for Route and Controller transtionTo methods in engines
+    > migrate to using router service from ember-engines-router-service
+
+5. drop support for query param only router service transitions until it's resolved upstream https://github.com/villander/ember-engines-router-service/issues/74
