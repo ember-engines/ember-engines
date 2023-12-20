@@ -33,12 +33,28 @@ module.exports = async function() {
         }
       },
       {
+        name: "ember-lts-5.4",
+        npm: {
+          devDependencies: {
+            "ember-source": "^5.4.0",
+            "ember-cli": "~3.28.0",
+            "ember-engines-router-service": "*",
+            "ember-resolver": "^11.0.1",
+            "ember-export-application-global": null,
+            "ember-cli-app-version": "^5.0.0",
+          }
+        }
+      },
+      {
         name: "ember-release",
         npm: {
           devDependencies: {
             "ember-source": await getChannelURL("release"),
             "ember-cli": "~3.28.0",
             "@ember/string": "*",
+            "ember-engines-router-service": "*",
+            "ember-resolver": "^11.0.1",
+            "ember-export-application-global": null,
             "ember-cli-app-version": "^5.0.0",
           }
         }
@@ -50,6 +66,9 @@ module.exports = async function() {
             "ember-source": await getChannelURL("beta"),
             "ember-cli": "~3.28.0",
             "@ember/string": "*",
+            "ember-engines-router-service": "*",
+            "ember-resolver": "^11.0.1",
+            "ember-export-application-global": null,
             "ember-cli-app-version": "^5.0.0",
           }
         }
@@ -61,6 +80,9 @@ module.exports = async function() {
             "ember-source": await getChannelURL("canary"),
             "ember-cli": "~3.28.0",
             "@ember/string": "*",
+            "ember-engines-router-service": "*",
+            "ember-resolver": "^11.0.1",
+            "ember-export-application-global": null,
             "ember-cli-app-version": "^5.0.0",
           }
         }
