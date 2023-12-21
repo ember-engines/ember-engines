@@ -38,6 +38,7 @@ module.exports = async function() {
           devDependencies: {
             "ember-source": "^5.4.0",
             "ember-cli": "~3.28.0",
+            "@ember/string": "*",
             "ember-engines-router-service": "*",
             "ember-resolver": "^11.0.1",
             "ember-export-application-global": null,
