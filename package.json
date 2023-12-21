@@ -31,7 +31,7 @@
     "release-it": "^15.5.0"
   },
   "engines": {
-    "node": ">= 18"
+    "node": ">= 16"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
