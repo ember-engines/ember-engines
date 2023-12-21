@@ -1,5 +1,3 @@
-lib/engine-config-from-meta.js
-lib/engine-config-node-module.js
 # unconventional js
 /blueprints/*/files/
 /vendor/
@@ -15,7 +13,6 @@ lib/engine-config-node-module.js
 # misc
 /coverage/
 !.*
-.*/
 .eslintcache
 
 # ember-try
