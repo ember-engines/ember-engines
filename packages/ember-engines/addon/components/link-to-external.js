@@ -1,3 +1,11 @@
+/* eslint-disable ember/no-classic-classes */
+/* eslint-disable ember/require-tagless-components */
+/* eslint-disable ember/no-private-routing-service */
+/* eslint-disable ember/require-computed-property-dependencies */
+/* eslint-disable ember/no-component-lifecycle-hooks */
+/* eslint-disable ember/require-super-in-lifecycle-hooks */
+/* eslint-disable ember/no-assignment-of-untracked-properties-used-in-tracking-contexts */
+/* eslint-disable ember/no-classic-components */
 import { alias } from '@ember/object/computed';
 import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';

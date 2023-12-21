@@ -14,7 +14,6 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:ember/recommended',
-    'plugin:prettier/recommended',
   ],
   env: {
     browser: true
@@ -36,7 +35,8 @@ module.exports = {
         './testem-node.js',
         './blueprints/*/index.js',
         './config/**/*.js',
-        './tests/dummy/config/**/*.js'
+        './tests/dummy/config/**/*.js',
+        './tests/.eslintrc.js'
       ],
       excludedFiles: [
         'addon/**',

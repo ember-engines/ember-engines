@@ -1,7 +1,7 @@
 lib/engine-config-from-meta.js
 lib/engine-config-node-module.js
 # unconventional js
-/blueprints/*/files/
+/blueprints/*
 /vendor/
 
 # compiled output
