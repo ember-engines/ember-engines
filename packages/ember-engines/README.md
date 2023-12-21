@@ -9,7 +9,7 @@ perspective.
 
 * Ember.js v3.24.1 or above
 * Ember CLI v3.24.1 or above
-* Node.js v14 or above
+* Node.js v16 or above
 
 ## Installation
 

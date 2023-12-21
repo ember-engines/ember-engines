@@ -20,3 +20,5 @@
     > migrate to using router service from ember-engines-router-service
 
 5. drop support for query param only router service transitions until it's resolved upstream https://github.com/villander/ember-engines-router-service/issues/74
+
+6. drop support for node 14
