@@ -1,8 +1,9 @@
 "use strict";
 
-const getChannelURL = require("ember-source-channel-url");
+const getChannelURL = require('ember-source-channel-url');
+const { embroiderSafe, embroiderOptimized } = require('@embroider/test-setup');
 
-module.exports = async function() {
+module.exports = async function () {
   return {
     useYarn: true,
     scenarios: [
@@ -10,26 +11,50 @@ module.exports = async function() {
         name: 'ember-lts-3.24',
         npm: {
           devDependencies: {
-            'ember-source': '~3.24.1',
-          }
-        }
+            'ember-source': '~3.24.3',
+          },
+        },
       },
       {
         name: 'ember-lts-3.28',
         npm: {
           devDependencies: {
             'ember-source': '~3.28.0',
-          }
-        }
+          },
+        },
       },
       {
         name: "ember-lts-4.4",
         npm: {
           devDependencies: {
-            "ember-source": "^4.4.0-alpha.1",
+            "ember-source": "~4.4.0",
             "ember-cli": "~3.28.0",
             "ember-cli-app-version": "^5.0.0",
-            '@ember/legacy-built-in-components': "~0.4.0",
+            "@ember/legacy-built-in-components": "~0.4.0",
+          }
+        }
+      },
+      {
+        name: "ember-lts-4.8",
+        npm: {
+          devDependencies: {
+            "ember-source": "~4.8.0",
+            "ember-cli": "~3.28.0",
+            "ember-cli-app-version": "^5.0.0",
+            "@ember/legacy-built-in-components": "~0.4.0",
+          }
+        }
+      },
+      {
+        name: "ember-lts-5.4",
+        npm: {
+          devDependencies: {
+            "ember-source": "^5.4.0",
+            "ember-cli": "~3.28.0",
+            "@ember/string": "*",
+            "ember-resolver": "^11.0.1",
+            "ember-export-application-global": null,
+            "ember-cli-app-version": "^5.0.0",
           }
         }
       },
@@ -39,8 +64,10 @@ module.exports = async function() {
           devDependencies: {
             "ember-source": await getChannelURL("release"),
             "ember-cli": "~3.28.0",
+            "@ember/string": "*",
+            "ember-resolver": "^11.0.1",
+            "ember-export-application-global": null,
             "ember-cli-app-version": "^5.0.0",
-            '@ember/legacy-built-in-components': "~0.4.0",
           }
         }
       },
@@ -50,8 +77,10 @@ module.exports = async function() {
           devDependencies: {
             "ember-source": await getChannelURL("beta"),
             "ember-cli": "~3.28.0",
+            "@ember/string": "*",
+            "ember-resolver": "^11.0.1",
+            "ember-export-application-global": null,
             "ember-cli-app-version": "^5.0.0",
-            '@ember/legacy-built-in-components': "~0.4.0",
           }
         }
       },
@@ -61,8 +90,10 @@ module.exports = async function() {
           devDependencies: {
             "ember-source": await getChannelURL("canary"),
             "ember-cli": "~3.28.0",
+            "@ember/string": "*",
+            "ember-resolver": "^11.0.1",
+            "ember-export-application-global": null,
             "ember-cli-app-version": "^5.0.0",
-            '@ember/legacy-built-in-components': "~0.4.0",
           }
         }
       },
@@ -80,14 +111,14 @@ module.exports = async function() {
         name: "ember-default-with-jquery",
         env: {
           EMBER_OPTIONAL_FEATURES: JSON.stringify({
-            "jquery-integration": true
-          })
+            'jquery-integration': true,
+          }),
         },
         npm: {
           devDependencies: {
-            "@ember/jquery": "^0.5.1"
-          }
-        }
+            '@ember/jquery': '^1.1.0',
+          },
+        },
       },
       {
         name: 'ember-classic',
@@ -95,15 +126,20 @@ module.exports = async function() {
           EMBER_OPTIONAL_FEATURES: JSON.stringify({
             'application-template-wrapper': true,
             'default-async-observers': false,
-            'template-only-glimmer-components': false
-          })
+            'template-only-glimmer-components': false,
+          }),
         },
         npm: {
+          devDependencies: {
+            'ember-source': '~3.28.0',
+          },
           ember: {
-            edition: 'classic'
-          }
-        }
-      }
-    ]
+            edition: 'classic',
+          },
+        },
+      },
+      embroiderSafe(),
+      embroiderOptimized(),
+    ],
   };
 };

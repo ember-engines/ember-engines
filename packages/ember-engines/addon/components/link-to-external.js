@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-component-lifecycle-hooks */
 import { LinkTo as RoutingLinkComponent } from '@ember/routing';
 import { getOwner } from '@ember/application';
 import { set, get } from '@ember/object';
@@ -17,11 +18,11 @@ if (macroCondition(dependencySatisfies('ember-source', '>=3.24.1 || >=4.x'))) {
   LinkToExternal = class LinkToExternal extends LinkComponent {
     _namespaceRoute(targetRouteName) {
       const owner = getOwner(this);
-     
+
       if (!owner.mountPoint) {
         return super._namespaceRoute(...arguments);
       }
-      
+
       const externalRoute = owner._getExternalRoute(targetRouteName);
 
       return externalRoute;

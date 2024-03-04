@@ -7,8 +7,8 @@ perspective.
 
 ## Compatibility
 
-* Ember.js v3.12 or above
-* Ember CLI v3.12 or above
+* Ember.js v3.24.1 or above
+* Ember CLI v3.24.1 or above
 * Node.js v16 or above
 
 ## Installation
@@ -22,7 +22,7 @@ ember install ember-engines
 ## Documentation
 
 Check the full documentation in the [Ember Engines
-Guides](http://ember-engines.com/).
+Guides](https://ember-engines.com/).
 
 ## Support
 
