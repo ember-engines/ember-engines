@@ -1,13 +1,16 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
-export default Route.extend({
-  actions: {
+export default class NewRoute extends Route {
+  @service router;
+
+  actions = {
     goAway() {
-      this.transitionTo('post', 1);
+      this.router.transitionTo('post', 1);
     },
 
     goAwayViaURL() {
-      this.transitionTo('/post/1');
-    },
-  },
-});
+      this.router.transitionTo('/post/1');
+    }
+  };
+}

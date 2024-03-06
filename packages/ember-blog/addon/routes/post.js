@@ -1,29 +1,34 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
-export default Route.extend({
+export default class PostRoute extends Route {
+  @service router;
+
   model(params) {
     return {
       user: this.modelFor('application'),
       id: params.id,
-      title: `Post ${params.id}`,
+      title: `Post ${params.id}`
     };
-  },
+  }
 
-  actions: {
+  actions = {
     goToChineseVersion() {
-      this.transitionTo({ queryParams: { lang: 'Chinese' } });
+      this.router.transitionTo('post', this.controller.model.id, {
+        queryParams: { lang: 'Chinese' }
+      });
     },
     transitionToHome() {
-      this.transitionToExternal('home').then(() => {
+      this.router.transitionToExternal('home').then(() => {
         var postController = this.controllerFor(this.routeName);
         postController.set('transitionedToExternal', true);
       });
     },
     replaceWithHome() {
-      this.replaceWithExternal('home').then(() => {
+      this.router.replaceWithExternal('home').then(() => {
         var postController = this.controllerFor(this.routeName);
         postController.set('replacedWithExternal', true);
       });
-    },
-  },
-});
+    }
+  };
+}

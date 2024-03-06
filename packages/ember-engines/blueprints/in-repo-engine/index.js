@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-string-prototype-extensions */
+/* eslint-disable node/no-unpublished-require */
 /*jshint node:true*/
 
 var path = require('path');

@@ -1,7 +1,10 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
-export default Route.extend({
+export default class NormalRoute extends Route {
+  @service router;
+
   beforeModel() {
-    return this.transitionTo('routeless-engine-demo');
-  },
-});
+    return this.router.transitionTo('routeless-engine-demo');
+  }
+}

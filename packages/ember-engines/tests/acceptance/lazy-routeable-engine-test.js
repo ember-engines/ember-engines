@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-classic-classes */
+/* eslint-disable ember/no-actions-hash */
 /* global define, self */
 /*eslint no-redeclare: 0*/
 

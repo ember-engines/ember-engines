@@ -7,15 +7,24 @@ describe('index', function() {
   describe('updateFastBootManifest', function() {
     it('adds the node-asset-manifest to the list of vendorFiles', function() {
       const AddonClass = EmberEngines.extend({
-        root: process.cwd(),
+        root: process.cwd()
       });
-      const addon = new AddonClass({}, {});
+      const addon = new AddonClass(
+        {},
+        {
+          perBundleAddonCache: {
+            allowCachingPerBundle() {
+              return false;
+            }
+          }
+        }
+      );
       const manifest = { vendorFiles: ['one.js', 'two.js'] };
 
       addon.updateFastBootManifest(manifest);
 
       expect(manifest).to.deep.equal({
-        vendorFiles: ['one.js', 'two.js', 'assets/node-asset-manifest.js'],
+        vendorFiles: ['one.js', 'two.js', 'assets/node-asset-manifest.js']
       });
     });
   });

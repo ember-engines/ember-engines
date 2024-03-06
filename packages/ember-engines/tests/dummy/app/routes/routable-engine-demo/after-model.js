@@ -1,9 +1,11 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
-export default Route.extend({
+export default class AfterModelRoute extends Route {
+  @service router;
   afterModel(model) {
-    this.replaceWith('blog.post', model.id, {
-      queryParams: { lang: 'English' },
+    this.router.replaceWith('blog.post', model.id, {
+      queryParams: { lang: 'English' }
     });
-  },
-});
+  }
+}
