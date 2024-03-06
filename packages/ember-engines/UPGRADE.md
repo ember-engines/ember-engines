@@ -20,5 +20,7 @@
     > migrate to using router service from ember-engines-router-service
 
 5. drop support for query param only router service transitions until it's resolved upstream https://github.com/villander/ember-engines-router-service/issues/74
+    > example for unsupported syntax ❌ `this.router.transitionTo({ queryParams: { page: 1 }});` without passing a route name  
+    > example for unchanged syntax ✅ `this.router.transitionTo('posts', { queryParams: { page: 1 }});` passing the name of the route
 
 6. drop support for node 14
