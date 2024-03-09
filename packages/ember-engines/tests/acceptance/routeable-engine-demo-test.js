@@ -1,9 +1,9 @@
 import { module, test } from 'qunit';
 import { default as _sinon } from 'sinon';
-import Initializer from 'ember-blog/initializers/ember-blog-initializer';
-import InstanceInitializer from 'ember-blog/instance-initializers/ember-blog-instance-initializer';
 import { setupApplicationTest } from 'ember-qunit';
 import { currentURL, visit, find, click } from '@ember/test-helpers';
+import { importSync } from '@embroider/macros';
+import { loadEngine } from 'ember-engines/test-support';
 
 let sinon;
 
@@ -433,7 +433,15 @@ module('Acceptance | routable engine demo', function(hooks) {
   test('initializers run within engine', async function(assert) {
     assert.expect(1);
 
-    let stub = sinon.stub(Initializer, 'initialize');
+    let assetLoader = this.owner.lookup('service:asset-loader');
+
+    await assetLoader.loadBundle('ember-blog');
+
+    const Initializer = importSync(
+      'ember-blog/initializers/ember-blog-initializer'
+    );
+
+    let stub = sinon.stub(Initializer.default, 'initialize');
 
     await visit('/routable-engine-demo/blog/new');
 
@@ -443,7 +451,15 @@ module('Acceptance | routable engine demo', function(hooks) {
   test('instance initializers run within engine', async function(assert) {
     assert.expect(1);
 
-    let stub = sinon.stub(InstanceInitializer, 'initialize');
+    let assetLoader = this.owner.lookup('service:asset-loader');
+
+    await assetLoader.loadBundle('ember-blog');
+
+    const InstanceInitializer = importSync(
+      'ember-blog/instance-initializers/ember-blog-instance-initializer'
+    );
+
+    let stub = sinon.stub(InstanceInitializer.default, 'initialize');
 
     await visit('/routable-engine-demo/blog/new');
 
@@ -456,13 +472,27 @@ module('Acceptance | routable engine demo', function(hooks) {
     let appInitialized = false;
     let instanceInitialized = false;
 
-    let appInit = sinon.stub(Initializer, 'initialize').callsFake(() => {
-      appInitialized = true;
-      assert.ok(!instanceInitialized, 'instance initialized has not run yet');
-    });
+    let assetLoader = this.owner.lookup('service:asset-loader');
+
+    await assetLoader.loadBundle('ember-blog');
+
+    const Initializer = importSync(
+      'ember-blog/initializers/ember-blog-initializer'
+    );
+
+    const InstanceInitializer = importSync(
+      'ember-blog/instance-initializers/ember-blog-instance-initializer'
+    );
+
+    let appInit = sinon
+      .stub(Initializer.default, 'initialize')
+      .callsFake(() => {
+        appInitialized = true;
+        assert.ok(!instanceInitialized, 'instance initialized has not run yet');
+      });
 
     let instanceInit = sinon
-      .stub(InstanceInitializer, 'initialize')
+      .stub(InstanceInitializer.default, 'initialize')
       .callsFake(() => {
         instanceInitialized = true;
         assert.ok(appInitialized, 'initializer already ran');

@@ -163,7 +163,9 @@ Router.reopen({
 
       if (get(this, 'namespace.LOG_ACTIVE_GENERATION')) {
         // eslint-disable-next-line no-console
-        console.info(`generated -> ${fullRouteName}`, { fullName: fullRouteName });
+        console.info(`generated -> ${fullRouteName}`, {
+          fullName: fullRouteName
+        });
       }
     }
 
@@ -250,10 +252,12 @@ Router.reopen({
     }
 
     if (this._engineIsLoaded(name)) {
+      debugger;
       // The Engine is loaded, but has no Promise
       enginePromise = RSVP.resolve();
     } else {
       // The Engine is not loaded and has no Promise
+      debugger;
       enginePromise = this._assetLoader.loadBundle(name).then(
         () => this._registerEngine(name),
         error => {
@@ -298,7 +302,7 @@ Router.reopen({
 
     let engineInstance = owner.buildChildEngineInstance(name, {
       routable: true,
-      mountPoint,
+      mountPoint
     });
 
     engineInstances[name][instanceId] = engineInstance;
@@ -306,5 +310,5 @@ Router.reopen({
     return engineInstance.boot().then(() => {
       return engineInstance;
     });
-  },
+  }
 });
