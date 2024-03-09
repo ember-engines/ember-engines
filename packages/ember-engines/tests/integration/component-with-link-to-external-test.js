@@ -1,18 +1,18 @@
-import { module, test } from "qunit";
-import { setupRenderingTest } from "ember-qunit";
-import { render } from "@ember/test-helpers";
-import hbs from "htmlbars-inline-precompile";
-import Component from "@ember/component";
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
+import hbs from 'htmlbars-inline-precompile';
+import Component from '@ember/component';
 import EmberRouter from '@ember/routing/router';
 
-module("Integration | Component | component-with-link-to-external", function(
+module('Integration | Component | component-with-link-to-external', function(
   hooks
 ) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function() {
     let testComponent = Component.extend();
-    this.owner.register("component:test-component", testComponent);
+    this.owner.register('component:test-component', testComponent);
 
     class Router extends EmberRouter {}
     Router.map(function() {
@@ -24,7 +24,7 @@ module("Integration | Component | component-with-link-to-external", function(
     this.owner._externalRoutes['home'] = 'application';
   });
 
-  test("component renders with link-to-external [curly braces]", async function(assert) {
+  test('component renders with link-to-external [curly braces]', async function(assert) {
     assert.expect(1);
 
     await render(hbs`
@@ -37,7 +37,7 @@ module("Integration | Component | component-with-link-to-external", function(
     assert.ok(this.element);
   });
 
-  test("component renders with link-to-external [angle brackets]", async function(assert) {
+  test('component renders with link-to-external [angle brackets]', async function(assert) {
     assert.expect(1);
 
     await render(hbs`

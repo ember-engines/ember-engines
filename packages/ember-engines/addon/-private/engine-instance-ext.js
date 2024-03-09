@@ -9,11 +9,13 @@ function deprecateHostRouterService() {
       id: 'ember-engines.deprecation-router-service-from-host',
       for: 'ember-engines',
       until: '0.9.0',
-      url: 'https://ember-engines.com/docs/deprecations#-use-alias-for-inject-router-service-from-host-application',
+      url:
+        'https://ember-engines.com/docs/deprecations#-use-alias-for-inject-router-service-from-host-application',
       since: {
-        enabled: '0.8.16',
+        enabled: '0.8.16'
       }
-    });
+    }
+  );
 }
 
 EngineInstance.reopen({
@@ -210,5 +212,5 @@ EngineInstance.reopen({
   */
   didCreateRootView(view) {
     view.appendTo(this.rootElement);
-  },
+  }
 });
