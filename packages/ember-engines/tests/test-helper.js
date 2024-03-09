@@ -10,7 +10,7 @@ import QUnit from 'qunit';
 
 setApplication(Application.create(config.APP));
 
-preloadAssets(manifest).then(start); // This ensures all engine resources are loaded before the tests
+start();
 
 let deprecations;
 
@@ -24,11 +24,11 @@ registerDeprecationHandler((message, options, next) => {
   next(message, options);
 });
 
-QUnit.testStart(function () {
+QUnit.testStart(function() {
   deprecations = [];
 });
 
-QUnit.assert.noDeprecations = function (callback) {
+QUnit.assert.noDeprecations = function(callback) {
   let originalDeprecations = deprecations;
   deprecations = [];
 
@@ -38,28 +38,32 @@ QUnit.assert.noDeprecations = function (callback) {
   deprecations = originalDeprecations;
 };
 
-QUnit.assert.deprecations = function (callback, expectedDeprecations) {
+QUnit.assert.deprecations = function(callback, expectedDeprecations) {
   let originalDeprecations = deprecations;
   deprecations = [];
 
   callback();
-  this.deepEqual(deprecations, expectedDeprecations, 'Expected deprecations during test.');
+  this.deepEqual(
+    deprecations,
+    expectedDeprecations,
+    'Expected deprecations during test.'
+  );
 
   deprecations = originalDeprecations;
 };
 
-QUnit.assert.deprecationsInclude = function (message) {
+QUnit.assert.deprecationsInclude = function(message) {
   this.pushResult({
     result: deprecations.indexOf(message) > -1,
     actual: deprecations,
-    message: `Expected to find \`${message}\` deprecation.`,
+    message: `Expected to find \`${message}\` deprecation.`
   });
 };
 
-QUnit.assert.deprecationsExclude = function (message) {
+QUnit.assert.deprecationsExclude = function(message) {
   this.pushResult({
     result: deprecations.indexOf(message) === -1,
     actual: deprecations,
-    message: `Expected to not find \`${message}\` deprecation.`,
+    message: `Expected to not find \`${message}\` deprecation.`
   });
 };
