@@ -252,12 +252,10 @@ Router.reopen({
     }
 
     if (this._engineIsLoaded(name)) {
-      debugger;
       // The Engine is loaded, but has no Promise
       enginePromise = RSVP.resolve();
     } else {
       // The Engine is not loaded and has no Promise
-      debugger;
       enginePromise = this._assetLoader.loadBundle(name).then(
         () => this._registerEngine(name),
         error => {

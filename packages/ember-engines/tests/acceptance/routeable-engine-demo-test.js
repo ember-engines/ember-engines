@@ -3,7 +3,6 @@ import { default as _sinon } from 'sinon';
 import { setupApplicationTest } from 'ember-qunit';
 import { currentURL, visit, find, click } from '@ember/test-helpers';
 import { importSync } from '@embroider/macros';
-import { loadEngine } from 'ember-engines/test-support';
 
 let sinon;
 
