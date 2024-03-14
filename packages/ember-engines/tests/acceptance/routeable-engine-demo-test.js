@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-private-routing-service */
 import { module, test } from 'qunit';
 import { default as _sinon } from 'sinon';
 import Initializer from 'ember-blog/initializers/ember-blog-initializer';

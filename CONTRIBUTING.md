@@ -2,7 +2,7 @@
 
 ## Installation
 
-* `git clone <repository-url>`
+* `git clone https://github.com/ember-engines/ember-engines.git`
 * `cd ember-engines`
 * `yarn install`
 

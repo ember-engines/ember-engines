@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-private-routing-service,ember/no-get */
 import Router from '@ember/routing/router';
 import RSVP from 'rsvp';
 import { assert } from '@ember/debug';
