@@ -12,15 +12,15 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace ember-engines build",
-    "lint": "yarn workspace ember-engines lint",
-    "lint:hbs": "yarn workspace ember-engines lint:hbs",
-    "lint:js": "yarn workspace ember-engines lint:js",
-    "start": "yarn workspace ember-engines start",
-    "test": "yarn workspace ember-engines test",
-    "test:ember": "yarn workspace ember-engines test:ember",
-    "test:node": "yarn workspace ember-engines test:node",
-    "try": "yarn workspace ember-engines try"
+    "build": "pnpm --filter ember-engines build",
+    "lint": "pnpm --filter ember-engines lint",
+    "lint:hbs": "pnpm --filter ember-engines lint:hbs",
+    "lint:js": "pnpm --filter ember-engines lint:js",
+    "start": "pnpm --filter ember-engines start",
+    "test": "pnpm --filter ember-engines test",
+    "test:ember": "pnpm --filter ember-engines test:ember",
+    "test:node": "pnpm --filter ember-engines test:node",
+    "try": "pnpm --filter ember-engines try"
   },
   "prettier": {
     "singleQuote": true
