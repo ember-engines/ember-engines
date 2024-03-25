@@ -10,8 +10,11 @@
     "engineConfigPath": "ember-config"
   },
   "dependencies": {
-    "ember-cli-htmlbars": "*",
+    "common-components": "workspace:*",
+    "ember-auto-import": "^2.7.2",
     "ember-cli-babel": "*",
-    "common-components": "workspace:*"
+    "ember-cli-htmlbars": "*",
+    "ember-lifeline": "^7.0.0",
+    "tracked-toolbox": "^2.0.0"
   }
 }

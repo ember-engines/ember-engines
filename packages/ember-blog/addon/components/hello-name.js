@@ -1,23 +1,19 @@
-import { later, cancel } from '@ember/runloop';
-import Component from '@ember/component';
-import layout from '../templates/components/hello-name';
+import Component from '@glimmer/component';
+import { runTask } from 'ember-lifeline';
+import { localCopy } from 'tracked-toolbox';
 
 export default class HelloName extends Component {
-  layout = layout;
-  classNames = ['hello-name'];
+  @localCopy('args.name') name;
 
-  init() {
-    super.init(...arguments);
-    this._later = later(() => {
-      if (this.isDestroyed || this.isDestroying) {
-        return;
-      }
-      this.set('name', 'Jerry');
-    }, 50);
-  }
+  constructor() {
+    super(...arguments);
 
-  destroy() {
-    cancel(this._later);
-    super.destroy(...arguments);
+    runTask(
+      this,
+      () => {
+        this.name = 'Jerry';
+      },
+      50
+    );
   }
 }
