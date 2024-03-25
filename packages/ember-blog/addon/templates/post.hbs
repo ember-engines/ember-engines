@@ -21,7 +21,10 @@
     Go home programmatically
 </button>
 
-<button {{action "transitionToHomeFromController"}} class="routable-post-transition-to-route-home-button {{if this.transitionedToExternalRoute 'transitioned-to-external-route'}}">
+<button
+  class="routable-post-transition-to-route-home-button {{if this.transitionedToExternalRoute "transitioned-to-external-route"}}"
+  {{on "click" this.transitionToHomeFromController}}
+>
     Go home by controller
 </button>
 
