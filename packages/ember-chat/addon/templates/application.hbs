@@ -1,7 +1,7 @@
 <div class="engine">
   Engine: {{this.name}}
 
-  <div class="hello">{{hello-world name=this.name}}</div>
+  <div class="hello"><HelloWorld @name={{this.name}} /></div>
 
-  <div class="hola">{{spanish-greeting name=this.name}}</div>
+  <div class="hola"><SpanishGreeting @name={{this.name}} /></div>
 </div>
