@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import layout from '../templates/components/spanish-greeting';
 
-export default Component.extend({
-  layout: layout,
-  name: null,
-});
+export default class SpanishGreeting extends Component {
+  layout = layout;
+  name = null;
+}
