@@ -4,12 +4,12 @@
 
 * `git clone <repository-url>`
 * `cd ember-engines`
-* `yarn install`
+* `pnpm install`
 
 ## Linting
 
-* `yarn lint`
-* `yarn lint:fix`
+* `pnpm lint`
+* `pnpm lint:fix`
 
 ## Running tests
 

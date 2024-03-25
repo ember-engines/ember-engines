@@ -7,7 +7,7 @@ perspective.
 
 ## Packages
 
-This project is a monorepo managed by yarn workspaces. All packages are
+This project is a monorepo managed by pnpm workspaces. All packages are
 organized in the [/packages/](./packages/) directory.
 
 The only public package is [ember-engines](./packages/ember-engines/). Other

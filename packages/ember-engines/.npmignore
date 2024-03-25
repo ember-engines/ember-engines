@@ -31,6 +31,8 @@ ember-cli-build.js
 testem.js
 testem-node.js
 yarn.lock
+pnpm-lock.yaml
+pnpm-workspace.yaml
 
 # ember-try
 .node_modules.ember-try/
