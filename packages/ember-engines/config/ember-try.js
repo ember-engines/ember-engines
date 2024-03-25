@@ -46,6 +46,17 @@ module.exports = async function () {
         }
       },
       {
+        name: "ember-lts-4.12",
+        npm: {
+          devDependencies: {
+            "ember-source": "~4.8.0",
+            "ember-cli": "~3.28.0",
+            "ember-cli-app-version": "^5.0.0",
+            "@ember/legacy-built-in-components": "~0.5.0",
+          }
+        }
+      },
+      {
         name: "ember-lts-5.4",
         npm: {
           devDependencies: {
