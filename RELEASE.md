@@ -6,8 +6,8 @@ Releases in this repo are mostly automated using [release-plan](https://github.c
 
 Since the majority of the actual release process is automated, the remaining tasks before releasing are: 
 
-* correctly labeling **all** pull requests that have been merged since the last release
-* updating pull request titles so they make sense to our users
+-  correctly labeling **all** pull requests that have been merged since the last release
+-  updating pull request titles so they make sense to our users
 
 Some great information on why this is important can be found at [keepachangelog.com](https://keepachangelog.com/en/1.1.0/), but the overall
 guiding principle here is that changelogs are for humans, not machines.
