@@ -1,8 +1,9 @@
 import { module, test } from 'qunit';
-import { render, click, visit, currentURL } from '@ember/test-helpers';
+import { render, click, visit, currentURL, teardownContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { setupTest, setupRenderingTest, setupApplicationTest } from 'ember-qunit';
 import { setupEngine } from 'ember-engines/test-support';
+import { isDestroyed } from '@ember/destroyable';
 
 module('Integration | setupEngine', function () {
 
@@ -15,6 +16,14 @@ module('Integration | setupEngine', function () {
 
       let route = this.engine.lookup('route:post.likes');
       assert.ok(route);
+    });
+
+    test('it is destroyed with the test context', async function (assert) {
+      assert.expect(2);
+
+      assert.notOk(isDestroyed(this.engine));
+      await teardownContext(this);
+      assert.ok(isDestroyed(this.engine));
     });
   });
 
