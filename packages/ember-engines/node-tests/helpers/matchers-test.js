@@ -3,9 +3,9 @@
 const matchers = require('./matchers');
 const expect = require('chai').expect;
 
-describe('matchers', function() {
-  describe('module', function() {
-    it('matches module definitions for the specified name', function() {
+describe('matchers', function () {
+  describe('module', function () {
+    it('matches module definitions for the specified name', function () {
       const matcher = matchers.module('foo/component/bar-baz');
 
       const inputSingleQuotes =
@@ -17,7 +17,7 @@ describe('matchers', function() {
       expect(matcher.test(inputDoubleQuotes)).to.be.true;
     });
 
-    it('does not match for non-exact module names', function() {
+    it('does not match for non-exact module names', function () {
       const input = 'define("foo/component/bar-baz", [], function(){});';
 
       const longerNameMatcher = matchers.module('foo/component/bar-bazy');
@@ -28,11 +28,11 @@ describe('matchers', function() {
     });
   });
 
-  describe('reexport', function() {
-    it('matches aliased module definitions', function() {
+  describe('reexport', function () {
+    it('matches aliased module definitions', function () {
       const matcher = matchers.reexport(
         'foo/component/bar-baz',
-        'app/component/bar-baz'
+        'app/component/bar-baz',
       );
 
       const inputSingleQuotes =
@@ -44,10 +44,10 @@ describe('matchers', function() {
       expect(matcher.test(inputDoubleQuotes)).to.be.true;
     });
 
-    it('does not match improperly aliased module definitions', function() {
+    it('does not match improperly aliased module definitions', function () {
       const matcher = matchers.reexport(
         'foo/component/bar-baz',
-        'app/component/bar-baz'
+        'app/component/bar-baz',
       );
 
       const inputReversedAlias =
@@ -59,10 +59,10 @@ describe('matchers', function() {
       expect(matcher.test(inputOldAlias)).to.be.false;
     });
 
-    it('does not match normal module definitions', function() {
+    it('does not match normal module definitions', function () {
       const matcher = matchers.reexport(
         'foo/component/bar-baz',
-        'app/component/bar-baz'
+        'app/component/bar-baz',
       );
 
       const input1 = 'define("foo/component/bar-baz", [] function(){});';
@@ -73,15 +73,15 @@ describe('matchers', function() {
     });
   });
 
-  describe('cssComment', function() {
-    it('matches css comments', function() {
+  describe('cssComment', function () {
+    it('matches css comments', function () {
       const matcher = matchers.cssComment('some comment');
       const input = '/* some comment */';
 
       expect(matcher.test(input)).to.be.true;
     });
 
-    it('does not match improperly formatted css comments', function() {
+    it('does not match improperly formatted css comments', function () {
       const matcher = matchers.cssComment('some comment');
 
       const inputNoSpaces = '/*some comment*/';

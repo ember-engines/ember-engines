@@ -5,31 +5,34 @@ const Addon = require('ember-cli/lib/models/addon');
 const EngineAddon = require('../../../lib/engine-addon');
 const deeplyNonDuplicatedAddon = require('../../../lib/utils/deeply-non-duplicated-addon');
 
-describe('deeplyNonDuplicatedAddon', function() {
-  let NestedAddonConstructor, LazyEngineConstructor, hostAddons, lazyEngine
+describe('deeplyNonDuplicatedAddon', function () {
+  let NestedAddonConstructor, LazyEngineConstructor, hostAddons, lazyEngine;
 
-  beforeEach(function() {
+  beforeEach(function () {
     NestedAddonConstructor = Addon.extend({
       root: 'foo',
       name: 'nested',
     });
 
     LazyEngineConstructor = Addon.extend(
-      Object.assign({
-        root: 'foo',
-        name: 'lazy',
-        lazyLoading: { enabled: true },
-      }, EngineAddon)
+      Object.assign(
+        {
+          root: 'foo',
+          name: 'lazy',
+          lazyLoading: { enabled: true },
+        },
+        EngineAddon,
+      ),
     );
 
     hostAddons = {
-      'nested': new NestedAddonConstructor(),
+      nested: new NestedAddonConstructor(),
     };
 
     lazyEngine = new LazyEngineConstructor();
   });
 
-  it('deduplicates children addons from hostAddons', function() {
+  it('deduplicates children addons from hostAddons', function () {
     let CommonAddonConstructor = Addon.extend({
       root: 'foo',
       name: 'common',
@@ -47,13 +50,16 @@ describe('deeplyNonDuplicatedAddon', function() {
     expect(commonAddon._orginalAddons).to.equal(commonAddonAddons);
   });
 
-  it('does not deduplicate children lazy engine addons from hostAddons', function() {
+  it('does not deduplicate children lazy engine addons from hostAddons', function () {
     let NestedLazyEngineConstructor = Addon.extend(
-      Object.assign({
-        root: 'foo',
-        name: 'lazy-in-lazy',
-        lazyLoading: { enabled: true },
-      }, EngineAddon)
+      Object.assign(
+        {
+          root: 'foo',
+          name: 'lazy-in-lazy',
+          lazyLoading: { enabled: true },
+        },
+        EngineAddon,
+      ),
     );
 
     let nestedLazyEngine = new NestedLazyEngineConstructor();
@@ -67,5 +73,4 @@ describe('deeplyNonDuplicatedAddon', function() {
     expect(nestedLazyEngine.addons).to.equal(nestedLazyEngineAddons);
     expect(nestedLazyEngine._orginalAddons).to.be.undefined;
   });
-
 });

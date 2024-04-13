@@ -2,13 +2,21 @@
 import { LinkTo as RoutingLinkComponent } from '@ember/routing';
 import { getOwner } from '@ember/application';
 import { set, get } from '@ember/object';
-import { macroCondition, dependencySatisfies, importSync } from '@embroider/macros';
+import {
+  macroCondition,
+  dependencySatisfies,
+  importSync,
+} from '@embroider/macros';
 
 let LinkToExternal;
 let LinkComponent;
 
-if (macroCondition(dependencySatisfies('@ember/legacy-built-in-components', '*'))) {
-  let { LinkComponent: LegacyLinkComponent } = importSync('@ember/legacy-built-in-components');
+if (
+  macroCondition(dependencySatisfies('@ember/legacy-built-in-components', '*'))
+) {
+  let { LinkComponent: LegacyLinkComponent } = importSync(
+    '@ember/legacy-built-in-components',
+  );
   LinkComponent = LegacyLinkComponent;
 } else {
   LinkComponent = RoutingLinkComponent;
@@ -42,12 +50,13 @@ if (macroCondition(dependencySatisfies('ember-source', '>=3.24.1 || >=4.x'))) {
 
       if (owner.mountPoint) {
         // https://emberjs.github.io/rfcs/0459-angle-bracket-built-in-components.html
-        const routeKey = 'targetRouteName' in this ? 'targetRouteName' : 'route';
+        const routeKey =
+          'targetRouteName' in this ? 'targetRouteName' : 'route';
         const routeName = get(this, routeKey);
         const externalRoute = owner._getExternalRoute(routeName);
         set(this, routeKey, externalRoute);
       }
-    }
+    },
   });
 }
 
