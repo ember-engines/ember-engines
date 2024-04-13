@@ -21,15 +21,11 @@ module('Integration | setupEngine', function () {
     setupEngine(hooks, 'ember-blog');
 
     test('it exists', function (assert) {
-      assert.expect(1);
-
       let route = this.engine.lookup('route:post.likes');
       assert.ok(route);
     });
 
     test('it is destroyed with the test context', async function (assert) {
-      assert.expect(2);
-
       assert.notOk(isDestroyed(this.engine));
       await teardownContext(this);
       assert.ok(isDestroyed(this.engine));
@@ -41,8 +37,6 @@ module('Integration | setupEngine', function () {
     setupEngine(hooks, 'ember-blog');
 
     test('should change colors', async function (assert) {
-      assert.expect(2);
-
       // set the outer context to red
       this.set('colorValue', 'red');
 
@@ -50,44 +44,30 @@ module('Integration | setupEngine', function () {
         owner: this.engine,
       });
 
-      assert.equal(
-        this.element
-          .querySelector('[data-test-pretty-color]')
-          .textContent.trim(),
-        'Pretty Color: red',
-        'starts as red',
-      );
+      assert
+        .dom('[data-test-pretty-color]')
+        .includesText('Pretty Color: red', 'starts as red');
 
       this.set('colorValue', 'blue');
 
-      assert.equal(
-        this.element
-          .querySelector('[data-test-pretty-color]')
-          .textContent.trim(),
-        'Pretty Color: blue',
-        'updates to blue',
-      );
+      assert
+        .dom('[data-test-pretty-color]')
+        .includesText('Pretty Color: blue', 'updates to blue');
     });
 
     test('should update title on button click', async function (assert) {
-      assert.expect(2);
-
       await render(hbs`<MagicTitle />`, { owner: this.engine });
 
-      assert.equal(
-        this.element.querySelector('h2').textContent.trim(),
-        'Hello World',
-        'initial text is hello world',
-      );
+      assert
+        .dom('h2')
+        .includesText('Hello World', 'initial text is hello world');
 
       // Click on the button
       await click('[data-test-title-button]');
 
-      assert.equal(
-        this.element.querySelector('h2').textContent.trim(),
-        'This is Magic',
-        'title changes after click',
-      );
+      assert
+        .dom('h2')
+        .includesText('This is Magic', 'title changes after click');
     });
   });
 
@@ -98,7 +78,7 @@ module('Integration | setupEngine', function () {
     test('the user can visit blog engine', async function (assert) {
       await visit('/routable-engine-demo/blog/new');
 
-      assert.equal(currentURL(), '/routable-engine-demo/blog/new');
+      assert.deepEqual(currentURL(), '/routable-engine-demo/blog/new');
     });
   });
 });

@@ -36,8 +36,6 @@ module('Unit | EngineInstance', function (hooks) {
   });
 
   test('it can build a child engine instance without parent dependencies defined', function (assert) {
-    assert.expect(1);
-
     class BlogEngine extends Engine {
       Resolver = Resolver;
       router = null;
@@ -59,8 +57,6 @@ module('Unit | EngineInstance', function (hooks) {
   });
 
   test('it can build a child engine instance with no dependencies', function (assert) {
-    assert.expect(1);
-
     class BlogEngine extends Engine {
       Resolver = Resolver;
       router = null;
@@ -116,8 +112,6 @@ module('Unit | EngineInstance', function (hooks) {
   });
 
   test('it deprecates support for `router` service from host', function (assert) {
-    assert.expect(2);
-
     class BlogEngine extends Engine {
       Resolver = Resolver;
       router = null;
