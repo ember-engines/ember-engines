@@ -6,6 +6,6 @@ const EngineAddon = require('../../../../lib/engine-addon');
 module.exports = EngineAddon.extend({
   name,
   lazyLoading: Object.freeze({
-    enabled: true
-  })
+    enabled: true,
+  }),
 });

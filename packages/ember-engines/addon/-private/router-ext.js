@@ -74,7 +74,7 @@ Router.reopen({
   _handlerResolver() {
     let seen = this._seenHandlers;
     let owner = getOwner(this);
-    return name => {
+    return (name) => {
       let engineInfo = this._engineInfoByRoute[name];
       if (engineInfo) {
         let engineInstance = this._getEngineInstance(engineInfo);
@@ -83,15 +83,15 @@ Router.reopen({
             seen,
             name,
             engineInfo.localFullName,
-            engineInstance
+            engineInstance,
           );
         } else {
-          return this._loadEngineInstance(engineInfo).then(instance => {
+          return this._loadEngineInstance(engineInfo).then((instance) => {
             return this._getHandlerForEngine(
               seen,
               name,
               engineInfo.localFullName,
-              instance
+              instance,
             );
           });
         }
@@ -120,12 +120,12 @@ Router.reopen({
       seen,
       routeName,
       localRouteName,
-      engineInstance
+      engineInstance,
     );
 
     if (!hasDefaultSerialize(handler)) {
       throw new Error(
-        'Defining a custom serialize method on an Engine route is not supported.'
+        'Defining a custom serialize method on an Engine route is not supported.',
       );
     }
 
@@ -164,7 +164,9 @@ Router.reopen({
 
       if (get(this, 'namespace.LOG_ACTIVE_GENERATION')) {
         // eslint-disable-next-line no-console
-        console.info(`generated -> ${fullRouteName}`, { fullName: fullRouteName });
+        console.info(`generated -> ${fullRouteName}`, {
+          fullName: fullRouteName,
+        });
       }
     }
 
@@ -203,7 +205,7 @@ Router.reopen({
     if (!owner.hasRegistration('engine:' + name)) {
       owner.register(
         'engine:' + name,
-        window.require(name + '/engine').default
+        window.require(name + '/engine').default,
       );
     }
   },
@@ -257,10 +259,10 @@ Router.reopen({
       // The Engine is not loaded and has no Promise
       enginePromise = this._assetLoader.loadBundle(name).then(
         () => this._registerEngine(name),
-        error => {
+        (error) => {
           enginePromises[name][instanceId] = undefined;
           throw error;
-        }
+        },
       );
     }
 
@@ -288,7 +290,7 @@ Router.reopen({
       "You attempted to mount the engine '" +
         name +
         "' in your router map, but the engine cannot be found.",
-      owner.hasRegistration(`engine:${name}`)
+      owner.hasRegistration(`engine:${name}`),
     );
 
     let engineInstances = this._engineInstances;
