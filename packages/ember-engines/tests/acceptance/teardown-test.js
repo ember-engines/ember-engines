@@ -17,11 +17,10 @@ module('Acceptance | teardown test', function (hooks) {
 
   test('routeable engines clean up their container state', async function (assert) {
     let service;
-    assert.expect(2);
 
     await visit('/routable-engine-demo/blog/new');
 
-    assert.equal(currentURL(), '/routable-engine-demo/blog/new');
+    assert.strictEqual(currentURL(), '/routable-engine-demo/blog/new');
     service =
       this.testContext.owner.lookup('service:store').__exampleServiceForTesting;
 
@@ -32,11 +31,10 @@ module('Acceptance | teardown test', function (hooks) {
 
   test('routeless engines clean up their container state', async function (assert) {
     let service;
-    assert.expect(2);
 
     await visit('/routeless-engine-demo');
 
-    assert.equal(currentURL(), '/routeless-engine-demo');
+    assert.strictEqual(currentURL(), '/routeless-engine-demo');
     service =
       this.testContext.owner.lookup('service:store').__exampleServiceForTesting;
 

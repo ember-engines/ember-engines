@@ -98,7 +98,10 @@ module('Acceptance | lazy routable engine', function (hooks) {
     // ensure that the global rejection handler isn't hit (RSVP promises that reject end up going through Ember.onerror)
     // this is reset automatically by @ember/test-helpers
     setupOnerror((error) => {
-      assert.equal(error.message, 'The bundle "ember-blog" failed to load.');
+      assert.strictEqual(
+        error.message,
+        'The bundle "ember-blog" failed to load.',
+      );
     });
 
     try {
@@ -184,12 +187,16 @@ module('Acceptance | lazy routable engine', function (hooks) {
 
     await click('.routeable-engine');
 
-    assert.equal(currentURL(), '/routable-engine-demo');
+    assert.strictEqual(currentURL(), '/routable-engine-demo');
 
     await click('.blog-new');
 
-    assert.equal(this.loadEvents.length, 3, 'did not load additional assets');
-    assert.equal(currentURL(), '/routable-engine-demo/blog/new');
+    assert.strictEqual(
+      this.loadEvents.length,
+      3,
+      'did not load additional assets',
+    );
+    assert.strictEqual(currentURL(), '/routable-engine-demo/blog/new');
   });
 
   test('it should not pause to load assets on transition to a loaded, but not initialized instance of a lazy Engine (e.g., Engine mounted more than once)', async function (assert) {
@@ -201,31 +208,31 @@ module('Acceptance | lazy routable engine', function (hooks) {
 
     await click('.routeable-engine');
 
-    assert.equal(currentURL(), '/routable-engine-demo');
+    assert.strictEqual(currentURL(), '/routable-engine-demo');
 
     await click('.ember-blog-new');
 
-    assert.equal(this.loadEvents.length, 3, 'did not load additional assets');
-    assert.equal(currentURL(), '/routable-engine-demo/ember-blog/new');
+    assert.strictEqual(
+      this.loadEvents.length,
+      3,
+      'did not load additional assets',
+    );
+    assert.strictEqual(currentURL(), '/routable-engine-demo/ember-blog/new');
   });
 
   test('it should not pause to load assets on deep link into an eager Engine', async function (assert) {
-    assert.expect(2);
-
     await visit('/routable-engine-demo/eager-blog');
 
-    assert.equal(this.loadEvents.length, 0, 'no load events occured');
-    assert.equal(currentURL(), '/routable-engine-demo/eager-blog');
+    assert.strictEqual(this.loadEvents.length, 0, 'no load events occured');
+    assert.strictEqual(currentURL(), '/routable-engine-demo/eager-blog');
   });
 
   test('it should not pause to load assets on transition into an eager Engine', async function (assert) {
-    assert.expect(2);
-
     await visit('/routable-engine-demo');
     await click('.eager-blog');
 
-    assert.equal(this.loadEvents.length, 0, 'no load events occured');
-    assert.equal(currentURL(), '/routable-engine-demo/eager-blog');
+    assert.strictEqual(this.loadEvents.length, 0, 'no load events occured');
+    assert.strictEqual(currentURL(), '/routable-engine-demo/eager-blog');
   });
 
   test('it should bubble the bundle error to the application', async function (assert) {
@@ -253,12 +260,15 @@ module('Acceptance | lazy routable engine', function (hooks) {
     // ensure that the global rejection handler isn't hit (RSVP promises that reject end up going through Ember.onerror)
     // this is reset automatically by @ember/test-helpers
     setupOnerror((error) => {
-      assert.equal(error.name, 'BundleLoadError');
-      assert.equal(error.message, 'The bundle "ember-blog" failed to load.');
-      assert.equal(error.errors.length, 1, 'expects only one error');
+      assert.strictEqual(error.name, 'BundleLoadError');
+      assert.strictEqual(
+        error.message,
+        'The bundle "ember-blog" failed to load.',
+      );
+      assert.strictEqual(error.errors.length, 1, 'expects only one error');
       let nestedError = error.errors[0];
-      assert.equal(nestedError.name, 'AssetLoadError');
-      assert.equal(
+      assert.strictEqual(nestedError.name, 'AssetLoadError');
+      assert.strictEqual(
         nestedError.message,
         'The css asset with uri "/engines-dist/ember-blog/assets/engine.css" failed to load with the error: rejected.',
       );
@@ -267,7 +277,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
         routeDidError,
         'expected dummy/routes/application actions.error to have been invoked',
       );
-      assert.equal(
+      assert.strictEqual(
         error,
         routeError,
         'expected dummy/routes/application actions.error to have the same argument as the visit rejects with',
