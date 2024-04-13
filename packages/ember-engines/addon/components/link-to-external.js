@@ -324,7 +324,7 @@ const LinkComponent = EmberComponent.extend({
     query: UNDEFINED,
     /**
       Used to determine when this `LinkComponent` is active.
-  
+
       @property current-when
       @public
     */
@@ -336,7 +336,7 @@ const LinkComponent = EmberComponent.extend({
     disabledWhen: undefined,
     /**
       Sets the `title` attribute of the `LinkComponent`'s HTML element.
-  
+
       @property title
       @default null
       @public
@@ -344,7 +344,7 @@ const LinkComponent = EmberComponent.extend({
     title: null,
     /**
       Sets the `rel` attribute of the `LinkComponent`'s HTML element.
-  
+
       @property rel
       @default null
       @public
@@ -352,7 +352,7 @@ const LinkComponent = EmberComponent.extend({
     rel: null,
     /**
       Sets the `tabindex` attribute of the `LinkComponent`'s HTML element.
-  
+
       @property tabindex
       @default null
       @public
@@ -360,7 +360,7 @@ const LinkComponent = EmberComponent.extend({
     tabindex: null,
     /**
       Sets the `target` attribute of the `LinkComponent`'s HTML element.
-  
+
       @since 1.8.0
       @property target
       @default null
@@ -370,7 +370,7 @@ const LinkComponent = EmberComponent.extend({
     /**
       The CSS class to apply to `LinkComponent`'s element when its `active`
       property is `true`.
-  
+
       @property activeClass
       @type String
       @default active
@@ -380,7 +380,7 @@ const LinkComponent = EmberComponent.extend({
     /**
       The CSS class to apply to `LinkComponent`'s element when its `loading`
       property is `true`.
-  
+
       @property loadingClass
       @type String
       @default loading
@@ -390,7 +390,7 @@ const LinkComponent = EmberComponent.extend({
     /**
       The CSS class to apply to a `LinkComponent`'s element when its `disabled`
       property is `true`.
-  
+
       @property disabledClass
       @type String
       @default disabled
@@ -400,7 +400,7 @@ const LinkComponent = EmberComponent.extend({
     /**
       Determines whether the `LinkComponent` will trigger routing via
       the `replaceWith` routing strategy.
-  
+
       @property replace
       @type Boolean
       @default false
@@ -411,15 +411,15 @@ const LinkComponent = EmberComponent.extend({
       Determines whether the `LinkComponent` will prevent the default
       browser action by calling preventDefault() to avoid reloading
       the browser page.
-  
+
       If you need to trigger a full browser reload pass `@preventDefault={{false}}`:
-  
+
       ```handlebars
       <LinkTo @route='photoGallery' @model={{this.aPhotoId}} @preventDefault={{false}}>
         {{this.aPhotoId.title}}
       </LinkTo>
       ```
-  
+
       @property preventDefault
       @type Boolean
       @default true
@@ -436,7 +436,7 @@ const LinkComponent = EmberComponent.extend({
       arguments to attributes on the component's element. When invoked with `{{link-to}}`, you can
       only customize these attributes. When invoked with `<LinkTo>`, you can just use HTML
       attributes directly.
-  
+
       @property attributeBindings
       @type Array | String
       @default ['title', 'rel', 'tabindex', 'target']
@@ -446,14 +446,14 @@ const LinkComponent = EmberComponent.extend({
     /**
       By default this component will set classes on its element when any of the following arguments
       are truthy:
-  
+
       * active
       * loading
       * disabled
-  
+
       When these arguments are truthy, a class with the same name will be set on the element. When
       falsy, the associated class will not be on the element.
-  
+
       @property classNameBindings
       @type Array
       @default ['active', 'loading', 'disabled', 'ember-transitioning-in', 'ember-transitioning-out']
@@ -470,7 +470,7 @@ const LinkComponent = EmberComponent.extend({
       By default this component responds to the `click` event. When the component element is an
       `<a>` element, activating the link in another way, such as using the keyboard, triggers the
       click event.
-  
+
       @property eventName
       @type String
       @default click
@@ -485,18 +485,18 @@ const LinkComponent = EmberComponent.extend({
       `eventName` is changed to a value other than `click`
       the routing behavior will trigger on that custom event
       instead.
-  
+
       @event click
       @private
     */
     /**
       An overridable method called when `LinkComponent` objects are instantiated.
-  
+
       Example:
-  
+
       ```app/components/my-link.js
       import LinkComponent from '@ember/routing/link-component';
-  
+
       export default LinkComponent.extend({
         init() {
           this._super(...arguments);
@@ -504,13 +504,13 @@ const LinkComponent = EmberComponent.extend({
         }
       });
       ```
-  
+
       NOTE: If you do override `init` for a framework class like `Component`,
       be sure to call `this._super(...arguments)` in your
       `init` declaration! If you don't, Ember may not have an opportunity to
       do important setup work, and you'll see strange behavior in your
       application.
-  
+
       @method init
       @private
     */
@@ -578,7 +578,7 @@ const LinkComponent = EmberComponent.extend({
     /**
       Accessed as a classname binding to apply the component's `disabledClass`
       CSS `class` to the element when the link is disabled.
-  
+
       When `true`, interactions with the element will not trigger route changes.
       @property disabled
       @public
@@ -598,14 +598,14 @@ const LinkComponent = EmberComponent.extend({
     /**
       Accessed as a classname binding to apply the component's `activeClass`
       CSS `class` to the element when the link is active.
-  
+
       This component is considered active when its `currentWhen` property is `true`
       or the application's current route is the route this component would trigger
       transitions into.
-  
+
       The `currentWhen` property can match against multiple routes by separating
       route names using the ` ` (space) character.
-  
+
       @property active
       @private
     */
@@ -676,7 +676,7 @@ const LinkComponent = EmberComponent.extend({
     },
     /**
       Event handler that invokes the link, activating the associated route.
-  
+
       @method _invoke
       @param {Event} event
       @private
@@ -734,10 +734,10 @@ const LinkComponent = EmberComponent.extend({
     /**
       Sets the element's `href` attribute to the url for
       the `LinkComponent`'s targeted route.
-  
+
       If the `LinkComponent`'s `tagName` is changed to a value other
       than `a`, this property will be ignored.
-  
+
       @property href
       @private
     */
@@ -776,7 +776,7 @@ const LinkComponent = EmberComponent.extend({
     }),
     /**
       The loading state. Returns the loadingClass is true.
-  
+
       @property activeClass
       @type {string|undefined}
       @default active
@@ -802,7 +802,7 @@ const LinkComponent = EmberComponent.extend({
     /**
       The default href value to use while a link-to is loading.
       Only applies when tagName is 'a'
-  
+
       @property loadingHref
       @type String
       @default #
@@ -922,11 +922,11 @@ LinkComponent.reopenClass({
 const LinkToExternal = class LinkToExternal extends LinkComponent {
   _namespaceRoute(targetRouteName) {
     const owner = getOwner(this);
-    
+
     if (!owner.mountPoint) {
       return super._namespaceRoute(...arguments);
     }
-    
+
     const externalRoute = owner._getExternalRoute(targetRouteName);
 
     return externalRoute;

@@ -13,8 +13,8 @@ module("Integration | Component | component-with-link-to-external", function(
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function() {
-    let testComponent = Component.extend();
-    this.owner.register("component:test-component", testComponent);
+    class TestComponent extends Component {}
+    this.owner.register("component:test-component", TestComponent);
 
     class Router extends EmberRouter {}
     Router.map(function() {

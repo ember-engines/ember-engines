@@ -18,13 +18,16 @@
 <LinkTo @query={{hash lang="Japanese"}} class="routable-post-jp-link">Go to Japanese version</LinkTo>
 <button {{action "goToChineseVersion"}} class="routable-post-ch-link">Go to Chinese version</button>
 <button {{action "transitionToHome"}} class="routable-post-transition-to-home-button {{if this.transitionedToExternal 'transitioned-to-external'}}">
-    Go home programmatically
+  Go home programmatically
 </button>
 
-<button {{action "transitionToHomeFromController"}} class="routable-post-transition-to-route-home-button {{if this.transitionedToExternalRoute 'transitioned-to-external-route'}}">
-    Go home by controller
+<button
+  class="routable-post-transition-to-route-home-button {{if this.transitionedToExternalRoute "transitioned-to-external-route"}}"
+  {{on "click" this.transitionToHomeFromController}}
+>
+  Go home by controller
 </button>
 
 <button {{action "replaceWithHome"}} class="routable-post-replace-with-home-button {{if this.replacedWithExternal 'replaced-with-external'}}">
-    Also goes home programmatically
+  Also goes home programmatically
 </button>

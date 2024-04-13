@@ -3,9 +3,8 @@ import { inject as service } from '@ember/service';
 
 export default class IndexRoute extends Route {
   @service router;
-  actions = {
-    goToPostWithChinese() {
-      this.router.transitionTo('post', 1, { queryParams: { lang: 'Chinese' } });
-    }
+
+  @action goToPostWithChinese() {
+    this.router.transitionTo('post', 1, { queryParams: { lang: 'Chinese' } });
   };
 }

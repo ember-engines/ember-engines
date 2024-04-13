@@ -1,5 +1,6 @@
 /* global require */
 import { getContext } from '@ember/test-helpers';
+import { associateDestroyableChild } from '@ember/destroyable';
 
 /**
  * Used to set up engine for use. Must be called after one of the `ember-qunit`
@@ -62,6 +63,8 @@ async function buildEngineOwner(owner, engineName) {
       routable: true,
       mountPoint: engineName,
     });
+
+    associateDestroyableChild(owner, engineInstance);
 
     await engineInstance.boot();
   } else {

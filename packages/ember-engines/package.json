@@ -40,6 +40,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@ember/legacy-built-in-components": "0.4.2",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.6.0",
     "@embroider/test-setup": "^0.48.1",
@@ -50,10 +51,10 @@
     "broccoli-test-helper": "^2.0.0",
     "chai": "^4.2.0",
     "common-tags": "^1.8.0",
-    "eager-blog": "0.9.0",
-    "ember-auto-import": "^2.2.0",
-    "ember-blog": "0.9.0",
-    "ember-chat": "0.9.0",
+    "eager-blog": "workspace:*",
+    "ember-auto-import": "^2.7.2",
+    "ember-blog": "workspace:*",
+    "ember-chat": "workspace:*",
     "ember-cli": "~3.28.6",
     "ember-cli-addon-tests": "^0.11.1",
     "ember-cli-app-version": "^3.2.0",
@@ -73,7 +74,7 @@
     "ember-source": "~3.28.8",
     "ember-source-channel-url": "^3.0.0",
     "ember-template-lint": "^3.15.0",
-    "ember-try": "^1.4.0",
+    "ember-try": "^3.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-ember": "^10.5.8",
@@ -130,5 +131,8 @@
   },
   "prettier": {
     "singleQuote": true
+  },
+  "volta": {
+    "extends": "../../package.json"
   }
 }

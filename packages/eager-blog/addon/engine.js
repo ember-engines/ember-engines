@@ -5,10 +5,10 @@ import config from './config/environment';
 
 const { modulePrefix } = config;
 
-const Eng = Engine.extend({
-  modulePrefix,
-  Resolver,
-});
+class Eng extends Engine {
+  modulePrefix = config.modulePrefix;
+  Resolver = Resolver;
+}
 
 loadInitializers(Eng, modulePrefix);
 
