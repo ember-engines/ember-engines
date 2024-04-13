@@ -52,7 +52,7 @@
     "chai": "^4.2.0",
     "common-tags": "^1.8.0",
     "eager-blog": "workspace:*",
-    "ember-auto-import": "^2.2.0",
+    "ember-auto-import": "^2.7.2",
     "ember-blog": "workspace:*",
     "ember-chat": "workspace:*",
     "ember-cli": "~3.28.6",
