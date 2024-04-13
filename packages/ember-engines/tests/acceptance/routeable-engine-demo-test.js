@@ -1,23 +1,13 @@
 /* eslint-disable ember/no-private-routing-service */
 import { module, test } from 'qunit';
-import { default as _sinon } from 'sinon';
+import sinon from 'sinon';
 import Initializer from 'ember-blog/initializers/ember-blog-initializer';
 import InstanceInitializer from 'ember-blog/instance-initializers/ember-blog-instance-initializer';
 import { setupApplicationTest } from 'ember-qunit';
 import { currentURL, visit, find, click } from '@ember/test-helpers';
 
-let sinon;
-
 module('Acceptance | routable engine demo', function (hooks) {
   setupApplicationTest(hooks);
-
-  hooks.beforeEach(function () {
-    sinon = _sinon.createSandbox();
-  });
-
-  hooks.afterEach(function () {
-    sinon.restore();
-  });
 
   test('can invoke components', async function (assert) {
     await visit('/routable-engine-demo/blog/new');

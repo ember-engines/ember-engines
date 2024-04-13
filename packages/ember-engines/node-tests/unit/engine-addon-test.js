@@ -4,7 +4,6 @@ const EngineAddon = require('../../lib/engine-addon');
 const EmberAddon = require('ember-cli/lib/models/addon');
 const MockProject = require('ember-cli/tests/helpers/mock-project');
 const expect = require('chai').expect;
-// eslint-disable-next-line n/no-extraneous-require, n/no-missing-require
 const sinon = require('sinon');
 const rewire = require('rewire');
 const path = require('path');
