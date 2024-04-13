@@ -3,12 +3,13 @@ import Controller from '@ember/controller';
 
 let count = 0;
 
-export default Controller.extend({
-  name: 'ember-chat',
-  exampleService: service(),
+export default class EmberChatApplicationController extends Controller {
+  name = 'ember-chat';
+  @service exampleService;
+
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.get('exampleService');
     this.set('name', `ember-chat-${++count}`);
-  },
-});
+  }
+}

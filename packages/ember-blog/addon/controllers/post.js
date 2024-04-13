@@ -1,15 +1,13 @@
 import Controller from '@ember/controller';
-import { set } from '@ember/object';
+import { set, action } from '@ember/object';
 
-export default Controller.extend({
-  queryParams: ['lang'],
-  commentsRoute: 'post.comments', // Added to demonstrate that dynamic route names work
+export default class PostController extends Controller {
+  queryParams = ['lang'];
+  commentsRoute = 'post.comments'; // Added to demonstrate that dynamic route names work
 
-  actions: {
-    transitionToHomeFromController() {
-      this.transitionToExternalRoute('home').then(() => {
-        set(this, 'transitionedToExternalRoute', true);
-      });
-    },
-  }
-});
+  @action transitionToHomeFromController() {
+    this.transitionToExternalRoute('home').then(() => {
+      set(this, 'transitionedToExternalRoute', true);
+    });
+  };
+}
