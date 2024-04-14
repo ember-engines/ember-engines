@@ -1,4 +1,5 @@
 import { start } from 'ember-qunit';
+import setupSinon from 'ember-sinon-qunit';
 import config from '../config/environment';
 
 import Application from '../app';
@@ -7,6 +8,7 @@ import { registerDeprecationHandler } from '@ember/debug';
 import QUnit from 'qunit';
 
 setApplication(Application.create(config.APP));
+setupSinon();
 
 start();
 
@@ -45,6 +47,7 @@ QUnit.assert.deprecations = function(callback, expectedDeprecations) {
     deprecations,
     expectedDeprecations,
     'Expected deprecations during test.'
+  ,
   );
 
   deprecations = originalDeprecations;

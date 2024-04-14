@@ -13,8 +13,9 @@ function deprecateHostRouterService() {
         'https://ember-engines.com/docs/deprecations#-use-alias-for-inject-router-service-from-host-application',
       since: {
         enabled: '0.8.16'
-      }
+      },
     }
+  ,
   );
 }
 
@@ -82,7 +83,7 @@ EngineInstance.reopen({
         let engineDependencies = engineConfiguration.dependencies;
 
         if (engineDependencies) {
-          ['services'].forEach(category => {
+          ['services'].forEach((category) => {
             if (engineDependencies[category]) {
               dependencies[category] = {};
               let dependencyType = this._dependencyTypeFromCategory(category);
@@ -108,7 +109,7 @@ EngineInstance.reopen({
 
                 assert(
                   `Engine parent failed to lookup '${dependencyKey}' dependency, as declared in 'engines.${engineConfigurationKey}.dependencies.${category}'.`,
-                  dependency
+                  dependency,
                 );
 
                 dependencies[category][dependencyName] = dependency;
@@ -155,17 +156,17 @@ EngineInstance.reopen({
     let requiredDependencies = this.base.dependencies;
 
     if (requiredDependencies) {
-      Object.keys(requiredDependencies).forEach(category => {
+      Object.keys(requiredDependencies).forEach((category) => {
         let dependencyType = this._dependencyTypeFromCategory(category);
 
-        requiredDependencies[category].forEach(dependencyName => {
+        requiredDependencies[category].forEach((dependencyName) => {
           let dependency =
             this.dependencies[category] &&
             this.dependencies[category][dependencyName];
 
           assert(
             `A dependency mapping for '${category}.${dependencyName}' must be declared on this engine's parent.`,
-            dependency
+            dependency,
           );
 
           if (category === 'externalRoutes') {
@@ -188,7 +189,7 @@ EngineInstance.reopen({
     }
     assert(
       `Dependencies of category '${category}' can not be shared with engines.`,
-      false
+      false,
     );
   },
 

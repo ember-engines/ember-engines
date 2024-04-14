@@ -28,7 +28,7 @@ import { deprecate } from '@ember/debug';
 export default function engineResolverFor(
   engineName,
   modulePrefix = engineName,
-  podModulePrefix = undefined
+  podModulePrefix = undefined,
 ) {
   deprecate(
     "Use of `engineResolverFor` has been deprecated. Instead use `setupEngine(hooks, 'engine-name')` imported from `ember-engines/test-support` to load the engine you need.",
@@ -40,8 +40,9 @@ export default function engineResolverFor(
       since: {
         enabled: '0.8.24',
         available: '0.8.24',
-      }
-    });
+      },
+    },
+  );
 
   let Resolver;
 

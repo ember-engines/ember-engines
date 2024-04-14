@@ -7,6 +7,8 @@ export default class RoutableEngineDemoIndexController extends Controller {
 
   @action
   goToPostWithChinese() {
-    this.router.transitionTo('blog.post', 1, { queryParams: { lang: 'Chinese' } });
+    this.router.transitionTo('blog.post', 1, {
+      queryParams: { lang: 'Chinese' },
+    });
   }
 }

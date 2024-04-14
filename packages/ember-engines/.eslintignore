@@ -1,2 +1,16 @@
-lib/engine-config-from-meta.js
-lib/engine-config-node-module.js
+# unconventional js
+/blueprints/*/files/
+/blueprints/**/*/__name__/index.js
+/lib/engine-config-from-meta.js
+/lib/engine-config-node-module.js
+
+# compiled output
+/dist/
+
+# misc
+/coverage/
+!.*
+.*/
+
+# ember-try
+/.node_modules.ember-try/

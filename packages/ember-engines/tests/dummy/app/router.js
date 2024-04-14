@@ -1,15 +1,15 @@
 import EmberRouter from '@ember/routing/router';
-import config from './config/environment';
+import config from 'dummy/config/environment';
 
 export default class Router extends EmberRouter {
   location = config.locationType;
   rootURL = config.rootURL;
 }
 
-Router.map(function() {
+Router.map(function () {
   this.route('routeless-engine-demo');
 
-  this.route('routable-engine-demo', function() {
+  this.route('routable-engine-demo', function () {
     this.route('normal-route');
     this.route('redirect');
     this.route('after-model', { path: '/after-model/:id' });

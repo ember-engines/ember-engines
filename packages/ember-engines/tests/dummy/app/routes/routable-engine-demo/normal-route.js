@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 
-export default Route.extend({
+export default class NormalRoute extends Route {
   beforeModel() {
     return this.transitionTo('routeless-engine-demo');
-  },
-});
+  }
+}
