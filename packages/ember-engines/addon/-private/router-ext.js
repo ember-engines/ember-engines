@@ -165,8 +165,7 @@ Router.reopen({
       if (get(this, 'namespace.LOG_ACTIVE_GENERATION')) {
         // eslint-disable-next-line no-console
         console.info(`generated -> ${fullRouteName}`, {
-          fullName: fullRouteName
-       ,
+          fullName: fullRouteName,
         });
       }
     }
@@ -302,7 +301,7 @@ Router.reopen({
 
     let engineInstance = owner.buildChildEngineInstance(name, {
       routable: true,
-      mountPoint
+      mountPoint,
     });
 
     engineInstances[name][instanceId] = engineInstance;
@@ -310,5 +309,5 @@ Router.reopen({
     return engineInstance.boot().then(() => {
       return engineInstance;
     });
-  }
+  },
 });

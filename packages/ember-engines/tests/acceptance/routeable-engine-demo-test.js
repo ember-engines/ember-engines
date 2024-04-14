@@ -5,10 +5,10 @@ import { setupApplicationTest } from 'ember-qunit';
 import { currentURL, visit, click } from '@ember/test-helpers';
 import { importSync } from '@embroider/macros';
 
-module('Acceptance | routable engine demo', function(hooks) {
+module('Acceptance | routable engine demo', function (hooks) {
   setupApplicationTest(hooks);
 
-  test('can invoke components', async function(assert) {
+  test('can invoke components', async function (assert) {
     await visit('/routable-engine-demo/blog/new');
 
     assert.strictEqual(currentURL(), '/routable-engine-demo/blog/new');
@@ -19,7 +19,7 @@ module('Acceptance | routable engine demo', function(hooks) {
       .hasText('Hello, Jerry!', 'Re-rendered hello-name component correctly');
   });
 
-  test("can deserialize a route's params", async function(assert) {
+  test("can deserialize a route's params", async function (assert) {
     await visit('/routable-engine-demo/blog/post/1');
 
     assert.strictEqual(currentURL(), '/routable-engine-demo/blog/post/1');
@@ -28,14 +28,14 @@ module('Acceptance | routable engine demo', function(hooks) {
     assert.dom('p.author').hasText('Derek Zoolander');
   });
 
-  test('can link-to application route of Engine', async function(assert) {
+  test('can link-to application route of Engine', async function (assert) {
     await visit('/routable-engine-demo/blog/post/new');
     await click('.routable-post-blog-home-link-app');
 
     assert.strictEqual(currentURL(), '/routable-engine-demo/blog');
   });
 
-  test('correctly handles navigation with query param in initial url', async function(assert) {
+  test('correctly handles navigation with query param in initial url', async function (assert) {
     await visit('/routable-engine-demo/blog/post/1?lang=English');
 
     assert.strictEqual(
@@ -44,7 +44,8 @@ module('Acceptance | routable engine demo', function(hooks) {
       'url is visited properly',
     );
     assert
-      .dom('p.language').hasText('English', 'query param value is passed through correctly - 1');
+      .dom('p.language')
+      .hasText('English', 'query param value is passed through correctly - 1');
 
     await click('.routable-post-comments-link');
 
@@ -54,7 +55,8 @@ module('Acceptance | routable engine demo', function(hooks) {
       'query param is carried to sub-route',
     );
     assert
-      .dom('p.language').hasText('English', 'query param value is passed through correctly - 2');
+      .dom('p.language')
+      .hasText('English', 'query param value is passed through correctly - 2');
 
     await click('.back-to-post-link');
 
@@ -64,7 +66,8 @@ module('Acceptance | routable engine demo', function(hooks) {
       'query param is carried back to original route properly',
     );
     assert
-      .dom('p.language').hasText('English', 'query param value is passed through correctly - 3');
+      .dom('p.language')
+      .hasText('English', 'query param value is passed through correctly - 3');
 
     await click('.routable-post-blog-home-link');
     assert.strictEqual(
@@ -81,7 +84,8 @@ module('Acceptance | routable engine demo', function(hooks) {
       'query param is rehydrated in url',
     );
     assert
-      .dom('p.language').hasText('English', 'query param value is passed through correctly - 4');
+      .dom('p.language')
+      .hasText('English', 'query param value is passed through correctly - 4');
   });
 
   test('can link-to a route with query params from outside an Engine', async function (assert) {
@@ -92,10 +96,10 @@ module('Acceptance | routable engine demo', function(hooks) {
       currentURL(),
       '/routable-engine-demo/blog/post/1?lang=Japanese',
     );
-    assert.dom('p.language').hasText( 'Japanese');
+    assert.dom('p.language').hasText('Japanese');
   });
 
-  test('can programmatically transition to a route with query params from outside an Engine', async function(assert) {
+  test('can programmatically transition to a route with query params from outside an Engine', async function (assert) {
     await visit('/routable-engine-demo');
     await click('.blog-post-1-link-ch');
 
@@ -103,10 +107,10 @@ module('Acceptance | routable engine demo', function(hooks) {
       currentURL(),
       '/routable-engine-demo/blog/post/1?lang=Chinese',
     );
-    assert.dom('p.language').hasText( 'Chinese');
+    assert.dom('p.language').hasText('Chinese');
   });
 
-  test('can link-to a route with query params within an Engine', async function(assert) {
+  test('can link-to a route with query params within an Engine', async function (assert) {
     await visit('/routable-engine-demo/blog');
     await click('.routable-post-1-link-jp');
 
@@ -114,10 +118,10 @@ module('Acceptance | routable engine demo', function(hooks) {
       currentURL(),
       '/routable-engine-demo/blog/post/1?lang=Japanese',
     );
-    assert.dom('p.language').hasText( 'Japanese');
+    assert.dom('p.language').hasText('Japanese');
   });
 
-  test('can programmatically transition to a route with query params within an Engine', async function(assert) {
+  test('can programmatically transition to a route with query params within an Engine', async function (assert) {
     await visit('/routable-engine-demo/blog');
     await click('.routable-post-1-link-ch');
 
@@ -125,10 +129,10 @@ module('Acceptance | routable engine demo', function(hooks) {
       currentURL(),
       '/routable-engine-demo/blog/post/1?lang=Chinese',
     );
-    assert.dom('p.language').hasText( 'Chinese');
+    assert.dom('p.language').hasText('Chinese');
   });
 
-  test('can perform a QP-only link-to transition', async function(assert) {
+  test('can perform a QP-only link-to transition', async function (assert) {
     await visit('/routable-engine-demo/blog/post/1?lang=English');
     await click('.routable-post-jp-link');
 
@@ -140,7 +144,7 @@ module('Acceptance | routable engine demo', function(hooks) {
     assert.dom('p.language').hasText('Japanese', 'DOM is updated properly');
   });
 
-  test('can perform a QP-only transitionTo', async function(assert) {
+  test('can perform a QP-only transitionTo', async function (assert) {
     await visit('/routable-engine-demo/blog/post/1?lang=English');
     await click('.routable-post-ch-link');
 
@@ -152,7 +156,7 @@ module('Acceptance | routable engine demo', function(hooks) {
     assert.dom('p.language').hasText('Chinese', 'DOM is updated properly');
   });
 
-  test('can perform a redirect transition with QP', async function(assert) {
+  test('can perform a redirect transition with QP', async function (assert) {
     await visit('/routable-engine-demo/redirect');
     assert.strictEqual(
       currentURL(),
@@ -160,7 +164,7 @@ module('Acceptance | routable engine demo', function(hooks) {
     );
   });
 
-  test('can perform an afterModel transition with QP', async function(assert) {
+  test('can perform an afterModel transition with QP', async function (assert) {
     await visit('/routable-engine-demo/after-model/3');
     assert.strictEqual(
       currentURL(),
@@ -168,7 +172,7 @@ module('Acceptance | routable engine demo', function(hooks) {
     );
   });
 
-  test('query param bucket cache does not collide when starting outside Engine', async function(assert) {
+  test('query param bucket cache does not collide when starting outside Engine', async function (assert) {
     await visit('/post/1?lang=English');
     await click('.blog-post-no-qp');
 
@@ -186,7 +190,7 @@ module('Acceptance | routable engine demo', function(hooks) {
     );
   });
 
-  test('query param bucket cache does not collide when starting inside Engine', async function(assert) {
+  test('query param bucket cache does not collide when starting inside Engine', async function (assert) {
     await visit('/routable-engine-demo/blog/post/1?lang=English');
     await click('.non-blog-post');
 
@@ -205,7 +209,7 @@ module('Acceptance | routable engine demo', function(hooks) {
     );
   });
 
-  test("a route can lookup another route's model", async function(assert) {
+  test("a route can lookup another route's model", async function (assert) {
     await visit('/routable-engine-demo/blog/post/1/comments');
 
     assert.strictEqual(
@@ -213,10 +217,10 @@ module('Acceptance | routable engine demo', function(hooks) {
       '/routable-engine-demo/blog/post/1/comments',
     );
 
-    assert.dom('h4.comments').hasText( 'Comments for Post 1');
+    assert.dom('h4.comments').hasText('Comments for Post 1');
   });
 
-  test('can render a link', async function(assert) {
+  test('can render a link', async function (assert) {
     await visit('/routable-engine-demo/blog/post/1');
 
     assert.strictEqual(currentURL(), '/routable-engine-demo/blog/post/1');
@@ -233,14 +237,14 @@ module('Acceptance | routable engine demo', function(hooks) {
     assert.dom('a.current-when-test-link').hasClass('active');
   });
 
-  test('internal link to index can be clicked', async function(assert) {
+  test('internal link to index can be clicked', async function (assert) {
     await visit('/routable-engine-demo/blog/post/1');
     await click('.routable-post-home-link');
 
     assert.strictEqual(currentURL(), '/');
   });
 
-  test('external links can be clicked', async function(assert) {
+  test('external links can be clicked', async function (assert) {
     await visit('/routable-engine-demo/blog/post/1');
     await click('.routable-post-comments-link');
 
@@ -250,14 +254,14 @@ module('Acceptance | routable engine demo', function(hooks) {
     );
   });
 
-  test('a route can use transitionTo to transition to internal route', async function(assert) {
+  test('a route can use transitionTo to transition to internal route', async function (assert) {
     await visit('/routable-engine-demo/blog/new');
     await click('.trigger-transition-to');
 
     assert.strictEqual(currentURL(), '/routable-engine-demo/blog/post/1');
   });
 
-  test('internal links can be clicked', async function(assert) {
+  test('internal links can be clicked', async function (assert) {
     await visit('/routable-engine-demo/special-admin-blog-here/post/1');
     await click('.routable-post-comments-link');
 
@@ -267,13 +271,13 @@ module('Acceptance | routable engine demo', function(hooks) {
     );
   });
 
-  test('transitionTo works properly within parent application', async function(assert) {
+  test('transitionTo works properly within parent application', async function (assert) {
     await visit('/routable-engine-demo/normal-route');
 
     assert.strictEqual(currentURL(), '/routeless-engine-demo');
   });
 
-  test('transitionToExternal transitions to the parent application from within an engine and returns a thenable Transition object', async function(assert) {
+  test('transitionToExternal transitions to the parent application from within an engine and returns a thenable Transition object', async function (assert) {
     await visit('/routable-engine-demo/ember-blog/post/1');
     await click('.routable-post-transition-to-home-button');
 
@@ -285,9 +289,7 @@ module('Acceptance | routable engine demo', function(hooks) {
 
     assert
       .dom('.routable-post-transition-to-home-button')
-      .hasClass(
-        'transitioned-to-external'
-      );
+      .hasClass('transitioned-to-external');
   });
 
   test("transitionToExternalRoute transitions to the parent application from within an engine's controller and returns a thenable Transition object", async function (assert) {
@@ -302,9 +304,7 @@ module('Acceptance | routable engine demo', function(hooks) {
 
     assert
       .dom('.routable-post-transition-to-route-home-button')
-      .hasClass(
-        'transitioned-to-external-route'
-      );
+      .hasClass('transitioned-to-external-route');
   });
 
   test('replaceWithExternal transitions to the parent application from within an engine and returns a thenable Transition object', async function (assert) {
@@ -319,19 +319,17 @@ module('Acceptance | routable engine demo', function(hooks) {
 
     assert
       .dom('.routable-post-replace-with-home-button')
-      .hasClass(
-        'replaced-with-external'
-      );
+      .hasClass('replaced-with-external');
   });
 
-  test('loading routes and intermediateTransitionTo work within an engine', async function(assert) {
+  test('loading routes and intermediateTransitionTo work within an engine', async function (assert) {
     assert.expect(2);
 
     this.owner.lookup('router:main').reopen({
       intermediateTransitionTo(routeName) {
         assert.strictEqual(routeName, 'blog.post.loading');
         this._super(...arguments);
-      }
+      },
     });
 
     await visit('/routable-engine-demo/blog/post/1/comments');
@@ -340,14 +338,14 @@ module('Acceptance | routable engine demo', function(hooks) {
     assert.strictEqual(currentURL(), '/routable-engine-demo/blog/post/1/likes');
   });
 
-  test('error routes and intermediateTransitionTo work within an engine', async function(assert) {
+  test('error routes and intermediateTransitionTo work within an engine', async function (assert) {
     assert.expect(3);
 
     this.owner.lookup('router:main').reopen({
       intermediateTransitionTo(routeName) {
         assert.strictEqual(routeName, 'blog.post.error');
         this._super(...arguments);
-      }
+      },
     });
 
     await visit('/routable-engine-demo/blog/post/1/comments');
@@ -360,13 +358,13 @@ module('Acceptance | routable engine demo', function(hooks) {
     assert.dom('.error-message').hasText('Error: Nope!');
   });
 
-  test('initializers run within engine', async function(assert) {
+  test('initializers run within engine', async function (assert) {
     let assetLoader = this.owner.lookup('service:asset-loader');
 
     await assetLoader.loadBundle('ember-blog');
 
     const Initializer = importSync(
-      'ember-blog/initializers/ember-blog-initializer'
+      'ember-blog/initializers/ember-blog-initializer',
     );
 
     let stub = sinon.stub(Initializer.default, 'initialize');
@@ -376,13 +374,13 @@ module('Acceptance | routable engine demo', function(hooks) {
     assert.ok(stub.calledOnce, 'Initializer ran once');
   });
 
-  test('instance initializers run within engine', async function(assert) {
+  test('instance initializers run within engine', async function (assert) {
     let assetLoader = this.owner.lookup('service:asset-loader');
 
     await assetLoader.loadBundle('ember-blog');
 
     const InstanceInitializer = importSync(
-      'ember-blog/instance-initializers/ember-blog-instance-initializer'
+      'ember-blog/instance-initializers/ember-blog-instance-initializer',
     );
 
     let stub = sinon.stub(InstanceInitializer.default, 'initialize');
@@ -392,7 +390,7 @@ module('Acceptance | routable engine demo', function(hooks) {
     assert.ok(stub.calledOnce, 'Instance initializer ran once');
   });
 
-  test('instance-initializers run after initializers', async function(assert) {
+  test('instance-initializers run after initializers', async function (assert) {
     assert.expect(2);
 
     let appInitialized = false;
@@ -403,18 +401,21 @@ module('Acceptance | routable engine demo', function(hooks) {
     await assetLoader.loadBundle('ember-blog');
 
     const Initializer = importSync(
-      'ember-blog/initializers/ember-blog-initializer'
+      'ember-blog/initializers/ember-blog-initializer',
     );
 
     const InstanceInitializer = importSync(
-      'ember-blog/instance-initializers/ember-blog-instance-initializer'
+      'ember-blog/instance-initializers/ember-blog-instance-initializer',
     );
 
     let appInit = sinon
       .stub(Initializer.default, 'initialize')
       .callsFake(() => {
         appInitialized = true;
-        assert.notOk(instanceInitialized, 'instance initialized has not run yet');
+        assert.notOk(
+          instanceInitialized,
+          'instance initialized has not run yet',
+        );
       });
 
     let instanceInit = sinon

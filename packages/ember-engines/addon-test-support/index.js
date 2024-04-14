@@ -19,8 +19,7 @@ export function setupEngine(hooks, engineName) {
   hooks.beforeEach(async function () {
     if (this.engine !== undefined) {
       throw new Error(
-        'You cannot use `setupEngine` twice for the same test setup. If you need to setup multiple engines, use `loadEngine` directly.'
-      ,
+        'You cannot use `setupEngine` twice for the same test setup. If you need to setup multiple engines, use `loadEngine` directly.',
       );
     }
 
@@ -56,8 +55,7 @@ function registerEngine(owner, engineName) {
   // With register() we tell registry that module is now available.
   owner.register(
     `engine:${engineName}`,
-    require(`${engineName}/engine`).default
-  ,
+    require(`${engineName}/engine`).default,
   );
 }
 
@@ -68,7 +66,7 @@ async function buildEngineOwner(owner, engineName) {
     // eager engines
     engineInstance = owner.buildChildEngineInstance(engineName, {
       routable: true,
-      mountPoint: engineName
+      mountPoint: engineName,
     });
 
     associateDestroyableChild(owner, engineInstance);
