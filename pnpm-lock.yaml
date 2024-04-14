@@ -68,6 +68,9 @@ importers:
       '@babel/core':
         specifier: ^7.24.4
         version: 7.24.4
+      '@ember/test-waiters':
+        specifier: '*'
+        version: 3.1.0
       '@embroider/macros':
         specifier: ^1.15.1
         version: 1.15.1
@@ -3648,7 +3651,6 @@ packages:
       semver: 7.6.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@embroider/addon-shim@1.8.7:
     resolution: {integrity: sha512-JGOQNRj3UR0NdWEg8MsM2eqPLncEwSB1IX+rwntIj22TEKj8biqx7GDgSbeH+ZedijmCh354Hf2c5rthrdzUAw==}
@@ -5334,7 +5336,7 @@ packages:
       '@babel/core': ^7.0.0
     dependencies:
       '@babel/core': 7.24.0
-      semver: 5.7.1
+      semver: 5.7.2
 
   /babel-plugin-debug-macros@0.3.4(@babel/core@7.24.4):
     resolution: {integrity: sha512-wfel/vb3pXfwIDZUrkoDrn5FHmlWI96PCJ3UCDv2a86poJ3EQrnArNW5KfHSVJ9IOgxHbo748cQt7sDU+0KCEw==}
