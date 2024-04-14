@@ -127,10 +127,14 @@
   },
   "peerDependencies": {
     "@ember/legacy-built-in-components": "*",
+    "@ember/test-waiters": "*",
     "ember-source": "^3.28 || >= 4.0.0"
   },
   "peerDependenciesMeta": {
     "@ember/legacy-built-in-components": {
+      "optional": true
+    },
+    "@ember/test-waiters": {
       "optional": true
     }
   },
