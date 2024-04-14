@@ -1,3 +1,4 @@
+/* eslint-disable n/no-unpublished-require */
 'use strict';
 
 const Funnel = require('broccoli-funnel');
@@ -71,16 +72,22 @@ const buildExternalTree = memoize(function buildExternalTree() {
   let trees = [];
 
   if (vendorPath && fs.existsSync(vendorPath)) {
-    trees.push(new Funnel(vendorPath, {
-      destDir: 'vendor',
-    }));
+    trees.push(
+      new Funnel(vendorPath, {
+        destDir: 'vendor',
+      }),
+    );
   }
 
-  let nodeModulesTrees = Array.from(this._nodeModules.values(), module => new Funnel(module.path, {
-    srcDir: '/',
-    destDir: `node_modules/${module.name}/`,
-    annotation: `Funnel (node_modules/${module.name})`,
-  }));
+  let nodeModulesTrees = Array.from(
+    this._nodeModules.values(),
+    (module) =>
+      new Funnel(module.path, {
+        srcDir: '/',
+        destDir: `node_modules/${module.name}/`,
+        annotation: `Funnel (node_modules/${module.name})`,
+      }),
+  );
 
   trees = trees.concat(...nodeModulesTrees);
 
@@ -98,10 +105,16 @@ const buildExternalTree = memoize(function buildExternalTree() {
       annotation: `Funnel (custom transform: ${transformName})`,
     });
 
-    externalTree = mergeTrees([externalTree, transformConfig.callback(transformTree, transformConfig.options)], {
-      annotation: `TreeMerger (custom transform: ${transformName})`,
-      overwrite: true,
-    });
+    externalTree = mergeTrees(
+      [
+        externalTree,
+        transformConfig.callback(transformTree, transformConfig.options),
+      ],
+      {
+        annotation: `TreeMerger (custom transform: ${transformName})`,
+        overwrite: true,
+      },
+    );
   }
 
   return externalTree;
@@ -156,19 +169,19 @@ const buildEngineJSTree = memoize(function buildEngineJSTree() {
   }
 
   // We want the config and child app trees to be compiled with the engine source
-  let configTree = writeFile('config/environment.js', this.getEngineConfigContents());
+  let configTree = writeFile(
+    'config/environment.js',
+    this.getEngineConfigContents(),
+  );
 
   // This is an extraction of what would normally be run by the `treeFor` hook.
   let childAppTree = mergeTrees(this.eachAddonInvoke('treeFor', ['app']), {
-    overwrite: true
+    overwrite: true,
   });
 
-  let augmentedEngineTree = mergeTrees([
-    configTree,
-    childAppTree,
-    engineSourceTree
-  ].filter(Boolean),
-    { overwrite: true }
+  let augmentedEngineTree = mergeTrees(
+    [configTree, childAppTree, engineSourceTree].filter(Boolean),
+    { overwrite: true },
   );
   let engineTree = this.compileAddon(augmentedEngineTree);
 
@@ -182,87 +195,96 @@ const buildEngineJSTreeWithoutRoutes = memoize(
       entry: this.name + '/routes.js',
       external: ['ember-engines/routes'],
     });
-  }
+  },
 );
 
-const buildEngineRoutesJSTree = memoize(function buildEngineRouteJSTree(sourceMapConfig) {
-  // Get complete engine JS tree
-  let engineAppTree = buildEngineJSTree.call(this);
+const buildEngineRoutesJSTree = memoize(
+  function buildEngineRouteJSTree(sourceMapConfig) {
+    // Get complete engine JS tree
+    let engineAppTree = buildEngineJSTree.call(this);
 
-  // Separate routes
-  let engineRoutesTree = new DependencyFunnel(engineAppTree, {
-    include: true,
-    entry: this.name + '/routes.js',
-    external: ['ember-engines/routes'],
-  });
+    // Separate routes
+    let engineRoutesTree = new DependencyFunnel(engineAppTree, {
+      include: true,
+      entry: this.name + '/routes.js',
+      external: ['ember-engines/routes'],
+    });
 
-  // If babel options aren't defined, we need to transpile the modules.
-  if (!this.options || !this.options.babel) {
-    engineRoutesTree = processBabel(engineRoutesTree);
-  }
+    // If babel options aren't defined, we need to transpile the modules.
+    if (!this.options || !this.options.babel) {
+      engineRoutesTree = processBabel(engineRoutesTree);
+    }
 
-  // Concatenate routes.js and its dependencies into a single file.
-  engineRoutesTree = concat(engineRoutesTree, {
-    allowNone: true,
-    inputFiles: ['**/*.js'],
-    outputFile: 'engines-dist/' + this.name + '/assets/routes.js',
+    // Concatenate routes.js and its dependencies into a single file.
+    engineRoutesTree = concat(engineRoutesTree, {
+      allowNone: true,
+      inputFiles: ['**/*.js'],
+      outputFile: 'engines-dist/' + this.name + '/assets/routes.js',
+      sourceMapConfig,
+    });
+
+    // Return concatenated JS tree
+    return this.debugTree(engineRoutesTree, 'routes:output');
+  },
+);
+
+const buildVendorJSWithImports = memoize(
+  function buildVendorJSTreeWithImports(
+    concatTranspiledVendorJSTree,
     sourceMapConfig,
-  });
-
-  // Return concatenated JS tree
-  return this.debugTree(engineRoutesTree, 'routes:output');
-});
-
-const buildVendorJSWithImports = memoize(function buildVendorJSTreeWithImports(concatTranspiledVendorJSTree, sourceMapConfig) {
-  let externalTree = buildExternalTree.call(this);
-  let combined = mergeTrees(
-    [externalTree, concatTranspiledVendorJSTree].filter(Boolean),
-    { overwrite: true }
-  );
-
-  let vendorFiles = [];
-  for (let outputFile in this._scriptOutputFiles) {
-    let inputFiles = this._scriptOutputFiles[outputFile];
-
-    vendorFiles.push(
-      concat(combined, {
-        allowNone: true,
-        annotation: 'Concat: Vendor ' + outputFile,
-        headerFiles: inputFiles,
-        outputFile: 'engines-dist/' + this.name + outputFile,
-        separator: EOL + ';',
-        sourceMapConfig,
-      })
+  ) {
+    let externalTree = buildExternalTree.call(this);
+    let combined = mergeTrees(
+      [externalTree, concatTranspiledVendorJSTree].filter(Boolean),
+      { overwrite: true },
     );
-  }
 
-  return mergeTrees(vendorFiles, { overwrite: true });
-});
+    let vendorFiles = [];
+    for (let outputFile in this._scriptOutputFiles) {
+      let inputFiles = this._scriptOutputFiles[outputFile];
 
-const buildVendorCSSWithImports = memoize(function buildVendorCSSWithImports(concatVendorCSSTree, sourceMapConfig) {
-  let externalTree = buildExternalTree.call(this);
-  let combined = mergeTrees(
-    [externalTree, concatVendorCSSTree].filter(Boolean),
-    { overwrite: true }
-  );
+      vendorFiles.push(
+        concat(combined, {
+          allowNone: true,
+          annotation: 'Concat: Vendor ' + outputFile,
+          headerFiles: inputFiles,
+          outputFile: 'engines-dist/' + this.name + outputFile,
+          separator: EOL + ';',
+          sourceMapConfig,
+        }),
+      );
+    }
 
-  let vendorFiles = [];
-  for (let outputFile in this._styleOutputFiles) {
-    let inputFiles = this._styleOutputFiles[outputFile];
+    return mergeTrees(vendorFiles, { overwrite: true });
+  },
+);
 
-    vendorFiles.push(
-      concat(combined, {
-        allowNone: true,
-        annotation: 'Concat: Vendor ' + outputFile,
-        inputFiles: inputFiles,
-        outputFile: 'engines-dist/' + this.name + outputFile,
-        sourceMapConfig,
-      })
+const buildVendorCSSWithImports = memoize(
+  function buildVendorCSSWithImports(concatVendorCSSTree, sourceMapConfig) {
+    let externalTree = buildExternalTree.call(this);
+    let combined = mergeTrees(
+      [externalTree, concatVendorCSSTree].filter(Boolean),
+      { overwrite: true },
     );
-  }
 
-  return mergeTrees(vendorFiles, { overwrite: true });
-});
+    let vendorFiles = [];
+    for (let outputFile in this._styleOutputFiles) {
+      let inputFiles = this._styleOutputFiles[outputFile];
+
+      vendorFiles.push(
+        concat(combined, {
+          allowNone: true,
+          annotation: 'Concat: Vendor ' + outputFile,
+          inputFiles: inputFiles,
+          outputFile: 'engines-dist/' + this.name + outputFile,
+          sourceMapConfig,
+        }),
+      );
+    }
+
+    return mergeTrees(vendorFiles, { overwrite: true });
+  },
+);
 
 const buildCompleteJSTree = memoize(function buildCompleteJSTree() {
   let vendorTree = buildVendorTree.call(this);
@@ -296,23 +318,23 @@ const buildEngineStyleTree = memoize(function buildEngineStyleTree() {
 
   let combinedEngineStylesAndDependencyStylesTree = maybeMergeTrees(
     [relocatedDependencyStyleTree, engineStylesTree],
-    { overwrite: true }
+    { overwrite: true },
   );
 
   return this.debugTree(
     combinedEngineStylesAndDependencyStylesTree,
-    'engine-style:input'
+    'engine-style:input',
   );
 });
 
 function buildEngine(options) {
   let originalInit =
     options.init ||
-    function() {
+    function () {
       this._super.init.apply(this, arguments);
     };
 
-  options.cacheKeyForTree = function(treeType) {
+  options.cacheKeyForTree = function (treeType) {
     // We do different things in the addon, public, and engine trees based on
     // the value of `lazyLoading.enabled`, so we add it to the cache key
     if (
@@ -330,7 +352,7 @@ function buildEngine(options) {
    * Gets a map of all the addons that are used by all hosts above
    * the current host.
    */
-  options.ancestorHostAddons = function() {
+  options.ancestorHostAddons = function () {
     if (this._hostAddons) {
       return this._hostAddons;
     }
@@ -365,9 +387,10 @@ function buildEngine(options) {
 
       hostAddons[addon.name] = addon;
 
-      let addons = TARGET_INSTANCE_SYMBOL && addon[TARGET_INSTANCE_SYMBOL]
-        ? addon[TARGET_INSTANCE_SYMBOL].addons
-        : addon.addons;
+      let addons =
+        TARGET_INSTANCE_SYMBOL && addon[TARGET_INSTANCE_SYMBOL]
+          ? addon[TARGET_INSTANCE_SYMBOL].addons
+          : addon.addons;
 
       queue.push(...addons);
     }
@@ -382,7 +405,7 @@ function buildEngine(options) {
    * addons that already appear in an ancestor host already. This prevents
    * duplicate inclusion of code by child lazy engines.
    */
-  options.nonDuplicatedAddonInvoke = function(methodName, args) {
+  options.nonDuplicatedAddonInvoke = function (methodName, args) {
     this.initializeAddons();
 
     let invokeArguments = args || [];
@@ -394,32 +417,32 @@ function buildEngine(options) {
     // TODO: when deeplyNonDuplicatedAddon is completely ready
     // make sure that the "included" methodName is considered
     if (process.env.EMBER_ENGINES_ADDON_DEDUPE && methodName === 'treeFor') {
-      let trees
+      let trees;
 
       try {
         deeplyNonDuplicatedAddon(hostAddons, this, treeName);
 
         trees = this.addons
-          .filter(addon => {
+          .filter((addon) => {
             if (!addon[methodName]) {
               // no method to call
               return false;
             }
             return true;
           })
-          .map(addon => {
+          .map((addon) => {
             return addon[methodName].apply(addon, invokeArguments);
           });
       } finally {
         restoreOriginalAddons(this);
       }
 
-      return trees
+      return trees;
     }
 
     // old implementation
     return this.addons
-      .map(addon => {
+      .map((addon) => {
         if (!addon[methodName]) {
           // no method to call
           return;
@@ -432,10 +455,7 @@ function buildEngine(options) {
             let hostAddonCacheKey = hostAddon.cacheKeyForTree(treeName);
             let addonCacheKey = addon.cacheKeyForTree(treeName);
 
-            if (
-              addonCacheKey != null &&
-              addonCacheKey === hostAddonCacheKey
-            ) {
+            if (addonCacheKey != null && addonCacheKey === hostAddonCacheKey) {
               // the addon specifies cache key and it is the same as host instance of the addon, skip the tree
               return;
             }
@@ -445,11 +465,12 @@ function buildEngine(options) {
         }
 
         return addon[methodName].apply(addon, invokeArguments);
-      }).filter(Boolean);
+      })
+      .filter(Boolean);
   };
 
   options.debugTree = BroccoliDebug.buildDebugCallback(
-    'ember-engines:' + options.name
+    'ember-engines:' + options.name,
   );
 
   options._concatStyles =
@@ -467,7 +488,7 @@ function buildEngine(options) {
       });
     };
 
-  options.init = function() {
+  options.init = function () {
     this._engineConfig = new Map();
     this.options = defaultsDeep(options, DEFAULT_CONFIG);
 
@@ -482,15 +503,15 @@ function buildEngine(options) {
 
     if (!this._addonPreprocessTree && this._addonPostprocessTree) {
       throw new Error(
-        'ember-engines@0.5 requires ember-cli@2.12, please update your ember-cli version.'
+        'ember-engines@0.5 requires ember-cli@2.12, please update your ember-cli version.',
       );
     }
 
-    ['ember-addon', 'ember-engine'].forEach(keyword => {
+    ['ember-addon', 'ember-engine'].forEach((keyword) => {
       if (!this.pkg.keywords || this.pkg.keywords.indexOf(keyword) === -1) {
         this.ui.writeWarnLine(
           this.pkg.name +
-            ` engine must specify "${keyword}" in the keywords section on package.json`
+            ` engine must specify "${keyword}" in the keywords section on package.json`,
         );
       }
     });
@@ -499,7 +520,7 @@ function buildEngine(options) {
     if (!('lazyLoading' in this)) {
       this.ui.writeDeprecateLine(
         this.pkg.name +
-          ' engine must specify the `lazyLoading.enabled` property as to whether the engine should be lazily loaded.'
+          ' engine must specify the `lazyLoading.enabled` property as to whether the engine should be lazily loaded.',
       );
     }
 
@@ -532,11 +553,11 @@ function buildEngine(options) {
     // Determines if this Engine or any of its parents are lazy
     this._hasLazyAncestor = findHost.call(this) !== findRoot.call(this);
 
-    this._processedExternalTree = function() {
+    this._processedExternalTree = function () {
       return buildExternalTree.call(this);
     };
 
-    this.import = function(asset, options) {
+    this.import = function (asset, options) {
       let host = originalFindHost.call(this);
       let target = this._findHost();
 
@@ -563,13 +584,11 @@ function buildEngine(options) {
     };
 
     let originalIncluded = this.included;
-    this.included = function() {
+    this.included = function () {
       if (this.lazyLoading.enabled === true) {
         // Do this greedily so that it runs before the `included` hook.
         this.import('engines-dist/' + this.name + '/assets/engine-vendor.js');
-        this.import(
-          'engines-dist/' + this.name + '/assets/engine-vendor.css'
-        );
+        this.import('engines-dist/' + this.name + '/assets/engine-vendor.css');
 
         let host = originalFindHost.call(this);
         host._importAddonTransforms.call(this);
@@ -590,7 +609,7 @@ function buildEngine(options) {
         let originalHostImport = host.import;
         let customHost = Object.create(host);
         if (!process.env.SUPPRESS_APP_IMPORT_WARNING) {
-          customHost.import = function() {
+          customHost.import = function () {
             let stack = new Error().stack;
             ui.writeWarnLine(
               '`app.import` should be avoided and `this.import` should be used instead. ' +
@@ -599,7 +618,7 @@ function buildEngine(options) {
                 name +
                 "`'s `app` argument at:\n\n  " +
                 stack +
-                '\n'
+                '\n',
             );
             return originalHostImport.apply(this, arguments);
           };
@@ -616,7 +635,7 @@ function buildEngine(options) {
     //
     // If the lazyLoading.includeRoutesInApplication option is false, we don't
     // want to promote the routes into the host.
-    this.treeForEngine = function() {
+    this.treeForEngine = function () {
       let extractRoutes =
         this._hasLazyAncestor &&
         this.lazyLoading.includeRoutesInApplication !== false;
@@ -644,11 +663,11 @@ function buildEngine(options) {
     // Replace `treeForApp` so no engine files leak into app namespace
     // This prevents accidental usage of engine components/helpers/utilities
     // inside of a host app
-    this.treeForApp = function() {};
+    this.treeForApp = function () {};
 
     // Replace `treeForAddon` so that we control how this engine gets built.
     // We may or may not want it to be combined like a default addon.
-    this.treeForAddon = function() {
+    this.treeForAddon = function () {
       if (this.lazyLoading.enabled === true) {
         return;
       }
@@ -659,7 +678,7 @@ function buildEngine(options) {
 
       let compiledEngineCSSTree = this.debugTree(
         this.compileStyles(engineCSSTree),
-        'styles'
+        'styles',
       );
 
       // If any of this engine's ancestors are lazy we need to
@@ -684,13 +703,13 @@ function buildEngine(options) {
 
       return mergeTrees(
         [externalTree, engineJSTree, compiledEngineCSSTree].filter(Boolean),
-        { overwrite: true }
+        { overwrite: true },
       );
     };
 
     this.compileLazyEngineStyles = function compileLazyEngineStyles(
       vendorTree,
-      externalTree
+      externalTree,
     ) {
       let vendorCSSTree = buildVendorCSSTree.call(this, vendorTree);
       let engineStylesOutputDir = 'engines-dist/' + this.name + '/assets/';
@@ -714,7 +733,7 @@ function buildEngine(options) {
       if (engineStylesTree) {
         let preprocessedEngineStylesTree = this._addonPreprocessTree(
           'css',
-          engineStylesTree
+          engineStylesTree,
         );
 
         let processedEngineStylesTree = preprocessCss(
@@ -724,48 +743,47 @@ function buildEngine(options) {
           {
             outputPaths: { addon: engineStylesOutputDir + 'engine.css' },
             registry: this.registry,
-          }
+          },
         );
 
         processedEngineStylesTree = this.debugTree(
           processedEngineStylesTree,
-          'engine-style:postprocessed'
+          'engine-style:postprocessed',
         );
-
 
         primaryStyleTree = this._concatStyles(
           'engine',
           processedEngineStylesTree,
-          sourceMapConfig
+          sourceMapConfig,
         );
 
         primaryStyleTree = this.debugTree(
           primaryStyleTree,
-          'engine-style:post-concat'
+          'engine-style:post-concat',
         );
 
         if (shouldMinifyCSS) {
           primaryStyleTree = preprocessMinifyCss(
             primaryStyleTree,
-            minificationOptions
+            minificationOptions,
           );
         }
 
         primaryStyleTree = this.debugTree(
           primaryStyleTree,
-          'engine-style:output'
+          'engine-style:output',
         );
       }
 
       let concatVendorCSSTree = this._concatStyles(
         'engine-vendor',
         vendorCSSTree,
-        sourceMapConfig
+        sourceMapConfig,
       );
 
       concatVendorCSSTree = this.debugTree(
         concatVendorCSSTree,
-        'vendor-style:pre-import'
+        'vendor-style:pre-import',
       );
 
       let concatMergedVendorCSSTree = mergeTrees([
@@ -778,19 +796,19 @@ function buildEngine(options) {
       let vendorCSSImportTree = buildVendorCSSWithImports.call(
         this,
         concatMergedVendorCSSTree,
-        sourceMapConfig
+        sourceMapConfig,
       );
 
       if (shouldMinifyCSS) {
         vendorCSSImportTree = preprocessMinifyCss(
           vendorCSSImportTree,
-          minificationOptions
+          minificationOptions,
         );
       }
 
       let mergedVendorCSSWithImportAndEngineStylesTree = mergeTrees(
         [vendorCSSImportTree, primaryStyleTree].filter(Boolean),
-        { overwrite: true }
+        { overwrite: true },
       );
 
       let combinedProcessedStylesTree = new Funnel(
@@ -798,13 +816,13 @@ function buildEngine(options) {
         {
           srcDir: 'engines-dist/',
           destDir: 'engines-dist/',
-        }
+        },
       );
 
       // run post processing via the `postprocessTree` hook on the final output
       let finalStylesTree = this._addonPostprocessTree(
         'css',
-        combinedProcessedStylesTree
+        combinedProcessedStylesTree,
       );
 
       return this.debugTree(finalStylesTree, 'styles');
@@ -815,13 +833,13 @@ function buildEngine(options) {
     // Luckily the public folder gets merged into the right place in the final output.
     // We'll take advantage of that.
     let originalTreeForPublic = this.treeForPublic;
-    this.treeForPublic = function() {
+    this.treeForPublic = function () {
       let hostOptions = findLCAHost(this).options || {};
       let sourceMapConfig = hostOptions.sourcemaps;
 
       let configTemplatePath = path.join(
         __dirname,
-        '/engine-config-node-module.js'
+        '/engine-config-node-module.js',
       );
       let configTemplate = fs.readFileSync(configTemplatePath, {
         encoding: 'utf8',
@@ -831,7 +849,7 @@ function buildEngine(options) {
         'engines-dist/' + options.name + '/config/environment.js',
         configTemplate
           .replace('{{MODULE_PREFIX}}', options.name)
-          .replace('{{CONFIG}}', JSON.stringify(this.engineConfig()))
+          .replace('{{CONFIG}}', JSON.stringify(this.engineConfig())),
       );
 
       // NOT LAZY LOADING!
@@ -854,12 +872,12 @@ function buildEngine(options) {
         {
           destDir: 'vendor',
           allowEmpty: true,
-        }
+        },
       );
 
       let finalStylesTree = this.compileLazyEngineStyles(
         vendorTree,
-        externalTree
+        externalTree,
       );
 
       // Move the public tree. It is already all in a folder named `this.name`
@@ -889,11 +907,11 @@ function buildEngine(options) {
         {
           exclude: ['engines-dist', 'engines-dist/**/*.*'],
           destDir: 'engines-dist/' + this.name,
-        }
+        },
       );
       let addonsEnginesPublicTreesMerged = mergeTrees(
         [childLazyEngines, childAddonsPublicTreesRelocated],
-        { overwrite: true }
+        { overwrite: true },
       );
 
       let engineJSTree = buildEngineJSTreeWithoutRoutes.call(this);
@@ -931,7 +949,7 @@ function buildEngine(options) {
       let vendorJSImportTree = buildVendorJSWithImports.call(
         this,
         concatMergedVendorJSTree,
-        sourceMapConfig
+        sourceMapConfig,
       );
 
       let otherAssets;
@@ -955,7 +973,10 @@ function buildEngine(options) {
       let separateRoutes =
         this.lazyLoading.includeRoutesInApplication === false;
       if (separateRoutes) {
-        let engineRoutesTree = buildEngineRoutesJSTree.call(this, sourceMapConfig);
+        let engineRoutesTree = buildEngineRoutesJSTree.call(
+          this,
+          sourceMapConfig,
+        );
         finalMergeTrees.push(engineRoutesTree);
       }
 
@@ -982,7 +1003,7 @@ function buildEngine(options) {
   */
   options.config =
     options.config ||
-    function() {
+    function () {
       return null;
     };
 
@@ -997,7 +1018,7 @@ function buildEngine(options) {
     @method engineConfig
     @return {Object} Configuration object that will be provided to the engine.
   */
-  options.engineConfig = function(env, baseConfig) {
+  options.engineConfig = function (env, baseConfig) {
     let configPath = 'config';
 
     if (
@@ -1038,7 +1059,7 @@ function buildEngine(options) {
     @param  {Object} engineConfig  Engine configuration
     @return {Object}               Merged configuration of all addons
     */
-  options.getAddonsConfig = function(env, engineConfig) {
+  options.getAddonsConfig = function (env, engineConfig) {
     this.initializeAddons();
 
     let initialConfig = merge({}, engineConfig);
@@ -1060,7 +1081,7 @@ function buildEngine(options) {
     @method contentFor
     @param type
   */
-  options.contentFor = function(type, config) {
+  options.contentFor = function (type, config) {
     if (type === 'head') {
       let engineConfig = this.engineConfig(config.environment, {});
 
@@ -1084,18 +1105,18 @@ function buildEngine(options) {
    *
    * @override
    */
-  options.updateFastBootManifest = function(manifest) {
+  options.updateFastBootManifest = function (manifest) {
     if (this.lazyLoading.enabled) {
       manifest.vendorFiles.push(
-        'engines-dist/' + options.name + '/assets/engine-vendor.js'
+        'engines-dist/' + options.name + '/assets/engine-vendor.js',
       );
       manifest.vendorFiles.push(
-        'engines-dist/' + options.name + '/assets/engine.js'
+        'engines-dist/' + options.name + '/assets/engine.js',
       );
     }
 
     manifest.vendorFiles.push(
-      'engines-dist/' + options.name + '/config/environment.js'
+      'engines-dist/' + options.name + '/config/environment.js',
     );
 
     return manifest;
@@ -1111,8 +1132,11 @@ function buildEngine(options) {
   */
   options.getEngineConfigContents =
     options.getEngineConfigContents ||
-    function() {
-      const configTemplate = fs.readFileSync(`${__dirname}/engine-config-from-meta.js`, 'UTF8');
+    function () {
+      const configTemplate = fs.readFileSync(
+        `${__dirname}/engine-config-from-meta.js`,
+        'UTF8',
+      );
 
       return configTemplate.replace('{{MODULE_PREFIX}}', options.name);
     };

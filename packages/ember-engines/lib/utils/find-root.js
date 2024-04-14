@@ -11,4 +11,4 @@ module.exports = function findRoot() {
   } while (current.parent.parent && (current = current.parent));
 
   return app;
-}
+};
