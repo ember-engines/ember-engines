@@ -9,14 +9,18 @@ import RSVP from 'rsvp';
 import { module, test } from 'qunit';
 import { setupOnerror, click, currentURL, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
-import App from '../../app';
+import preloadAssets from 'ember-asset-loader/test-support/preload-assets';
+import manifest from 'dummy/config/asset-manifest';
+import App from 'dummy/app';
 
 const SEPARATORS = /\/|\\/;
 
 module('Acceptance | lazy routable engine', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function () {
+  hooks.beforeEach(async function () {
+    await preloadAssets(manifest);
+
     // Remove the ember-blog to fake it having "not loaded".
     this._engineModule = self.requirejs.entries['ember-blog/engine'];
     delete self.requirejs.entries['ember-blog/engine'];

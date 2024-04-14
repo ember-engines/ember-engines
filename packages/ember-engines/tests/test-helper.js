@@ -1,3 +1,5 @@
+import * as QUnit from 'qunit';
+import { setup } from 'qunit-dom';
 import { start } from 'ember-qunit';
 import setupSinon from 'ember-sinon-qunit';
 import config from '../config/environment';
@@ -5,9 +7,9 @@ import config from '../config/environment';
 import Application from '../app';
 import { setApplication } from '@ember/test-helpers';
 import { registerDeprecationHandler } from '@ember/debug';
-import QUnit from 'qunit';
 
 setApplication(Application.create(config.APP));
+setup(QUnit.assert);
 setupSinon();
 
 start();

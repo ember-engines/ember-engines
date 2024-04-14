@@ -12,7 +12,7 @@ module(
     setupEngine(hooks, 'ember-blog');
 
     test('component renders properly after lookup with engine-resolver-for', async function (assert) {
-      await render(hbs`<HelloName></HelloName>`);
+      await render(hbs`<HelloName></HelloName>`, { owner: this.engine });
 
       assert.dom().containsText('Hello, Jerry!');
     });
