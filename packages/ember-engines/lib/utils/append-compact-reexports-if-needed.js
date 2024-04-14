@@ -1,6 +1,8 @@
 'use strict';
 
-const BABEL_COMPACT_REEXPORTS_PLUGIN = require.resolve('babel-plugin-compact-reexports')
+const BABEL_COMPACT_REEXPORTS_PLUGIN = require.resolve(
+  'babel-plugin-compact-reexports',
+);
 
 module.exports = function appendCompactReexportsIfNeeded(pluginsList) {
   if (pluginsList.includes(BABEL_COMPACT_REEXPORTS_PLUGIN)) {

@@ -8,4 +8,4 @@ module.exports = function processBabel(tree) {
     moduleIds: true,
     resolveModuleSource: require('amd-name-resolver').moduleResolve,
   });
-}
+};
