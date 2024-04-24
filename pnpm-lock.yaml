@@ -4,13 +4,18 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  release-plan@0.9.0:
+    hash: xh5rirlliqc67yrd6b4cjpmxs4
+    path: patches/release-plan@0.9.0.patch
+
 importers:
 
   .:
     devDependencies:
       release-plan:
         specifier: ^0.9.0
-        version: 0.9.0
+        version: 0.9.0(patch_hash=xh5rirlliqc67yrd6b4cjpmxs4)
 
   packages/common-components:
     dependencies:
@@ -5334,7 +5339,7 @@ packages:
       '@babel/core': ^7.0.0
     dependencies:
       '@babel/core': 7.24.0
-      semver: 5.7.1
+      semver: 5.7.2
 
   /babel-plugin-debug-macros@0.3.4(@babel/core@7.24.4):
     resolution: {integrity: sha512-wfel/vb3pXfwIDZUrkoDrn5FHmlWI96PCJ3UCDv2a86poJ3EQrnArNW5KfHSVJ9IOgxHbo748cQt7sDU+0KCEw==}
@@ -13604,7 +13609,7 @@ packages:
     dependencies:
       jsesc: 0.5.0
 
-  /release-plan@0.9.0:
+  /release-plan@0.9.0(patch_hash=xh5rirlliqc67yrd6b4cjpmxs4):
     resolution: {integrity: sha512-ckD2hwbnmrLEA325ndC5nQcxtuqm5Lp1Y05sa2yWAvgbN9SFG3F90n0VaHXj5JzQ6oAWDz88r0IRStHYOHXGOw==}
     hasBin: true
     dependencies:
@@ -13631,6 +13636,7 @@ packages:
       - encoding
       - supports-color
     dev: true
+    patched: true
 
   /remote-git-tags@3.0.0:
     resolution: {integrity: sha512-C9hAO4eoEsX+OXA4rla66pXZQ+TLQ8T9dttgQj18yuKlPMTVkIkdYXvlMC55IuUsIkV6DpmQYi10JKFLaU+l7w==}

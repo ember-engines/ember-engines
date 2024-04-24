@@ -25,7 +25,6 @@
   "prettier": {
     "singleQuote": true
   },
-  "dependencies": {},
   "devDependencies": {
     "release-plan": "^0.9.0"
   },
@@ -38,5 +37,10 @@
   "authors": [
     "Dan Gebhardt",
     "Robert Jackson"
-  ]
+  ],
+  "pnpm": {
+    "patchedDependencies": {
+      "release-plan@0.9.0": "patches/release-plan@0.9.0.patch"
+    }
+  }
 }
