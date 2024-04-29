@@ -66,7 +66,6 @@
     "ember-cli-app-version": "^6.0.1",
     "ember-cli-clean-css": "^3.0.0",
     "ember-cli-dependency-checker": "^3.3.2",
-    "ember-cli-htmlbars": "^6.3.0",
     "ember-cli-inject-live-reload": "^2.1.0",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-terser": "^4.0.2",
@@ -120,6 +119,7 @@
     "calculate-cache-key-for-tree": "^2.0.0",
     "ember-asset-loader": "^1.0.0",
     "ember-cli-babel": "^7.26.11",
+    "ember-cli-htmlbars": "^6.3.0",
     "ember-cli-preprocess-registry": "^3.3.0",
     "ember-cli-string-utils": "^1.1.0",
     "ember-cli-version-checker": "^5.1.2",
@@ -127,10 +127,14 @@
   },
   "peerDependencies": {
     "@ember/legacy-built-in-components": "*",
+    "@ember/test-waiters": "*",
     "ember-source": "^3.28 || >= 4.0.0"
   },
   "peerDependenciesMeta": {
     "@ember/legacy-built-in-components": {
+      "optional": true
+    },
+    "@ember/test-waiters": {
       "optional": true
     }
   },

@@ -73,6 +73,9 @@ importers:
       '@babel/core':
         specifier: ^7.24.4
         version: 7.24.4
+      '@ember/test-waiters':
+        specifier: '*'
+        version: 3.1.0
       '@embroider/macros':
         specifier: ^1.15.1
         version: 1.15.1
@@ -112,6 +115,9 @@ importers:
       ember-cli-babel:
         specifier: ^7.26.11
         version: 7.26.11
+      ember-cli-htmlbars:
+        specifier: ^6.3.0
+        version: 6.3.0
       ember-cli-preprocess-registry:
         specifier: ^3.3.0
         version: 3.3.0
@@ -197,9 +203,6 @@ importers:
       ember-cli-dependency-checker:
         specifier: ^3.3.2
         version: 3.3.2(ember-cli@3.28.6)
-      ember-cli-htmlbars:
-        specifier: ^6.3.0
-        version: 6.3.0
       ember-cli-inject-live-reload:
         specifier: ^2.1.0
         version: 2.1.0
@@ -3653,7 +3656,6 @@ packages:
       semver: 7.6.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@embroider/addon-shim@1.8.7:
     resolution: {integrity: sha512-JGOQNRj3UR0NdWEg8MsM2eqPLncEwSB1IX+rwntIj22TEKj8biqx7GDgSbeH+ZedijmCh354Hf2c5rthrdzUAw==}

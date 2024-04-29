@@ -1,0 +1,7 @@
+{{#if this.isLoading}}
+  {{yield (hash isLoading=true error=null)}}
+{{else if this.error}}
+  {{yield (hash isLoading=false error=this.error)}}
+{{else}}
+  {{mount this.loadedName model=@model}}
+{{/if}}
