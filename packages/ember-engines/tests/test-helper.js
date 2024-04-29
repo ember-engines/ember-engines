@@ -1,5 +1,3 @@
-import preloadAssets from 'ember-asset-loader/test-support/preload-assets';
-import manifest from '../config/asset-manifest';
 import * as QUnit from 'qunit';
 import { setup } from 'qunit-dom';
 import { start } from 'ember-qunit';
@@ -14,7 +12,7 @@ setApplication(Application.create(config.APP));
 setup(QUnit.assert);
 setupSinon();
 
-preloadAssets(manifest).then(start); // This ensures all engine resources are loaded before the tests
+start();
 
 let deprecations;
 
