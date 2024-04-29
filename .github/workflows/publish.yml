@@ -38,6 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-plan
     if: needs.check-plan.outputs.command == 'release'
+    environment: deploy
     permissions:
       contents: write
       pull-requests: write
