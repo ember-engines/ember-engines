@@ -1,20 +1,15 @@
 import Service from '@ember/service';
-import require from 'require';
 import {
   dependencySatisfies,
   importSync,
   macroCondition,
 } from '@embroider/macros';
 
-let getOwner;
-
-if (macroCondition(dependencySatisfies('ember-source', '>=4.10'))) {
-  const { getOwner: _getOwner } = importSync('@ember/owner');
-  getOwner = _getOwner;
-} else {
-  const { getOwner: _getOwner } = importSync('@ember/application');
-  getOwner = _getOwner;
-}
+const { getOwner } = (
+  macroCondition(dependencySatisfies('ember-source', '>=4.10'))
+    ? importSync('@ember/owner')
+    : importSync('@ember/application')
+)
 
 export default class EngineLoader extends Service {
   /**
@@ -38,11 +33,46 @@ export default class EngineLoader extends Service {
    *
    * @param {String} name
    */
-  register(name) {
+  async register(name) {
     if (this.isLoaded(name)) return;
 
-    const owner = getOwner(this);
-    owner.register(`engine:${name}`, require(`${name}/engine`).default);
+    let module, engine;
+
+    // now here it gets a little tricky. The dynamic `import()` is ambivalent.
+    //
+    // 1) When webpack is used for the build system of the host app, it gets
+    //    rewritten to `__webpack_require__()`
+    //
+    // 2) In the classic build... well, I don't know?
+    //
+    // On the other hand is the `AssetLoaderService` from `ember-asset-loader`
+    // who can lazy load bundles, but that would end up in `requirejs` and
+    // `__webpack_require__` is not in sync with `requirejs`.
+    //
+    // So the ambivalent `import()` will under a classic build find the asset in
+    // the `requirejs` bundles but under a webpack build will throw an error
+    // (`Cannot find module \`${name}/engine\``).
+    //
+    // So here is the solution:
+    // 1. Try to use `import()` because it should be the go to API to use for
+    //    dynamically importing modules
+    // 2. When that fails, try to access `requirejs` directly.
+    //
+    try {
+      module = await import(`${name}/engine`);
+
+      engine = module.default;
+    } catch {
+      if (!engine && requirejs !== undefined) {
+        module = requirejs(`${name}/engine`);
+
+        engine = module.default;
+      }
+    }
+
+    if (engine) {
+      getOwner(this).register(`engine:${name}`, engine);
+    }
   }
 
   /**
