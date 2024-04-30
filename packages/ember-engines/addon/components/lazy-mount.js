@@ -1,5 +1,5 @@
-// eslint-disable-next-line ember/no-classic-components
-import Component from '@ember/component';
+import Component from '@glimmer/component';
+import { next } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
 import { assert } from '@ember/debug';
 import { inject as service } from '@ember/service';
@@ -17,17 +17,44 @@ if (macroCondition(dependencySatisfies('@ember/test-waiters', '*'))) {
   waiter = buildWaiter('ember-engines:lazy-mount');
 }
 
+// interface LazyMountSignature {
+//   Args: {
+//     /** The name of the engine to load and subsequently mount. */
+//     name: string;
+
+//     /**
+//      * Optional model that will be passed through to the engine.
+//      *
+//      * @see https://emberjs.com/api/ember/3.7/classes/Ember.Templates.helpers/methods/mount?anchor=mount
+//      */
+//     model?: unknown;
+
+//     /** Optional callback called when the engine starts loading. */
+//     onLoad?: () => void;
+
+//     /** Optional callback called when the engine finished loading. */
+//     didLoad?: () => void;
+
+//     /** Optional callback called when the engine failed to load. */
+//     onError?: (error: Error) => void;
+//   };
+//   Blocks: {
+//     loading: [];
+//     error: [Error];
+//   };
+// }
+
 /**
- * The `{{lazy-mount}}` component works just like the
- * [`{{mount}}` helper](https://api.emberjs.com/ember/release/classes/Ember.Templates.helpers/methods/mount?anchor=mount).
+ * The `<LazyMount>` component works similar to the
+ * [`{{mount}}` helper](https://emberjs.com/api/ember/3.5/classes/Ember.Templates.helpers/methods/mount?anchor=mount).
  *
  * It accepts the name of the engine as a positional parameter and also an
- * optional `model` parameter.
+ * optional `@model` parameter.
  *
  * As soon as the helper is rendered, it will begin loading the specified
  * engine. If the engine is already loaded, it will be mounted immediately.
  *
- * The `engineName` and `model` parameters are dynamic and you can update them.
+ * The `@name` and `@model` parameters are dynamic and you can update them.
  * Setting a new `engineName` will cause the new engine to be loaded and mounted.
  *
  * #### Inline Usage
@@ -36,89 +63,39 @@ if (macroCondition(dependencySatisfies('@ember/test-waiters', '*'))) {
  * loading the engine, nothing is rendered.
  *
  * ```hbs
- * {{lazy-mount engineName model=optionalDataForTheEngine}}
+ * <LazyMount @name={{engineName}} @model={{optionalDataForTheEngine}}/>
  * ```
  *
  * #### Block Usage
  *
  * While the engine is loading or if there was an error loading the engine, the
- * block that is passed to the component is rendered. The `engine` block
- * parameter is an object with two properties:
+ * block that is passed to the component is rendered. The `engine` has two named
+ * blocks:
  *
- * - **`isLoading`**: _`boolean`_ — Whether or not the engine is currently
- *   loading
- * - **`error`**: _`Error | null`_ — If there was an error loading the engine
+ * ```hbs
+ * <LazyMount @name={{engineName}} @model={{optionalDataForTheEngine}}>
+ *   <:loading>
+ *     🕑 The engine is loading...
+ *   </:loading>
+ *
+ *   <:error as |err|>
+ *     😨 There was an error loading the engine:
+ *     <code>{{err}}</code>
+ *   </:error>
+ * </LazyMount>
+ * ```
  *
  * When the engine was loaded successfully, the passed in block is replaced by
  * the engine.
  *
- * ```hbs
- * {{#lazy-mount engineName model=optionalDataForTheEngine as |engine|}}
- *   {{#if engine.isLoading}}
- *     🕑 The engine is loading...
- *   {{else if engine.error}}
- *     😨 There was an error loading the engine:
- *     <code>{{engine.error}}</code>
- *   {{/if}}
- * {{/lazy-mount}}
- * ```
- *
- * @class LazyMountComponent
+ * @class LazyMount
  * @param {string} name Name of the engine to mount.
  * @param {any} [model] Object that will be set as
  *                      the model of the engine.
  * @public
  */
 export default class LazyMount extends Component {
-  tagName = '';
   @service engineLoader;
-
-  /**
-   * The name of the engine to load and subsequently mount.
-   *
-   * @property name
-   * @type {string}
-   * @public
-   */
-  name = null;
-
-  /**
-   * Optional model that will be passed through to the engine.
-   *
-   * @see https://emberjs.com/api/ember/3.7/classes/Ember.Templates.helpers/methods/mount?anchor=mount
-   *
-   * @property model
-   * @type {any?}
-   * @public
-   */
-  model = null;
-
-  /**
-   * Optional callback called when the engine starts loading.
-   *
-   * @property onLoad
-   * @type {(() => void)?}
-   * @public
-   */
-  onLoad = null;
-
-  /**
-   * Optional callback called when the engine finished loading.
-   *
-   * @property didLoad
-   * @type {(() => void)?}
-   * @public
-   */
-  didLoad = null;
-
-  /**
-   * Optional callback called when the engine filed to load.
-   *
-   * @property onLoad
-   * @type {((error: Error) => void)?}
-   * @public
-   */
-  onError = null;
 
   /**
    * When the engine was loaded successfully, this will then be the name of the
@@ -131,7 +108,7 @@ export default class LazyMount extends Component {
    * @type {string?}
    * @private
    */
-  @tracked loadedName = null;
+  @tracked loadedName;
 
   /**
    * If an error occurred while loading the engine, it will be set here.
@@ -140,7 +117,7 @@ export default class LazyMount extends Component {
    * @type {Error?}
    * @private
    */
-  @tracked error = null;
+  @tracked error;
 
   /**
    * While the bundle is being loaded, this property is `true`.
@@ -151,18 +128,14 @@ export default class LazyMount extends Component {
    */
   @tracked isLoading = false;
 
-  // eslint-disable-next-line ember/no-component-lifecycle-hooks
-  didReceiveAttrs() {
-    super.didReceiveAttrs(...arguments);
-
-    const name = this.name;
+  load = (name) => {
     assert(`lazy-mount: Argument 'name' is missing.`, name);
 
     if (name !== this.loadedName) {
       // only load a new engine, if it is different from the last one
       this.loadEngine(name);
     }
-  }
+  };
 
   /**
    * Manages the life cycle of loading an engine bundle and setting the
@@ -171,13 +144,6 @@ export default class LazyMount extends Component {
    * - `isLoading`
    * - `error`
    * - `loadedName`
-   *
-   * Called by `didReceiveAttrs`.
-   *
-   * @method loadEngine
-   * @param {string} name
-   * @async
-   * @private
    */
   async loadEngine(name = this.name) {
     const shouldCancel = this._thread();
@@ -190,44 +156,59 @@ export default class LazyMount extends Component {
         if (shouldCancel()) return;
       } catch (error) {
         if (shouldCancel()) return;
-        this.setError(error);
+        await this.setError(error);
         return;
       }
     }
 
-    this.setLoaded(name);
+    await this.setLoaded(name);
   }
 
-  setLoading() {
-    this.onLoad && this.onLoad();
+  async setLoading() {
+    this.args.onLoad?.();
 
-    this.loadedName = null;
-    this.error = null;
-    this.isLoading = true;
+    return new Promise((resolve) => {
+      next(() => {
+        this.loadedName = undefined;
+        this.error = undefined;
+        this.isLoading = true;
+        resolve();
+      });
+    });
   }
 
-  setLoaded(loadedName) {
-    this.didLoad && this.didLoad();
+  async setLoaded(loadedName) {
+    this.args.didLoad?.();
 
-    this.loadedName = loadedName;
-    this.error = null;
-    this.isLoading = false;
+    return new Promise((resolve) => {
+      next(() => {
+        this.loadedName = loadedName;
+        this.error = undefined;
+        this.isLoading = false;
+        resolve();
+      });
+    });
   }
 
-  setError(error) {
-    this.onError && this.onError(error);
+  async setError(error) {
+    this.args.onError?.(error);
 
-    this.loadedName = null;
-    this.error = error;
-    this.isLoading = false;
+    return new Promise((resolve) => {
+      next(() => {
+        this.loadedName = undefined;
+        this.error = error;
+        this.isLoading = false;
+        resolve();
+      });
+    });
   }
 
   /**
    * The following is a really low-fidelity implementation of something that
-   * would be handled by ember-concurrency or ember-lifeline.
+   * would be handled by ember-concurrency or ember-tasks
    */
 
-  _threadId = null;
+  threadId;
 
   _thread() {
     let token;
@@ -247,7 +228,3 @@ export default class LazyMount extends Component {
     };
   }
 }
-
-LazyMount.reopenClass({
-  positionalParams: ['name'],
-});
