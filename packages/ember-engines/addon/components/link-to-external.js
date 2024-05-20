@@ -20,9 +20,9 @@ function intern(str) {
   //@ts-ignore
   obj[str] = 1;
   for (let key in obj) {
-      if (key === str) {
-          return key;
-      }
+    if (key === str) {
+      return key;
+    }
   }
   return str;
 }
@@ -39,9 +39,9 @@ function enumerableSymbol(debugName) {
 }
 const HAS_BLOCK = enumerableSymbol('HAS_BLOCK');
 
-
 function isSimpleClick(event) {
-  let modifier = event.shiftKey || event.metaKey || event.altKey || event.ctrlKey;
+  let modifier =
+    event.shiftKey || event.metaKey || event.altKey || event.ctrlKey;
   let secondaryClick = event.which > 1; // IE9 may return undefined
   return !modifier && !secondaryClick;
 }
@@ -295,70 +295,70 @@ function isSimpleClick(event) {
   @public
 **/
 const UNDEFINED = Object.freeze({
-    toString() {
-        return 'UNDEFINED';
-    },
+  toString() {
+    return 'UNDEFINED';
+  },
 });
 const EMPTY_QUERY_PARAMS = Object.freeze({});
 const LinkComponent = EmberComponent.extend({
-    tagName: 'a',
-    /**
+  tagName: 'a',
+  /**
       @property route
       @public
     */
-    route: UNDEFINED,
-    /**
+  route: UNDEFINED,
+  /**
       @property model
       @public
     */
-    model: UNDEFINED,
-    /**
+  model: UNDEFINED,
+  /**
       @property models
       @public
     */
-    models: UNDEFINED,
-    /**
+  models: UNDEFINED,
+  /**
       @property query
       @public
     */
-    query: UNDEFINED,
-    /**
+  query: UNDEFINED,
+  /**
       Used to determine when this `LinkComponent` is active.
   
       @property current-when
       @public
     */
-    'current-when': null,
-    /**
+  'current-when': null,
+  /**
       @property disabledWhen
       @public
     */
-    disabledWhen: undefined,
-    /**
+  disabledWhen: undefined,
+  /**
       Sets the `title` attribute of the `LinkComponent`'s HTML element.
   
       @property title
       @default null
       @public
     **/
-    title: null,
-    /**
+  title: null,
+  /**
       Sets the `rel` attribute of the `LinkComponent`'s HTML element.
   
       @property rel
       @default null
       @public
     **/
-    rel: null,
-    /**
+  rel: null,
+  /**
       Sets the `tabindex` attribute of the `LinkComponent`'s HTML element.
   
       @property tabindex
       @default null
       @public
     **/
-    tabindex: null,
-    /**
+  tabindex: null,
+  /**
       Sets the `target` attribute of the `LinkComponent`'s HTML element.
   
       @since 1.8.0
@@ -366,8 +366,8 @@ const LinkComponent = EmberComponent.extend({
       @default null
       @public
     **/
-    target: null,
-    /**
+  target: null,
+  /**
       The CSS class to apply to `LinkComponent`'s element when its `active`
       property is `true`.
   
@@ -376,8 +376,8 @@ const LinkComponent = EmberComponent.extend({
       @default active
       @public
     **/
-    activeClass: 'active',
-    /**
+  activeClass: 'active',
+  /**
       The CSS class to apply to `LinkComponent`'s element when its `loading`
       property is `true`.
   
@@ -386,8 +386,8 @@ const LinkComponent = EmberComponent.extend({
       @default loading
       @public
     **/
-    loadingClass: 'loading',
-    /**
+  loadingClass: 'loading',
+  /**
       The CSS class to apply to a `LinkComponent`'s element when its `disabled`
       property is `true`.
   
@@ -396,8 +396,8 @@ const LinkComponent = EmberComponent.extend({
       @default disabled
       @public
     **/
-    disabledClass: 'disabled',
-    /**
+  disabledClass: 'disabled',
+  /**
       Determines whether the `LinkComponent` will trigger routing via
       the `replaceWith` routing strategy.
   
@@ -406,8 +406,8 @@ const LinkComponent = EmberComponent.extend({
       @default false
       @public
     **/
-    replace: false,
-    /**
+  replace: false,
+  /**
       Determines whether the `LinkComponent` will prevent the default
       browser action by calling preventDefault() to avoid reloading
       the browser page.
@@ -425,13 +425,13 @@ const LinkComponent = EmberComponent.extend({
       @default true
       @private
     **/
-    preventDefault: true,
-    /**
+  preventDefault: true,
+  /**
       @property linkTitle
       @private
     */
-    linkTitle: undefined,
-    /**
+  linkTitle: undefined,
+  /**
       By default this component will forward `href`, `title`, `rel`, `tabindex`, and `target`
       arguments to attributes on the component's element. When invoked with `{{link-to}}`, you can
       only customize these attributes. When invoked with `<LinkTo>`, you can just use HTML
@@ -442,8 +442,8 @@ const LinkComponent = EmberComponent.extend({
       @default ['title', 'rel', 'tabindex', 'target']
       @public
     */
-    attributeBindings: ['href', 'title', 'rel', 'tabindex', 'target'],
-    /**
+  attributeBindings: ['href', 'title', 'rel', 'tabindex', 'target'],
+  /**
       By default this component will set classes on its element when any of the following arguments
       are truthy:
   
@@ -459,14 +459,14 @@ const LinkComponent = EmberComponent.extend({
       @default ['active', 'loading', 'disabled', 'ember-transitioning-in', 'ember-transitioning-out']
       @public
     */
-    classNameBindings: [
-        'active',
-        'loading',
-        'disabled',
-        'transitioningIn',
-        'transitioningOut',
-    ],
-    /**
+  classNameBindings: [
+    'active',
+    'loading',
+    'disabled',
+    'transitioningIn',
+    'transitioningOut',
+  ],
+  /**
       By default this component responds to the `click` event. When the component element is an
       `<a>` element, activating the link in another way, such as using the keyboard, triggers the
       click event.
@@ -476,11 +476,11 @@ const LinkComponent = EmberComponent.extend({
       @default click
       @private
     */
-    eventName: 'click',
-    // this is doc'ed here so it shows up in the events
-    // section of the API documentation, which is where
-    // people will likely go looking for it.
-    /**
+  eventName: 'click',
+  // this is doc'ed here so it shows up in the events
+  // section of the API documentation, which is where
+  // people will likely go looking for it.
+  /**
       Triggers the `LinkComponent`'s routing behavior. If
       `eventName` is changed to a value other than `click`
       the routing behavior will trigger on that custom event
@@ -489,7 +489,7 @@ const LinkComponent = EmberComponent.extend({
       @event click
       @private
     */
-    /**
+  /**
       An overridable method called when `LinkComponent` objects are instantiated.
   
       Example:
@@ -514,68 +514,75 @@ const LinkComponent = EmberComponent.extend({
       @method init
       @private
     */
-    init() {
-        this._super(...arguments);
-        this.assertLinkToOrigin();
-        // Map desired event name to invoke function
-        let { eventName } = this;
-        this.on(eventName, this, this._invoke);
-    },
+  init() {
+    this._super(...arguments);
+    this.assertLinkToOrigin();
+    // Map desired event name to invoke function
+    let { eventName } = this;
+    this.on(eventName, this, this._invoke);
+  },
+  //@ts-ignore
+  _routing: injectService('-routing'),
+  _currentRoute: alias('_routing.currentRouteName'),
+  _currentRouterState: alias('_routing.currentState'),
+  _targetRouterState: alias('_routing.targetState'),
+  /**
+   * Method to assert that LinkTo is not used inside of a routeless engine. This method is
+   * overridden in ember-engines link-to-external component to just be a noop, since the
+   * link-to-external component extends the link-to component.
+   *
+   * @method assertLinkToOrigin
+   * @private
+   */
+  assertLinkToOrigin() {
+    assert(
+      'You attempted to use the <LinkTo> component within a routeless engine, this is not supported. ' +
+        'If you are using the ember-engines addon, use the <LinkToExternal> component instead. ' +
+        'See https://ember-engines.com/docs/links for more info.',
+      !this._isEngine || this._engineMountPoint !== undefined,
+    );
+  },
+  _isEngine: computed(function () {
+    return getEngineParent(getOwner(this)) !== undefined;
+  }),
+  _engineMountPoint: computed(function () {
     //@ts-ignore
-    _routing: injectService('-routing'),
-    _currentRoute: alias('_routing.currentRouteName'),
-    _currentRouterState: alias('_routing.currentState'),
-    _targetRouterState: alias('_routing.targetState'),
-    /**
-     * Method to assert that LinkTo is not used inside of a routeless engine. This method is
-     * overridden in ember-engines link-to-external component to just be a noop, since the
-     * link-to-external component extends the link-to component.
-     *
-     * @method assertLinkToOrigin
-     * @private
-     */
-    assertLinkToOrigin() {
-        assert('You attempted to use the <LinkTo> component within a routeless engine, this is not supported. ' +
-            'If you are using the ember-engines addon, use the <LinkToExternal> component instead. ' +
-            'See https://ember-engines.com/docs/links for more info.', !this._isEngine || this._engineMountPoint !== undefined);
+    return getOwner(this).mountPoint;
+  }),
+  _route: computed(
+    'route',
+    '_currentRouterState',
+    function computeLinkToComponentRoute() {
+      let { route } = this;
+      return route === UNDEFINED
+        ? this._currentRoute
+        : this._namespaceRoute(route);
     },
-    _isEngine: computed(function () {
-        return getEngineParent(getOwner(this)) !== undefined;
-    }),
-    _engineMountPoint: computed(function () {
-        //@ts-ignore
-        return getOwner(this).mountPoint;
-    }),
-    _route: computed('route', '_currentRouterState', function computeLinkToComponentRoute() {
-        let { route } = this;
-        return route === UNDEFINED
-            ? this._currentRoute
-            : this._namespaceRoute(route);
-    }),
-    _models: computed('model', 'models', function computeLinkToComponentModels() {
-        let { model, models } = this;
-        assert('You cannot provide both the `@model` and `@models` arguments to the <LinkTo> component.', model === UNDEFINED || models === UNDEFINED);
-        if (model !== UNDEFINED) {
-            return [model];
-        }
-        else if (models !== UNDEFINED) {
-            assert('The `@models` argument must be an array.', Array.isArray(models));
-            return models;
-        }
-        else {
-            return [];
-        }
-    }),
-    _query: computed('query', function computeLinkToComponentQuery() {
-        let { query } = this;
-        if (query === UNDEFINED) {
-            return EMPTY_QUERY_PARAMS;
-        }
-        else {
-            return Object.assign({}, query);
-        }
-    }),
-    /**
+  ),
+  _models: computed('model', 'models', function computeLinkToComponentModels() {
+    let { model, models } = this;
+    assert(
+      'You cannot provide both the `@model` and `@models` arguments to the <LinkTo> component.',
+      model === UNDEFINED || models === UNDEFINED,
+    );
+    if (model !== UNDEFINED) {
+      return [model];
+    } else if (models !== UNDEFINED) {
+      assert('The `@models` argument must be an array.', Array.isArray(models));
+      return models;
+    } else {
+      return [];
+    }
+  }),
+  _query: computed('query', function computeLinkToComponentQuery() {
+    let { query } = this;
+    if (query === UNDEFINED) {
+      return EMPTY_QUERY_PARAMS;
+    } else {
+      return Object.assign({}, query);
+    }
+  }),
+  /**
       Accessed as a classname binding to apply the component's `disabledClass`
       CSS `class` to the element when the link is disabled.
   
@@ -583,19 +590,19 @@ const LinkComponent = EmberComponent.extend({
       @property disabled
       @public
     */
-    disabled: computed({
-        get(/* _key */) {
-            // always returns false for `get` because (due to the `set` just below)
-            // the cached return value from the set will prevent this getter from _ever_
-            // being called after a set has occurred
-            return false;
-        },
-        set(_key, value) {
-            this._isDisabled = value;
-            return value ? this.disabledClass : false;
-        },
-    }),
-    /**
+  disabled: computed({
+    get(/* _key */) {
+      // always returns false for `get` because (due to the `set` just below)
+      // the cached return value from the set will prevent this getter from _ever_
+      // being called after a set has occurred
+      return false;
+    },
+    set(_key, value) {
+      this._isDisabled = value;
+      return value ? this.disabledClass : false;
+    },
+  }),
+  /**
       Accessed as a classname binding to apply the component's `activeClass`
       CSS `class` to the element when the link is active.
   
@@ -609,129 +616,190 @@ const LinkComponent = EmberComponent.extend({
       @property active
       @private
     */
-    active: computed('activeClass', '_active', function computeLinkToComponentActiveClass() {
-        return this._active ? this.activeClass : false;
-    }),
-    _active: computed('_currentRouterState', '_route', '_models', '_query', 'loading', 'current-when', function computeLinkToComponentActive() {
-        let { _currentRouterState: state } = this;
-        if (state) {
-            return this._isActive(state);
-        }
-        else {
-            return false;
-        }
-    }),
-    willBeActive: computed('_currentRouterState', '_targetRouterState', '_route', '_models', '_query', 'loading', 'current-when', function computeLinkToComponentWillBeActive() {
-        let { _currentRouterState: current, _targetRouterState: target } = this;
-        if (current === target) {
-            return;
-        }
-        return this._isActive(target);
-    }),
-    _isActive(routerState /* RouterState */) {
-        if (this.loading) {
-            return false;
-        }
-        let currentWhen = this['current-when'];
-        if (typeof currentWhen === 'boolean') {
-            return currentWhen;
-        }
-        let { _models: models, _routing: routing } = this;
-        if (typeof currentWhen === 'string') {
-            return currentWhen
-                .split(' ')
-                .some((route) => routing.isActiveForRoute(models, undefined, this._namespaceRoute(route), routerState));
-        }
-        else {
-            return routing.isActiveForRoute(models, this._query, this._route, routerState);
-        }
+  active: computed(
+    'activeClass',
+    '_active',
+    function computeLinkToComponentActiveClass() {
+      return this._active ? this.activeClass : false;
     },
-    transitioningIn: computed('_active', 'willBeActive', function computeLinkToComponentTransitioningIn() {
-        if (this.willBeActive === true && !this._active) {
-            return 'ember-transitioning-in';
-        }
-        else {
-            return false;
-        }
-    }),
-    transitioningOut: computed('_active', 'willBeActive', function computeLinkToComponentTransitioningOut() {
-        if (this.willBeActive === false && this._active) {
-            return 'ember-transitioning-out';
-        }
-        else {
-            return false;
-        }
-    }),
-    _namespaceRoute(route) {
-        let { _engineMountPoint: mountPoint } = this;
-        if (mountPoint === undefined) {
-            return route;
-        }
-        else if (route === 'application') {
-            return mountPoint;
-        }
-        else {
-            return `${mountPoint}.${route}`;
-        }
+  ),
+  _active: computed(
+    '_currentRouterState',
+    '_route',
+    '_models',
+    '_query',
+    'loading',
+    'current-when',
+    function computeLinkToComponentActive() {
+      let { _currentRouterState: state } = this;
+      if (state) {
+        return this._isActive(state);
+      } else {
+        return false;
+      }
     },
-    /**
+  ),
+  willBeActive: computed(
+    '_currentRouterState',
+    '_targetRouterState',
+    '_route',
+    '_models',
+    '_query',
+    'loading',
+    'current-when',
+    function computeLinkToComponentWillBeActive() {
+      let { _currentRouterState: current, _targetRouterState: target } = this;
+      if (current === target) {
+        return;
+      }
+      return this._isActive(target);
+    },
+  ),
+  _isActive(routerState /* RouterState */) {
+    if (this.loading) {
+      return false;
+    }
+    let currentWhen = this['current-when'];
+    if (typeof currentWhen === 'boolean') {
+      return currentWhen;
+    }
+    let { _models: models, _routing: routing } = this;
+    if (typeof currentWhen === 'string') {
+      return currentWhen
+        .split(' ')
+        .some((route) =>
+          routing.isActiveForRoute(
+            models,
+            undefined,
+            this._namespaceRoute(route),
+            routerState,
+          ),
+        );
+    } else {
+      return routing.isActiveForRoute(
+        models,
+        this._query,
+        this._route,
+        routerState,
+      );
+    }
+  },
+  transitioningIn: computed(
+    '_active',
+    'willBeActive',
+    function computeLinkToComponentTransitioningIn() {
+      if (this.willBeActive === true && !this._active) {
+        return 'ember-transitioning-in';
+      } else {
+        return false;
+      }
+    },
+  ),
+  transitioningOut: computed(
+    '_active',
+    'willBeActive',
+    function computeLinkToComponentTransitioningOut() {
+      if (this.willBeActive === false && this._active) {
+        return 'ember-transitioning-out';
+      } else {
+        return false;
+      }
+    },
+  ),
+  _namespaceRoute(route) {
+    let { _engineMountPoint: mountPoint } = this;
+    if (mountPoint === undefined) {
+      return route;
+    } else if (route === 'application') {
+      return mountPoint;
+    } else {
+      return `${mountPoint}.${route}`;
+    }
+  },
+  /**
       Event handler that invokes the link, activating the associated route.
   
       @method _invoke
       @param {Event} event
       @private
     */
-    _invoke(event) {
-        if (!isSimpleClick(event)) {
-            return true;
-        }
-        let { bubbles, preventDefault } = this;
-        let target = this.element.target;
-        let isSelf = !target || target === '_self';
-        if (preventDefault !== false && isSelf) {
-            event.preventDefault();
-        }
-        if (bubbles === false) {
-            event.stopPropagation();
-        }
-        if (this._isDisabled) {
-            return false;
-        }
-        if (this.loading) {
-            // tslint:disable-next-line:max-line-length
-            warn('This link is in an inactive loading state because at least one of its models ' +
-                'currently has a null/undefined value, or the provided route name is invalid.', false, {
-                id: 'ember-glimmer.link-to.inactive-loading-state',
-            });
-            return false;
-        }
-        if (!isSelf) {
-            return false;
-        }
-        let { _route: routeName, _models: models, _query: queryParams, replace: shouldReplace, } = this;
-        let payload = {
-            queryParams,
-            routeName,
-        };
-        // flaggedInstrument(
-        //   'interaction.link-to',
-        //   payload,
-        //   this._generateTransition(
-        //     payload,
-        //     routeName,
-        //     models,
-        //     queryParams,
-        //     shouldReplace
-        //   )
-        // );
-        this._generateTransition(payload, routeName, models, queryParams, shouldReplace);
-        return false;
-    },
-    _generateTransition(payload, qualifiedRouteName, models, queryParams, shouldReplace) {
-        let { _routing: routing } = this;
-        payload.transition = routing.transitionTo(qualifiedRouteName, models, queryParams, shouldReplace);
-    },
-    /**
+  _invoke(event) {
+    if (!isSimpleClick(event)) {
+      return true;
+    }
+    let { bubbles, preventDefault } = this;
+    let target = this.element.target;
+    let isSelf = !target || target === '_self';
+    if (preventDefault !== false && isSelf) {
+      event.preventDefault();
+    }
+    if (bubbles === false) {
+      event.stopPropagation();
+    }
+    if (this._isDisabled) {
+      return false;
+    }
+    if (this.loading) {
+      // tslint:disable-next-line:max-line-length
+      warn(
+        'This link is in an inactive loading state because at least one of its models ' +
+          'currently has a null/undefined value, or the provided route name is invalid.',
+        false,
+        {
+          id: 'ember-glimmer.link-to.inactive-loading-state',
+        },
+      );
+      return false;
+    }
+    if (!isSelf) {
+      return false;
+    }
+    let {
+      _route: routeName,
+      _models: models,
+      _query: queryParams,
+      replace: shouldReplace,
+    } = this;
+    let payload = {
+      queryParams,
+      routeName,
+    };
+    // flaggedInstrument(
+    //   'interaction.link-to',
+    //   payload,
+    //   this._generateTransition(
+    //     payload,
+    //     routeName,
+    //     models,
+    //     queryParams,
+    //     shouldReplace
+    //   )
+    // );
+    this._generateTransition(
+      payload,
+      routeName,
+      models,
+      queryParams,
+      shouldReplace,
+    );
+    return false;
+  },
+  _generateTransition(
+    payload,
+    qualifiedRouteName,
+    models,
+    queryParams,
+    shouldReplace,
+  ) {
+    let { _routing: routing } = this;
+    payload.transition = routing.transitionTo(
+      qualifiedRouteName,
+      models,
+      queryParams,
+      shouldReplace,
+    );
+  },
+  /**
       Sets the element's `href` attribute to the url for
       the `LinkComponent`'s targeted route.
   
@@ -741,40 +809,52 @@ const LinkComponent = EmberComponent.extend({
       @property href
       @private
     */
-    href: computed('_currentRouterState', '_route', '_models', '_query', 'tagName', 'loading', 'loadingHref', function computeLinkToComponentHref() {
-        if (this.tagName !== 'a') {
-            return;
+  href: computed(
+    '_currentRouterState',
+    '_route',
+    '_models',
+    '_query',
+    'tagName',
+    'loading',
+    'loadingHref',
+    function computeLinkToComponentHref() {
+      if (this.tagName !== 'a') {
+        return;
+      }
+      if (this.loading) {
+        return this.loadingHref;
+      }
+      let {
+        _route: route,
+        _models: models,
+        _query: query,
+        _routing: routing,
+      } = this;
+      if (DEBUG) {
+        /*
+         * Unfortunately, to get decent error messages, we need to do this.
+         * In some future state we should be able to use a "feature flag"
+         * which allows us to strip this without needing to call it twice.
+         *
+         * if (isDebugBuild()) {
+         *   // Do the useful debug thing, probably including try/catch.
+         * } else {
+         *   // Do the performant thing.
+         * }
+         */
+        try {
+          return routing.generateURL(route, models, query);
+        } catch (e) {
+          // tslint:disable-next-line:max-line-length
+          e.message = `While generating link to route "${this.route}": ${e.message}`;
+          throw e;
         }
-        if (this.loading) {
-            return this.loadingHref;
-        }
-        let { _route: route, _models: models, _query: query, _routing: routing, } = this;
-        if (DEBUG) {
-            /*
-             * Unfortunately, to get decent error messages, we need to do this.
-             * In some future state we should be able to use a "feature flag"
-             * which allows us to strip this without needing to call it twice.
-             *
-             * if (isDebugBuild()) {
-             *   // Do the useful debug thing, probably including try/catch.
-             * } else {
-             *   // Do the performant thing.
-             * }
-             */
-            try {
-                return routing.generateURL(route, models, query);
-            }
-            catch (e) {
-                // tslint:disable-next-line:max-line-length
-                e.message = `While generating link to route "${this.route}": ${e.message}`;
-                throw e;
-            }
-        }
-        else {
-            return routing.generateURL(route, models, query);
-        }
-    }),
-    /**
+      } else {
+        return routing.generateURL(route, models, query);
+      }
+    },
+  ),
+  /**
       The loading state. Returns the loadingClass is true.
   
       @property activeClass
@@ -782,24 +862,32 @@ const LinkComponent = EmberComponent.extend({
       @default active
       @public
     **/
-    loading: computed('_route', '_modelsAreLoaded', 'loadingClass', function computeLinkToComponentLoading() {
-        let { _route: route, _modelsAreLoaded: loaded } = this;
-        if (!loaded || route === null || route === undefined) {
-            return this.loadingClass;
+  loading: computed(
+    '_route',
+    '_modelsAreLoaded',
+    'loadingClass',
+    function computeLinkToComponentLoading() {
+      let { _route: route, _modelsAreLoaded: loaded } = this;
+      if (!loaded || route === null || route === undefined) {
+        return this.loadingClass;
+      }
+      return;
+    },
+  ),
+  _modelsAreLoaded: computed(
+    '_models',
+    function computeLinkToComponentModelsAreLoaded() {
+      let { _models: models } = this;
+      for (let i = 0; i < models.length; i++) {
+        let model = models[i];
+        if (model === null || model === undefined) {
+          return false;
         }
-        return;
-    }),
-    _modelsAreLoaded: computed('_models', function computeLinkToComponentModelsAreLoaded() {
-        let { _models: models } = this;
-        for (let i = 0; i < models.length; i++) {
-            let model = models[i];
-            if (model === null || model === undefined) {
-                return false;
-            }
-        }
-        return true;
-    }),
-    /**
+      }
+      return true;
+    },
+  ),
+  /**
       The default href value to use while a link-to is loading.
       Only applies when tagName is 'a'
   
@@ -808,125 +896,129 @@ const LinkComponent = EmberComponent.extend({
       @default #
       @private
     */
-    loadingHref: '#',
-    didReceiveAttrs() {
-        let { disabledWhen } = this;
-        if (disabledWhen !== undefined) {
-            this.set('disabled', disabledWhen);
+  loadingHref: '#',
+  didReceiveAttrs() {
+    let { disabledWhen } = this;
+    if (disabledWhen !== undefined) {
+      this.set('disabled', disabledWhen);
+    }
+    // @ts-ignore
+    let { params } = this;
+    if (!params || params.length === 0) {
+      assert(
+        'You must provide at least one of the `@route`, `@model`, `@models` or `@query` argument to `<LinkTo>`.',
+        !(
+          this.route === UNDEFINED &&
+          this.model === UNDEFINED &&
+          this.models === UNDEFINED &&
+          this.query === UNDEFINED
+        ),
+      );
+      let { _models: models } = this;
+      if (models.length > 0) {
+        let lastModel = models[models.length - 1];
+        if (
+          typeof lastModel === 'object' &&
+          lastModel !== null &&
+          lastModel.isQueryParams
+        ) {
+          this.query = lastModel.values;
+          models.pop();
         }
-        // @ts-ignore
-        let { params } = this;
-        if (!params || params.length === 0) {
-            assert('You must provide at least one of the `@route`, `@model`, `@models` or `@query` argument to `<LinkTo>`.', !(this.route === UNDEFINED &&
-                this.model === UNDEFINED &&
-                this.models === UNDEFINED &&
-                this.query === UNDEFINED));
-            let { _models: models } = this;
-            if (models.length > 0) {
-                let lastModel = models[models.length - 1];
-                if (typeof lastModel === 'object' &&
-                    lastModel !== null &&
-                    lastModel.isQueryParams) {
-                    this.query = lastModel.values;
-                    models.pop();
-                }
-            }
-            return;
+      }
+      return;
+    }
+    let hasBlock = this[HAS_BLOCK];
+    params = params.slice();
+    // Process the positional arguments, in order.
+    // 1. Inline link title comes first, if present.
+    if (!hasBlock) {
+      this.set('linkTitle', params.shift());
+    }
+    // 2. The last argument is possibly the `query` object.
+    let queryParams = params[params.length - 1];
+    if (queryParams && queryParams.isQueryParams) {
+      this.set('query', params.pop().values);
+    } else {
+      this.set('query', UNDEFINED);
+    }
+    // 3. If there is a `route`, it is now at index 0.
+    if (params.length === 0) {
+      this.set('route', UNDEFINED);
+    } else {
+      this.set('route', params.shift());
+    }
+    // 4. Any remaining indices (if any) are `models`.
+    this.set('model', UNDEFINED);
+    this.set('models', params);
+    runInDebug(() => {
+      // @ts-ignore
+      params = this.params.slice();
+      let equivalentNamedArgs = [];
+      let hasQueryParams = false;
+      // Process the positional arguments, in order.
+      // 1. Inline link title comes first, if present.
+      if (!hasBlock) {
+        params.shift();
+      }
+      // 2. The last argument is possibly the `query` object.
+      let query = params[params.length - 1];
+      if (query && query.isQueryParams) {
+        params.pop();
+        hasQueryParams = true;
+      }
+      // 3. If there is a `route`, it is now at index 0.
+      if (params.length > 0) {
+        params.shift();
+        equivalentNamedArgs.push('`@route`');
+      }
+      // 4. Any remaining params (if any) are `models`.
+      if (params.length === 1) {
+        equivalentNamedArgs.push('`@model`');
+      } else if (params.length > 1) {
+        equivalentNamedArgs.push('`@models`');
+      }
+      if (hasQueryParams) {
+        equivalentNamedArgs.push('`@query`');
+      }
+      if (equivalentNamedArgs.length > 0) {
+        let message =
+          'Invoking the `<LinkTo>` component with positional arguments is deprecated.';
+        message += `Please use the equivalent named arguments (${equivalentNamedArgs.join(', ')})`;
+        if (hasQueryParams) {
+          message += ' along with the `hash` helper';
         }
-        let hasBlock = this[HAS_BLOCK];
-        params = params.slice();
-        // Process the positional arguments, in order.
-        // 1. Inline link title comes first, if present.
         if (!hasBlock) {
-            this.set('linkTitle', params.shift());
+          message += " and pass a block for the link's content.";
         }
-        // 2. The last argument is possibly the `query` object.
-        let queryParams = params[params.length - 1];
-        if (queryParams && queryParams.isQueryParams) {
-            this.set('query', params.pop().values);
-        }
-        else {
-            this.set('query', UNDEFINED);
-        }
-        // 3. If there is a `route`, it is now at index 0.
-        if (params.length === 0) {
-            this.set('route', UNDEFINED);
-        }
-        else {
-            this.set('route', params.shift());
-        }
-        // 4. Any remaining indices (if any) are `models`.
-        this.set('model', UNDEFINED);
-        this.set('models', params);
-        runInDebug(() => {
-            // @ts-ignore
-            params = this.params.slice();
-            let equivalentNamedArgs = [];
-            let hasQueryParams = false;
-            // Process the positional arguments, in order.
-            // 1. Inline link title comes first, if present.
-            if (!hasBlock) {
-                params.shift();
-            }
-            // 2. The last argument is possibly the `query` object.
-            let query = params[params.length - 1];
-            if (query && query.isQueryParams) {
-                params.pop();
-                hasQueryParams = true;
-            }
-            // 3. If there is a `route`, it is now at index 0.
-            if (params.length > 0) {
-                params.shift();
-                equivalentNamedArgs.push('`@route`');
-            }
-            // 4. Any remaining params (if any) are `models`.
-            if (params.length === 1) {
-                equivalentNamedArgs.push('`@model`');
-            }
-            else if (params.length > 1) {
-                equivalentNamedArgs.push('`@models`');
-            }
-            if (hasQueryParams) {
-                equivalentNamedArgs.push('`@query`');
-            }
-            if (equivalentNamedArgs.length > 0) {
-                let message = 'Invoking the `<LinkTo>` component with positional arguments is deprecated.';
-                message += `Please use the equivalent named arguments (${equivalentNamedArgs.join(', ')})`;
-                if (hasQueryParams) {
-                    message += ' along with the `hash` helper';
-                }
-                if (!hasBlock) {
-                    message += " and pass a block for the link's content.";
-                }
-                message += '.';
-                deprecate(message, false, {
-                    id: 'ember-glimmer.link-to.positional-arguments',
-                    until: '4.0.0',
-                    for: 'ember-source',
-                    url: 'https://deprecations.emberjs.com/v3.x#toc_ember-glimmer-link-to-positional-arguments',
-                    since: {
-                        available: '3.26.0-beta.1',
-                        enabled: '3.26.0-beta.1',
-                    },
-                });
-            }
+        message += '.';
+        deprecate(message, false, {
+          id: 'ember-glimmer.link-to.positional-arguments',
+          until: '4.0.0',
+          for: 'ember-source',
+          url: 'https://deprecations.emberjs.com/v3.x#toc_ember-glimmer-link-to-positional-arguments',
+          since: {
+            available: '3.26.0-beta.1',
+            enabled: '3.26.0-beta.1',
+          },
         });
-    },
+      }
+    });
+  },
 });
 LinkComponent.toString = () => '@ember/routing/link-component';
 LinkComponent.reopenClass({
-    positionalParams: 'params',
+  positionalParams: 'params',
 });
-
 
 const LinkToExternal = class LinkToExternal extends LinkComponent {
   _namespaceRoute(targetRouteName) {
     const owner = getOwner(this);
-    
+
     if (!owner.mountPoint) {
       return super._namespaceRoute(...arguments);
     }
-    
+
     const externalRoute = owner._getExternalRoute(targetRouteName);
 
     return externalRoute;

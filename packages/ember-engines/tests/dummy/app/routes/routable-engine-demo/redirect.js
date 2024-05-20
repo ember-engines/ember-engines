@@ -5,7 +5,7 @@ export default class RedirectRoute extends Route {
   @service router;
   redirect() {
     this.router.replaceWith('blog.post', 1, {
-      queryParams: { lang: 'English' }
+      queryParams: { lang: 'English' },
     });
   }
 }
