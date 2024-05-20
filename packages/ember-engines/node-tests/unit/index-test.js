@@ -3,9 +3,9 @@
 const EmberEngines = require('../../index');
 const expect = require('chai').expect;
 
-describe('index', function() {
-  describe('updateFastBootManifest', function() {
-    it('adds the node-asset-manifest to the list of vendorFiles', function() {
+describe('index', function () {
+  describe('updateFastBootManifest', function () {
+    it('adds the node-asset-manifest to the list of vendorFiles', function () {
       const AddonClass = EmberEngines.extend({
         root: process.cwd()
       });
@@ -15,9 +15,9 @@ describe('index', function() {
           perBundleAddonCache: {
             allowCachingPerBundle() {
               return false;
-            }
-          }
-        }
+            },
+          },
+        },
       );
       const manifest = { vendorFiles: ['one.js', 'two.js'] };
 

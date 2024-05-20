@@ -6,6 +6,6 @@ module.exports = function restoreOriginalAddons(addon) {
   }
 
   if (addon.addons.length > 0) {
-    addon.addons.forEach(restoreOriginalAddons)
+    addon.addons.forEach(restoreOriginalAddons);
   }
-}
+};

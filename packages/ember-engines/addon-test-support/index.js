@@ -1,5 +1,6 @@
 /* global require */
 import { getContext } from '@ember/test-helpers';
+import { associateDestroyableChild } from '@ember/destroyable';
 
 /**
  * Used to set up engine for use. Must be called after one of the `ember-qunit`
@@ -15,9 +16,11 @@ import { getContext } from '@ember/test-helpers';
  */
 
 export function setupEngine(hooks, engineName) {
-  hooks.beforeEach(async function() {
+  hooks.beforeEach(async function () {
     if (this.engine !== undefined) {
-      throw new Error('You cannot use `setupEngine` twice for the same test setup. If you need to setup multiple engines, use `loadEngine` directly.');
+      throw new Error(
+        'You cannot use `setupEngine` twice for the same test setup. If you need to setup multiple engines, use `loadEngine` directly.',
+      );
     }
 
     // setup `this.engine`
@@ -50,7 +53,10 @@ function ownerHasEngine(owner, engineName) {
 function registerEngine(owner, engineName) {
   // ownerHasEngine does registry lookup and caches "miss".
   // With register() we tell registry that module is now available.
-  owner.register(`engine:${engineName}`, require(`${engineName}/engine`).default);
+  owner.register(
+    `engine:${engineName}`,
+    require(`${engineName}/engine`).default,
+  );
 }
 
 async function buildEngineOwner(owner, engineName) {
@@ -62,6 +68,8 @@ async function buildEngineOwner(owner, engineName) {
       routable: true,
       mountPoint: engineName,
     });
+
+    associateDestroyableChild(owner, engineInstance);
 
     await engineInstance.boot();
   } else {

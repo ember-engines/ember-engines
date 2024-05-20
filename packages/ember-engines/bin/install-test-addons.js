@@ -6,7 +6,7 @@ const fs = require('fs-extra');
 fs.removeSync('node_modules/common-components');
 fs.symlinkSync(
   '../tests/dummy/lib/common-components',
-  'node_modules/common-components'
+  'node_modules/common-components',
 );
 
 fs.removeSync('node_modules/eager-blog');

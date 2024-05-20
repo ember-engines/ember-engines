@@ -12,26 +12,24 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace ember-engines build",
-    "lint": "yarn workspace ember-engines lint",
-    "lint:hbs": "yarn workspace ember-engines lint:hbs",
-    "lint:js": "yarn workspace ember-engines lint:js",
-    "start": "yarn workspace ember-engines start",
-    "test": "yarn workspace ember-engines test",
-    "test:ember": "yarn workspace ember-engines test:ember",
-    "test:node": "yarn workspace ember-engines test:node",
-    "try": "yarn workspace ember-engines try"
+    "build": "pnpm --filter ember-engines build",
+    "lint": "pnpm --filter ember-engines lint",
+    "lint:hbs": "pnpm --filter ember-engines lint:hbs",
+    "lint:js": "pnpm --filter ember-engines lint:js",
+    "start": "pnpm --filter ember-engines start",
+    "test": "pnpm --filter ember-engines test",
+    "test:ember": "pnpm --filter ember-engines test:ember",
+    "test:node": "pnpm --filter ember-engines test:node",
+    "try": "pnpm --filter ember-engines try"
   },
   "prettier": {
     "singleQuote": true
   },
   "devDependencies": {
-    "@release-it-plugins/lerna-changelog": "^5.0.0",
-    "@release-it-plugins/workspaces": "^3.2.0",
-    "release-it": "^15.5.0"
+    "release-plan": "^0.9.0"
   },
   "engines": {
-    "node": ">= 16"
+    "node": "16.* || 18.* || >= 20"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -40,21 +38,9 @@
     "Dan Gebhardt",
     "Robert Jackson"
   ],
-  "release-it": {
-    "plugins": {
-      "@release-it-plugins/lerna-changelog": {
-        "infile": "CHANGELOG.md",
-        "launchEditor": true
-      },
-      "@release-it-plugins/workspaces": true
-    },
-    "git": {
-      "tagName": "v${version}"
-    },
-    "github": {
-      "release": true,
-      "tokenRef": "GITHUB_AUTH"
-    },
-    "npm": false
+  "pnpm": {
+    "patchedDependencies": {
+      "release-plan@0.9.0": "patches/release-plan@0.9.0.patch"
+    }
   }
 }

@@ -5,37 +5,40 @@ RFC](https://github.com/emberjs/rfcs/blob/master/text/0010-engines.md). Engines 
 applications to be composed together into a single application from the user's
 perspective.
 
+
 ## Compatibility
 
-* Ember.js v3.24.1 or above
-* Ember CLI v3.24.1 or above
+* Ember.js v3.28 or above
+* Ember CLI v3.28 or above
 * Node.js v16 or above
+
 
 ## Installation
 
-From your Ember CLI project's root directory, run the following:
-
-```sh
+```
 ember install ember-engines
 ```
 
 ## Upgrade guide
 
-* [0.9.0 -> 0.10.0](UPGRADE.md#0100)
+* [0.10.0 -> 0.11.0](UPGRADE.md#0110)
 
-## Documentation
+## Usage
 
 Check the full documentation in the [Ember Engines
 Guides](https://ember-engines.com/).
+
 
 ## Support
 
 Having trouble? **Join #ember-engines** on the [Ember Community Discord
 server](https://discord.gg/zT3asNS)
 
+
 ## Contributing
 
 See the [Contributing](CONTRIBUTING.md) guide for details.
+
 
 ## License
 

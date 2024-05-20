@@ -1,3 +1,3 @@
-module.exports = function(env) {
+module.exports = function (env) {
   return { env };
-}
+};

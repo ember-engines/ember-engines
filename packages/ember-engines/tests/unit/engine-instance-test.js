@@ -9,23 +9,23 @@ import config from '../../config/environment';
 
 let App, app, appInstance;
 
-module('Unit | EngineInstance', function(hooks) {
-  hooks.beforeEach(function() {
+module('Unit | EngineInstance', function (hooks) {
+  hooks.beforeEach(function () {
     EnginesInitializer.initialize();
 
     App = class EmberApp extends Application {
-      Resolver = Resolver
-      modulePrefix = config.modulePrefix
-      router = null
-      autoboot = false
-    }
+      Resolver = Resolver;
+      modulePrefix = config.modulePrefix;
+      router = null;
+      autoboot = false;
+    };
 
-    run(function() {
+    run(function () {
       app = App.create();
     });
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     if (appInstance) {
       run(appInstance, 'destroy');
     }
@@ -35,15 +35,11 @@ module('Unit | EngineInstance', function(hooks) {
     }
   });
 
-  test('it can build a child engine instance without parent dependencies defined', function(
-    assert
-  ) {
-    assert.expect(1);
-
+  test('it can build a child engine instance without parent dependencies defined', function (assert) {
     class BlogEngine extends Engine {
       Resolver = Resolver;
-      router = null
-      dependencies = Object.freeze({})
+      router = null;
+      dependencies = Object.freeze({});
     }
 
     app.engines = undefined;
@@ -60,14 +56,10 @@ module('Unit | EngineInstance', function(hooks) {
     return blogEngineInstance.boot();
   });
 
-  test('it can build a child engine instance with no dependencies', function(
-    assert
-  ) {
-    assert.expect(1);
-
+  test('it can build a child engine instance with no dependencies', function (assert) {
     class BlogEngine extends Engine {
       Resolver = Resolver;
-      router = null
+      router = null;
     }
 
     app.register('engine:blog', BlogEngine);
@@ -82,17 +74,15 @@ module('Unit | EngineInstance', function(hooks) {
     return blogEngineInstance.boot();
   });
 
-  test('it can build a child engine instance with dependencies', function(
-    assert
-  ) {
+  test('it can build a child engine instance with dependencies', function (assert) {
     assert.expect(2);
 
     class BlogEngine extends Engine {
-      Resolver = Resolver
-      router = null
+      Resolver = Resolver;
+      router = null;
       dependencies = Object.freeze({
         services: ['store'],
-      })
+      });
     }
 
     app.engines = {
@@ -116,22 +106,18 @@ module('Unit | EngineInstance', function(hooks) {
       assert.strictEqual(
         blogEngineInstance.lookup('service:store'),
         appInstance.lookup('service:store'),
-        'services are identical'
+        'services are identical',
       );
     });
   });
 
-  test('it deprecates support for `router` service from host', function(
-    assert
-  ) {
-    assert.expect(2);
-
+  test('it deprecates support for `router` service from host', function (assert) {
     class BlogEngine extends Engine {
-      Resolver = Resolver
-      router = null
+      Resolver = Resolver;
+      router = null;
       dependencies = Object.freeze({
         services: ['router'],
-      })
+      });
     }
 
     app.engines = {
@@ -152,23 +138,21 @@ module('Unit | EngineInstance', function(hooks) {
     assert.ok(blogEngineInstance);
 
     assert.deprecationsInclude(
-      `Support for the host's router service has been deprecated. Please use a different name as 'hostRouter' or 'appRouter' instead of 'router'.`
+      `Support for the host's router service has been deprecated. Please use a different name as 'hostRouter' or 'appRouter' instead of 'router'.`,
     );
   });
 
-  test('it can build a child engine instance with dependencies that are aliased', function(
-    assert
-  ) {
+  test('it can build a child engine instance with dependencies that are aliased', function (assert) {
     assert.expect(2);
 
     class BlogEngine extends Engine {
-      Resolver = Resolver
-      router = null
+      Resolver = Resolver;
+      router = null;
       dependencies = Object.freeze({
         services: [
           'data-store', // NOTE: Blog engine uses alias to 'store'
-        ]
-      })
+        ],
+      });
     }
 
     app.engines = {
@@ -194,7 +178,7 @@ module('Unit | EngineInstance', function(hooks) {
       assert.strictEqual(
         blogEngineInstance.lookup('service:data-store'),
         appInstance.lookup('service:store'),
-        'aliased services are identical'
+        'aliased services are identical',
       );
     });
   });

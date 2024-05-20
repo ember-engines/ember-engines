@@ -1,4 +1,4 @@
-/*jshint node:true*/
+/* eslint-disable n/no-missing-require */
 'use strict';
 
 var EngineAddon = require('ember-engines/lib/engine-addon');
@@ -11,11 +11,11 @@ module.exports = EngineAddon.extend({
 
   lazyLoading: true,
 
-  isDevelopingAddon: function() {
+  isDevelopingAddon: function () {
     return true;
   },
 
-  included: function(app) {
+  included: function (app) {
     this._super.included.apply(this, arguments);
 
     app.import('vendor/css/tree-invocation-order-appimport.css');
@@ -26,7 +26,7 @@ module.exports = EngineAddon.extend({
     });
   },
 
-  setupPreprocessorRegistry: function(type, registry) {
+  setupPreprocessorRegistry: function (type, registry) {
     var addon = this;
 
     if (type !== 'self') {
@@ -36,11 +36,11 @@ module.exports = EngineAddon.extend({
     registry.add('css', {
       name: 'tree-invocation-order',
       ext: 'css',
-      toTree: function(tree) {
+      toTree: function (tree) {
         // Save non-CSS assets so we can return them in treeForPublic
         addon.assetsFromStylesTree = stew.mv(
           funnel(tree, { include: ['**/*.!(css)'] }),
-          'tree-invocation-order/assets'
+          'tree-invocation-order/assets',
         );
 
         return tree;
@@ -48,7 +48,7 @@ module.exports = EngineAddon.extend({
     });
   },
 
-  treeForPublic: function() {
+  treeForPublic: function () {
     var tree = this._super.apply(this, arguments);
 
     if (this.assetsFromStylesTree) {

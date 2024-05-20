@@ -3,65 +3,92 @@ name: CI
 on:
   push:
     branches:
+      - main
       - master
-      - 'v*'
-  pull_request:
+  pull_request: {}
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
-    name: Tests
+    name: "Tests"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v3
         with:
-          node-version: 16.x
-          cache: 'yarn'
-      - run: yarn install --frozen-lockfile
-      - run: yarn lint
-      - run: yarn test:ember
-      - run: yarn test:node
+          version: 8
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: pnpm
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
+      - name: Run Ember Tests
+        run: pnpm test:ember
+      - name: Run Node Tests
+        run: pnpm test:node
 
-  floating-dependencies:
+  floating:
     name: "Floating Dependencies"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v3
         with:
-          node-version: 16.x
-          cache: 'yarn'
-      - run: yarn install --no-lockfile
-      - run: yarn test:ember
+          version: 8
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: pnpm
+      - name: Install Dependencies
+        run: pnpm install --no-lockfile
+      - name: Run Tests
+        run: pnpm test:ember
 
   try-scenarios:
-    name: "Try: ${{ matrix.ember-try-scenario }}"
+    name: ${{ matrix.try-scenario }}
     runs-on: ubuntu-latest
-    needs: test
+    needs: "test"
+    timeout-minutes: 10
 
     strategy:
       fail-fast: false
       matrix:
-        ember-try-scenario:
-          - ember-lts-3.24
+        try-scenario:
           - ember-lts-3.28
           - ember-lts-4.4
+          - ember-lts-4.8
+          - ember-lts-4.12
           - ember-lts-5.4
+          - ember-lts-5.8
           - ember-release
           - ember-beta
           - ember-canary
-          - ember-classic
-          - ember-default-with-jquery
+          - embroider-safe
+          - embroider-optimized
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v3
         with:
-          node-version: 20.x
-          cache: 'yarn'
-      - name: install dependencies
-        run: yarn install --frozen-lockfile
-      - name: test
-        run: yarn try ${{ matrix.ember-try-scenario }} --skip-cleanup
+          version: 8
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: pnpm
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run Tests
+        run: pnpm try ${{ matrix.try-scenario }} --skip-cleanup

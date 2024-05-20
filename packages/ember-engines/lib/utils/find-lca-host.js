@@ -100,14 +100,14 @@ function findLCAHost(engine) {
   const checker = VersionChecker.forProject(project);
   const allEngines = checker.filterAddonsByName(engineName);
 
-  const levels = allEngines.map(currEngine => ({
+  const levels = allEngines.map((currEngine) => ({
     engine: currEngine,
-    distance: getDistanceFromRoot(currEngine)
+    distance: getDistanceFromRoot(currEngine),
   }));
 
   const minLevel = levels.reduce(
     (acc, { distance }) => Math.min(acc, distance),
-    Number.POSITIVE_INFINITY
+    Number.POSITIVE_INFINITY,
   );
 
   let equivalentLevels = levels.map(
@@ -118,7 +118,7 @@ function findLCAHost(engine) {
       }
 
       return currEngine;
-    }
+    },
   );
 
   while (equivalentLevels[0].parent) {
@@ -159,8 +159,8 @@ function findLCAHost(engine) {
   // this should never be triggered
   throw new Error(
     `[ember-engines] Could not find a common host for: \`${engineName}\`; its locations are: \`${allEngines
-      .map(engine => engine.root)
-      .join(', ')}\``
+      .map((engine) => engine.root)
+      .join(', ')}\``,
   );
 }
 
