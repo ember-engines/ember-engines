@@ -12,7 +12,7 @@ export default class PostController extends Controller {
   @tracked transitionedToExternalRoute = false
 
   @action transitionToHomeFromController() {
-    this.router.transitionToExternalRoute('home').then(() => {
+    this.router.transitionToExternal('home').then(() => {
       this.transitionedToExternalRoute = true;
     });
   };

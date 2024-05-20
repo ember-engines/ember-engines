@@ -14,7 +14,7 @@ export default class PostRoute extends Route {
   }
 
   @action goToChineseVersion() {
-    this.router.transitionTo('post', this.controller.model.id, { queryParams: { lang: 'Chinese' } });
+    this.transitionTo({ queryParams: { lang: 'Chinese' } });
   }
 
   @action transitionToHome() {
