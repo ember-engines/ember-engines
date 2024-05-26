@@ -143,6 +143,9 @@ importers:
       '@ember/test-helpers':
         specifier: ^2.9.4
         version: 2.9.4(@babel/core@7.24.4)(ember-source@4.12.4)
+      '@embroider/router':
+        specifier: ^2.1.7
+        version: 2.1.7
       '@embroider/test-setup':
         specifier: ^3.0.3
         version: 3.0.3
@@ -3646,6 +3649,18 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /@embroider/addon-shim@1.8.8:
+    resolution: {integrity: sha512-+SkD/JJqnmCBJpsjPu419iNA9kQdqojNBrldE7f5H80A4FWUGRO9s622+SwdzKiXCaMWcNeww7Ah7CL/YZPoHg==}
+    engines: {node: 12.* || 14.* || >= 16}
+    dependencies:
+      '@embroider/shared-internals': 2.6.0
+      broccoli-funnel: 3.0.8
+      common-ancestor-path: 1.0.1
+      semver: 7.6.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@embroider/macros@1.14.0:
     resolution: {integrity: sha512-V+jkc8mU6mJ4McW6qdEhCiD74CzMDd1T4CeJ9IkidC3pPwTMRIKJMkbiSnjmGDy7NCxT66XtFwJH7HGM2B/fXA==}
     engines: {node: 12.* || 14.* || >= 16}
@@ -3686,6 +3701,20 @@ packages:
       semver: 7.6.0
     transitivePeerDependencies:
       - supports-color
+
+  /@embroider/router@2.1.7:
+    resolution: {integrity: sha512-EcmWgFP0stVbKQkQIJ+moXWqOLADkh4ByKo6zviCxktXxCEzx11NGm6G2eDd3JJYy1JR2XSI1Tn2T+Hsjefb9A==}
+    peerDependencies:
+      '@embroider/core': ^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      '@embroider/core':
+        optional: true
+    dependencies:
+      '@ember/test-waiters': 3.1.0
+      '@embroider/addon-shim': 1.8.8
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
 
   /@embroider/shared-internals@1.8.3:
     resolution: {integrity: sha512-N5Gho6Qk8z5u+mxLCcMYAoQMbN4MmH+z2jXwQHVs859bxuZTxwF6kKtsybDAASCtd2YGxEmzcc1Ja/wM28824w==}
@@ -6978,6 +7007,10 @@ packages:
   /commander@8.3.0:
     resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
     engines: {node: '>= 12'}
+    dev: true
+
+  /common-ancestor-path@1.0.1:
+    resolution: {integrity: sha512-L3sHRo1pXXEqX8VU28kfgUY+YGsk09hPqZiZmLacNib6XNTCM8ubYeT7ryXQw8asB1sKgcU5lkB7ONug08aB8w==}
     dev: true
 
   /common-tags@1.8.2:

@@ -1,5 +1,5 @@
 import preloadAssets from 'ember-asset-loader/test-support/preload-assets';
-import manifest from '../config/asset-manifest';
+import manifest from 'dummy/config/asset-manifest';
 import * as QUnit from 'qunit';
 import { setup } from 'qunit-dom';
 import { start } from 'ember-qunit';
