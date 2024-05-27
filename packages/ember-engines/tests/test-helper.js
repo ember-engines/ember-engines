@@ -3,10 +3,10 @@ import { macroCondition, importSync, dependencySatisfies } from '@embroider/macr
 let preloadAssets = null;
 let manifest = null;
 if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
-  preloadAssets = importSync('ember-asset-loader/test-support/preload-assets');
+  preloadAssets = importSync('ember-asset-loader/test-support/preload-assets').default;
   // this gets removed from the build by an embroider compat adapter
   // we must not request it in an embroider build or it would break the build
-  manifest = importSync('dummy/config/asset-manifest');
+  manifest = importSync('dummy/config/asset-manifest').default;
 }
 import * as QUnit from 'qunit';
 import { setup } from 'qunit-dom';

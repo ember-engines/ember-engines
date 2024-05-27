@@ -107,12 +107,12 @@ module.exports = async function () {
       },
       embroiderSafe({
         env: {
-          ENGINESTESTFILTER: "/^(?!(.*@classiconly))/",
+          ENGINESTESTFILTER: '/^(?!(.*@classiconly))/',
         },
       }),
       embroiderOptimized({
         env: {
-          ENGINESTESTFILTER: "/^(?!(.*@classiconly))/",
+          ENGINESTESTFILTER: '/^(?!(.*@classiconly))/',
         },
       }),
     ],
