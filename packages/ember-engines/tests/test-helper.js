@@ -1,9 +1,15 @@
-import { macroCondition, importSync, dependencySatisfies } from '@embroider/macros';
+import {
+  macroCondition,
+  importSync,
+  dependencySatisfies,
+} from '@embroider/macros';
 
 let preloadAssets = null;
 let manifest = null;
 if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
-  preloadAssets = importSync('ember-asset-loader/test-support/preload-assets').default;
+  preloadAssets = importSync(
+    'ember-asset-loader/test-support/preload-assets',
+  ).default;
   // this gets removed from the build by an embroider compat adapter
   // we must not request it in an embroider build or it would break the build
   manifest = importSync('dummy/config/asset-manifest').default;
@@ -25,7 +31,7 @@ setupSinon();
 if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
   preloadAssets(manifest).then(start); // This ensures all engine resources are loaded before the tests
 } else {
-  // for embroider build assets get loaded on demand 
+  // for embroider build assets get loaded on demand
   // which is actually what the user would have to go through
   // making it a more realisting test
   start();
