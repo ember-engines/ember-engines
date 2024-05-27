@@ -1,0 +1,35 @@
+diff --git a/dist/index.js b/dist/index.js
+index 2df582981f388c3cc8af7db9a2fb288710c4727c..2c4757d2dfd602ae2725a0cba01780e466d7565a 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -41,8 +41,9 @@ if (macroCondition(getGlobalConfig()['@embroider/core']?.active ?? false)) {
+     // Unfortunately the stock query parameter behavior pulls on routes just to
+     // check what their previous QP values were.
+     _getQPMeta(handlerInfo, ...rest) {
+-      let bundle = this.lazyBundle(handlerInfo.name);
+-      if (bundle && !bundle.loaded) {
++      let lazy_bundle = this.lazyBundle(handlerInfo.name);
++      let eager_bundle = this._engineInfoByRoute[handlerInfo.name];
++      if ((lazy_bundle || (!lazy_bundle && eager_bundle)) && !this._seenHandlers[handlerInfo.name]) {
+         return undefined;
+       }
+       // @ts-expect-error extending private method
+@@ -55,6 +56,10 @@ if (macroCondition(getGlobalConfig()['@embroider/core']?.active ?? false)) {
+       // @ts-expect-error extending private method
+       let isSetup = super.setupRouter(...args);
+       let microLib = this._routerMicrolib;
++      if (!this._seenHandlers) {
++        this._seenHandlers = Object.create(null);
++        console.debug('created');
++      }
+       if (!microLib.getRoute.isEmbroiderRouterHandler) {
+         microLib.getRoute = this._handlerResolver(microLib.getRoute.bind(microLib));
+       }
+@@ -63,6 +68,7 @@ if (macroCondition(getGlobalConfig()['@embroider/core']?.active ?? false)) {
+     _handlerResolver(original) {
+       let handler = name => {
+         const bundle = this.lazyBundle(name);
++        this._seenHandlers[name] = true;
+         if (!bundle || bundle.loaded) {
+           return original(name);
+         }

@@ -40,7 +40,8 @@
   ],
   "pnpm": {
     "patchedDependencies": {
-      "release-plan@0.9.0": "patches/release-plan@0.9.0.patch"
+      "release-plan@0.9.0": "patches/release-plan@0.9.0.patch",
+      "@embroider/router@2.1.7": "patches/@embroider__router@2.1.7.patch"
     }
   }
 }

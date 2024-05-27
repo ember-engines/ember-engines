@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  '@embroider/router@2.1.7':
+    hash: 3qkclji72lu4kdhji6mekeqqee
+    path: patches/@embroider__router@2.1.7.patch
   release-plan@0.9.0:
     hash: xh5rirlliqc67yrd6b4cjpmxs4
     path: patches/release-plan@0.9.0.patch
@@ -145,7 +148,7 @@ importers:
         version: 2.9.4(@babel/core@7.24.4)(ember-source@4.12.4)
       '@embroider/router':
         specifier: ^2.1.7
-        version: 2.1.7
+        version: 2.1.7(patch_hash=3qkclji72lu4kdhji6mekeqqee)
       '@embroider/test-setup':
         specifier: ^4.0.0
         version: 4.0.0
@@ -3982,7 +3985,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@embroider/router@2.1.7:
+  /@embroider/router@2.1.7(patch_hash=3qkclji72lu4kdhji6mekeqqee):
     resolution: {integrity: sha512-EcmWgFP0stVbKQkQIJ+moXWqOLADkh4ByKo6zviCxktXxCEzx11NGm6G2eDd3JJYy1JR2XSI1Tn2T+Hsjefb9A==}
     peerDependencies:
       '@embroider/core': ^2.0.0||^3.0.0
@@ -3995,6 +3998,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+    patched: true
 
   /@embroider/shared-internals@1.8.3:
     resolution: {integrity: sha512-N5Gho6Qk8z5u+mxLCcMYAoQMbN4MmH+z2jXwQHVs859bxuZTxwF6kKtsybDAASCtd2YGxEmzcc1Ja/wM28824w==}
