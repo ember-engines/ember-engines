@@ -5,6 +5,7 @@ const { embroiderSafe, embroiderOptimized } = require('@embroider/test-setup');
 
 module.exports = async function () {
   return {
+    command: 'ember test --filter="$ENGINESTESTFILTER"',
     usePnpm: true,
     scenarios: [
       {
@@ -104,8 +105,16 @@ module.exports = async function () {
           },
         },
       },
-      embroiderSafe(),
-      embroiderOptimized(),
+      embroiderSafe({
+        env: {
+          ENGINESTESTFILTER: "/^(?!(.*@classiconly))/",
+        },
+      }),
+      embroiderOptimized({
+        env: {
+          ENGINESTESTFILTER: "/^(?!(.*@classiconly))/",
+        },
+      }),
     ],
   };
 };
