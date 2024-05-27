@@ -1,10 +1,18 @@
-import preloadAssets from 'ember-asset-loader/test-support/preload-assets';
-import manifest from 'dummy/config/asset-manifest';
+import { macroCondition, importSync, dependencySatisfies } from '@embroider/macros';
+
+let preloadAssets = null;
+let manifest = null;
+if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
+  preloadAssets = importSync('ember-asset-loader/test-support/preload-assets');
+  // this gets removed from the build by an embroider compat adapter
+  // we must not request it in an embroider build or it would break the build
+  manifest = importSync('dummy/config/asset-manifest');
+}
 import * as QUnit from 'qunit';
 import { setup } from 'qunit-dom';
 import { start } from 'ember-qunit';
 import setupSinon from 'ember-sinon-qunit';
-import config from '../config/environment';
+import config from 'dummy/config/environment';
 
 import Application from '../app';
 import { setApplication } from '@ember/test-helpers';
@@ -14,7 +22,14 @@ setApplication(Application.create(config.APP));
 setup(QUnit.assert);
 setupSinon();
 
-preloadAssets(manifest).then(start); // This ensures all engine resources are loaded before the tests
+if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
+  preloadAssets(manifest).then(start); // This ensures all engine resources are loaded before the tests
+} else {
+  // for embroider build assets get loaded on demand 
+  // which is actually what the user would have to go through
+  // making it a more realisting test
+  start();
+}
 
 let deprecations;
 
