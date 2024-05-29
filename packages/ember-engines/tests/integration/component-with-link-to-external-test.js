@@ -1,5 +1,3 @@
-/* eslint-disable ember/no-classic-classes */
-/* eslint-disable ember/no-classic-components */
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
@@ -12,7 +10,6 @@ module(
     setupRenderingTest(hooks);
 
     hooks.beforeEach(function () {
-
       class Router extends EmberRouter {}
       Router.map(function () {
         this.route('view');
