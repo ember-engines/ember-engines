@@ -4,7 +4,6 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
-import Component from '@ember/component';
 import EmberRouter from '@ember/routing/router';
 
 module(
@@ -13,8 +12,6 @@ module(
     setupRenderingTest(hooks);
 
     hooks.beforeEach(function () {
-      class TestComponent extends Component {}
-      this.owner.register('component:test-component', TestComponent);
 
       class Router extends EmberRouter {}
       Router.map(function () {
