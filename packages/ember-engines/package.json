@@ -129,7 +129,7 @@
     "ember-source": "^3.28 || >= 4.0.0"
   },
   "peerDependenciesMeta": {
-    "@ember/legacy-built-in-components": {
+    "ember-engines-router-service": {
       "optional": true
     }
   },
