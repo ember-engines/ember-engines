@@ -70,12 +70,13 @@ jobs:
           - ember-lts-4.4
           - ember-lts-4.8
           - ember-lts-4.12
-          # - ember-lts-5.4
-          # - ember-release
-          # - ember-beta
-          # - ember-canary
-          # - embroider-safe
-          # - embroider-optimized
+          - ember-lts-5.4
+          - ember-lts-5.8
+          - ember-release
+          - ember-beta
+          - ember-canary
+          - embroider-safe
+          - embroider-optimized
 
     steps:
       - uses: actions/checkout@v3

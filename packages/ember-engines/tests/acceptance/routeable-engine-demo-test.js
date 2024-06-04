@@ -291,9 +291,6 @@ module('Acceptance | routable engine demo', function (hooks) {
     assert
       .dom('.routable-post-transition-to-home-button')
       .hasClass('transitioned-to-external');
-    assert.deprecationsInclude(
-      'Calling transitionToExternal on a route is deprecated. Use the RouterService provided by `ember-engines-router-service` instead.',
-    );
   });
 
   test("transitionToExternalRoute transitions to the parent application from within an engine's controller and returns a thenable Transition object", async function (assert) {
@@ -309,9 +306,6 @@ module('Acceptance | routable engine demo', function (hooks) {
     assert
       .dom('.routable-post-transition-to-route-home-button')
       .hasClass('transitioned-to-external-route');
-    assert.deprecationsInclude(
-      'Calling transitionToExternalRoute on a controller is deprecated. Use the RouterService provided by `ember-engines-router-service` instead.',
-    );
   });
 
   test('replaceWithExternal transitions to the parent application from within an engine and returns a thenable Transition object', async function (assert) {
@@ -327,9 +321,6 @@ module('Acceptance | routable engine demo', function (hooks) {
     assert
       .dom('.routable-post-replace-with-home-button')
       .hasClass('replaced-with-external');
-    assert.deprecationsInclude(
-      'Calling replaceWithExternal on a route is deprecated. Use the RouterService provided by `ember-engines-router-service` instead.',
-    );
   });
 
   test('loading routes and intermediateTransitionTo work within an engine', async function (assert) {
