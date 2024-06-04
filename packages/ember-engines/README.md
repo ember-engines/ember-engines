@@ -19,9 +19,6 @@ perspective.
 ember install ember-engines
 ```
 
-## Upgrade guide
-
-* [0.10.0 -> 0.11.0](UPGRADE.md#0110)
 
 ## Usage
 
