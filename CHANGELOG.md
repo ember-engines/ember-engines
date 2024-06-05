@@ -6,7 +6,8 @@ ember-engines 0.11.0 (major)
 
 #### :boom: Breaking Change
 * `ember-blog`, `ember-engines`
-  * [#855](https://github.com/ember-engines/ember-engines/pull/855) enable ember v5 compatibility and add embroider to try scenarios ([@void-mAlex](https://github.com/void-mAlex))
+  * [#855](https://github.com/ember-engines/ember-engines/pull/855) Enable Ember.js v5 compatibility and add embroider to try scenarios ([@void-mAlex](https://github.com/void-mAlex))
+  * [#855](https://github.com/ember-engines/ember-engines/pull/855) Remove deprecated transition methods of controller and route per RFC #674 ([@void-mAlex](https://github.com/void-mAlex))
 
 #### Committers: 1
 - Alex ([@void-mAlex](https://github.com/void-mAlex))
