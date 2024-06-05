@@ -1,5 +1,15 @@
 # Changelog
 
+## Release (2024-06-05)
+
+
+
+#### :memo: Documentation
+* [#895](https://github.com/ember-engines/ember-engines/pull/895) Sync changeling entries for v0.11 and GH release notes ([@SergeAstapov](https://github.com/SergeAstapov))
+
+#### Committers: 1
+- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))
+
 ## Release (2024-06-04)
 
 ember-engines 0.11.0 (major)

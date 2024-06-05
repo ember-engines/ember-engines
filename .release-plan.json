@@ -1,17 +1,8 @@
 {
   "solution": {
     "ember-engines": {
-      "impact": "major",
-      "oldVersion": "0.10.0",
-      "newVersion": "0.11.0",
-      "constraints": [
-        {
-          "impact": "major",
-          "reason": "Appears in changelog section :boom: Breaking Change"
-        }
-      ],
-      "pkgJSONPath": "./packages/ember-engines/package.json"
+      "oldVersion": "0.11.0"
     }
   },
-  "description": "## Release (2024-06-04)\n\nember-engines 0.11.0 (major)\n\n#### :boom: Breaking Change\n* `ember-blog`, `ember-engines`\n  * [#855](https://github.com/ember-engines/ember-engines/pull/855) Enable Ember.js v5 compatibility and add embroider to try scenarios ([@void-mAlex](https://github.com/void-mAlex))\n  * [#855](https://github.com/ember-engines/ember-engines/pull/855) Remove deprecated transition methods of controller and route per RFC #674 ([@void-mAlex](https://github.com/void-mAlex))\n\n#### Committers: 1\n- Alex ([@void-mAlex](https://github.com/void-mAlex))\n"
+  "description": "## Release (2024-06-05)\n\n\n\n#### :memo: Documentation\n* [#895](https://github.com/ember-engines/ember-engines/pull/895) Sync changeling entries for v0.11 and GH release notes ([@SergeAstapov](https://github.com/SergeAstapov))\n\n#### Committers: 1\n- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))\n"
 }
