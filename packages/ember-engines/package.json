@@ -1,6 +1,6 @@
 {
   "name": "ember-engines",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Composable applications for ambitious user experiences",
   "directories": {
     "doc": "doc",

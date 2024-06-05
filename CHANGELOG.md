@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2024-06-04)
+
+ember-engines 0.11.0 (major)
+
+#### :boom: Breaking Change
+* `ember-blog`, `ember-engines`
+  * [#855](https://github.com/ember-engines/ember-engines/pull/855) enable ember v5 compatibility and add embroider to try scenarios ([@void-mAlex](https://github.com/void-mAlex))
+
+#### Committers: 1
+- Alex ([@void-mAlex](https://github.com/void-mAlex))
+
 ## Release (2024-04-29)
 
 ember-engines 0.10.0 (major)
