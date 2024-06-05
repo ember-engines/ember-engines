@@ -13,5 +13,5 @@
       "pkgJSONPath": "./packages/ember-engines/package.json"
     }
   },
-  "description": "## Release (2024-06-04)\n\nember-engines 0.11.0 (major)\n\n#### :boom: Breaking Change\n* `ember-blog`, `ember-engines`\n  * [#855](https://github.com/ember-engines/ember-engines/pull/855) enable ember v5 compatibility and add embroider to try scenarios ([@void-mAlex](https://github.com/void-mAlex))\n\n#### Committers: 1\n- Alex ([@void-mAlex](https://github.com/void-mAlex))\n"
+  "description": "## Release (2024-06-04)\n\nember-engines 0.11.0 (major)\n\n#### :boom: Breaking Change\n* `ember-blog`, `ember-engines`\n  * [#855](https://github.com/ember-engines/ember-engines/pull/855) Enable Ember.js v5 compatibility and add embroider to try scenarios ([@void-mAlex](https://github.com/void-mAlex))\n  * [#855](https://github.com/ember-engines/ember-engines/pull/855) Remove deprecated transition methods of controller and route per RFC #674 ([@void-mAlex](https://github.com/void-mAlex))\n\n#### Committers: 1\n- Alex ([@void-mAlex](https://github.com/void-mAlex))\n"
 }
