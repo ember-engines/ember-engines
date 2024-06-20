@@ -29,7 +29,7 @@
     "release-plan": "^0.9.0"
   },
   "engines": {
-    "node": "16.* || 18.* || >= 20"
+    "node": "18.* || >= 20"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
