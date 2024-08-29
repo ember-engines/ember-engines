@@ -98,7 +98,7 @@
     "stylelint-config-standard": "^34.0.0",
     "stylelint-prettier": "^4.1.0",
     "walk-sync": "^3.0.0",
-    "webpack": "^5.90.3"
+    "webpack": "^5.94.0"
   },
   "keywords": [
     "ember-addon"
