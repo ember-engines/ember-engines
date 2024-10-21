@@ -22,8 +22,30 @@ const appendCompactReexportsIfNeeded = require('./utils/append-compact-reexports
 const ensureLazyLoadingHash = require('./utils/ensure-lazy-loading-hash');
 const { findLCAHost } = require('./utils/find-lca-host');
 const preprocessCss = p.preprocessCss;
-const preprocessMinifyCss = p.preprocessMinifyCss;
 const BroccoliDebug = require('broccoli-debug');
+
+const preprocessMinifyCss = function (tree, options) {
+  /**
+   * For ember-cli < 5.0.0, end users may not have `ember-cli-clean-css` or alternatives installed
+   * since ember-cli-preprocess-registry by default included `broccoli-clean-css` as a fallback.
+   *
+   * To support css minification for this case, if there is no existing minify-css plugin in the registry,
+   * we will attempt to use `broccoli-clean-css` as a fallback.
+   *
+   * When ember-engine drops support for ember-cli < 5.0.0, this fallback can be removed.
+   */
+  if (options.registry.load('minify-css').length === 0) {
+    try {
+      /* eslint-disable n/no-missing-require */
+      var CleanCSS = require('broccoli-clean-css');
+      return new CleanCSS(tree, options);
+    } catch (e) {
+      // noop
+    }
+  }
+
+  return p.preprocessMinifyCss.apply(p, arguments);
+};
 
 // Older versions of Ember-CLI may not have the Addon's tree cache
 const HAS_TREE_CACHE = !!Addon._treeCache;
@@ -724,7 +746,8 @@ function buildEngine(options) {
           ? this.options.minifyCSS.enabled
           : process.env.EMBER_ENV === 'production';
       let minificationOptions = this.options.minifyCSS.options || {};
-      minificationOptions.registry = this.registry;
+      minificationOptions.registry =
+        findLCAHost(this)?.registry || this.registry;
 
       // get engines own addon-styles tree
       let engineStylesTree = buildEngineStyleTree.call(this);
