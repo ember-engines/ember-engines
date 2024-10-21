@@ -96,7 +96,12 @@ describe('Acceptance', function () {
       let app = new AddonTestApp();
       let engineName = 'lazy';
 
-      await app.create('engine-testing', CreateOptions);
+      await app.create('engine-testing', {...CreateOptions, skipNpm: true });
+      await app.editPackageJSON((pkg) => {
+        pkg.devDependencies['ember-cli-clean-css'] = '3.0.0';
+      });
+      await app.run('npm', 'install');
+
       await InRepoEngine.generate(app, engineName, { lazy: true });
 
       let output = await build(app, 'production');
