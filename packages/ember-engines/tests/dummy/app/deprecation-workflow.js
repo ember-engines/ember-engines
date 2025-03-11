@@ -6,7 +6,7 @@ setupDeprecationWorkflow({
       handler: 'silence',
       matchId: 'ember-engines.addon-test-support.engine-resolver-for',
     },
-    { handler: 'silence', matchId: 'template-action' },
+    { handler: 'throw', matchId: 'template-action' },
     {
       handler: 'silence',
       matchId: 'ember-glimmer.link-to.positional-arguments',
