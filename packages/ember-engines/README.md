@@ -5,7 +5,6 @@ RFC](https://github.com/emberjs/rfcs/blob/master/text/0010-engines.md). Engines 
 applications to be composed together into a single application from the user's
 perspective.
 
-
 ## Compatibility
 
 * Ember.js v3.28 or above
@@ -19,7 +18,6 @@ perspective.
 ember install ember-engines
 ```
 
-
 ## Usage
 
 Check the full documentation in the [Ember Engines
@@ -31,11 +29,9 @@ Guides](https://ember-engines.com/).
 Having trouble? **Join #ember-engines** on the [Ember Community Discord
 server](https://discord.gg/zT3asNS)
 
-
 ## Contributing
 
 See the [Contributing](CONTRIBUTING.md) guide for details.
-
 
 ## License
 
