@@ -16,8 +16,8 @@
 <LinkTo @route="index" class="routable-post-blog-home-link">Go to blog home</LinkTo>
 <LinkTo @route="application" class="routable-post-blog-home-link-app">Also goes to blog home</LinkTo>
 <LinkTo @query={{hash lang="Japanese"}} class="routable-post-jp-link">Go to Japanese version</LinkTo>
-<button {{action "goToChineseVersion"}} class="routable-post-ch-link">Go to Chinese version</button>
-<button {{action "transitionToHome"}} class="routable-post-transition-to-home-button {{if this.transitionedToExternal 'transitioned-to-external'}}">
+<button {{on "click" this.goToChineseVersion}} class="routable-post-ch-link">Go to Chinese version</button>
+<button {{on "click" this.transitionToHome}} class="routable-post-transition-to-home-button {{if this.transitionedToExternal 'transitioned-to-external'}}">
   Go home programmatically
 </button>
 
@@ -28,6 +28,6 @@
   Go home by controller
 </button>
 
-<button {{action "replaceWithHome"}} class="routable-post-replace-with-home-button {{if this.replacedWithExternal 'replaced-with-external'}}">
+<button {{on "click" this.replaceWithHome}} class="routable-post-replace-with-home-button {{if this.replacedWithExternal 'replaced-with-external'}}">
   Also goes home programmatically
 </button>

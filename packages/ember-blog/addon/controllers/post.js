@@ -11,9 +11,25 @@ export default class PostController extends Controller {
 
   @tracked transitionedToExternalRoute = false
 
+  @action goToChineseVersion() {
+    this.router.transitionTo('post', this.model.id, { queryParams: { lang: 'Chinese' } });
+  }
+
+  @action transitionToHome() {
+    this.router.transitionToExternal('home').then(() => {
+      this.set('transitionedToExternal', true);
+    });
+  }
+
   @action transitionToHomeFromController() {
     this.router.transitionToExternal('home').then(() => {
       this.transitionedToExternalRoute = true;
+    });
+  };
+
+  @action replaceWithHome() {
+    this.router.replaceWithExternal('home').then(() => {
+      this.set('replacedWithExternal', true);
     });
   };
 }

@@ -3,6 +3,6 @@
 
   <p class="routable-hello-world"><HelloWorld /></p>
 
-  <button {{action "goAway"}} class="trigger-transition-to">Go Away!</button>
-  <button {{action "goAwayViaURL"}} class="trigger-transition-to-url">Go Away via URL!</button>
+  <button {{on "click" this.goAway}} class="trigger-transition-to">Go Away!</button>
+  <button {{on "click" this.goAwayViaURL}} class="trigger-transition-to-url">Go Away via URL!</button>
 </div>

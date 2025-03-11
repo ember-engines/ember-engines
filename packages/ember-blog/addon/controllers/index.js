@@ -1,8 +1,8 @@
-import Route from '@ember/routing/route';
+import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 
-export default class IndexRoute extends Route {
+export default class IndexRouteController extends Controller {
   @service router;
 
   @action goToPostWithChinese() {
