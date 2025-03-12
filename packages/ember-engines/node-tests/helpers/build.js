@@ -5,9 +5,9 @@ const fixturify = require('fixturify');
 const walkSync = require('walk-sync');
 
 class BuildOutput {
-  constructor(app) {
-    this.app = app;
-    this._buildPath = path.join(app.path, 'dist');
+  constructor(cwd) {
+    this.cwd = cwd;
+    this._buildPath = path.join(cwd, 'dist');
     this._build = fixturify.readSync(this._buildPath);
   }
 
@@ -69,10 +69,12 @@ class BuildOutput {
   }
 }
 
-module.exports = function build(app, _environment) {
+module.exports = async function build(cwd, _environment) {
   let environment = _environment || 'development';
 
-  return app.runEmberCommand('build', '--environment', environment).then(() => {
-    return new BuildOutput(app);
-  });
+  const { execa } = await import('execa');
+
+  await execa('ember', ['build', '--environment', environment], { cwd });
+
+  return new BuildOutput(cwd);
 };
