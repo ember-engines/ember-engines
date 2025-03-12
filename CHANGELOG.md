@@ -1,5 +1,24 @@
 # Changelog
 
+## Release (2025-03-12)
+
+* ember-engines 0.11.1 (patch)
+
+#### :memo: Documentation
+* [#895](https://github.com/ember-engines/ember-engines/pull/895) Sync changelog entries for v0.11 and GH release notes ([@SergeAstapov](https://github.com/SergeAstapov))
+
+#### :house: Internal
+* `ember-engines`
+  * [#905](https://github.com/ember-engines/ember-engines/pull/905) Move from using ember-cli-addon-tests to using fixturify-project for tests ([@mansona](https://github.com/mansona))
+* Other
+  * [#902](https://github.com/ember-engines/ember-engines/pull/902) update release-plan ([@mansona](https://github.com/mansona))
+* `ember-blog`
+  * [#904](https://github.com/ember-engines/ember-engines/pull/904) fix action deprecation ([@mansona](https://github.com/mansona))
+
+#### Committers: 2
+- Chris Manson ([@mansona](https://github.com/mansona))
+- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))
+
 ## Release (2024-06-04)
 
 ember-engines 0.11.0 (major)
