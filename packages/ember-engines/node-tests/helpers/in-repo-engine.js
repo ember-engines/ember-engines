@@ -1,7 +1,5 @@
 'use strict';
 
-const { writeFileSync, mkdirSync } = require('fs-extra');
-const { join } = require('path');
 const InRepoAddon = require('./in-repo-addon');
 
 module.exports = class InRepoEngine extends InRepoAddon {

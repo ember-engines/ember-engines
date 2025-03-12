@@ -14,3 +14,6 @@
 
 # ember-try
 /.node_modules.ember-try/
+
+# fixturify fixture
+/node-tests/fixtures/app-template/

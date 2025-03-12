@@ -632,7 +632,10 @@ describe('Acceptance', function () {
       let output = await build(app);
 
       // Verify all the files are in the host's assets
-      output.contains(`assets/app-template.js`, moduleMatcher(`app-template/foo`));
+      output.contains(
+        `assets/app-template.js`,
+        moduleMatcher(`app-template/foo`),
+      );
       output.contains('nested/some-file.txt');
       output.contains(
         'assets/vendor.js',
@@ -709,7 +712,10 @@ describe('Acceptance', function () {
       let output = await build(app);
 
       // Verify all the files are in the host's assets
-      output.contains(`assets/app-template.js`, moduleMatcher(`app-template/foo`));
+      output.contains(
+        `assets/app-template.js`,
+        moduleMatcher(`app-template/foo`),
+      );
       output.contains(`${addonName}/some-file.txt`);
       output.contains(
         'assets/vendor.js',
