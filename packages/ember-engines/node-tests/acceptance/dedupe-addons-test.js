@@ -1,6 +1,7 @@
 'use strict';
 
-const AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
+const { join } = require('path');
+const { Project } = require('fixturify-project');
 
 const build = require('../helpers/build');
 const InRepoAddon = require('../helpers/in-repo-addon');
@@ -15,13 +16,25 @@ describe('Acceptance', function () {
   describe('dedupe addons', function () {
     this.timeout(300000);
 
+    let project;
+    let app; // this is actually going to be set to the baseDir of the project
+
+    beforeEach(async () => {
+      project = Project.fromDir(join(__dirname, '../fixtures/app-template'), {
+        linkDevDeps: true,
+      });
+      project.linkDevDependency('ember-engines', {
+        baseDir: '.',
+        resolveName: '.',
+      });
+
+      await project.write();
+      app = project.baseDir;
+    });
+
     it('in lazy engines that are direct dependencies of the engine', async function () {
-      let app = new AddonTestApp();
-      let appName = 'engine-testing';
       let engineName = 'lazy';
       let addonName = 'nested';
-
-      await app.create(appName, { noFixtures: true });
 
       let addon = await InRepoAddon.generate(app, addonName);
       let engine = await InRepoEngine.generate(app, engineName, {
@@ -55,7 +68,7 @@ describe('Acceptance', function () {
       let output = await build(app);
 
       // Verify all the files are in the host's assets
-      output.contains(`assets/${appName}.js`, moduleMatcher(`${appName}/foo`));
+      output.contains(`assets/app-template.js`, moduleMatcher(`app-template/foo`));
       output.contains('nested/some-file.txt');
       output.contains(
         'assets/vendor.js',
@@ -94,13 +107,11 @@ describe('Acceptance', function () {
 
     it('in lazy engines that are nested dependencies of the engine', async function () {
       process.env.EMBER_ENGINES_ADDON_DEDUPE = 1;
-      let app = new AddonTestApp();
-      let appName = 'engine-testing';
+      let appName = 'app-template';
       let engineName = 'lazy';
       let engineAddonName = 'addon-in-lazy';
       let addonName = 'nested';
 
-      await app.create(appName, { noFixtures: true });
       let addon = await InRepoAddon.generate(app, addonName);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: true,
@@ -175,13 +186,11 @@ describe('Acceptance', function () {
     });
 
     it('in deeply nested lazy engines that appear in host application', async function () {
-      let app = new AddonTestApp();
-      let appName = 'engine-testing';
+      let appName = 'app-template';
       let engineName = 'lazy';
       let nestedEngineName = 'lazy-in-lazy';
       let addonName = 'nested';
 
-      await app.create(appName, { noFixtures: true });
       let addon = await InRepoAddon.generate(app, addonName);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: true,
@@ -278,13 +287,11 @@ describe('Acceptance', function () {
     });
 
     it('in deeply nested lazy engines that appear in host lazy engine', async function () {
-      let app = new AddonTestApp();
-      let appName = 'engine-testing';
+      let appName = 'app-template';
       let engineName = 'lazy';
       let nestedEngineName = 'lazy-in-lazy';
       let addonName = 'nested';
 
-      await app.create(appName, { noFixtures: true });
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: true,
       });
