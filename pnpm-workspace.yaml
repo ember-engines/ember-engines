@@ -1,3 +1,5 @@
 packages:
   # all packages in direct subdirs of packages/
   - 'packages/*'
+  # scenario tester base project
+  - 'packages/ember-engines/node-tests/fixtures/app-template'

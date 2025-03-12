@@ -1,7 +1,9 @@
 'use strict';
 
 const expect = require('chai').expect;
-const AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
+const { join } = require('path');
+const { Project } = require('fixturify-project');
+
 const build = require('../helpers/build');
 const InRepoAddon = require('../helpers/in-repo-addon');
 const InRepoEngine = require('../helpers/in-repo-engine');
@@ -11,8 +13,6 @@ const matchers = require('../helpers/matchers');
 const moduleMatcher = matchers.module;
 const reexportMatcher = matchers.reexport;
 const cssCommentMatcher = matchers.cssComment;
-
-const CreateOptions = { noFixtures: true, emberVersion: '^3.28.0' };
 
 describe('Acceptance', function () {
   describe('build', function () {
@@ -25,14 +25,31 @@ describe('Acceptance', function () {
       'templates/application',
     ];
 
+    let project;
+    let app; // this is actually going to be set to the baseDir of the project
+
+    beforeEach(async () => {
+      project = Project.fromDir(join(__dirname, '../fixtures/app-template'), {
+        linkDevDeps: true,
+      });
+      project.linkDevDependency('ember-engines', {
+        baseDir: '.',
+        resolveName: '.',
+      });
+
+      await project.write();
+      app = project.baseDir;
+    });
+
     it('correctly builds eager engine', async function () {
-      let app = new AddonTestApp();
       let engineName = 'eager';
 
-      await app.create('engine-testing', CreateOptions);
-      await InRepoEngine.generate(app, engineName, { lazy: false });
+      const cwd = project.baseDir;
+      await InRepoEngine.generate(cwd, engineName, {
+        lazy: false,
+      });
 
-      let output = await build(app);
+      let output = await build(cwd);
 
       // Only special file we add is the manifest for eager engines
       expect(output.manifest()).to.deep.equal(expectedManifests['eager']);
@@ -56,10 +73,7 @@ describe('Acceptance', function () {
     });
 
     it('correctly builds lazy engine', async function () {
-      let app = new AddonTestApp();
       let engineName = 'lazy';
-
-      await app.create('engine-testing', CreateOptions);
       await InRepoEngine.generate(app, engineName, { lazy: true });
 
       let output = await build(app);
@@ -93,10 +107,7 @@ describe('Acceptance', function () {
     });
 
     it('minifies a lazy engines css in production builds', async function () {
-      let app = new AddonTestApp();
       let engineName = 'lazy';
-
-      await app.create('engine-testing', CreateOptions);
       await InRepoEngine.generate(app, engineName, { lazy: true });
 
       let output = await build(app, 'production');
@@ -116,11 +127,8 @@ describe('Acceptance', function () {
     });
 
     it('correctly builds eager engine in lazy engine', async function () {
-      let app = new AddonTestApp();
       let engineName = 'lazy';
       let nestedEngineName = 'eager-in-lazy';
-
-      await app.create('engine-testing', CreateOptions);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: true,
       });
@@ -172,11 +180,9 @@ describe('Acceptance', function () {
     });
 
     it('correctly builds lazy engine in eager engine', async function () {
-      let app = new AddonTestApp();
       let engineName = 'eager';
       let nestedEngineName = 'lazy-in-eager';
 
-      await app.create('engine-testing', CreateOptions);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: false,
       });
@@ -235,11 +241,9 @@ describe('Acceptance', function () {
     });
 
     it('correctly builds lazy engine in lazy engine', async function () {
-      var app = new AddonTestApp();
       var engineName = 'lazy';
       var nestedEngineName = 'lazy-in-lazy';
 
-      await app.create('engine-testing', CreateOptions);
       var engine = await InRepoEngine.generate(app, engineName, {
         lazy: true,
       });
@@ -301,11 +305,9 @@ describe('Acceptance', function () {
     });
 
     it('correctly builds eager engine in eager engine', async function () {
-      let app = new AddonTestApp();
       let engineName = 'eager';
       let nestedEngineName = 'eager-in-eager';
 
-      await app.create('engine-testing', CreateOptions);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: false,
       });
@@ -349,11 +351,9 @@ describe('Acceptance', function () {
     });
 
     it('correctly builds addon in eager engine', async function () {
-      let app = new AddonTestApp();
       let engineName = 'eager';
       let addonName = 'nested';
 
-      await app.create('engine-testing', CreateOptions);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: false,
       });
@@ -395,11 +395,9 @@ describe('Acceptance', function () {
     });
 
     it('correctly builds addon in lazy engine', async function () {
-      let app = new AddonTestApp();
       let engineName = 'lazy';
       let addonName = 'nested';
 
-      await app.create('engine-testing', CreateOptions);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: true,
       });
@@ -458,10 +456,8 @@ describe('Acceptance', function () {
     });
 
     it('invokes trees and executes hooks in the proper order and handles imports for engines', async function () {
-      let app = new AddonTestApp();
       let engineName = 'tree-invocation-order';
 
-      await app.create('engine-testing', CreateOptions);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: true,
       });
@@ -530,10 +526,8 @@ describe('Acceptance', function () {
     });
 
     it('correctly hoists routes.js and its imports', async function () {
-      let app = new AddonTestApp();
       let engineName = 'routes-hoisting';
 
-      await app.create('engine-testing', CreateOptions);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: true,
       });
@@ -559,10 +553,8 @@ describe('Acceptance', function () {
     });
 
     it('correctly ignores app re-exports', async function () {
-      let app = new AddonTestApp();
       let engineName = 'app-exports';
 
-      await app.create('engine-testing', CreateOptions);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: true,
       });
@@ -581,10 +573,8 @@ describe('Acceptance', function () {
     });
 
     it('correctly separates routes.js and its imports when lazyLoading.includeRoutesInApplication is false', async function () {
-      let app = new AddonTestApp();
       let engineName = 'separate-routes';
 
-      await app.create('engine-testing', CreateOptions);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: true,
       });
@@ -607,12 +597,9 @@ describe('Acceptance', function () {
     });
 
     it('does not duplicate addons in lazy engines that appear in the host', async function () {
-      let app = new AddonTestApp();
-      let appName = 'engine-testing';
       let engineName = 'lazy';
       let addonName = 'nested';
 
-      await app.create(appName, CreateOptions);
       let addon = await InRepoAddon.generate(app, addonName);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: true,
@@ -645,7 +632,7 @@ describe('Acceptance', function () {
       let output = await build(app);
 
       // Verify all the files are in the host's assets
-      output.contains(`assets/${appName}.js`, moduleMatcher(`${appName}/foo`));
+      output.contains(`assets/app-template.js`, moduleMatcher(`app-template/foo`));
       output.contains('nested/some-file.txt');
       output.contains(
         'assets/vendor.js',
@@ -683,12 +670,9 @@ describe('Acceptance', function () {
     });
 
     it('duplicates an addon in lazy engines when the tree returned by the addon is different', async function () {
-      let app = new AddonTestApp();
-      let appName = 'engine-testing';
       let engineName = 'lazy';
       let addonName = 'nested';
 
-      await app.create(appName, CreateOptions);
       let addon = await InRepoAddon.generate(app, addonName);
       let engine = await InRepoEngine.generate(app, engineName, {
         lazy: true,
@@ -725,7 +709,7 @@ describe('Acceptance', function () {
       let output = await build(app);
 
       // Verify all the files are in the host's assets
-      output.contains(`assets/${appName}.js`, moduleMatcher(`${appName}/foo`));
+      output.contains(`assets/app-template.js`, moduleMatcher(`app-template/foo`));
       output.contains(`${addonName}/some-file.txt`);
       output.contains(
         'assets/vendor.js',
