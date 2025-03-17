@@ -5,6 +5,7 @@
 /lib/engine-config-node-module.js
 
 # compiled output
+/declarations/
 /dist/
 
 # misc
