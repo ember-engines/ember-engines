@@ -1,5 +1,29 @@
 # Changelog
 
+## Release (2025-03-17)
+
+* ember-engines 0.12.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-engines`
+  * [#901](https://github.com/ember-engines/ember-engines/pull/901) Bump ember-cli-preprocess-registry from 3.3.0 to 5.0.1 ([@mukilane](https://github.com/mukilane))
+
+#### :memo: Documentation
+* [#895](https://github.com/ember-engines/ember-engines/pull/895) Sync changelog entries for v0.11 and GH release notes ([@SergeAstapov](https://github.com/SergeAstapov))
+
+#### :house: Internal
+* `ember-engines`
+  * [#905](https://github.com/ember-engines/ember-engines/pull/905) Move from using ember-cli-addon-tests to using fixturify-project for tests ([@mansona](https://github.com/mansona))
+* Other
+  * [#902](https://github.com/ember-engines/ember-engines/pull/902) update release-plan ([@mansona](https://github.com/mansona))
+* `ember-blog`
+  * [#904](https://github.com/ember-engines/ember-engines/pull/904) fix action deprecation ([@mansona](https://github.com/mansona))
+
+#### Committers: 3
+- Chris Manson ([@mansona](https://github.com/mansona))
+- Mukil Elango ([@mukilane](https://github.com/mukilane))
+- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))
+
 ## Release (2024-06-04)
 
 ember-engines 0.11.0 (major)
