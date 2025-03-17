@@ -1,17 +1,21 @@
 {
   "solution": {
     "ember-engines": {
-      "impact": "major",
-      "oldVersion": "0.10.0",
-      "newVersion": "0.11.0",
+      "impact": "minor",
+      "oldVersion": "0.11.0",
+      "newVersion": "0.12.0",
       "constraints": [
         {
-          "impact": "major",
-          "reason": "Appears in changelog section :boom: Breaking Change"
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
+        },
+        {
+          "impact": "patch",
+          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./packages/ember-engines/package.json"
     }
   },
-  "description": "## Release (2024-06-04)\n\nember-engines 0.11.0 (major)\n\n#### :boom: Breaking Change\n* `ember-blog`, `ember-engines`\n  * [#855](https://github.com/ember-engines/ember-engines/pull/855) Enable Ember.js v5 compatibility and add embroider to try scenarios ([@void-mAlex](https://github.com/void-mAlex))\n  * [#855](https://github.com/ember-engines/ember-engines/pull/855) Remove deprecated transition methods of controller and route per RFC #674 ([@void-mAlex](https://github.com/void-mAlex))\n\n#### Committers: 1\n- Alex ([@void-mAlex](https://github.com/void-mAlex))\n"
+  "description": "## Release (2025-03-17)\n\n* ember-engines 0.12.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-engines`\n  * [#901](https://github.com/ember-engines/ember-engines/pull/901) Bump ember-cli-preprocess-registry from 3.3.0 to 5.0.1 ([@mukilane](https://github.com/mukilane))\n\n#### :memo: Documentation\n* [#895](https://github.com/ember-engines/ember-engines/pull/895) Sync changelog entries for v0.11 and GH release notes ([@SergeAstapov](https://github.com/SergeAstapov))\n\n#### :house: Internal\n* `ember-engines`\n  * [#905](https://github.com/ember-engines/ember-engines/pull/905) Move from using ember-cli-addon-tests to using fixturify-project for tests ([@mansona](https://github.com/mansona))\n* Other\n  * [#902](https://github.com/ember-engines/ember-engines/pull/902) update release-plan ([@mansona](https://github.com/mansona))\n* `ember-blog`\n  * [#904](https://github.com/ember-engines/ember-engines/pull/904) fix action deprecation ([@mansona](https://github.com/mansona))\n\n#### Committers: 3\n- Chris Manson ([@mansona](https://github.com/mansona))\n- Mukil Elango ([@mukilane](https://github.com/mukilane))\n- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))\n"
 }
