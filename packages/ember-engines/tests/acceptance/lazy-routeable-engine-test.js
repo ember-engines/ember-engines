@@ -16,6 +16,8 @@ import { setupOnerror, click, currentURL, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import App from 'dummy/app';
 
+let preloadAssets = null;
+let manifest = null;
 if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
   preloadAssets = importSync(
     'ember-asset-loader/test-support/preload-assets',
