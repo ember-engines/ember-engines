@@ -1,5 +1,102 @@
 # Changelog
 
+## Release (2025-03-17)
+
+* ember-engines 0.12.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-engines`
+  * [#901](https://github.com/ember-engines/ember-engines/pull/901) Bump ember-cli-preprocess-registry from 3.3.0 to 5.0.1 ([@mukilane](https://github.com/mukilane))
+
+#### :memo: Documentation
+* [#895](https://github.com/ember-engines/ember-engines/pull/895) Sync changelog entries for v0.11 and GH release notes ([@SergeAstapov](https://github.com/SergeAstapov))
+
+#### :house: Internal
+* `ember-engines`
+  * [#905](https://github.com/ember-engines/ember-engines/pull/905) Move from using ember-cli-addon-tests to using fixturify-project for tests ([@mansona](https://github.com/mansona))
+* Other
+  * [#902](https://github.com/ember-engines/ember-engines/pull/902) update release-plan ([@mansona](https://github.com/mansona))
+* `ember-blog`
+  * [#904](https://github.com/ember-engines/ember-engines/pull/904) fix action deprecation ([@mansona](https://github.com/mansona))
+
+#### Committers: 3
+- Chris Manson ([@mansona](https://github.com/mansona))
+- Mukil Elango ([@mukilane](https://github.com/mukilane))
+- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))
+
+## Release (2024-06-04)
+
+ember-engines 0.11.0 (major)
+
+#### :boom: Breaking Change
+* `ember-blog`, `ember-engines`
+  * [#855](https://github.com/ember-engines/ember-engines/pull/855) Enable Ember.js v5 compatibility and add embroider to try scenarios ([@void-mAlex](https://github.com/void-mAlex))
+  * [#855](https://github.com/ember-engines/ember-engines/pull/855) Remove deprecated transition methods of controller and route per RFC #674 ([@void-mAlex](https://github.com/void-mAlex))
+
+#### Committers: 1
+- Alex ([@void-mAlex](https://github.com/void-mAlex))
+
+## Release (2024-04-29)
+
+ember-engines 0.10.0 (major)
+
+#### :boom: Breaking Change
+* `ember-engines`
+  * [#878](https://github.com/ember-engines/ember-engines/pull/878) Drop support for Ember.js < 3.28 ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#870](https://github.com/ember-engines/ember-engines/pull/870) Drop support for Ember.js < 3.28 ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#859](https://github.com/ember-engines/ember-engines/pull/859) Drop support for Node.js v14 ([@SergeAstapov](https://github.com/SergeAstapov))
+
+#### :rocket: Enhancement
+* `ember-engines`
+  * [#888](https://github.com/ember-engines/ember-engines/pull/888) [DEPRECATION] Deprecate transition methods of controller and route per RFC #674 ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#849](https://github.com/ember-engines/ember-engines/pull/849) update ember-source peer dependency to include released version 5 ([@void-mAlex](https://github.com/void-mAlex))
+  * [#846](https://github.com/ember-engines/ember-engines/pull/846) enforce no app re-exports for engines ([@void-mAlex](https://github.com/void-mAlex))
+
+#### :bug: Bug Fix
+* `ember-engines`
+  * [#876](https://github.com/ember-engines/ember-engines/pull/876) Ensure that the engine is destroyed in tests when the test context is cleaned up. ([@brettburley](https://github.com/brettburley))
+
+#### :memo: Documentation
+* `ember-engines`
+  * [#879](https://github.com/ember-engines/ember-engines/pull/879) Update README.md with note about ember.js version support ([@SergeAstapov](https://github.com/SergeAstapov))
+
+#### :house: Internal
+* Other
+  * [#891](https://github.com/ember-engines/ember-engines/pull/891) store secret in environment for added layer of security ([@void-mAlex](https://github.com/void-mAlex))
+  * [#872](https://github.com/ember-engines/ember-engines/pull/872) Setup release-plan ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#873](https://github.com/ember-engines/ember-engines/pull/873) run npm init release-plan-setup@latest ([@mansona](https://github.com/mansona))
+  * [#866](https://github.com/ember-engines/ember-engines/pull/866) Bump follow-redirects from 1.15.5 to 1.15.6 ([@dependabot[bot]](https://github.com/apps/dependabot))
+  * [#862](https://github.com/ember-engines/ember-engines/pull/862) Bump follow-redirects from 1.15.2 to 1.15.5 ([@dependabot[bot]](https://github.com/apps/dependabot))
+  * [#845](https://github.com/ember-engines/ember-engines/pull/845) Bump vm2 from 3.9.11 to 3.9.18 ([@dependabot[bot]](https://github.com/apps/dependabot))
+  * [#838](https://github.com/ember-engines/ember-engines/pull/838) Bump @xmldom/xmldom from 0.7.5 to 0.7.9 ([@dependabot[bot]](https://github.com/apps/dependabot))
+  * [#837](https://github.com/ember-engines/ember-engines/pull/837) Bump minimist from 0.2.1 to 0.2.4 ([@dependabot[bot]](https://github.com/apps/dependabot))
+  * [#832](https://github.com/ember-engines/ember-engines/pull/832) Bump decode-uri-component from 0.2.0 to 0.2.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+  * [#834](https://github.com/ember-engines/ember-engines/pull/834) Bump express from 4.17.2 to 4.18.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+  * [#831](https://github.com/ember-engines/ember-engines/pull/831) Bump loader-utils from 1.4.1 to 1.4.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* `ember-engines`
+  * [#889](https://github.com/ember-engines/ember-engines/pull/889) Add config for release plan ([@void-mAlex](https://github.com/void-mAlex))
+  * [#886](https://github.com/ember-engines/ember-engines/pull/886) Use same ESLint setup for /lib folder ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#885](https://github.com/ember-engines/ember-engines/pull/885) run `npx ember-cli-update --to=5.7.0` to align with blueprint ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#884](https://github.com/ember-engines/ember-engines/pull/884) Bump eslint-plugin-qunit to v8 and fix errors ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#882](https://github.com/ember-engines/ember-engines/pull/882) Bump node tests related packages ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#881](https://github.com/ember-engines/ember-engines/pull/881) Replace ember-sinon with ember-sinon-qunit ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#880](https://github.com/ember-engines/ember-engines/pull/880) Update lint infra and fix errors ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#869](https://github.com/ember-engines/ember-engines/pull/869) Add more LTS version to CI matrix ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#863](https://github.com/ember-engines/ember-engines/pull/863) Sync addon setup with latest blueprint ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#840](https://github.com/ember-engines/ember-engines/pull/840) Bump webpack from 5.68.0 to 5.76.0 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* `common-components`, `ember-blog`, `ember-chat`, `ember-engines`
+  * [#871](https://github.com/ember-engines/ember-engines/pull/871) Colocate component templates ([@SergeAstapov](https://github.com/SergeAstapov))
+* `common-components`, `eager-blog`, `ember-blog`, `ember-chat`, `ember-engines`
+  * [#868](https://github.com/ember-engines/ember-engines/pull/868) Convert codebase to use native classes ([@SergeAstapov](https://github.com/SergeAstapov))
+* `ember-blog`, `ember-chat`, `ember-engines`
+  * [#867](https://github.com/ember-engines/ember-engines/pull/867) Switch package manager to pnpm ([@void-mAlex](https://github.com/void-mAlex))
+
+#### Committers: 4
+- Alex ([@void-mAlex](https://github.com/void-mAlex))
+- Brett Burley ([@brettburley](https://github.com/brettburley))
+- Chris Manson ([@mansona](https://github.com/mansona))
+- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))
+
 
 
 

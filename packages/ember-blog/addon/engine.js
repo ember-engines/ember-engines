@@ -5,18 +5,13 @@ import config from './config/environment';
 
 const { modulePrefix } = config;
 
-class Eng extends Engine {
+export default class Eng extends Engine {
   modulePrefix = config.modulePrefix;
   Resolver = Resolver;
-  init() {
-    super.init(...arguments);
-    this.dependencies = {
-      services: ['data-store'],
-      externalRoutes: ['home'],
-    };
-  }
+  dependencies = {
+    services: ['data-store'],
+    externalRoutes: ['home'],
+  };
 }
 
 loadInitializers(Eng, modulePrefix);
-
-export default Eng;

@@ -85,7 +85,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
     );
   }
 
-  test('it should pause to load JS and CSS assets on deep link into a lazy Engine', async function (assert) {
+  test('@classiconly it should pause to load JS and CSS assets on deep link into a lazy Engine', async function (assert) {
     assert.expect(7);
 
     await visit('/routable-engine-demo/blog/new');
@@ -93,7 +93,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
     verifyInitialBlogRoute(assert, this.loadEvents, this.element);
   });
 
-  test('it should pause to load JS and CSS assets if previous deep link into a lazy Engine has failed', async function (assert) {
+  test('@classiconly it should pause to load JS and CSS assets if previous deep link into a lazy Engine has failed', async function (assert) {
     assert.expect(9);
 
     const jsLoader = this.loader.__assetLoaders.js;
@@ -128,7 +128,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
     verifyInitialBlogRoute(assert, this.loadEvents, this.element);
   });
 
-  test('it should pause to load JS and CSS assets on an initial transition into a lazy Engine', async function (assert) {
+  test('@classiconly it should pause to load JS and CSS assets on an initial transition into a lazy Engine', async function (assert) {
     assert.expect(7);
 
     await visit('/routable-engine-demo');
@@ -137,7 +137,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
     verifyInitialBlogRoute(assert, this.loadEvents, this.element);
   });
 
-  test('it should pause to load JS and CSS assets if previous transition into a lazy Engine has failed', async function (assert) {
+  test('@classiconly it should pause to load JS and CSS assets if previous transition into a lazy Engine has failed', async function (assert) {
     assert.expect(9);
 
     let didError = false;
@@ -182,7 +182,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
     verifyInitialBlogRoute(assert, this.loadEvents, this.element);
   });
 
-  test('it should not pause to load assets on subsequent transitions into a lazy Engine', async function (assert) {
+  test('@classiconly it should not pause to load assets on subsequent transitions into a lazy Engine', async function (assert) {
     assert.expect(10);
 
     await visit('/routable-engine-demo/blog/new');
@@ -203,7 +203,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
     assert.strictEqual(currentURL(), '/routable-engine-demo/blog/new');
   });
 
-  test('it should not pause to load assets on transition to a loaded, but not initialized instance of a lazy Engine (e.g., Engine mounted more than once)', async function (assert) {
+  test('@classiconly it should not pause to load assets on transition to a loaded, but not initialized instance of a lazy Engine (e.g., Engine mounted more than once)', async function (assert) {
     assert.expect(10);
 
     await visit('/routable-engine-demo/blog/new');
@@ -239,7 +239,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
     assert.strictEqual(currentURL(), '/routable-engine-demo/eager-blog');
   });
 
-  test('it should bubble the bundle error to the application', async function (assert) {
+  test('@classiconly it should bubble the bundle error to the application', async function (assert) {
     assert.expect(7);
 
     const failLoader = () => RSVP.reject('rejected');
@@ -248,7 +248,7 @@ module('Acceptance | lazy routable engine', function (hooks) {
 
     let routeDidError = false;
     let routeError;
-
+    //TODO refactor form actions
     this.owner.register(
       'route:application',
       Route.extend({

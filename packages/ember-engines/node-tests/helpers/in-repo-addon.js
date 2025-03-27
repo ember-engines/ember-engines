@@ -5,21 +5,31 @@ const fs = require('fs-extra');
 const fixturify = require('fixturify');
 
 module.exports = class InRepoAddon {
-  static generate(app, name) {
+  static async generate(cwd, name) {
+    const { execa } = await import('execa');
+
     let args = ['generate', 'in-repo-addon', name];
-    return app.runEmberCommand.apply(app, args).then(() => {
-      let addon = new InRepoAddon(app, name);
-      addon.editPackageJSON(
-        (pkg) => (pkg.dependencies = { 'ember-cli-htmlbars': '*' }),
-      );
-      return addon;
-    });
+
+    await execa('ember', args, { cwd });
+
+    let addon = new InRepoAddon(cwd, name);
+    addon.editPackageJSON(
+      (pkg) => (pkg.dependencies = { 'ember-cli-htmlbars': '*' }),
+    );
+    return addon;
   }
 
-  constructor(app, name) {
+  constructor(cwd, name) {
     this.name = name;
-    this.app = app;
-    this.path = path.join(app.path, 'lib', name);
+    this.cwd = cwd;
+    this.path = path.join(cwd, 'lib', name);
+  }
+
+  editAppPackageJSON(editor) {
+    let packageJSONPath = path.join(this.cwd, 'package.json');
+    let pkg = fs.readJsonSync(packageJSONPath);
+    editor(pkg);
+    fs.writeJsonSync(packageJSONPath, pkg);
   }
 
   editPackageJSON(editor) {
@@ -44,10 +54,10 @@ module.exports = class InRepoAddon {
   generateNestedAddon(name) {
     // Generate another in-repo-addon at the app level...
     let args = Array.prototype.slice.call(arguments);
-    args.unshift(this.app);
+    args.unshift(this.cwd);
     return InRepoAddon.generate.apply(null, args).then((addon) => {
       // Remove the in-repo-addon from the app...
-      this.app.editPackageJSON((pkg) => {
+      this.editAppPackageJSON((pkg) => {
         pkg['ember-addon'].paths = pkg['ember-addon'].paths.filter(
           (path) => path !== `lib/${name}`,
         );
