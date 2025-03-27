@@ -3,7 +3,11 @@ import { module, test } from 'qunit';
 import sinon from 'sinon';
 import { setupApplicationTest } from 'ember-qunit';
 import { currentURL, visit, click } from '@ember/test-helpers';
-import { importSync } from '@embroider/macros';
+import {
+  macroCondition,
+  importSync,
+  dependencySatisfies,
+} from '@embroider/macros';
 
 module('Acceptance | routable engine demo', function (hooks) {
   setupApplicationTest(hooks);
@@ -359,9 +363,10 @@ module('Acceptance | routable engine demo', function (hooks) {
   });
 
   test('initializers run within engine', async function (assert) {
-    let assetLoader = this.owner.lookup('service:asset-loader');
-
-    await assetLoader.loadBundle('ember-blog');
+    if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
+      let assetLoader = this.owner.lookup('service:asset-loader');
+      await assetLoader.loadBundle('ember-blog');
+    }
 
     const Initializer = importSync(
       'ember-blog/initializers/ember-blog-initializer',
@@ -375,9 +380,10 @@ module('Acceptance | routable engine demo', function (hooks) {
   });
 
   test('instance initializers run within engine', async function (assert) {
-    let assetLoader = this.owner.lookup('service:asset-loader');
-
-    await assetLoader.loadBundle('ember-blog');
+    if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
+      let assetLoader = this.owner.lookup('service:asset-loader');
+      await assetLoader.loadBundle('ember-blog');
+    }
 
     const InstanceInitializer = importSync(
       'ember-blog/instance-initializers/ember-blog-instance-initializer',
@@ -396,9 +402,10 @@ module('Acceptance | routable engine demo', function (hooks) {
     let appInitialized = false;
     let instanceInitialized = false;
 
-    let assetLoader = this.owner.lookup('service:asset-loader');
-
-    await assetLoader.loadBundle('ember-blog');
+    if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
+      let assetLoader = this.owner.lookup('service:asset-loader');
+      await assetLoader.loadBundle('ember-blog');
+    }
 
     const Initializer = importSync(
       'ember-blog/initializers/ember-blog-initializer',
