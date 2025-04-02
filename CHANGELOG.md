@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2025-04-02)
+
+* ember-engines 0.12.1 (patch)
+
+#### :house: Internal
+* `ember-engines`
+  * [#864](https://github.com/ember-engines/ember-engines/pull/864) Migrate internal tests to new testing API ([@villander](https://github.com/villander))
+
+#### Committers: 1
+- Michael Villander ([@villander](https://github.com/villander))
+
 ## Release (2025-03-17)
 
 * ember-engines 0.12.0 (minor)
