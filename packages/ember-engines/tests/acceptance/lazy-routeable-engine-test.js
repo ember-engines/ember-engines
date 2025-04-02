@@ -3,20 +3,40 @@
 /* global define, self */
 /*eslint no-redeclare: 0*/
 
-import Route from '@ember/routing/route';
+import {
+  macroCondition,
+  importSync,
+  dependencySatisfies,
+} from '@embroider/macros';
 
+import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
 import { module, test } from 'qunit';
 import { setupOnerror, click, currentURL, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
-import App from '../../app';
+import App from 'dummy/app';
+
+let preloadAssets = null;
+let manifest = null;
+if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
+  preloadAssets = importSync(
+    'ember-asset-loader/test-support/preload-assets',
+  ).default;
+  // this gets removed from the build by an embroider compat adapter
+  // we must not request it in an embroider build or it would break the build
+  manifest = importSync('dummy/config/asset-manifest').default;
+}
 
 const SEPARATORS = /\/|\\/;
 
 module('Acceptance | lazy routable engine', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function () {
+  hooks.beforeEach(async function () {
+    if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
+      await preloadAssets(manifest);
+    }
+
     // Remove the ember-blog to fake it having "not loaded".
     this._engineModule = self.requirejs.entries['ember-blog/engine'];
     delete self.requirejs.entries['ember-blog/engine'];

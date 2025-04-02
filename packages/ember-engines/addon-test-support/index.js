@@ -82,6 +82,7 @@ async function buildEngineOwner(owner, engineName) {
 
 export async function loadEngine(engineName) {
   let { owner } = getContext();
+
   if (!ownerHasEngine(owner, engineName)) {
     // ensure that the assets are fully loaded
     let assetLoader = owner.lookup('service:asset-loader');

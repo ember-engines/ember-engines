@@ -1,10 +1,13 @@
 /* eslint-disable ember/no-private-routing-service */
 import { module, test } from 'qunit';
 import sinon from 'sinon';
-import Initializer from 'ember-blog/initializers/ember-blog-initializer';
-import InstanceInitializer from 'ember-blog/instance-initializers/ember-blog-instance-initializer';
 import { setupApplicationTest } from 'ember-qunit';
 import { currentURL, visit, click } from '@ember/test-helpers';
+import {
+  macroCondition,
+  importSync,
+  dependencySatisfies,
+} from '@embroider/macros';
 
 module('Acceptance | routable engine demo', function (hooks) {
   setupApplicationTest(hooks);
@@ -360,7 +363,16 @@ module('Acceptance | routable engine demo', function (hooks) {
   });
 
   test('initializers run within engine', async function (assert) {
-    let stub = sinon.stub(Initializer, 'initialize');
+    if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
+      let assetLoader = this.owner.lookup('service:asset-loader');
+      await assetLoader.loadBundle('ember-blog');
+    }
+
+    const Initializer = importSync(
+      'ember-blog/initializers/ember-blog-initializer',
+    );
+
+    let stub = sinon.stub(Initializer.default, 'initialize');
 
     await visit('/routable-engine-demo/blog/new');
 
@@ -368,7 +380,16 @@ module('Acceptance | routable engine demo', function (hooks) {
   });
 
   test('instance initializers run within engine', async function (assert) {
-    let stub = sinon.stub(InstanceInitializer, 'initialize');
+    if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
+      let assetLoader = this.owner.lookup('service:asset-loader');
+      await assetLoader.loadBundle('ember-blog');
+    }
+
+    const InstanceInitializer = importSync(
+      'ember-blog/instance-initializers/ember-blog-instance-initializer',
+    );
+
+    let stub = sinon.stub(InstanceInitializer.default, 'initialize');
 
     await visit('/routable-engine-demo/blog/new');
 
@@ -381,13 +402,31 @@ module('Acceptance | routable engine demo', function (hooks) {
     let appInitialized = false;
     let instanceInitialized = false;
 
-    let appInit = sinon.stub(Initializer, 'initialize').callsFake(() => {
-      appInitialized = true;
-      assert.notOk(instanceInitialized, 'instance initialized has not run yet');
-    });
+    if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
+      let assetLoader = this.owner.lookup('service:asset-loader');
+      await assetLoader.loadBundle('ember-blog');
+    }
+
+    const Initializer = importSync(
+      'ember-blog/initializers/ember-blog-initializer',
+    );
+
+    const InstanceInitializer = importSync(
+      'ember-blog/instance-initializers/ember-blog-instance-initializer',
+    );
+
+    let appInit = sinon
+      .stub(Initializer.default, 'initialize')
+      .callsFake(() => {
+        appInitialized = true;
+        assert.notOk(
+          instanceInitialized,
+          'instance initialized has not run yet',
+        );
+      });
 
     let instanceInit = sinon
-      .stub(InstanceInitializer, 'initialize')
+      .stub(InstanceInitializer.default, 'initialize')
       .callsFake(() => {
         instanceInitialized = true;
         assert.ok(appInitialized, 'initializer already ran');
