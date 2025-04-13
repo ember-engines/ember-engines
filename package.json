@@ -38,5 +38,11 @@
   "authors": [
     "Dan Gebhardt",
     "Robert Jackson"
-  ]
+  ],
+  "pnpm": {
+    "patchedDependencies": {
+      "ember-lifeline@7.0.0": "patches/ember-lifeline@7.0.0.patch",
+      "tracked-toolbox@2.0.0": "patches/tracked-toolbox@2.0.0.patch"
+    }
+  }
 }

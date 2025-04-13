@@ -125,8 +125,7 @@
     "lodash": "^4.17.11"
   },
   "peerDependencies": {
-    "ember-engines-router-service": ">=0.5.0",
-    "ember-source": "^3.28 || >= 4.0.0"
+    "ember-engines-router-service": ">=0.5.0"
   },
   "peerDependenciesMeta": {
     "ember-engines-router-service": {
