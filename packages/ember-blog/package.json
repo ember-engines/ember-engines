@@ -9,12 +9,17 @@
   "ember-addon": {
     "engineConfigPath": "ember-config"
   },
-  "dependencies": {
+  "devDependencies": {
     "common-components": "workspace:*",
+    "ember-lifeline": "^7.0.0",
+    "ember-load-initializers": "^2.1.2",
+    "ember-resolver": "^8.1.0",
+    "tracked-toolbox": "^2.0.0"
+  },
+  "dependencies": {
     "ember-auto-import": "^2.7.2",
     "ember-cli-babel": "*",
     "ember-cli-htmlbars": "*",
-    "ember-lifeline": "^7.0.0",
-    "tracked-toolbox": "^2.0.0"
+    "ember-engines": "workspace:*"
   }
 }

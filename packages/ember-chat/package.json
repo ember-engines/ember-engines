@@ -6,9 +6,14 @@
     "ember-addon",
     "ember-engine"
   ],
+  "devDependencies": {
+    "ember-load-initializers": "^2.1.2",
+    "ember-resolver": "^8.1.0"
+  },
   "dependencies": {
     "ember-cli-babel": "*",
     "ember-cli-htmlbars": "*",
-    "common-components": "workspace:*"
+    "common-components": "workspace:*",
+    "ember-engines": "workspace:*"
   }
 }
