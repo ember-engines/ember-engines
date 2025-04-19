@@ -1,0 +1,13 @@
+diff --git a/src/module-resolver.js b/src/module-resolver.js
+index b9a779995bd8a08fa86d47a0ea77c7b394a1a2bd..18291306ead81ba2780b7e6e28cc8fc9bbbddd4b 100644
+--- a/src/module-resolver.js
++++ b/src/module-resolver.js
+@@ -388,6 +388,8 @@ class Resolver {
+                 return this.resolveModifier(rest, engine, request);
+             case 'ambiguous':
+                 return this.resolveHelperOrComponent(rest, engine, request);
++            case 'compat-modules':
++                return request;
+             default:
+                 throw new Error(`bug: unexepected @embroider/virtual specifier: ${request.specifier}`);
+         }
