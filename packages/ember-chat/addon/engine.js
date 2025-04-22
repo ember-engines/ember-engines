@@ -4,10 +4,8 @@ import { macroCondition, importSync, dependencySatisfies } from '@embroider/macr
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
 
-let compatModules = undefined;
-if (macroCondition(dependencySatisfies('@embroider/core', '*'))) {
-  compatModules = importSync('@embroider/virtual/compat-modules');
-}
+import compatModules from '@embroider/virtual/compat-modules';
+
 const { modulePrefix } = config;
 
 class Eng extends Engine {
