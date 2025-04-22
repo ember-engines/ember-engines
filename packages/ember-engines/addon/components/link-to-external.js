@@ -12,7 +12,7 @@ import { getOwner } from '@ember/application';
 import EmberComponent from '@ember/component';
 import { assert, deprecate, runInDebug, warn } from '@ember/debug';
 import { getEngineParent } from '@ember/engine';
-import { inject as injectService } from '@ember/service';
+import { injectService } from '@ember/service';
 import { DEBUG } from '@glimmer/env';
 
 function intern(str) {
