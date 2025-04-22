@@ -1,7 +1,16 @@
 diff --git a/src/module-resolver.js b/src/module-resolver.js
-index b9a779995bd8a08fa86d47a0ea77c7b394a1a2bd..18291306ead81ba2780b7e6e28cc8fc9bbbddd4b 100644
+index b9a779995bd8a08fa86d47a0ea77c7b394a1a2bd..1ca582b1c42963004d2457a2bcbf9f4bcf4b897f 100644
 --- a/src/module-resolver.js
 +++ b/src/module-resolver.js
+@@ -75,7 +75,7 @@ class Resolver {
+         request = this.handleTestSupportStyles(request);
+         request = this.handleEntrypoint(request);
+         request = this.handleRouteEntrypoint(request);
+-        request = this.handleRenaming(request);
++        request = await this.handleRenaming(request);
+         request = this.handleVendor(request);
+         // we expect the specifier to be app relative at this point - must be after handleRenaming
+         request = this.generateFastbootSwitch(request);
 @@ -388,6 +388,8 @@ class Resolver {
                  return this.resolveModifier(rest, engine, request);
              case 'ambiguous':
@@ -11,3 +20,34 @@ index b9a779995bd8a08fa86d47a0ea77c7b394a1a2bd..18291306ead81ba2780b7e6e28cc8fc9
              default:
                  throw new Error(`bug: unexepected @embroider/virtual specifier: ${request.specifier}`);
          }
+@@ -696,7 +698,7 @@ class Resolver {
+         }
+         return request;
+     }
+-    handleRenaming(request) {
++    async handleRenaming(request) {
+         var _a;
+         if (request.resolvedTo) {
+             return request;
+@@ -733,7 +735,7 @@ class Resolver {
+         }
+         if (pkg.name === packageName) {
+             // we found a self-import
+-            if ((_a = pkg.meta) === null || _a === void 0 ? void 0 : _a['auto-upgraded']) {
++            if ((_a = pkg.meta) === null || (_a === void 0 ? void 0 : _a['auto-upgraded'] && !pkg.isEngine())) {
+                 // auto-upgraded packages always get automatically adjusted. They never
+                 // supported fancy package.json exports features so this direct mapping
+                 // to the root is always right.
+@@ -765,6 +767,12 @@ class Resolver {
+                 if (found === null || found === void 0 ? void 0 : found[0]) {
+                     return logTransition(`v2 self-import with package.json exports`, request, request.alias(found === null || found === void 0 ? void 0 : found[0]).rehome((0, path_1.resolve)(pkg.root, 'package.json')));
+                 }
++            } else if (pkg.isEngine()) {
++                let appJSMatch = await this.searchAppTree(request, pkg, request.specifier.replace(packageName, '.'));
++                if (appJSMatch) {
++                    console.log('fallbackResolve: non-relative appJsMatch',request.specifier);
++                    return logTransition('fallbackResolve: non-relative appJsMatch', request, appJSMatch);
++                }
+             }
+         }
+         return request;

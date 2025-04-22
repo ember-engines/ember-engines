@@ -10,7 +10,7 @@ overrides:
 
 patchedDependencies:
   '@embroider/core@4.0.1':
-    hash: 5sv2b27434vqw23rhytzsue764
+    hash: j3pbsgynw2bdtmfx4ew2h2lzkm
     path: patches/@embroider__core@4.0.1.patch
 
 importers:
@@ -476,7 +476,7 @@ importers:
         version: 1.0.0
       '@embroider/core':
         specifier: ^4.0.0-alpha.0
-        version: 4.0.1(patch_hash=5sv2b27434vqw23rhytzsue764)
+        version: 4.0.1(patch_hash=j3pbsgynw2bdtmfx4ew2h2lzkm)
       '@embroider/macros':
         specifier: ^1.17.2
         version: 1.17.2
@@ -2234,7 +2234,7 @@ packages:
       '@babel/preset-env': 7.26.9(@babel/core@7.26.10)
       '@babel/runtime': 7.26.10
       '@babel/traverse': 7.26.10
-      '@embroider/core': 4.0.1(patch_hash=5sv2b27434vqw23rhytzsue764)
+      '@embroider/core': 4.0.1(patch_hash=j3pbsgynw2bdtmfx4ew2h2lzkm)
       '@embroider/macros': 1.17.1
       '@types/babel__code-frame': 7.0.6
       assert-never: 1.4.0
@@ -2285,7 +2285,7 @@ packages:
     engines: {node: 12.* || 14.* || >= 16}
     dev: true
 
-  /@embroider/core@4.0.1(patch_hash=5sv2b27434vqw23rhytzsue764):
+  /@embroider/core@4.0.1(patch_hash=j3pbsgynw2bdtmfx4ew2h2lzkm):
     resolution: {integrity: sha512-Schnn3h8Nvq+iSN+GWETg8kdfr/QkpkKxzN7SuhPxpTkp/Xp2Ezu8OqxvfA6bW8rn2H+/Q9wrVUDAaG8uF7x8A==}
     engines: {node: 12.* || 14.* || >= 16}
     dependencies:
@@ -2382,7 +2382,7 @@ packages:
     dependencies:
       '@ember/test-waiters': 4.1.0
       '@embroider/addon-shim': 1.10.0
-      '@embroider/core': 4.0.1(patch_hash=5sv2b27434vqw23rhytzsue764)
+      '@embroider/core': 4.0.1(patch_hash=j3pbsgynw2bdtmfx4ew2h2lzkm)
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
@@ -2453,7 +2453,7 @@ packages:
       vite: '>= 5.2.0'
     dependencies:
       '@babel/core': 7.26.10
-      '@embroider/core': 4.0.1(patch_hash=5sv2b27434vqw23rhytzsue764)
+      '@embroider/core': 4.0.1(patch_hash=j3pbsgynw2bdtmfx4ew2h2lzkm)
       '@embroider/macros': 1.17.1
       '@embroider/reverse-exports': 0.1.1
       '@rollup/pluginutils': 5.1.4
