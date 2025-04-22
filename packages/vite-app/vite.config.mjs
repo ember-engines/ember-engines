@@ -12,4 +12,12 @@ export default defineConfig({
       extensions,
     }),
   ],
+  // build: {
+  //   target: "ES2022"
+  // },
+  optimizeDeps: {
+    esbuildOptions:{
+      target: 'ES2022'
+    }
+  }
 });

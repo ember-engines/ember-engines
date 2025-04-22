@@ -42,6 +42,18 @@
   "pnpm": {
     "patchedDependencies": {
       "@embroider/core@4.0.1": "patches/@embroider__core@4.0.1.patch"
+    },
+    "overrides": {
+      "@ember/test-helpers": "4.0.5",
+      "ember-source": "6.3.0"
     }
-  }
+  },
+  "peerDependenciesMeta": {
+    "@ember/test-helpers": {
+        "injected": true
+    },
+    "ember-source": {
+        "injected": true
+    }
+}
 }
