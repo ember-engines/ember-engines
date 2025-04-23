@@ -74,6 +74,9 @@ importers:
       ember-engines:
         specifier: workspace:*
         version: link:../ember-engines
+      ember-engines-router-service:
+        specifier: ^0.5.0
+        version: 0.5.1(ember-source@6.3.0)
       ember-lifeline:
         specifier: ^7.0.0
         version: 7.0.0
@@ -597,6 +600,9 @@ importers:
       qunit-dom:
         specifier: ^3.4.0
         version: 3.4.0
+      sinon:
+        specifier: ^17.0.1
+        version: 17.0.2
       stylelint:
         specifier: ^16.16.0
         version: 16.18.0
@@ -2191,7 +2197,7 @@ packages:
       '@simple-dom/interface': 1.4.0
       decorator-transforms: 2.3.0(@babel/core@7.26.10)
       dom-element-descriptors: 0.5.1
-      ember-source: 6.3.0(@glimmer/component@1.1.2)(rsvp@4.8.5)(webpack@5.99.6)
+      ember-source: 6.3.0(@glimmer/component@2.0.0)(rsvp@4.8.5)(webpack@5.99.6)
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -8176,11 +8182,10 @@ packages:
     dependencies:
       '@embroider/addon-shim': 1.10.0
       '@embroider/macros': 1.17.2
-      ember-source: 6.3.0(@glimmer/component@1.1.2)(rsvp@4.8.5)(webpack@5.99.6)
+      ember-source: 6.3.0(@glimmer/component@2.0.0)(rsvp@4.8.5)(webpack@5.99.6)
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
-    dev: true
 
   /ember-eslint-parser@0.5.9(@babel/core@7.26.10)(eslint@9.25.0):
     resolution: {integrity: sha512-IW4/3cEiFp49M2LiKyzi7VcT1egogOe8UxQ9eUKTooenC7Q4qNhzTD6rOZ8j51m8iJC+8hCzjbNCa3K4CN0Hhg==}
