@@ -1,0 +1,21 @@
+{
+  "name": "eager-blog-vite",
+  "version": "0.9.0",
+  "private": true,
+  "keywords": [
+    "ember-addon",
+    "ember-engine"
+  ],
+  "ember-addon": {
+    "engineConfigPath": "ember-config"
+  },
+  "dependencies": {
+    "@embroider/macros": "^1.17.2",
+    "ember-cli-babel": "*",
+    "ember-auto-import": "^2.10.0",
+    "ember-cli-htmlbars": "*",
+    "ember-engines": "workspace:*",
+    "ember-load-initializers": "^3.0.1",
+    "ember-resolver": "^13.1.0"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "ember-chat-vite",
+  "version": "0.9.0",
+  "private": true,
+  "keywords": [
+    "ember-addon",
+    "ember-engine"
+  ],
+  "dependencies": {
+    "@embroider/macros": "^1.17.2",
+    "common-components": "workspace:*",
+    "ember-auto-import": "^2.10.0",
+    "ember-cli-babel": "*",
+    "ember-cli-htmlbars": "*",
+    "ember-engines": "workspace:*",
+    "ember-load-initializers": "^3.0.1",
+    "ember-resolver": "^13.1.0"
+  }
+}
