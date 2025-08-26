@@ -10,7 +10,7 @@ overrides:
 
 patchedDependencies:
   '@embroider/core@4.1.3':
-    hash: daeczcbrppucvc3q7ktqhmx6xm
+    hash: ou65e3um4eozot634pism3nkaa
     path: patches/@embroider__core@4.1.3.patch
 
 importers:
@@ -566,7 +566,7 @@ importers:
         version: 1.0.0
       '@embroider/core':
         specifier: ^4.1.3
-        version: 4.1.3(patch_hash=daeczcbrppucvc3q7ktqhmx6xm)
+        version: 4.1.3(patch_hash=ou65e3um4eozot634pism3nkaa)
       '@embroider/macros':
         specifier: ^1.18.1
         version: 1.18.1
@@ -4362,7 +4362,7 @@ packages:
       '@babel/preset-env': 7.28.3(@babel/core@7.26.10)
       '@babel/runtime': 7.26.10
       '@babel/traverse': 7.28.3
-      '@embroider/core': 4.1.3(patch_hash=daeczcbrppucvc3q7ktqhmx6xm)
+      '@embroider/core': 4.1.3(patch_hash=ou65e3um4eozot634pism3nkaa)
       '@embroider/macros': 1.18.1
       '@types/babel__code-frame': 7.0.6
       assert-never: 1.4.0
@@ -4413,7 +4413,7 @@ packages:
     engines: {node: 12.* || 14.* || >= 16}
     dev: true
 
-  /@embroider/core@4.1.3(patch_hash=daeczcbrppucvc3q7ktqhmx6xm):
+  /@embroider/core@4.1.3(patch_hash=ou65e3um4eozot634pism3nkaa):
     resolution: {integrity: sha512-8gdwI71EUOg6CzbUFI/Q6VOWBqyo5Qv1kDz/0Nj9C7JOjgfLYc7NCZwZNKG93yc0qwUGEBxf4TJ3WZDnJD/4Sw==}
     engines: {node: 12.* || 14.* || >= 16}
     dependencies:
@@ -4526,7 +4526,7 @@ packages:
     dependencies:
       '@ember/test-waiters': 4.1.1
       '@embroider/addon-shim': 1.10.0
-      '@embroider/core': 4.1.3(patch_hash=daeczcbrppucvc3q7ktqhmx6xm)
+      '@embroider/core': 4.1.3(patch_hash=ou65e3um4eozot634pism3nkaa)
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
@@ -4597,7 +4597,7 @@ packages:
       vite: '>= 5.2.0'
     dependencies:
       '@babel/core': 7.26.10
-      '@embroider/core': 4.1.3(patch_hash=daeczcbrppucvc3q7ktqhmx6xm)
+      '@embroider/core': 4.1.3(patch_hash=ou65e3um4eozot634pism3nkaa)
       '@embroider/macros': 1.18.1
       '@embroider/reverse-exports': 0.1.2
       '@rollup/pluginutils': 5.2.0

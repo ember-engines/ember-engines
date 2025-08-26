@@ -1,16 +1,7 @@
 diff --git a/dist/src/module-resolver.js b/dist/src/module-resolver.js
-index b9a779995bd8a08fa86d47a0ea77c7b394a1a2bd..bf86437432ab0a6692050b0872e2add87760853e 100644
+index b9a779995bd8a08fa86d47a0ea77c7b394a1a2bd..4cff2dcedb5d184c353bdc1c3fd9eede5ea3288a 100644
 --- a/dist/src/module-resolver.js
 +++ b/dist/src/module-resolver.js
-@@ -75,7 +75,7 @@ class Resolver {
-         request = this.handleTestSupportStyles(request);
-         request = this.handleEntrypoint(request);
-         request = this.handleRouteEntrypoint(request);
--        request = this.handleRenaming(request);
-+        request = await this.handleRenaming(request);
-         request = this.handleVendor(request);
-         // we expect the specifier to be app relative at this point - must be after handleRenaming
-         request = this.generateFastbootSwitch(request);
 @@ -388,6 +388,8 @@ class Resolver {
                  return this.resolveModifier(rest, engine, request);
              case 'ambiguous':
@@ -20,15 +11,6 @@ index b9a779995bd8a08fa86d47a0ea77c7b394a1a2bd..bf86437432ab0a6692050b0872e2add8
              default:
                  throw new Error(`bug: unexepected @embroider/virtual specifier: ${request.specifier}`);
          }
-@@ -696,7 +698,7 @@ class Resolver {
-         }
-         return request;
-     }
--    handleRenaming(request) {
-+    async handleRenaming(request) {
-         var _a;
-         if (request.resolvedTo) {
-             return request;
 @@ -733,7 +735,7 @@ class Resolver {
          }
          if (pkg.name === packageName) {
@@ -38,20 +20,61 @@ index b9a779995bd8a08fa86d47a0ea77c7b394a1a2bd..bf86437432ab0a6692050b0872e2add8
                  // auto-upgraded packages always get automatically adjusted. They never
                  // supported fancy package.json exports features so this direct mapping
                  // to the root is always right.
-@@ -766,6 +768,13 @@ class Resolver {
-                     return logTransition(`v2 self-import with package.json exports`, request, request.alias(found === null || found === void 0 ? void 0 : found[0]).rehome((0, path_1.resolve)(pkg.root, 'package.json')));
+@@ -745,6 +747,15 @@ class Resolver {
+                     // auto-upgraded addons get special support for self-resolving here.
+                     return logTransition(`v1 addon self-import`, request, request.rehome(addonConfig.canResolveFromFile));
                  }
-             }
-+            else if (pkg.isEngine()) {
-+                let appJSMatch = await this.searchAppTree(request, pkg, // this is safe because pkg.isEngine() is true in this case
-+                request.specifier.replace(packageName, '.'));
-+                if (appJSMatch) {
-+                    return logTransition('fallbackResolve: non-relative appJsMatch', request, appJSMatch);
++                else if (owningEngine.root === pkg.root) {
++                    for (let engineConfig of this.options.engines) {
++                        for (let activeAddon of engineConfig.activeAddons) {
++                            if (activeAddon.root === pkg.root) {
++                                return logTransition(`v1 engine self-import`, request, request.rehome(activeAddon.canResolveFromFile));
++                            }
++                        }
++                    }
 +                }
-+            }
+                 else {
+                     // auto-upgraded apps will necessarily have packageJSON.exports
+                     // because we insert them, so for that support we can fall through to
+@@ -901,10 +912,8 @@ class Resolver {
+             // here.
+             return request;
          }
-         return request;
++        request = this.restoreRehomedRequest(request);
+         let pkg = this.packageCache.ownerOfFile(request.fromFile);
+-        if (pkg) {
+-            ({ pkg, request } = this.restoreRehomedRequest(pkg, request));
+-        }
+         if (!(pkg === null || pkg === void 0 ? void 0 : pkg.isV2Ember())) {
+             // this request is coming from a file that appears to be owned by no ember
+             // package. We offer one fallback behavior for such files. They're allowed
+@@ -956,21 +965,16 @@ class Resolver {
+         // non-resolvable, which will presumably cause a static build error in stage3.
+         return logTransition('fallbackResolve final exit', request);
      }
+-    restoreRehomedRequest(pkg, request) {
++    restoreRehomedRequest(request) {
+         var _a;
+         // meta.originalFromFile gets set when we want to try to rehome a request
+         // but then come back to the original location here in the fallback when the
+         // rehomed request fails
+-        let movedPkg = this.packageCache.maybeMoved(pkg);
+-        if (movedPkg !== pkg) {
+-            let originalFromFile = (_a = request.meta) === null || _a === void 0 ? void 0 : _a.originalFromFile;
+-            if (typeof originalFromFile !== 'string') {
+-                throw new Error(`bug: embroider resolver's meta is not propagating`);
+-            }
+-            request = request.rehome(originalFromFile);
+-            pkg = movedPkg;
++        let originalFromFile = (_a = request.meta) === null || _a === void 0 ? void 0 : _a.originalFromFile;
++        if (typeof originalFromFile === 'string') {
++            return request.rehome(originalFromFile);
+         }
+-        return { pkg, request };
++        return request;
+     }
+     async relativeFallbackResolve(pkg, request) {
+         let withinEngine = this.engineConfig(pkg.name);
 diff --git a/dist/src/virtual-entrypoint.js b/dist/src/virtual-entrypoint.js
 index c8938afcf95f3dab69b7677270502b5f3d69d9dd..f2587595224fc0f50db4dd002fd4c44a9a765bee 100644
 --- a/dist/src/virtual-entrypoint.js
