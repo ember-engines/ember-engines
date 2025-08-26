@@ -1,16 +1,14 @@
 import Engine from 'ember-engines/engine';
 import Resolver from 'ember-resolver';
-import { macroCondition, importSync, dependencySatisfies } from '@embroider/macros';
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
 
-import compatModules from '@embroider/virtual/compat-modules';
 
 const { modulePrefix } = config;
 
 class Eng extends Engine {
   modulePrefix = config.modulePrefix;
-  Resolver = Resolver.withModules(compatModules);
+  Resolver = Resolver;
   init() {
     super.init(...arguments);
     this.dependencies = {
@@ -19,6 +17,6 @@ class Eng extends Engine {
   }
 }
 
-loadInitializers(Eng, modulePrefix, compatModules);
+loadInitializers(Eng, modulePrefix);
 
 export default Eng;
