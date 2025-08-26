@@ -41,19 +41,19 @@
   ],
   "pnpm": {
     "patchedDependencies": {
-      "@embroider/core@4.0.1": "patches/@embroider__core@4.0.1.patch"
+      "@embroider/core@4.1.3": "patches/@embroider__core@4.1.3.patch"
     },
     "overrides": {
       "@ember/test-helpers": "4.0.5",
-      "ember-source": "6.3.0"
+      "ember-source": "6.6.0"
     }
   },
   "peerDependenciesMeta": {
     "@ember/test-helpers": {
-        "injected": true
+      "injected": true
     },
     "ember-source": {
-        "injected": true
+      "injected": true
     }
-}
+  }
 }

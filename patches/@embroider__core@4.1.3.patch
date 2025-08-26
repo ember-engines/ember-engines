@@ -1,0 +1,178 @@
+diff --git a/dist/src/module-resolver.js b/dist/src/module-resolver.js
+index b9a779995bd8a08fa86d47a0ea77c7b394a1a2bd..bf86437432ab0a6692050b0872e2add87760853e 100644
+--- a/dist/src/module-resolver.js
++++ b/dist/src/module-resolver.js
+@@ -75,7 +75,7 @@ class Resolver {
+         request = this.handleTestSupportStyles(request);
+         request = this.handleEntrypoint(request);
+         request = this.handleRouteEntrypoint(request);
+-        request = this.handleRenaming(request);
++        request = await this.handleRenaming(request);
+         request = this.handleVendor(request);
+         // we expect the specifier to be app relative at this point - must be after handleRenaming
+         request = this.generateFastbootSwitch(request);
+@@ -388,6 +388,8 @@ class Resolver {
+                 return this.resolveModifier(rest, engine, request);
+             case 'ambiguous':
+                 return this.resolveHelperOrComponent(rest, engine, request);
++            case 'compat-modules':
++                return request;
+             default:
+                 throw new Error(`bug: unexepected @embroider/virtual specifier: ${request.specifier}`);
+         }
+@@ -696,7 +698,7 @@ class Resolver {
+         }
+         return request;
+     }
+-    handleRenaming(request) {
++    async handleRenaming(request) {
+         var _a;
+         if (request.resolvedTo) {
+             return request;
+@@ -733,7 +735,7 @@ class Resolver {
+         }
+         if (pkg.name === packageName) {
+             // we found a self-import
+-            if ((_a = pkg.meta) === null || _a === void 0 ? void 0 : _a['auto-upgraded']) {
++            if (((_a = pkg.meta) === null || _a === void 0 ? void 0 : _a['auto-upgraded']) && !pkg.isEngine()) {
+                 // auto-upgraded packages always get automatically adjusted. They never
+                 // supported fancy package.json exports features so this direct mapping
+                 // to the root is always right.
+@@ -766,6 +768,13 @@ class Resolver {
+                     return logTransition(`v2 self-import with package.json exports`, request, request.alias(found === null || found === void 0 ? void 0 : found[0]).rehome((0, path_1.resolve)(pkg.root, 'package.json')));
+                 }
+             }
++            else if (pkg.isEngine()) {
++                let appJSMatch = await this.searchAppTree(request, pkg, // this is safe because pkg.isEngine() is true in this case
++                request.specifier.replace(packageName, '.'));
++                if (appJSMatch) {
++                    return logTransition('fallbackResolve: non-relative appJsMatch', request, appJSMatch);
++                }
++            }
+         }
+         return request;
+     }
+diff --git a/dist/src/virtual-entrypoint.js b/dist/src/virtual-entrypoint.js
+index c8938afcf95f3dab69b7677270502b5f3d69d9dd..f2587595224fc0f50db4dd002fd4c44a9a765bee 100644
+--- a/dist/src/virtual-entrypoint.js
++++ b/dist/src/virtual-entrypoint.js
+@@ -25,13 +25,13 @@ function staticAppPathsPattern(staticAppPaths) {
+ function renderEntrypoint(resolver, { fromDir }) {
+     var _a;
+     const owner = resolver.packageCache.ownerOfFile(fromDir);
+-    let eagerModules = [];
+     if (!owner) {
+         throw new Error('Owner expected'); // ToDo: Really bad error, update message
+     }
+     let engine = resolver.owningEngine(owner);
+     let isApp = (owner === null || owner === void 0 ? void 0 : owner.root) === resolver.options.engines[0].root;
+     let hasFastboot = Boolean(resolver.options.engines[0].activeAddons.find(a => a.name === 'ember-cli-fastboot'));
++    let defineModulesFrom = ['./-embroider-implicit-modules.js'];
+     let appFiles = new app_files_1.AppFiles({
+         package: owner,
+         addons: new Map(engine.activeAddons.map(addon => [
+@@ -62,23 +62,6 @@ function renderEntrypoint(resolver, { fromDir }) {
+             path: '@embroider/virtual/vendor.css',
+         });
+     }
+-    let lazyEngines = [];
+-    if (isApp) {
+-        // deliberately ignoring the app (which is the first entry in the engines array)
+-        let [, ...childEngines] = resolver.options.engines;
+-        for (let childEngine of childEngines) {
+-            let target = `@embroider/virtual/compat-modules/${childEngine.packageName}`;
+-            if (childEngine.isLazy) {
+-                lazyEngines.push({
+-                    names: [childEngine.packageName],
+-                    path: target,
+-                });
+-            }
+-            else {
+-                eagerModules.push(target);
+-            }
+-        }
+-    }
+     let lazyRoutes = [];
+     for (let [routeName, routeFiles] of appFiles.routeFiles.children) {
+         splitRoute(routeName, routeFiles, resolver.options.splitAtRoutes, (_, filename) => {
+@@ -93,15 +76,33 @@ function renderEntrypoint(resolver, { fromDir }) {
+     let [fastboot, nonFastboot] = (0, lodash_1.partition)(excludeDotFiles((0, lodash_1.flatten)(requiredAppFiles)), file => appFiles.isFastbootOnly.get(file));
+     let amdModules = nonFastboot.map(file => importPaths(resolver, appFiles, file));
+     let fastbootOnlyAmdModules = fastboot.map(file => importPaths(resolver, appFiles, file));
++    let lazyEngines = [];
++    if (isApp) {
++        // deliberately ignoring the app (which is the first entry in the engines array)
++        let [, ...childEngines] = resolver.options.engines;
++        for (let childEngine of childEngines) {
++            if (childEngine.isLazy) {
++                lazyEngines.push({
++                    names: [childEngine.packageName],
++                    path: `${childEngine.packageName}/engine`,
++                });
++            }
++            else {
++                amdModules.push({
++                    buildtime: `${childEngine.packageName}/engine`,
++                    runtime: `${childEngine.packageName}/engine`,
++                });
++            }
++        }
++    }
+     let params = {
+         amdModules,
+         fastbootOnlyAmdModules,
+         lazyRoutes,
+         lazyEngines,
+-        eagerModules,
+         styles,
+         // this is a backward-compatibility feature: addons can force inclusion of modules.
+-        defineModulesFrom: './-embroider-implicit-modules.js',
++        defineModulesFrom,
+     };
+     return {
+         src: entryTemplate(params),
+@@ -119,12 +120,8 @@ import { macroCondition, getGlobalConfig } from '@embroider/macros';
+   }
+ {{/if}}
+ 
+-{{#if defineModulesFrom ~}}
+-  import implicitModules from "{{js-string-escape defineModulesFrom}}";
+-{{/if}}
+-
+-{{#each eagerModules as |eagerModule| ~}}
+-  import "{{js-string-escape eagerModule}}";
++{{#each defineModulesFrom as |module index| ~}}
++  import defineModule{{index}} from "{{js-string-escape module}}";
+ {{/each}}
+ 
+ {{#each amdModules as |amdModule index| ~}}
+@@ -169,7 +166,8 @@ window._embroiderEngineBundles_ = [
+   {
+     names: {{json-stringify engine.names}},
+     load: function() {
+-      return import("{{js-string-escape engine.path}}");
++      debugger;
++      return import("{{js-string-escape engine.path}}").then(m=> ({ default: { "{{engine.path}}": m.default } }));
+     }
+   },
+   {{/each}}
+@@ -178,7 +176,9 @@ window._embroiderEngineBundles_ = [
+ 
+ export default Object.assign(
+   {},
+-  implicitModules,
++  {{#each defineModulesFrom as |module index| ~}}
++  defineModule{{index}},
++  {{/each}}
+   {
+     {{#each amdModules as |amdModule index| ~}}
+       "{{js-string-escape amdModule.runtime}}": amdModule{{index}},
+@@ -262,7 +262,7 @@ function shouldSplitRoute(routeName, splitAtRoutes) {
+ }
+ function getAppFiles(appRoot) {
+     const files = (0, walk_sync_1.default)(appRoot, {
+-        ignore: ['_babel_filter_.js', 'app.js', 'assets', 'testem.js', 'node_modules'],
++        ignore: ['_babel_filter_.js', 'app.js', 'engine.js', 'assets', 'testem.js', 'node_modules'],
+     });
+     return new Set(files);
+ }
