@@ -72,7 +72,6 @@ module('Acceptance | routable engine demo', function (hooks) {
     assert
       .dom('p.language')
       .hasText('English', 'query param value is passed through correctly - 3');
-
     await click('.routable-post-blog-home-link');
     assert.strictEqual(
       currentURL(),
@@ -235,9 +234,9 @@ module('Acceptance | routable engine demo', function (hooks) {
   });
 
   test('link-to current-when attribute prepends engine mount point', async function (assert) {
-    await visit('/routable-engine-demo/eager-blog/post/1');
+    await visit('/routable-engine-demo/eager-blog-vite/post/1');
 
-    assert.strictEqual(currentURL(), '/routable-engine-demo/eager-blog/post/1');
+    assert.strictEqual(currentURL(), '/routable-engine-demo/eager-blog-vite/post/1');
     assert.dom('a.current-when-test-link').hasClass('active');
   });
 
@@ -282,7 +281,7 @@ module('Acceptance | routable engine demo', function (hooks) {
   });
 
   test('transitionToExternal transitions to the parent application from within an engine and returns a thenable Transition object', async function (assert) {
-    await visit('/routable-engine-demo/ember-blog/post/1');
+    await visit('/routable-engine-demo/ember-blog-vite/post/1');
     await click('.routable-post-transition-to-home-button');
 
     assert.strictEqual(currentURL(), '/');
@@ -297,7 +296,7 @@ module('Acceptance | routable engine demo', function (hooks) {
   });
 
   test("transitionToExternalRoute transitions to the parent application from within an engine's controller and returns a thenable Transition object", async function (assert) {
-    await visit('/routable-engine-demo/ember-blog/post/1');
+    await visit('/routable-engine-demo/ember-blog-vite/post/1');
     await click('.routable-post-transition-to-route-home-button');
 
     assert.strictEqual(currentURL(), '/');
@@ -312,7 +311,7 @@ module('Acceptance | routable engine demo', function (hooks) {
   });
 
   test('replaceWithExternal transitions to the parent application from within an engine and returns a thenable Transition object', async function (assert) {
-    await visit('/routable-engine-demo/ember-blog/post/1');
+    await visit('/routable-engine-demo/ember-blog-vite/post/1');
     await click('.routable-post-replace-with-home-button');
 
     assert.strictEqual(currentURL(), '/');
@@ -369,7 +368,7 @@ module('Acceptance | routable engine demo', function (hooks) {
     }
 
     const Initializer = importSync(
-      'ember-blog/initializers/ember-blog-initializer',
+      'ember-blog-vite/initializers/ember-blog-initializer',
     );
 
     let stub = sinon.stub(Initializer.default, 'initialize');
@@ -386,7 +385,7 @@ module('Acceptance | routable engine demo', function (hooks) {
     }
 
     const InstanceInitializer = importSync(
-      'ember-blog/instance-initializers/ember-blog-instance-initializer',
+      'ember-blog-vite/instance-initializers/ember-blog-instance-initializer',
     );
 
     let stub = sinon.stub(InstanceInitializer.default, 'initialize');
@@ -408,11 +407,11 @@ module('Acceptance | routable engine demo', function (hooks) {
     }
 
     const Initializer = importSync(
-      'ember-blog/initializers/ember-blog-initializer',
+      'ember-blog-vite/initializers/ember-blog-initializer',
     );
 
     const InstanceInitializer = importSync(
-      'ember-blog/instance-initializers/ember-blog-instance-initializer',
+      'ember-blog-vite/instance-initializers/ember-blog-instance-initializer',
     );
 
     let appInit = sinon
