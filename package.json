@@ -40,9 +40,6 @@
     "Robert Jackson"
   ],
   "pnpm": {
-    "patchedDependencies": {
-      "@embroider/core@4.1.3": "patches/@embroider__core@4.1.3.patch"
-    },
     "overrides": {
       "@ember/test-helpers": "4.0.5",
       "ember-source": "6.6.0"
