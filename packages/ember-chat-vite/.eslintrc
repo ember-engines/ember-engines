@@ -1,9 +1,0 @@
-{
-  "parserOptions": {
-    "sourceType": "script"
-  },
-  "env": {
-    "node": true,
-    "browser": false,
-  },
-}
