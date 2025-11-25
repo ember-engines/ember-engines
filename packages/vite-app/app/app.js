@@ -9,7 +9,7 @@ export default class App extends Application {
   podModulePrefix = config.podModulePrefix;
   Resolver = Resolver.withModules(compatModules);
   engines = {
-    'ember-blog-vite': {
+    'ember-blog': {
       dependencies: {
         services: [{ 'data-store': 'store' }],
         externalRoutes: {
@@ -17,7 +17,7 @@ export default class App extends Application {
         },
       },
     },
-    'ember-chat-vite': {
+    'ember-chat': {
       dependencies: {
         services: ['store'],
       },

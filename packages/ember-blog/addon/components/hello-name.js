@@ -1,19 +1,11 @@
 import Component from '@glimmer/component';
-import { runTask } from 'ember-lifeline';
-import { localCopy } from 'tracked-toolbox';
-
+import { tracked } from '@glimmer/tracking';
 export default class HelloName extends Component {
-  @localCopy('args.name') name;
+  @tracked name;
 
-  constructor() {
-    super(...arguments);
-
-    runTask(
-      this,
-      () => {
-        this.name = 'Jerry';
-      },
-      50
-    );
+  updateName = () => {
+    queueMicrotask(() => {
+      this.name = 'Jerry';
+    });
   }
 }

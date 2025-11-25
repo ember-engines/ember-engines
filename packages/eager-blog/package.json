@@ -10,9 +10,9 @@
     "engineConfigPath": "ember-config"
   },
   "dependencies": {
-    "@embroider/macros": "^1.17.2",
+    "@embroider/macros": "^1.19.4",
+    "ember-auto-import": "^2.11.2",
     "ember-cli-babel": "*",
-    "ember-auto-import": "^2.10.0",
     "ember-cli-htmlbars": "*",
     "ember-engines": "workspace:*",
     "ember-load-initializers": "^3.0.1",

@@ -16,8 +16,9 @@ export default defineConfig({
   //   target: "ES2022"
   // },
   optimizeDeps: {
-    esbuildOptions:{
+    esbuildOptions: {
       target: 'ES2022'
-    }
+    },
+    exclude: ['ember-chat', 'ember-blog', 'eager-blog']
   }
 });

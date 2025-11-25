@@ -377,6 +377,7 @@ module('Acceptance | routable engine demo', function (hooks) {
     await visit('/routable-engine-demo/blog/new');
 
     assert.ok(stub.calledOnce, 'Initializer ran once');
+    stub.restore();
   });
 
   test('instance initializers run within engine', async function (assert) {
@@ -394,6 +395,7 @@ module('Acceptance | routable engine demo', function (hooks) {
     await visit('/routable-engine-demo/blog/new');
 
     assert.ok(stub.calledOnce, 'Instance initializer ran once');
+    stub.restore();
   });
 
   test('instance-initializers run after initializers', async function (assert) {

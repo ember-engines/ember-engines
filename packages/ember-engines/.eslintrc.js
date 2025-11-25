@@ -8,9 +8,7 @@ module.exports = {
     sourceType: 'module',
     requireConfigFile: false,
     babelOptions: {
-      plugins: [
-        ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
-      ],
+      plugins: [[require.resolve('decorator-transforms'), { runEarly: true }]],
     },
   },
   plugins: ['ember'],
@@ -44,6 +42,17 @@ module.exports = {
       ],
       parserOptions: {
         sourceType: 'script',
+      },
+      env: {
+        browser: false,
+        node: true,
+      },
+      extends: ['plugin:n/recommended'],
+    },
+    {
+      files: ['./lib/babel-plugin-strip-compat-modules.js'],
+      parserOptions: {
+        sourceType: 'module',
       },
       env: {
         browser: false,
