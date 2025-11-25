@@ -39,16 +39,7 @@
     "Dan Gebhardt",
     "Robert Jackson"
   ],
-  "pnpm": {
-    "overrides": {
-      "@ember/test-helpers": "4.0.5",
-      "ember-source": "6.6.0"
-    }
-  },
   "peerDependenciesMeta": {
-    "@ember/test-helpers": {
-      "injected": true
-    },
     "ember-source": {
       "injected": true
     }
