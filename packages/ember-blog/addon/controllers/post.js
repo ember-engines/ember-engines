@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
-import { service } from '@ember/service';
+import * as emberService from '@ember/service';
+const service = emberService.service ?? emberService.inject;
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 

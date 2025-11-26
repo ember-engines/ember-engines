@@ -1,4 +1,6 @@
-import Service, { service } from '@ember/service';
+import Service from '@ember/service';
+import * as emberService from '@ember/service';
+const service = emberService.service ?? emberService.inject;
 
 export default class ExampleService extends Service {
   @service dataStore;
