@@ -1,0 +1,15 @@
+diff --git a/src/babel/app-ember-satisfies.js b/src/babel/app-ember-satisfies.js
+index 6d8026fdc244f4890daf61f48c53789ae3fcf453..3bae103feb3224007bcf3ef60c88e1f8e7f11973 100644
+--- a/src/babel/app-ember-satisfies.js
++++ b/src/babel/app-ember-satisfies.js
+@@ -19,6 +19,10 @@ const CACHE = new Map();
+  */
+ function getAppEmberVersion(state) {
+     let appRoot = state.packageCache.appRoot;
++    const DUMMY_APP_PATH = '/tests/dummy';
++    if (appRoot.endsWith(DUMMY_APP_PATH)) {
++        appRoot = appRoot.slice(0, -DUMMY_APP_PATH.length);
++    }
+     if (CACHE.has(appRoot)) {
+         return CACHE.get(appRoot);
+     }

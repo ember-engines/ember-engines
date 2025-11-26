@@ -13,6 +13,9 @@ module.exports = async function () {
         npm: {
           devDependencies: {
             'ember-source': '~3.28.0',
+            'ember-qunit': '^5.1.5',
+            '@ember/test-helpers': '^2.9.4',
+            '@ember/test-waiters': '^3.0.0',
           },
         },
       },
@@ -45,11 +48,10 @@ module.exports = async function () {
         npm: {
           devDependencies: {
             'ember-source': '~5.4.0',
-            '@ember/string': '*',
             'ember-engines-router-service': '*',
             'ember-resolver': '^11.0.1',
             'ember-export-application-global': null,
-            'ember-cli-app-version': '^5.0.0',
+            'ember-cli-app-version': '^7.0.0',
           },
         },
       },
@@ -62,7 +64,6 @@ module.exports = async function () {
             'ember-engines-router-service': '*',
             'ember-resolver': '^11.0.1',
             'ember-export-application-global': null,
-            'ember-cli-app-version': '^5.0.0',
           },
         },
       },
@@ -71,11 +72,8 @@ module.exports = async function () {
         npm: {
           devDependencies: {
             'ember-source': await getChannelURL('release'),
-            '@ember/string': '*',
             'ember-engines-router-service': '*',
-            'ember-resolver': '^11.0.1',
             'ember-export-application-global': null,
-            'ember-cli-app-version': '^5.0.0',
           },
         },
       },
@@ -84,11 +82,8 @@ module.exports = async function () {
         npm: {
           devDependencies: {
             'ember-source': await getChannelURL('beta'),
-            '@ember/string': '*',
             'ember-engines-router-service': '*',
-            'ember-resolver': '^11.0.1',
             'ember-export-application-global': null,
-            'ember-cli-app-version': '^5.0.0',
           },
         },
       },
@@ -97,19 +92,11 @@ module.exports = async function () {
         npm: {
           devDependencies: {
             'ember-source': await getChannelURL('canary'),
-            '@ember/string': '*',
             'ember-engines-router-service': '*',
-            'ember-resolver': '^11.0.1',
             'ember-export-application-global': null,
-            'ember-cli-app-version': '^5.0.0',
           },
         },
       },
-      embroiderSafe({
-        env: {
-          ENGINESTESTFILTER: '/^(?!(.*@classiconly))/',
-        },
-      }),
       embroiderOptimized({
         env: {
           ENGINESTESTFILTER: '/^(?!(.*@classiconly))/',
