@@ -17,6 +17,7 @@ if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
 import * as QUnit from 'qunit';
 import { setup } from 'qunit-dom';
 import { start } from 'ember-qunit';
+import { loadTests } from 'ember-qunit/test-loader';
 import setupSinon from 'ember-sinon-qunit';
 import config from 'dummy/config/environment';
 
@@ -27,14 +28,17 @@ import { registerDeprecationHandler } from '@ember/debug';
 setApplication(Application.create(config.APP));
 setup(QUnit.assert);
 setupSinon();
-
 if (macroCondition(!dependencySatisfies('@embroider/core', '*'))) {
-  preloadAssets(manifest).then(start); // This ensures all engine resources are loaded before the tests
+  preloadAssets(manifest).then(function () {
+    loadTests();
+    start({ loadTests: false });
+  }); // This ensures all engine resources are loaded before the tests
 } else {
   // for embroider build assets get loaded on demand
   // which is actually what the user would have to go through
   // making it a more realisting test
-  start();
+  loadTests();
+  start({ loadTests: false });
 }
 
 let deprecations;
