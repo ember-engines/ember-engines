@@ -1,5 +1,5 @@
 diff --git a/src/babel/app-ember-satisfies.js b/src/babel/app-ember-satisfies.js
-index 6d8026fdc244f4890daf61f48c53789ae3fcf453..3bae103feb3224007bcf3ef60c88e1f8e7f11973 100644
+index 6d8026fdc244f4890daf61f48c53789ae3fcf453..3cd13fd65a3910555a423683ff22861d4507219d 100644
 --- a/src/babel/app-ember-satisfies.js
 +++ b/src/babel/app-ember-satisfies.js
 @@ -19,6 +19,10 @@ const CACHE = new Map();
@@ -13,3 +13,12 @@ index 6d8026fdc244f4890daf61f48c53789ae3fcf453..3bae103feb3224007bcf3ef60c88e1f8
      if (CACHE.has(appRoot)) {
          return CACHE.get(appRoot);
      }
+@@ -48,7 +52,7 @@ function getAppEmberVersion(state) {
+     }
+     const appURL = (0, url_1.pathToFileURL)(appRoot);
+     const require = (0, module_1.createRequire)(appURL);
+-    const emberSourceEntry = require.resolve(packageName, {
++    const emberSourceEntry = require.resolve(packageName + '/pacakge.json', {
+         paths: [appRoot],
+     });
+     const emberSourceManifestPath = find_up_1.default.sync('package.json', { cwd: (0, path_1.dirname)(emberSourceEntry) });
