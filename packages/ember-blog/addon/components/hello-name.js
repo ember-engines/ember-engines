@@ -1,9 +1,10 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 export default class HelloName extends Component {
-  @tracked name;
+  @tracked name = this.args.name;
 
-  updateName = () => {
+  constructor() {
+    super(...arguments);
     queueMicrotask(() => {
       this.name = 'Jerry';
     });
