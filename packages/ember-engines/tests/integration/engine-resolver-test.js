@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
+import engineResolverFor from 'ember-engines/test-support/engine-resolver-for';
 import { setupEngine } from 'ember-engines/test-support';
 
 module(
@@ -10,16 +11,13 @@ module(
     setupRenderingTest(hooks);
     setupEngine(hooks, 'ember-blog');
 
-    test('@classiconly component renders properly after lookup with engine-resolver-for', async function (assert) {
+    test('component renders properly after lookup with engine-resolver-for', async function (assert) {
       await render(hbs`<HelloName></HelloName>`, { owner: this.engine });
 
       assert.dom().containsText('Hello, Jerry!');
     });
 
-    test('@classiconly it deprecates support for `engineResolveFor()`', async function (assert) {
-      const engineResolverFor = (
-        await import('ember-engines/test-support/engine-resolver-for')
-      ).default;
+    test('it deprecates support for `engineResolveFor()`', async function (assert) {
       setupRenderingTest(hooks, { resolver: engineResolverFor('eager-blog') });
 
       assert.deprecationsInclude(
