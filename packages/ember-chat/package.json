@@ -7,7 +7,7 @@
     "ember-engine"
   ],
   "dependencies": {
-    "@embroider/macros": "^1.19.4",
+    "@embroider/macros": "^1.19.6",
     "common-components": "workspace:*",
     "ember-auto-import": "^2.11.2",
     "ember-cli-babel": "*",
