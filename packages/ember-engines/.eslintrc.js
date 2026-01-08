@@ -50,17 +50,6 @@ module.exports = {
       extends: ['plugin:n/recommended'],
     },
     {
-      files: ['./lib/babel-plugin-strip-compat-modules.js'],
-      parserOptions: {
-        sourceType: 'module',
-      },
-      env: {
-        browser: false,
-        node: true,
-      },
-      extends: ['plugin:n/recommended'],
-    },
-    {
       // test files
       files: ['tests/**/*-test.{js,ts}'],
       extends: ['plugin:qunit/recommended'],
