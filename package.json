@@ -39,11 +39,6 @@
     "Dan Gebhardt",
     "Robert Jackson"
   ],
-  "pnpm": {
-    "overrides": {
-      "@embroider/macros": "^1.19.6"
-    }
-  },
   "peerDependenciesMeta": {
     "ember-source": {
       "injected": true
