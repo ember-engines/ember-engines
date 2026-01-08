@@ -41,7 +41,7 @@
   ],
   "pnpm": {
     "overrides": {
-      "@embroider/macros": "^1.19.4"
+      "@embroider/macros": "^1.19.6"
     }
   },
   "peerDependenciesMeta": {
