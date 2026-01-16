@@ -14,11 +14,6 @@ The only public package is [ember-engines](./packages/ember-engines/). Other
 packages are private to this repo and are used to support testing
 `ember-engines`.
 
-## Documentation
-
-Check the full documentation in the [Ember Engines
-Guides](http://ember-engines.com/).
-
 ## Support
 
 Having trouble? **Join #ember-engines** on the [Ember Community Discord
