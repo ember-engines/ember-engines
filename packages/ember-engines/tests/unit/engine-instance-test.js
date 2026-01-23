@@ -1,5 +1,4 @@
 import Application from '@ember/application';
-import { run } from '@ember/runloop';
 import EnginesInitializer from '../../initializers/engines';
 import Engine from 'ember-engines/engine';
 import { module, test } from 'qunit';
@@ -20,19 +19,14 @@ module('Unit | EngineInstance', function (hooks) {
       autoboot = false;
     };
 
-    run(function () {
-      app = App.create();
-    });
+    app = App.create();
   });
 
   hooks.afterEach(function () {
     if (appInstance) {
-      run(appInstance, 'destroy');
+      appInstance.destroy();
     }
-
-    if (app) {
-      run(app, 'destroy');
-    }
+    app.destroy();
   });
 
   test('it can build a child engine instance without parent dependencies defined', function (assert) {

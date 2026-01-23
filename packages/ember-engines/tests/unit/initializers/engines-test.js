@@ -1,5 +1,4 @@
 import Application from '@ember/application';
-import { run } from '@ember/runloop';
 import EnginesInitializer from '../../../initializers/engines';
 import { module, test } from 'qunit';
 import Resolver from '../../../resolver';
@@ -13,9 +12,7 @@ let application;
 
 module('Unit | Initializer | engines', function (hooks) {
   hooks.beforeEach(function () {
-    run(() => {
-      application = App.create();
-    });
+    application = App.create();
   });
 
   // Replace this with your real tests.
