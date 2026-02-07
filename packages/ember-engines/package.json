@@ -122,7 +122,7 @@
     "ember-cli-preprocess-registry": "^5.0.1",
     "ember-cli-string-utils": "^1.1.0",
     "ember-cli-version-checker": "^5.1.2",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.23"
   },
   "peerDependencies": {
     "ember-engines-router-service": ">=0.5.0",
