@@ -8,9 +8,7 @@ module.exports = {
     sourceType: 'module',
     requireConfigFile: false,
     babelOptions: {
-      plugins: [
-        ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
-      ],
+      plugins: [[require.resolve('decorator-transforms'), { runEarly: true }]],
     },
   },
   plugins: ['ember'],

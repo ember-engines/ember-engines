@@ -1,0 +1,6 @@
+/* Ember supports plain CSS out of the box. More info: https://cli.emberjs.com/release/advanced-use/stylesheets/ */
+.engine {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid green;
+}

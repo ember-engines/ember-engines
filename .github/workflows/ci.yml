@@ -23,7 +23,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
@@ -33,6 +33,26 @@ jobs:
         run: pnpm test:ember
       - name: Run Node Tests
         run: pnpm test:node
+
+  vite-test:
+    name: "Tests"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v4
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: pnpm
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run Ember Tests
+        run: pnpm test:ember
+        working-directory: ./packages/vite-app
+
 
   floating:
     name: "Floating Dependencies"
@@ -45,7 +65,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install --no-lockfile
@@ -71,8 +91,6 @@ jobs:
           - ember-release
           - ember-beta
           - ember-canary
-          - embroider-safe
-          - embroider-optimized
 
     steps:
       - uses: actions/checkout@v3
@@ -80,7 +98,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile

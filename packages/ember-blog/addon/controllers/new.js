@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
+import * as emberService from '@ember/service';
+const service = emberService.service ?? emberService.inject;
 
 export default class NewRouteController extends Controller {
   @service router;

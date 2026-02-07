@@ -38,5 +38,10 @@
   "authors": [
     "Dan Gebhardt",
     "Robert Jackson"
-  ]
+  ],
+  "peerDependenciesMeta": {
+    "ember-source": {
+      "injected": true
+    }
+  }
 }
