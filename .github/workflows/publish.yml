@@ -20,26 +20,22 @@ jobs:
   publish:
     name: "NPM Publish"
     runs-on: ubuntu-latest
-    environment: deploy
     permissions:
       contents: write
-      pull-requests: write
       id-token: write
       attestations: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 18
-          # This creates an .npmrc that reads the NODE_AUTH_TOKEN environment variable
+          node-version: 22
           registry-url: 'https://registry.npmjs.org'
           cache: pnpm
+      - run: npm install -g npm@latest # ensure that the globally installed npm is new enough to support OIDC
       - run: pnpm install --frozen-lockfile
       - name: Publish to NPM
-        run: pnpm release-plan publish
+        run: NPM_CONFIG_PROVENANCE=true pnpm release-plan publish
         env:
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
