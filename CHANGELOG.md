@@ -1,5 +1,28 @@
 # Changelog
 
+## Release (2026-02-17)
+
+* ember-engines 0.13.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-engines`
+  * [#907](https://github.com/ember-engines/ember-engines/pull/907) Setup vite app tests ([@void-mAlex](https://github.com/void-mAlex))
+
+#### :house: Internal
+* Other
+  * [#913](https://github.com/ember-engines/ember-engines/pull/913) setup OIDC/Trusted publishing for npm packages ([@SergeAstapov](https://github.com/SergeAstapov))
+  * [#910](https://github.com/ember-engines/ember-engines/pull/910) Remove documentation section from README ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* `ember-engines`
+  * [#908](https://github.com/ember-engines/ember-engines/pull/908) get engines loading in vite ([@mansona](https://github.com/mansona))
+  * [#864](https://github.com/ember-engines/ember-engines/pull/864) Migrate internal tests to new testing API ([@villander](https://github.com/villander))
+
+#### Committers: 5
+- Alex ([@void-mAlex](https://github.com/void-mAlex))
+- Chris Manson ([@mansona](https://github.com/mansona))
+- Michael Villander ([@villander](https://github.com/villander))
+- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2025-03-17)
 
 * ember-engines 0.12.0 (minor)
