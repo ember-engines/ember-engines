@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       release-plan:
-        specifier: ^0.15.0
-        version: 0.15.0
+        specifier: ^0.17.4
+        version: 0.17.4
 
   packages/common-components:
     dependencies:
@@ -10344,9 +10344,9 @@ packages:
     engines: {node: '>= 4.0'}
     dev: true
 
-  /github-changelog@1.2.0:
-    resolution: {integrity: sha512-hLlDDWxGkN7QfjVCTohCravUaVoOIbOxTSeH/5K30luf5Z8s0JWrWzrz3ot1zlkSX4656vzw+iG8t1hmtiuq0g==}
-    engines: {node: 12.* || 14.* || >= 16}
+  /github-changelog@2.1.4:
+    resolution: {integrity: sha512-mZQF/YC9OR8XMGpYlLQqG66RiKwlaQZ7rXTZug28oOYkzOXd0acszuvYHVzPlYmns1aDDSwQkbzFxNOYpWhmig==}
+    engines: {node: 18.* || 20.* || >= 22}
     hasBin: true
     dependencies:
       '@manypkg/get-packages': 2.2.2
@@ -14072,8 +14072,8 @@ packages:
     dependencies:
       jsesc: 3.0.2
 
-  /release-plan@0.15.0:
-    resolution: {integrity: sha512-UxoSSDK+I0N11d2cftfzepFlgvWKUiNZLVeHapbPUVqNbQQZor9Cs7G2mE+UHjCa9+QKVAU4RdFCkILTrlR7CQ==}
+  /release-plan@0.17.4:
+    resolution: {integrity: sha512-CK+RrsvP6JXysgFuqUoOvprAT95J5x8usHzAQh3M1RMQqFScnAyfY6lb1LBsjqW/HUsvLjkLfSp8dJseRHEpEw==}
     hasBin: true
     dependencies:
       '@manypkg/get-packages': 2.2.2
@@ -14084,7 +14084,7 @@ packages:
       cli-highlight: 2.1.11
       execa: 9.5.2
       fs-extra: 11.3.0
-      github-changelog: 1.2.0
+      github-changelog: 2.1.4
       js-yaml: 4.1.1
       latest-version: 9.0.0
       parse-github-repo-url: 1.4.1
@@ -15526,6 +15526,7 @@ packages:
   /tar@6.2.1:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     dependencies:
       chownr: 2.0.0
       fs-minipass: 2.1.0
