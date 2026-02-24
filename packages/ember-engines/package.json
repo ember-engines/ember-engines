@@ -1,6 +1,6 @@
 {
   "name": "ember-engines",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "description": "Composable applications for ambitious user experiences",
   "homepage": "https://ember-engines.netlify.app",
   "directories": {
