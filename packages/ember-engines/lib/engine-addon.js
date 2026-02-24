@@ -646,9 +646,17 @@ function buildEngine(options) {
           };
         }
         originalIncluded.call(this, customHost);
+      } else {
+        // If an `originalIncluded` is present, we assume that it eventually 
+        // delegates to ember-cli's base implementation of `Addon#included()`,
+        // which already calls `included()` for every child addon instance.
+        // As such, we must only call `included()` manually, if there's no
+        // `originalIncluded`, which would have already done that.
+        // Otherwise, we would be calling `included()` twice, which leads to
+        // bugs.
+        // https://github.com/ember-engines/ember-engines/issues/405
+        this.nonDuplicatedAddonInvoke('included', [this]);
       }
-
-      this.nonDuplicatedAddonInvoke('included', [this]);
     };
 
     // The treeForEngine method constructs and returns a tree that represents
