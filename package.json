@@ -7,6 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/ember-engines/ember-engines.git"
   },
+  "homepage": "https://ember-engines.netlify.app/",
   "license": "MIT",
   "workspaces": [
     "packages/*"

@@ -23,7 +23,7 @@ ember install ember-engines
 ## Usage
 
 Check the full documentation in the [Ember Engines
-Guides](https://ember-engines.com/).
+Guides](https://ember-engines.netlify.app).
 
 
 ## Support

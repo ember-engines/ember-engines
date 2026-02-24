@@ -12,7 +12,7 @@ export function deprecateTransitionMethods(frameworkClass, methodName) {
         enabled: '0.10.0',
       },
       until: '1.0.0',
-      url: 'https://ember-engines.com/docs/deprecations#-transition-methods-of-controller-and-route',
+      url: 'https://ember-engines.netlify.app/docs/deprecations#-transition-methods-of-controller-and-route',
     },
   );
 }
