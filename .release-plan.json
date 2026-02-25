@@ -1,15 +1,11 @@
 {
   "solution": {
     "ember-engines": {
-      "impact": "minor",
-      "oldVersion": "0.12.0",
-      "newVersion": "0.13.0",
+      "impact": "patch",
+      "oldVersion": "0.13.0",
+      "newVersion": "0.13.1",
       "tagName": "latest",
       "constraints": [
-        {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
-        },
         {
           "impact": "patch",
           "reason": "Appears in changelog section :house: Internal"
@@ -18,5 +14,5 @@
       "pkgJSONPath": "./packages/ember-engines/package.json"
     }
   },
-  "description": "## Release (2026-02-17)\n\n* ember-engines 0.13.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-engines`\n  * [#907](https://github.com/ember-engines/ember-engines/pull/907) Setup vite app tests ([@void-mAlex](https://github.com/void-mAlex))\n\n#### :house: Internal\n* Other\n  * [#913](https://github.com/ember-engines/ember-engines/pull/913) setup OIDC/Trusted publishing for npm packages ([@SergeAstapov](https://github.com/SergeAstapov))\n  * [#910](https://github.com/ember-engines/ember-engines/pull/910) Remove documentation section from README ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `ember-engines`\n  * [#908](https://github.com/ember-engines/ember-engines/pull/908) get engines loading in vite ([@mansona](https://github.com/mansona))\n  * [#864](https://github.com/ember-engines/ember-engines/pull/864) Migrate internal tests to new testing API ([@villander](https://github.com/villander))\n\n#### Committers: 5\n- Alex ([@void-mAlex](https://github.com/void-mAlex))\n- Chris Manson ([@mansona](https://github.com/mansona))\n- Michael Villander ([@villander](https://github.com/villander))\n- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2026-02-24)\n\n* ember-engines 0.13.1 (patch)\n\n#### :house: Internal\n* `ember-engines`\n  * [#914](https://github.com/ember-engines/ember-engines/pull/914) add/update home page references ([@void-mAlex](https://github.com/void-mAlex))\n\n#### Committers: 1\n- Alex ([@void-mAlex](https://github.com/void-mAlex))\n"
 }

@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-02-24)
+
+* ember-engines 0.13.1 (patch)
+
+#### :house: Internal
+* `ember-engines`
+  * [#914](https://github.com/ember-engines/ember-engines/pull/914) add/update home page references ([@void-mAlex](https://github.com/void-mAlex))
+
+#### Committers: 1
+- Alex ([@void-mAlex](https://github.com/void-mAlex))
+
 ## Release (2026-02-17)
 
 * ember-engines 0.13.0 (minor)
