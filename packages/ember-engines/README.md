@@ -28,43 +28,29 @@ Guides](https://ember-engines.netlify.app).
 
 ## Using with Vite / Embroider
 
-Under Embroider, ember-engines' router extensions are not used: Embroider
-strips them and relies on Ember's built-in engine routing plus
-[`@embroider/router`](https://github.com/embroider-build/embroider/tree/main/packages/router)
-to load lazy engines. A few things the Vite codemod cannot infer are required:
-
-* The host app's `app/router.js` must extend `@embroider/router`:
-
-  ```js
-  import EmberRouter from '@embroider/router'; // not '@ember/routing/router'
-  ```
-
-  Without it, mounting a lazy engine fails with *"You attempted to mount the
-  engine '…' in your router map, but the engine can not be found."* (or, with
-  assertions stripped, *"…but it is not registered with its parent."*).
-
-* Each engine resolves its modules through `compatModules`:
-
-  ```js
-  import compatModules from '@embroider/virtual/compat-modules';
-
-  export default class MyEngine extends Engine {
-    Resolver = Resolver.withModules(compatModules);
-  }
-
-  loadInitializers(MyEngine, modulePrefix, compatModules);
-  ```
-
-* Engines are excluded from Vite's dependency pre-bundling in `vite.config.mjs`
-  (`optimizeDeps.exclude: ['my-engine']`).
+Vite / Embroider support requires `ember-engines@0.13` or later. Follow the
+[Embroider guide](https://ember-engines.netlify.app/docs/embroider) and the
+[v0.12 → v0.13 migration guide](https://ember-engines.netlify.app/docs/migrations#v0-12-v0-13)
+to update each engine's `engine.js`, and use
+[`@embroider/router`](https://github.com/embroider-build/embroider/blob/main/packages/router/README.md)
+in the host app's `app/router.js` to load lazy engines. `ember-vite-codemod`
+does not make these changes yet, so they are currently manual.
 
 See [`packages/vite-app`](https://github.com/ember-engines/ember-engines/tree/master/packages/vite-app)
-for a working example.
+for a working example. It also excludes the engines from Vite's dependency
+pre-bundling in `vite.config.mjs` (`optimizeDeps.exclude: ['my-engine']`).
 
-If an engine route throws *"Defining a custom serialize method on an Engine
-route is not supported"* and the route does not define `serialize`, check for
-more than one copy of `ember-source` in your build. The check compares
-`serialize` by identity, so two copies of `Route` make it fail.
+### Troubleshooting
+
+* *"You attempted to mount the engine '…' in your router map, but the engine
+  can not be found."* (or, with assertions stripped, *"…but it is not
+  registered with its parent."*): the host app's `app/router.js` is not
+  extending `@embroider/router`.
+
+* *"Defining a custom serialize method on an Engine route is not supported"*
+  on a route that does not define `serialize`: check for more than one copy of
+  `ember-source` in your build. The check compares `serialize` by identity, so
+  two copies of `Route` make it fail.
 
 
 ## Support
