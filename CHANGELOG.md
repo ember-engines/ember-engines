@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-10-08)
+
+* ember-engines 0.13.2 (patch)
+
+#### :bug: Bug Fix
+* `ember-engines`
+  * [#919](https://github.com/ember-engines/ember-engines/pull/919) Document Vite/Embroider engine setup and hint at duplicate ember-source ([@villander](https://github.com/villander))
+
+#### Committers: 1
+- Michael Villander ([@villander](https://github.com/villander))
+
 ## Release (2026-02-24)
 
 * ember-engines 0.13.1 (patch)
