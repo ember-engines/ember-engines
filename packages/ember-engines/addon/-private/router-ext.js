@@ -125,7 +125,8 @@ Router.reopen({
 
     if (!hasDefaultSerialize(handler)) {
       throw new Error(
-        'Defining a custom serialize method on an Engine route is not supported.',
+        'Defining a custom serialize method on an Engine route is not supported. ' +
+          '(If this route does not define `serialize`, you likely have more than one copy of `ember-source` in your build.)',
       );
     }
 
