@@ -2,17 +2,17 @@
   "solution": {
     "ember-engines": {
       "impact": "patch",
-      "oldVersion": "0.13.0",
-      "newVersion": "0.13.1",
+      "oldVersion": "0.13.1",
+      "newVersion": "0.13.2",
       "tagName": "latest",
       "constraints": [
         {
           "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
+          "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
       "pkgJSONPath": "./packages/ember-engines/package.json"
     }
   },
-  "description": "## Release (2026-02-24)\n\n* ember-engines 0.13.1 (patch)\n\n#### :house: Internal\n* `ember-engines`\n  * [#914](https://github.com/ember-engines/ember-engines/pull/914) add/update home page references ([@void-mAlex](https://github.com/void-mAlex))\n\n#### Committers: 1\n- Alex ([@void-mAlex](https://github.com/void-mAlex))\n"
+  "description": "## Release (2026-10-08)\n\n* ember-engines 0.13.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-engines`\n  * [#919](https://github.com/ember-engines/ember-engines/pull/919) Document Vite/Embroider engine setup and hint at duplicate ember-source ([@villander](https://github.com/villander))\n\n#### Committers: 1\n- Michael Villander ([@villander](https://github.com/villander))\n"
 }
