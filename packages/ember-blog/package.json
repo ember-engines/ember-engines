@@ -12,9 +12,9 @@
   "dependencies": {
     "@embroider/macros": "^1.19.6",
     "common-components": "workspace:*",
-    "ember-auto-import": "^2.11.2",
+    "ember-auto-import": "^2.13.1",
     "ember-cli-babel": "*",
-    "ember-cli-htmlbars": "*",
+    "ember-cli-htmlbars": "^7.0.1",
     "ember-engines": "workspace:*",
     "ember-engines-router-service": "^0.5.0",
     "ember-load-initializers": "^3.0.1",
