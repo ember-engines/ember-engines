@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       release-plan:
-        specifier: ^0.17.4
-        version: 0.17.4
+        specifier: ^0.18.0
+        version: 0.18.0
 
   packages/common-components:
     dependencies:
@@ -14072,8 +14072,8 @@ packages:
     dependencies:
       jsesc: 3.0.2
 
-  /release-plan@0.17.4:
-    resolution: {integrity: sha512-CK+RrsvP6JXysgFuqUoOvprAT95J5x8usHzAQh3M1RMQqFScnAyfY6lb1LBsjqW/HUsvLjkLfSp8dJseRHEpEw==}
+  /release-plan@0.18.0:
+    resolution: {integrity: sha512-WzP+O+XRF4AqhTDQK84FovY+TxHyC8J7QWoOwxnrvVjyHns417l1FUldboRhBYua5Pej6Yg/2jH1dEH2MRNHeA==}
     hasBin: true
     dependencies:
       '@manypkg/get-packages': 2.2.2

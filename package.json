@@ -3,11 +3,11 @@
   "version": "0.9.0",
   "private": true,
   "description": "Workspace for ember-engines project",
+  "homepage": "https://ember-engines.netlify.app/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ember-engines/ember-engines.git"
   },
-  "homepage": "https://ember-engines.netlify.app/",
   "license": "MIT",
   "workspaces": [
     "packages/*"
@@ -27,7 +27,7 @@
     "singleQuote": true
   },
   "devDependencies": {
-    "release-plan": "^0.17.4"
+    "release-plan": "^0.18.0"
   },
   "peerDependenciesMeta": {
     "ember-source": {
