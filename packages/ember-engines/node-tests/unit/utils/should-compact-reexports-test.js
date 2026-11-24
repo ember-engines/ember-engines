@@ -17,12 +17,19 @@ describe('shouldCompactReexports', function () {
     this.root = fixture.path('node_modules/fake-addon-with-deps');
 
     let nodeModules = Object.keys(dependencies).reduce((modules, key) => {
-      modules[key] = {
+      let packageDir = {
         'package.json': `{
           "name": "${key}",
           "version": "${dependencies[key]}"
         }`,
       };
+      let [scope, name] = key.split('/');
+
+      if (name) {
+        modules[scope] = { ...modules[scope], [name]: packageDir };
+      } else {
+        modules[key] = packageDir;
+      }
 
       return modules;
     }, {});
@@ -90,6 +97,36 @@ describe('shouldCompactReexports', function () {
     let addon = new FakeAddonWithDeps(fixture, {
       'ember-cli-babel': '6.0.0',
       'loader.js': '4.3.0',
+    });
+    expect(shouldCompactReexports(addon, options)).to.equal(false);
+  });
+
+  it('returns true when Babel is 7', function () {
+    let addon = new FakeAddonWithDeps(fixture, {
+      '@babel/core': '7.29.0',
+      'ember-cli': '6.0.0',
+      'ember-cli-babel': '8.3.0',
+      'loader.js': '4.7.0',
+    });
+    expect(shouldCompactReexports(addon, options)).to.equal(true);
+  });
+
+  it('returns false when Babel is 8, which the plugin does not support', function () {
+    let addon = new FakeAddonWithDeps(fixture, {
+      '@babel/core': '8.1.3',
+      'ember-cli': '6.0.0',
+      'ember-cli-babel': '8.3.0',
+      'loader.js': '4.7.0',
+    });
+    expect(shouldCompactReexports(addon, options)).to.equal(false);
+  });
+
+  it('returns false for a Babel 8 prerelease', function () {
+    let addon = new FakeAddonWithDeps(fixture, {
+      '@babel/core': '8.0.0-rc.1',
+      'ember-cli': '6.0.0',
+      'ember-cli-babel': '8.3.0',
+      'loader.js': '4.7.0',
     });
     expect(shouldCompactReexports(addon, options)).to.equal(false);
   });
