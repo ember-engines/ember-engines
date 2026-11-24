@@ -16,7 +16,10 @@ module.exports = function shouldCompactReexports(addon, options = {}) {
     return (
       checker.for('ember-cli', 'npm').gte('2.13.0') &&
       checker.for('ember-cli-babel', 'npm').gte('6.0.0') &&
-      checker.for('loader.js', 'npm').gte('4.4.0')
+      checker.for('loader.js', 'npm').gte('4.4.0') &&
+      // babel-plugin-compact-reexports names modules with
+      // `this.getModuleName()`, which Babel 8 removed.
+      !checker.for('@babel/core', 'npm').gte('8.0.0-0')
     );
   }
 
