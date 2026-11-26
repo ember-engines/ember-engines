@@ -1,0 +1,51 @@
+name: Spike (no-compat engines)
+
+on:
+  push:
+    branches:
+      - spike/**
+    paths:
+      - spike/no-compat/**
+      - .github/workflows/spike-no-compat.yml
+  workflow_dispatch: {}
+
+concurrency:
+  group: spike-no-compat-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [24, 26]
+    defaults:
+      run:
+        working-directory: spike/no-compat
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: spike/no-compat/package.json
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+          cache-dependency-path: spike/no-compat/pnpm-lock.yaml
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Build runtime, ui-kit and engines
+        run: pnpm build:addons
+      - name: No-compat host
+        run: pnpm --filter host test
+      - name: Compat host, with v1 ember-engines installed
+        run: pnpm --filter host-compat test
+      - name: blog in isolation
+        run: pnpm --filter blog test
+      - name: Production build and dist checks
+        run: |
+          pnpm --filter host build
+          pnpm check:dist

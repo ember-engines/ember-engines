@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>host tests</title>
+    <link rel="stylesheet" href="/app/styles/app.css">
+  </head>
+  <body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+      <div id="ember-testing-container">
+        <div id="ember-testing"></div>
+      </div>
+    </div>
+
+    <script src="/testem.js" integrity="" data-embroider-ignore></script>
+    <script type="module">import "ember-testing";</script>
+
+    <script type="module">
+      import { start } from './test-helper';
+      import.meta.glob("./**/*.{js,ts,gjs,gts}", { eager: true });
+      start();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,64 @@
+{
+  "name": "ember-engines-runtime",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "keywords": [
+    "ember-addon"
+  ],
+  "exports": {
+    ".": {
+      "workspace-source": "./src/index.js",
+      "default": "./dist/index.js"
+    },
+    "./engine-instance-ext": {
+      "workspace-source": "./src/engine-instance-ext.js",
+      "default": "./dist/engine-instance-ext.js"
+    },
+    "./components/link-to-external": {
+      "workspace-source": "./src/components/link-to-external.gjs",
+      "default": "./dist/components/link-to-external.js"
+    },
+    "./vite": "./vite.mjs",
+    "./rollup": "./rollup.mjs",
+    "./addon-main.js": "./addon-main.cjs"
+  },
+  "files": [
+    "addon-main.cjs",
+    "dist",
+    "src",
+    "vite.mjs",
+    "rollup.mjs"
+  ],
+  "scripts": {
+    "build": "rollup --config"
+  },
+  "ember-addon": {
+    "version": 2,
+    "type": "addon",
+    "main": "addon-main.cjs"
+  },
+  "dependencies": {
+    "@embroider/addon-shim": "^1.11.0",
+    "decorator-transforms": "^2.4.0"
+  },
+  "peerDependencies": {
+    "@glimmer/component": "^2.1.1",
+    "ember-source": ">=7.2.0",
+    "sass-embedded": "^1.100.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^8.1.3",
+    "@embroider/addon-dev": "^8.5.0",
+    "@glimmer/component": "^2.1.1",
+    "@rollup/plugin-babel": "^7.1.0",
+    "babel-plugin-ember-template-compilation": "^4.0.1",
+    "ember-source": "~7.3.0",
+    "rollup": "^4.63.3"
+  },
+  "peerDependenciesMeta": {
+    "sass-embedded": {
+      "optional": true
+    }
+  }
+}
