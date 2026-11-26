@@ -82,7 +82,7 @@ export function discoverEngines(root) {
   return [...engines.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export function engines({ root = process.cwd() } = {}) {
+export function engines({ root = process.cwd(), disabled = false } = {}) {
   let found = [];
 
   return {
@@ -90,12 +90,7 @@ export function engines({ root = process.cwd() } = {}) {
     enforce: 'pre',
 
     config() {
-      found = discoverEngines(root);
-      return {
-        // `import.meta.glob` in an engine's dist must reach Vite's own
-        // transform, so engines can't be pre-bundled.
-        optimizeDeps: { exclude: found.map((e) => e.name) },
-      };
+      found = disabled ? [] : discoverEngines(root);
     },
 
     resolveId(id) {

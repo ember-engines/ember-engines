@@ -5,7 +5,7 @@
   "scripts": {
     "build": "vite build",
     "start": "vite",
-    "test": "vite build --mode development && testem ci --file testem.cjs"
+    "test": "node ../scripts/sync-compat-suite.mjs && vite build --mode development && testem ci --file testem.cjs"
   },
   "devDependencies": {
     "@babel/core": "^8.1.3",

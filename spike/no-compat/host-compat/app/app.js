@@ -2,9 +2,10 @@ import Application from '@ember/application';
 import compatModules from '@embroider/virtual/compat-modules';
 import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
-// No v1 ember-engines here, so the runtime's extension is imported directly.
-// router-service's own initializer still runs through compat's app-js.
-import 'ember-engines-runtime/engine-instance-ext';
+// v1 ember-engines is installed here too, the way an app looks mid-migration.
+// Its initializer still patches EngineInstance; the v2 engines don't rely on
+// it, because they extend ember-engines-runtime/engine. router-service's
+// initializer runs through compat's app-js.
 import config from './config/environment.js';
 
 // Compat generates the engine bundles, route maps (implicit-modules) and

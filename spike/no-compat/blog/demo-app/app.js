@@ -1,5 +1,4 @@
 import Application from '@ember/application';
-import 'ember-engines-runtime/engine-instance-ext';
 import 'ember-engines-router-service/-private/engine-ext';
 import * as UiIntl from 'ui-kit/services/ui-intl';
 // Engines this engine depends on (comments), found by the plugin.

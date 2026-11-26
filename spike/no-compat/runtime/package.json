@@ -11,9 +11,9 @@
       "workspace-source": "./src/index.js",
       "default": "./dist/index.js"
     },
-    "./engine-instance-ext": {
-      "workspace-source": "./src/engine-instance-ext.js",
-      "default": "./dist/engine-instance-ext.js"
+    "./engine": {
+      "workspace-source": "./src/engine.js",
+      "default": "./dist/engine.js"
     },
     "./components/link-to-external": {
       "workspace-source": "./src/components/link-to-external.gjs",

@@ -1,4 +1,4 @@
-import Engine from '@ember/engine';
+import Engine from 'ember-engines-runtime/engine';
 import * as UiIntl from 'ui-kit/services/ui-intl';
 import './styles.scss';
 
@@ -13,6 +13,8 @@ export default class BlogEngine extends Engine {
     // resolver needs it listed, because ui-kit components look it up by name.
     './services/ui-intl': UiIntl,
   };
+
+  engineName = 'blog';
 
   dependencies = { services: ['session'], externalRoutes: ['home', 'item', 'other'] };
 }

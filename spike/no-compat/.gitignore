@@ -1,2 +1,4 @@
 dist-tests/
 dist-tsdown/
+# generated from host/tests by scripts/sync-compat-suite.mjs
+host-compat/tests/acceptance/engines-test.js

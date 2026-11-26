@@ -7,9 +7,7 @@ const addon = new Addon({ srcDir: 'src', destDir: 'dist' });
 export default {
   output: addon.output(),
   plugins: [
-    // Emit every module. Engines reach their own modules through
-    // `import.meta.glob` in `engine.js`, which the host's Vite expands, so
-    // rollup must not drop files that nothing imports statically.
+    // Each module is its own public entrypoint (engine, link-to-external, ...).
     addon.publicEntrypoints(['**/*.js']),
     addon.appReexports([]),
     addon.dependencies(),

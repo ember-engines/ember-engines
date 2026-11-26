@@ -80,6 +80,30 @@ module('Acceptance | engines', function (hooks) {
     assert.dom('[data-test-blog-other]').hasClass('active', 'bound to blog-two, and blog-two is current');
   });
 
+  test('LinkToExternal takes @models, @current-when and @replace', async function (assert) {
+    await visit('/blog');
+    assert.dom('[data-test-blog-item-models]').hasAttribute('href', '/items/7');
+    assert.dom('[data-test-blog-home-current-when]').hasClass('active', '@current-when="blog" while on /blog');
+    assert.dom('[data-test-blog-home]').doesNotHaveClass('active', 'without it, home (bound to account) is not active');
+
+    // RouterService#replaceWith goes through transitionTo, so only count replaceWith.
+    let router = this.owner.lookup('service:router');
+    let replaced = 0;
+    let { replaceWith } = router;
+    router.replaceWith = (...args) => (replaced++, replaceWith.apply(router, args));
+    try {
+      await click('[data-test-blog-home-replace]');
+      assert.strictEqual(replaced, 1, '@replace uses replaceWith');
+      assert.strictEqual(currentURL(), '/account');
+
+      await visit('/blog');
+      await click('[data-test-blog-home]');
+      assert.strictEqual(replaced, 1, 'without @replace it does not');
+    } finally {
+      router.replaceWith = replaceWith;
+    }
+  });
+
   test('router-service transitionToExternal follows the binding', async function (assert) {
     await visit('/blog');
     await click('[data-test-go-home]');

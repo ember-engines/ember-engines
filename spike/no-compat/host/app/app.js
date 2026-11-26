@@ -1,6 +1,5 @@
 import Application from '@ember/application';
-// What ember-engines' and router-service's initializers did, as explicit imports.
-import 'ember-engines-runtime/engine-instance-ext';
+// What router-service's initializer did, as an explicit import.
 import 'ember-engines-router-service/-private/engine-ext';
 import * as UiIntl from 'ui-kit/services/ui-intl';
 import { bundles, modules as engineModules } from 'virtual:ember-engines';
@@ -22,8 +21,9 @@ export default class App extends Application {
     ...engineModules,
   };
 
-  // The contract per engine stays with the host. engine-instance-ext reads it on
-  // the app instance, for nested routable engines too.
+  // The host's side of each engine's contract, keyed by engine name. Ember builds
+  // routable engine instances from the root owner, so nested engines are listed
+  // here too.
   engines = {
     blog: {
       dependencies: {

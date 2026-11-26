@@ -27,7 +27,7 @@ jobs:
         working-directory: spike/no-compat
     steps:
       - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file: spike/no-compat/package.json
       - uses: actions/setup-node@v5
@@ -49,3 +49,7 @@ jobs:
         run: |
           pnpm --filter host build
           pnpm check:dist
+      - name: "Demo: without the @embroider/core active flag, every mount fails"
+        run: pnpm demo:no-active-flag
+      - name: "Demo: without host registration, every mount fails"
+        run: pnpm demo:no-registration

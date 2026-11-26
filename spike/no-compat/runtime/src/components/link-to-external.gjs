@@ -34,7 +34,8 @@ export default class LinkToExternal extends Component {
     return this.router.urlFor(...this.routeArgs);
   }
 
-  // HDS passes @current-when through; it is a boolean or host route names.
+  // Link wrappers (design-system link components, for example) pass
+  // @current-when through. It is a boolean or space-separated host route names.
   get isActive() {
     let currentWhen = this.args['current-when'] ?? this.args.currentWhen;
     if (typeof currentWhen === 'boolean') return currentWhen;

@@ -1,83 +1,117 @@
 # Spike: v2 lazy engines, with and without compat
 
-What a v2 engine and its runtime need so that a host runs them without
-`@embroider/compat`, while a compat host can still run them during a migration.
+What a v2 engine and its runtime need so that an app runs them without
+`@embroider/compat`, and so that a compat app can run the same engines during
+a migration. Tested on ember-source 7.3.1, @embroider/core 4.6.10,
+@embroider/router 3.0.6, @embroider/vite 1.8, Vite 8.4, Babel 8.
 
 | Package | What it is |
 | --- | --- |
-| `runtime/` | What ember-engines' v1 package provided at runtime: `buildRoutes`, `engine-instance-ext` (copied from ember-engines, plus a guard so it doesn't patch twice), and a Glimmer `<LinkToExternal>`. Also `./vite` (host registration plugin) and `./rollup` (`expandGlob()`, `sass()`). |
-| `blog/` | v2 lazy engine built with tsdown + `@nullvoxpopuli/ember-rolldown`. Sass, query params, three external routes, mounted twice. Has its own isolation app (`demo-app/`, `tests/`). |
-| `comments/` | v2 lazy engine mounted inside `blog`, built with rollup + `@embroider/addon-dev` and the runtime's `expandGlob()` and `sass()` plugins. |
-| `ui-kit/` | v2 addon with a service that components look up by name, as HDS's `hds-intl` is. |
-| `host/` | No-compat host: Vite, Ember 7.3's built-in strict resolver, no initializers, Babel 8. |
-| `host-compat/` | Compat host (ember-cli + `@embroider/compat`) with v1 `ember-engines` installed, running the same engines. |
+| `runtime/` | The runtime pieces of v1 ember-engines, reworked for v2:<br>• `./engine` is an `Engine` base class that applies the host/engine contract (see below) without patching Ember;<br>• `buildRoutes`;<br>• a Glimmer `<LinkToExternal>`;<br>• `./vite`, a host registration plugin;<br>• `./rollup`, with `expandGlob()` and `sass()`. |
+| `blog/` | A v2 lazy engine built with tsdown + `@nullvoxpopuli/ember-rolldown`. It has Sass, query params and three external routes, is mounted twice, and has its own isolation app (`demo-app/`, `tests/`). |
+| `comments/` | A v2 lazy engine mounted inside `blog`, built with rollup + `@embroider/addon-dev` and the runtime's `expandGlob()` and `sass()` plugins. |
+| `ui-kit/` | A v2 addon whose component looks up its service by name, as many design-system components do. |
+| `host/` | The no-compat app: Vite, Ember's built-in strict resolver, no initializers. |
+| `host-compat/` | A compat app (ember-cli + `@embroider/compat`) running the same engines, with v1 `ember-engines` also installed, the way an app looks mid-migration. |
 
 ```sh
 pnpm install
-pnpm test                          # builds packages, runs host's suite
-pnpm --filter host-compat test     # same suite on the compat host
-pnpm --filter blog test            # blog in isolation, from source
-pnpm --filter host start           # dev server; engines served from src
-pnpm --filter host build && pnpm check:dist   # asserts the dist and chunk claims
+pnpm build:addons
+pnpm --filter host test           # the acceptance suite, no compat
+pnpm --filter host-compat test    # the same suite, compat + v1 ember-engines
+pnpm --filter blog test           # blog in isolation, from source
+pnpm --filter host build && pnpm check:dist
+pnpm demo:no-active-flag          # shows mounts failing without the router flag
+pnpm demo:no-registration         # shows mounts failing without host registration
+pnpm --filter host start          # dev server; workspace engines served from src
 ```
 
-CI (`.github/workflows/spike-no-compat.yml`) runs all of it on Node 24 and 26.
+CI (`.github/workflows/spike-no-compat.yml`) runs all of these except the dev
+server on Node 24 and 26.
 
-## Results (2026-11-26)
+## What it shows
 
-- `host` and `host-compat` run the same 12 acceptance tests and both pass all
-  12. The tests cover:
-  - laziness of the JS and CSS;
+- `host` and `host-compat` run the same 13 acceptance tests. The compat copy is
+  generated from `host/tests`, so the two can't drift. The tests cover:
+  - JS and CSS loading lazily;
   - a host `LinkTo` into an inner engine route before load;
-  - a host service passed through `dependencies.services`;
+  - host services through `dependencies.services`;
   - Sass;
-  - a by-name addon service;
-  - `<LinkToExternal>` with a per-engine binding, models, query params, href
-    and active state;
+  - an addon service looked up by name;
+  - `<LinkToExternal>` with per-engine bindings, `@model(s)`, `@query`,
+    `@replace`, `@current-when`, href and active state;
   - router-service `transitionToExternal`;
   - sticky query params in a lazy engine;
   - multi-mount;
-  - the nested engine.
-- `blog`'s isolation app passes 3/3 from source against a fake host.
-- Production: nothing loaded at boot (`index.html` plus its static imports)
-  holds engine code or CSS, and each engine is its own lazy JS chunk and CSS
-  file. `scripts/check-dist.mjs` asserts this. It also asserts that neither
-  engine's dist contains `import.meta.glob` or a `.scss` import.
-- Dev: the host resolves engines to `src` through a custom `workspace-source`
-  export condition. Edits are served without rebuilding the engine, and Sass
-  edits hot-swap.
-- Both engine builds pass the same suites. tsdown + `@nullvoxpopuli/ember-rolldown`
-  (from NullVoxPopuli/ember.nvp) needs no custom plugins: it expands
-  `import.meta.glob`, compiles Sass and keeps the CSS import. rollup + addon-dev
-  needs `expandGlob()` and `sass()`.
+  - a nested engine.
+- `blog`'s isolation app passes 3/3, from source against a fake host.
+- `check:dist` asserts the build output:
+  - no published engine dist contains `import.meta.glob` (RFC 939) or a
+    `.scss` import;
+  - nothing loaded at boot (`index.html` and its static imports) holds engine
+    code or CSS;
+  - each engine is its own lazy JS chunk and CSS file.
+- Both engine builds pass the same suites. tsdown + ember-rolldown needs no
+  custom plugins. rollup + addon-dev needs `expandGlob()` and `sass()`.
+- Dev (manual, not in CI): `host` resolves workspace engines to `src` through
+  a custom `workspace-source` export condition, enabled only for `vite serve`.
+  Engine edits are served without a rebuild, and Sass edits hot-swap.
 
-## What a no-compat host has to do
+## The engine base class
 
-1. Register lazy engines in `window._embroiderEngineBundles_`, and route maps
-   as `./route-maps/<name>`. With compat, `@embroider/core` emits these inside
-   `@embroider/virtual/compat-modules`, which a strict-resolver app doesn't
-   import. `runtime/vite.mjs` generates them from package metadata.
-2. Set `@embroider/core: { active: true }` in the macros global config.
-   `@embroider/router` only enables lazy loading behind that flag, and only
-   compat sets it. Without it, mounts fail with "You attempted to mount the
+`ember-engines-runtime/engine` replaces v1's `EngineInstance.reopen` patch:
+
+- `Engine#buildInstance` is public, so the base class returns an
+  `EngineInstance` subclass.
+- That subclass wires the contract in the public `boot()`, after Ember sets the
+  parent and before anything in the engine is looked up.
+- Nothing global is patched, so it works with or without v1 ember-engines in
+  the same app.
+- Engines set `engineName`, because Ember doesn't pass the name to
+  `buildInstance`.
+- One private call remains: `ensureInitializers()`, which the stock
+  `buildInstance` makes too.
+- It keeps v1's `_externalRoutes` and `_getExternalRoute`, because
+  ember-engines-router-service reads them. Router-service's own `engine-ext`
+  is still an `Engine.reopen`.
+
+`<LinkToExternal>` (66 lines) covers `@route`, `@model`, `@models`, `@query`,
+`@replace`, `@current-when`, href and the `active` class. It doesn't implement
+`@disabled`, `@activeClass`, the loading and transitioning classes, or
+`@preventDefault`.
+
+## What a no-compat app has to do today
+
+1. **Register lazy engines and route maps.** `@embroider/core` emits
+   `window._embroiderEngineBundles_` (and `_embroiderRouteBundles_` for
+   `splitAtRoutes`) only inside `@embroider/virtual/compat-modules`, which a
+   strict-resolver app doesn't import. `runtime/vite.mjs` generates the same
+   from package metadata, with keys `./engines/<name>` and
+   `./route-maps/<name>`. `pnpm demo:no-registration` shows the failure
+   without it.
+2. **Set `@embroider/core: { active: true }`** in the macros global config
+   (`host/babel.config.mjs`). `@embroider/router` only enables lazy loading
+   behind that flag, and only compat sets it. `pnpm demo:no-active-flag`
+   shows that, without it, every mount fails with "You attempted to mount the
    engine 'blog', but it is not registered with its parent."
-3. Import `engine-instance-ext` and `ember-engines-router-service/-private/engine-ext`
-   explicitly, because no addon initializers run.
-4. Register nested routable engines on the host too. Ember's router builds
-   every routable engine instance from the root owner.
-5. List addon services that are resolved by name (here `ui-intl`) in both the
-   host's and each engine's `modules`. Nothing merges `app-js` any more. If
-   one is missing, it fails silently (empty render).
+3. **Register nested routable engines on the host.** Ember's router builds
+   every routable engine instance from the root owner. The plugin finds them
+   through the engines' dependencies.
+4. **Import router-service's `-private/engine-ext` explicitly**, because no
+   addon initializers run.
+5. **List addon services resolved by name** in the app's and each engine's
+   `modules`. Nothing merges `app-js` any more. A missing entry fails silently
+   (empty render).
 
 ## What an engine package needs
 
 - Keyword `ember-engine`, `ember-addon.lazy-engine: true`, and
-  `implicit-modules: ["./routes.js"]` for compat hosts.
-- Exports for `./engine`, `./engine.js`, `./routes` and `./routes.js`. Compat
-  imports `routes.js`.
-- `modules = import.meta.glob(...)` in `engine.js`, expanded at build time.
-  RFC 939 doesn't allow the glob in published packages.
-- Styles imported from `engine.js` (Sass is fine) and compiled at build time.
-- A `workspace-source` condition is optional and only for monorepo dev. Don't
-  use the standard `development` condition, which would make every consumer's
-  dev server compile the engine's source.
+  `implicit-modules: ["./routes.js"]` for compat apps.
+- Exports for `./engine`, `./engine.js`, `./routes` and `./routes.js` (compat
+  imports `routes.js`).
+- `engine.js` extends `ember-engines-runtime/engine`, sets `engineName`, and
+  declares `modules = import.meta.glob(...)`, expanded at build time.
+- Styles imported from `engine.js` (Sass is fine), compiled at build time.
+- Optionally, a `workspace-source` condition for monorepo dev. Don't use the
+  standard `development` condition: every consumer's dev server would then
+  compile the engine's source.
