@@ -53,7 +53,7 @@ import { globSync } from 'node:fs';
 import { dirname as pathDirname, relative as pathRelative, resolve as pathResolve } from 'node:path';
 
 const GLOB_CALL =
-  /import\.meta\.glob\(\s*(['"])([^'"]+)\1\s*(?:,\s*\{\s*eager\s*:\s*(true|false)\s*,?\s*\})?\s*\)/g;
+  /import\.meta\.glob\(\s*(['"])([^'"]+)\1\s*(?:,\s*\{([^}]*)\})?\s*,?\s*\)/g;
 
 export function expandGlob({ include = /\.(js|ts|gjs|gts)$/ } = {}) {
   let counter = 0;
@@ -63,7 +63,8 @@ export function expandGlob({ include = /\.(js|ts|gjs|gts)$/ } = {}) {
       if (!include.test(id) || !code.includes('import.meta.glob(')) return;
       let dir = pathDirname(id);
       let imports = [];
-      let output = code.replace(GLOB_CALL, (_match, _quote, pattern, eager) => {
+      let output = code.replace(GLOB_CALL, (_match, _quote, pattern, options = '') => {
+        const eager = /\beager\s*:\s*true\b/.test(options);
         if (!pattern.startsWith('./') && !pattern.startsWith('../')) {
           this.error(`import.meta.glob in ${id} must use a relative pattern; it can't cross package boundaries (RFC 939).`);
         }
@@ -73,7 +74,7 @@ export function expandGlob({ include = /\.(js|ts|gjs|gts)$/ } = {}) {
           .sort();
         this.addWatchFile(dir);
         let entries = files.map((file) => {
-          if (eager === 'true') {
+          if (eager) {
             let name = `__glob_${counter++}`;
             imports.push(`import * as ${name} from ${JSON.stringify(file)};`);
             return `  ${JSON.stringify(file)}: ${name},`;
