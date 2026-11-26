@@ -90,10 +90,12 @@ server on Node 24 and 26.
    `./route-maps/<name>`. `pnpm demo:no-registration` shows the failure
    without it.
 2. **Set `@embroider/core: { active: true }`** in the macros global config
-   (`host/babel.config.mjs`). `@embroider/router` only enables lazy loading
-   behind that flag, and only compat sets it. `pnpm demo:no-active-flag`
-   shows that, without it, every mount fails with "You attempted to mount the
-   engine 'blog', but it is not registered with its parent."
+   (`host/babel.config.mjs`). `@embroider/router` 3.0.6, the latest release,
+   only enables lazy loading behind that flag, and only compat sets it.
+   embroider-build/embroider#2848 removed the gate on main (merged
+   2026-11-12, unreleased). Until it ships, `pnpm demo:no-active-flag` shows
+   every mount failing with "You attempted to mount the engine 'blog', but it
+   is not registered with its parent."
 3. **Register nested routable engines on the host.** Ember's router builds
    every routable engine instance from the root owner. The plugin finds them
    through the engines' dependencies.
