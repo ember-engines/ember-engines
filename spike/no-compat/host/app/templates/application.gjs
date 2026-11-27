@@ -1,4 +1,5 @@
 import { LinkTo } from '@ember/routing';
+import LoadedChunks from '../components/loaded-chunks.gjs';
 
 <template>
   <nav>
@@ -8,4 +9,5 @@ import { LinkTo } from '@ember/routing';
     <LinkTo @route="blog-two" data-test-nav-blog-two>Blog two</LinkTo>
   </nav>
   {{outlet}}
+  <LoadedChunks />
 </template>

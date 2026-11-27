@@ -3,7 +3,7 @@ import { getGlobalConfig } from '@embroider/macros/src/addon/runtime';
 const ENV = {
   modulePrefix: 'host',
   environment: import.meta.env.DEV ? 'development' : 'production',
-  rootURL: '/',
+  rootURL: import.meta.env.BASE_URL,
   locationType: 'history',
   EmberENV: {},
   APP: {},

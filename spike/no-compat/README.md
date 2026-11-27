@@ -4,7 +4,10 @@ What a v2 engine and its runtime need so that an app runs them without
 `@embroider/compat`, and so that a compat app can run the same engines during
 a migration. Tested on ember-source 7.3.1, @embroider/core 4.6.10,
 @embroider/router 3.0.6 (patched with embroider-build/embroider#2848),
-@embroider/vite 1.8, Vite 8.4, Babel 8.
+@embroider/vite 1.8, Vite 8.3, Babel 8.
+
+A production build of `host` runs at <https://aklkv.github.io/ember-engines/>. It
+lists each engine chunk as it loads.
 
 | Package | What it is |
 | --- | --- |
@@ -77,8 +80,9 @@ server on Node 24 and 26.
   ember-engines-router-service reads them. Router-service's own `engine-ext`
   is still an `Engine.reopen`.
 
-`<LinkToExternal>` (66 lines) covers `@route`, `@model`, `@models`, `@query`,
-`@replace`, `@current-when`, href and the `active` class. It doesn't implement
+`<LinkToExternal>` covers `@route`, `@model`, `@models`, `@query`, `@replace`,
+`@current-when` (external route names, as in v1), models that haven't loaded,
+`target`, href and the `active` class. It doesn't implement
 `@disabled`, `@activeClass`, the loading and transitioning classes, or
 `@preventDefault`.
 
