@@ -45,15 +45,17 @@ export default class LinkToExternal extends Component {
     return this.router.urlFor(...this.routeArgs);
   }
 
-  // Like <LinkTo>: a loading link is never active, and `current-when` routes
-  // are checked on their own, without this link's models or query.
+  // A loading link is never active, as with <LinkTo>. `current-when` names are
+  // external routes, resolved like `@route` (as v1 <LinkToExternal> does), and
+  // checked without this link's models or query (as <LinkTo> does).
   get isActive() {
     if (this.isLoading) return false;
 
     let currentWhen = this.args['current-when'];
     if (typeof currentWhen === 'boolean') return currentWhen;
     if (typeof currentWhen === 'string') {
-      return currentWhen.split(' ').some((name) => this.router.isActive(name));
+      let owner = getOwner(this);
+      return currentWhen.split(' ').some((name) => this.router.isActive(owner._getExternalRoute(name)));
     }
 
     return this.router.isActive(...this.routeArgs);

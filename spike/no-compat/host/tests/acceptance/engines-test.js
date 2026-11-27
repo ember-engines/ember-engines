@@ -81,9 +81,12 @@ module('Acceptance | engines', function (hooks) {
   });
 
   test('LinkToExternal takes @models, @current-when and @replace', async function (assert) {
+    await visit('/blog-two');
+    assert.dom('[data-test-blog-home-current-when]').hasClass('active', 'current-when names are external routes: other is bound to blog-two');
+
     await visit('/blog');
+    assert.dom('[data-test-blog-home-current-when]').doesNotHaveClass('active', 'blog-two is not current on /blog');
     assert.dom('[data-test-blog-item-models]').hasAttribute('href', '/items/7');
-    assert.dom('[data-test-blog-home-current-when]').hasClass('active', '@current-when="blog" while on /blog');
     assert.dom('[data-test-blog-home]').doesNotHaveClass('active', 'without it, home (bound to account) is not active');
 
     // RouterService#replaceWith goes through transitionTo, so only count replaceWith.
