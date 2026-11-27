@@ -54,7 +54,8 @@ server on Node 24 and 26.
   - a nested engine;
   - an eager routable engine, loaded at boot;
   - a routeless engine rendered with `{{mount}}`, with host services.
-- `blog`'s isolation app passes 3/3, from source against a fake host.
+- `blog`'s isolation app passes 6/6, from source against a fake host. Three
+  of them cover `setupEngine` (below).
 - `check:dist` asserts the build output:
   - no published engine dist contains `import.meta.glob` (RFC 939) or a
     `.scss` import;
@@ -92,6 +93,19 @@ server on Node 24 and 26.
 engines renders in both. It doesn't implement
 `@disabled`, `@activeClass`, the loading and transitioning classes, or
 `@preventDefault`.
+
+## Testing an engine
+
+`ember-engines-runtime/test-support` keeps v1's API. `setupEngine(hooks,
+'name')` boots the engine before each test and sets `this.engine`: look its
+routes, controllers and services up there, and render its components with
+`render(template, { owner: this.engine })`. `loadEngine('name')` does the same
+for one engine, loading a lazy engine's bundle the way `@embroider/router` does.
+
+What changes from v1: no `service:asset-loader` and no AMD `require`. A lazy
+engine's bundle comes from `_embroiderEngineBundles_`, and its modules go to
+the resolver's `addModules`. That happens before any registry lookup for the
+engine, because the registry remembers a miss.
 
 ## What a no-compat app has to do today
 
