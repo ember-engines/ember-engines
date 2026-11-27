@@ -1,6 +1,4 @@
 import Application from '@ember/application';
-// What router-service's initializer did, as an explicit import.
-import 'ember-engines-router-service/-private/engine-ext';
 import * as UiIntl from 'ui-kit/services/ui-intl';
 import { bundles, modules as engineModules } from 'virtual:ember-engines';
 import config from './config/environment.js';

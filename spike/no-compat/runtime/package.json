@@ -19,6 +19,10 @@
       "workspace-source": "./src/components/link-to-external.gjs",
       "default": "./dist/components/link-to-external.js"
     },
+    "./services/router": {
+      "workspace-source": "./src/services/router.js",
+      "default": "./dist/services/router.js"
+    },
     "./test-support": {
       "workspace-source": "./src/test-support.js",
       "default": "./dist/test-support.js"

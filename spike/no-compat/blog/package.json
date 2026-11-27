@@ -74,7 +74,6 @@
     "@rollup/plugin-babel": "^7.1.0",
     "@tsdown/css": "0.23.7",
     "babel-plugin-ember-template-compilation": "^4.0.1",
-    "ember-engines-router-service": "^0.7.0",
     "ember-qunit": "^9.1.0",
     "ember-source": "~7.3.0",
     "qunit": "^2.26.0",

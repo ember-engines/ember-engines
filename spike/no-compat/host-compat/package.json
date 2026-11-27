@@ -26,7 +26,6 @@
     "decorator-transforms": "^2.4.0",
     "ember-cli": "~7.3.0",
     "ember-engines": "^0.13.1",
-    "ember-engines-router-service": "^0.7.0",
     "ember-engines-runtime": "workspace:*",
     "ember-load-initializers": "^3.0.1",
     "ember-qunit": "^9.1.0",

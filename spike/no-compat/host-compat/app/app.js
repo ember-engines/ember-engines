@@ -4,8 +4,8 @@ import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
 // v1 ember-engines is installed here too, the way an app looks mid-migration.
 // Its initializer still patches EngineInstance; the v2 engines don't rely on
-// it, because they extend ember-engines-runtime/engine. router-service's
-// initializer runs through compat's app-js.
+// it, because they extend ember-engines-runtime/engine, which also registers
+// each engine's router service.
 import config from './config/environment.js';
 
 // Compat generates the engine bundles, route maps (implicit-modules) and

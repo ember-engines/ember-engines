@@ -1,14 +1,15 @@
 import Engine, { getEngineParent } from '@ember/engine';
 import EngineInstance from '@ember/engine/instance';
 import { assert } from '@ember/debug';
+import EngineRouterService from './services/router.js';
 
 // The engine side of the host/engine contract, without patching Ember.
 //
 // Engines extend this instead of `@ember/engine`. Ember builds every engine
 // instance through the public `Engine#buildInstance`, so the contract lives in
-// an `EngineInstance` subclass. It wires the host's services and external
-// routes in the public `boot()`, after Ember has set the engine's parent and
-// before anything in the engine is looked up.
+// an `EngineInstance` subclass. It wires the host's services, external routes
+// and the engine's own `service:router` in the public `boot()`, after Ember
+// has set the engine's parent and before anything in the engine is looked up.
 //
 // The host side is unchanged from ember-engines: the parent's `engines` map,
 // keyed by engine name, lists `dependencies: { services, externalRoutes }`.
@@ -30,8 +31,6 @@ function serviceMap(entries = []) {
 }
 
 class ContractEngineInstance extends EngineInstance {
-  // ember-engines' field name: ember-engines-router-service reads
-  // `owner._externalRoutes` directly.
   _externalRoutes = Object.create(null);
   #wired = false;
 
@@ -70,10 +69,15 @@ class ContractEngineInstance extends EngineInstance {
       assert(`Engine '${name}' requires external route '${local}', but its parent's \`engines.${name}.dependencies.externalRoutes\` doesn't map it.`, route);
       this._externalRoutes[local] = route;
     }
+
+    // Unless the engine ships its own router service or takes the host's
+    // through `dependencies.services`.
+    if (!this.hasRegistration('service:router')) {
+      this.register('service:router', EngineRouterService);
+    }
   }
 
-  // The name ember-engines uses, so LinkToExternal and
-  // ember-engines-router-service keep working unchanged.
+  // The name ember-engines uses, which v1 code may call.
   _getExternalRoute(local) {
     let route = this._externalRoutes[local];
     assert(`The external route ${local} does not exist`, route);

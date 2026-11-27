@@ -1,15 +1,7 @@
 import Component from '@glimmer/component';
 import { getOwner } from '@ember/owner';
-import { getEngineParent } from '@ember/engine';
 import { on } from '@ember/modifier';
-
-function rootOwner(owner) {
-  let parent;
-  while ((parent = getEngineParent(owner))) {
-    owner = parent;
-  }
-  return owner;
-}
+import { rootOwner } from '../-private/root-owner.js';
 
 // Links to a route the host bound to one of this engine's `externalRoutes`.
 // Resolves through the engine instance, then navigates with the host's router.

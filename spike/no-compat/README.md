@@ -11,7 +11,7 @@ lists each engine chunk as it loads.
 
 | Package | What it is |
 | --- | --- |
-| `runtime/` | The runtime pieces of v1 ember-engines, reworked for v2:<br>• `./engine` is an `Engine` base class that applies the host/engine contract (see below) without patching Ember;<br>• `buildRoutes`;<br>• a Glimmer `<LinkToExternal>`;<br>• `./vite`, with the host plugins `engines()` (registration) and `publicAssets()`;<br>• `./test-support`, with `setupEngine` and `loadEngine`;<br>• `./rollup`, with `expandGlob()` and `sass()`. |
+| `runtime/` | The runtime pieces of v1 ember-engines, reworked for v2:<br>• `./engine` is an `Engine` base class that applies the host/engine contract (see below) without patching Ember;<br>• `buildRoutes`;<br>• a Glimmer `<LinkToExternal>`;<br>• `./services/router`, the engine's router service;<br>• `./vite`, with the host plugins `engines()` (registration) and `publicAssets()`;<br>• `./test-support`, with `setupEngine` and `loadEngine`;<br>• `./rollup`, with `expandGlob()` and `sass()`. |
 | `blog/` | A v2 lazy engine built with tsdown + `@nullvoxpopuli/ember-rolldown`. It has Sass, query params and three external routes, is mounted twice, and has its own isolation app (`demo-app/`, `tests/`). |
 | `comments/` | A v2 lazy engine mounted inside `blog`, built with rollup + `@embroider/addon-dev` and the runtime's `expandGlob()` and `sass()` plugins. |
 | `shop/` | A v2 eager engine (routable, no `lazy-engine`), bundled with the host. |
@@ -49,14 +49,14 @@ server on Node 24 and 26.
     loaded, and `target="_blank"`, plus one rendered by the host itself;
   - an engine's `public-assets` in the build (`runtime/node-tests` covers the
     dev server, with and without a base path);
-  - router-service `transitionToExternal`;
+  - the engine's router service and `transitionToExternal`;
   - sticky query params in a lazy engine;
   - multi-mount;
   - a nested engine;
   - an eager routable engine, loaded at boot;
   - a routeless engine rendered with `{{mount}}`, with host services.
-- `blog`'s isolation app passes 7/7, from source against a fake host. Four
-  of them cover `setupEngine` (below).
+- `blog`'s isolation app passes 14/14, from source against a fake host. Four
+  cover `setupEngine` and seven the engine's router service.
 - `check:dist` asserts the build output:
   - no published engine dist contains `import.meta.glob` (RFC 939) or a
     `.scss` import;
@@ -83,9 +83,15 @@ server on Node 24 and 26.
   `buildInstance`.
 - One private call remains: `ensureInitializers()`, which the stock
   `buildInstance` makes too.
-- It keeps v1's `_externalRoutes` and `_getExternalRoute`, because
-  ember-engines-router-service reads them. Router-service's own `engine-ext`
-  is still an `Engine.reopen`.
+- It registers the engine's `service:router` when the instance boots, unless
+  the engine ships its own or takes the host's through
+  `dependencies.services`. That's ember-engines-router-service's API folded
+  in (`transitionTo`, `*External` methods, `currentRouteName`,
+  `externalRouter`, route events), at about 140 lines instead of 256: a native
+  service that delegates to the host's router, with no `Engine.reopen`, no
+  mixins and no private contract between two packages. Route event listeners
+  live on the host's router. `rootApplication` and `getExternalRouteName()`
+  are gone.
 
 `<LinkToExternal>` covers `@route`, `@model`, `@models`, `@query`, `@replace`,
 `@current-when` (external route names, as in v1), models that haven't loaded,
@@ -126,12 +132,10 @@ engine, because the registry remembers a miss.
 3. **Register nested routable engines on the host.** Ember's router builds
    every routable engine instance from the root owner. The plugin finds them
    through the engines' dependencies.
-4. **Import router-service's `-private/engine-ext` explicitly**, because no
-   addon initializers run.
-5. **List addon services resolved by name** in the app's and each engine's
+4. **List addon services resolved by name** in the app's and each engine's
    `modules`. Nothing merges `app-js` any more. A missing entry fails silently
    (empty render).
-6. **Serve engines' `public-assets`.** Compat serves and copies them through
+5. **Serve engines' `public-assets`.** Compat serves and copies them through
    `@embroider/vite`'s `assets()`, which reads compat's resolver config.
    Without it, an engine's images get the app's `index.html`.
    `publicAssets()` in `runtime/vite.mjs` serves and emits them from package

@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { on } from '@ember/modifier';
 
-// Uses ember-engines-router-service's engine-scoped router.
+// Uses the engine's router service, which the base class registers.
 export default class GoHome extends Component {
   @service router;
 

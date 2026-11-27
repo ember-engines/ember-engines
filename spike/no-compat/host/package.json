@@ -22,7 +22,6 @@
     "babel-plugin-ember-template-compilation": "^4.0.1",
     "blog": "workspace:*",
     "decorator-transforms": "^2.4.0",
-    "ember-engines-router-service": "^0.7.0",
     "ember-engines-runtime": "workspace:*",
     "ember-qunit": "^9.1.0",
     "ember-source": "~7.3.0",

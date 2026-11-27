@@ -245,9 +245,6 @@ importers:
       babel-plugin-ember-template-compilation:
         specifier: ^4.0.1
         version: 4.0.2
-      ember-engines-router-service:
-        specifier: ^0.7.0
-        version: 0.7.0(@babel/core@8.1.3)(supports-color@8.1.1)
       ember-qunit:
         specifier: ^9.1.0
         version: 9.2.1(@ember/test-helpers@5.8.0(@babel/core@8.1.3))(qunit@2.26.0)
@@ -351,9 +348,6 @@ importers:
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@8.1.3)
-      ember-engines-router-service:
-        specifier: ^0.7.0
-        version: 0.7.0(@babel/core@8.1.3)(supports-color@8.1.1)
       ember-engines-runtime:
         specifier: workspace:*
         version: link:../runtime
@@ -443,10 +437,7 @@ importers:
         version: 7.3.0(@babel/core@8.1.3)(@types/node@26.6.10)(debug@4.4.3(supports-color@8.1.1))(ejs@3.1.10)(handlebars@4.7.10)(supports-color@8.1.1)(underscore@1.13.8)
       ember-engines:
         specifier: ^0.13.1
-        version: 0.13.1(ember-engines-router-service@0.7.0(@babel/core@8.1.3)(supports-color@8.1.1))(ember-source@7.3.1(@glimmer/component@2.2.1)(supports-color@8.1.1))(supports-color@8.1.1)
-      ember-engines-router-service:
-        specifier: ^0.7.0
-        version: 0.7.0(@babel/core@8.1.3)(supports-color@8.1.1)
+        version: 0.13.1(ember-source@7.3.1(@glimmer/component@2.2.1)(supports-color@8.1.1))(supports-color@8.1.1)
       ember-engines-runtime:
         specifier: workspace:*
         version: link:../runtime
@@ -3231,9 +3222,6 @@ packages:
     resolution: {integrity: sha512-FZX9IoFioIn6V86t2TwbNtcr+TyzYoSf+dMR6tA/tFCePDJtIhnrMOChnYrgsSbuTecwSP3vivjHfrezrQHOOA==}
     engines: {node: '>= 20.19.0'}
     hasBin: true
-
-  ember-engines-router-service@0.7.0:
-    resolution: {integrity: sha512-g5E659OjopF6YcVU80niA6mS8Cjej4ckFy9qR2chTUjNOasFTw19PdoY8HbNzqdaDOUez66VK74CZmIzbafRaA==}
 
   ember-engines@0.13.1:
     resolution: {integrity: sha512-aWoBBBlI0CfQFxL4Lz1ylqGCEtEtO+gSyS0E0Jx0aUVvZFvRccbbMOdRL8oMuenxmxjgJoiASvf2rtyF1sBN2Q==}
@@ -9438,17 +9426,7 @@ snapshots:
       - walrus
       - whiskers
 
-  ember-engines-router-service@0.7.0(@babel/core@8.1.3)(supports-color@8.1.1):
-    dependencies:
-      '@embroider/addon-shim': 1.11.0
-      '@embroider/macros': 1.21.4(@babel/core@8.1.3)(supports-color@8.1.1)
-      decorator-transforms: 2.4.0(@babel/core@8.1.3)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  ember-engines@0.13.1(ember-engines-router-service@0.7.0(@babel/core@8.1.3)(supports-color@8.1.1))(ember-source@7.3.1(@glimmer/component@2.2.1)(supports-color@8.1.1))(supports-color@8.1.1):
+  ember-engines@0.13.1(ember-source@7.3.1(@glimmer/component@2.2.1)(supports-color@8.1.1))(supports-color@8.1.1):
     dependencies:
       '@babel/core': 7.29.13(supports-color@8.1.1)
       '@embroider/macros': 1.21.4(@babel/core@7.29.13(supports-color@8.1.1))(supports-color@8.1.1)
@@ -9470,8 +9448,6 @@ snapshots:
       ember-cli-version-checker: 5.1.2(supports-color@8.1.1)
       ember-source: 7.3.1(@glimmer/component@2.2.1)(supports-color@8.1.1)
       lodash: 4.18.1
-    optionalDependencies:
-      ember-engines-router-service: 0.7.0(@babel/core@8.1.3)(supports-color@8.1.1)
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
