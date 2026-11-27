@@ -2,14 +2,7 @@ import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildMacros } from '@embroider/macros/babel';
 
-const macros = buildMacros({
-  configure(config) {
-    // @embroider/router only turns on lazy engine/route loading when this is
-    // set, and only @embroider/compat sets it. Without it the router silently
-    // behaves like the plain Ember router.
-    config.setGlobalConfig(import.meta.filename, '@embroider/core', { active: true });
-  },
-});
+const macros = buildMacros();
 
 // The no-compat shape: macros instead of babelCompatSupport()/templateCompatSupport().
 export default {

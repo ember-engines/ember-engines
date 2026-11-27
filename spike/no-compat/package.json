@@ -7,8 +7,8 @@
     "build": "pnpm build:addons && pnpm --filter host run build",
     "test": "pnpm build:addons && pnpm --filter host run test",
     "check:dist": "node scripts/check-dist.mjs",
-    "demo:no-active-flag": "node scripts/expect-failure.mjs NO_ACTIVE_FLAG \"You attempted to mount the engine\"",
-    "demo:no-registration": "node scripts/expect-failure.mjs NO_ENGINE_REGISTRATION \"You attempted to mount the engine\""
+    "demo:no-registration": "node scripts/expect-failure.mjs NO_ENGINE_REGISTRATION \"You attempted to mount the engine\"",
+    "test:node": "node --test 'runtime/node-tests/*.test.mjs'"
   },
   "packageManager": "pnpm@12.23.0",
   "engines": {

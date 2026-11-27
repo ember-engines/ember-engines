@@ -60,7 +60,12 @@ class ContractEngineInstance extends EngineInstance {
       this.register(`service:${local}`, service, { instantiate: false });
     }
 
-    for (let local of required.externalRoutes ?? []) {
+    // A list of names; a map's keys are accepted too.
+    let requiredRoutes = Array.isArray(required.externalRoutes)
+      ? required.externalRoutes
+      : Object.keys(required.externalRoutes ?? {});
+
+    for (let local of requiredRoutes) {
       let route = provided.externalRoutes?.[local];
       assert(`Engine '${name}' requires external route '${local}', but its parent's \`engines.${name}.dependencies.externalRoutes\` doesn't map it.`, route);
       this._externalRoutes[local] = route;

@@ -6,6 +6,8 @@
 // load hook compiles the file, and keepAssets emits it and keeps the import.
 
 import { fileURLToPath } from 'node:url';
+import { globSync } from 'node:fs';
+import { dirname, join, relative, resolve, sep } from 'node:path';
 
 export function sass({ loadPaths = ['node_modules'] } = {}) {
   return {
@@ -44,46 +46,94 @@ export function sass({ loadPaths = ['node_modules'] } = {}) {
   };
 }
 
-// Expands `import.meta.glob(pattern, { eager: true })` into static imports at
-// build time. RFC 939 lets addons use the glob in their own code but not in
-// what they publish, so an engine's dist must not depend on the host's Vite.
-// Keys match Vite's (`./templates/index.gjs`); the strict resolver drops the
-// extension. Non-eager globs become `() => import(...)` maps.
-import { globSync } from 'node:fs';
-import { dirname as pathDirname, relative as pathRelative, resolve as pathResolve } from 'node:path';
-
+// `import.meta.glob('./pattern', { eager: true })`, with an optional trailing
+// comma: the only form expandGlob() supports.
 const GLOB_CALL =
-  /import\.meta\.glob\(\s*(['"])([^'"]+)\1\s*(?:,\s*\{([^}]*)\})?\s*,?\s*\)/g;
+  /import\.meta\.glob\(\s*(['"])([^'"]+)\1\s*(?:,\s*\{([^{}]*)\})?\s*,?\s*\)/g;
 
+/**
+ * Expands `import.meta.glob(pattern, { eager })` into static imports at build
+ * time. RFC 939 lets addons use the glob in their source but not in what they
+ * publish, so a v2 engine's dist can't depend on the host's Vite. Keys match
+ * Vite's (`./templates/index.gts`); Ember's strict resolver drops the
+ * extension. Non-eager globs become `() => import(...)` maps.
+ *
+ * Supported: a single string pattern starting with `./` (no `..`), and an
+ * optional `{ eager: true | false }`. Anything else, including a call it can't
+ * expand, fails the build rather than reaching dist. Mentions of the call in
+ * comments are expanded too, so keep them out of comments.
+ *
+ * Place it before the babel plugin, so it sees the source.
+ */
 export function expandGlob({ include = /\.(js|ts|gjs|gts)$/ } = {}) {
   let counter = 0;
+
   return {
-    name: 'ember-engines-expand-glob',
+    name: 'expand-import-meta-glob',
+
     transform(code, id) {
-      if (!include.test(id) || !code.includes('import.meta.glob(')) return;
-      let dir = pathDirname(id);
-      let imports = [];
-      let output = code.replace(GLOB_CALL, (_match, _quote, pattern, options = '') => {
-        const eager = /\beager\s*:\s*true\b/.test(options);
-        if (!pattern.startsWith('./') && !pattern.startsWith('../')) {
-          this.error(`import.meta.glob in ${id} must use a relative pattern; it can't cross package boundaries (RFC 939).`);
-        }
-        let files = globSync(pattern, { cwd: dir })
-          .map((file) => `./${file.split('\\').join('/')}`.replace(/^\.\/\.\.\//, '../'))
-          .filter((file) => pathResolve(dir, file) !== id)
-          .sort();
-        this.addWatchFile(dir);
-        let entries = files.map((file) => {
-          if (eager) {
-            let name = `__glob_${counter++}`;
-            imports.push(`import * as ${name} from ${JSON.stringify(file)};`);
-            return `  ${JSON.stringify(file)}: ${name},`;
+      if (!include.test(id) || !code.includes('import.meta.glob')) return;
+
+      const dir = dirname(id);
+      const imports = [];
+      const output = code.replace(
+        GLOB_CALL,
+        (match, _quote, pattern, options = '') => {
+          if (!pattern.startsWith('./') || pattern.split('/').includes('..')) {
+            this.error(
+              `import.meta.glob in ${id}: "${pattern}" must start with ./ and stay inside the package (RFC 939).`,
+            );
           }
-          return `  ${JSON.stringify(file)}: () => import(${JSON.stringify(file)}),`;
-        });
-        return `{\n${entries.join('\n')}\n}`;
-      });
-      return { code: `${imports.join('\n')}\n${output}`, map: null };
+
+          const unsupported = options
+            .replace(/\beager\s*:\s*(true|false)\b/, '')
+            .replace(/[\s,]/g, '');
+          if (unsupported) {
+            this.error(
+              `import.meta.glob in ${id}: only { eager } is supported, got {${options}}.`,
+            );
+          }
+
+          const eager = /\beager\s*:\s*true\b/.test(options);
+          const files = globSync(pattern, { cwd: dir, withFileTypes: true })
+            .filter((entry) => entry.isFile())
+            .map((entry) =>
+              relative(dir, join(entry.parentPath, entry.name))
+                .split(sep)
+                .join('/'),
+            )
+            .map((file) => `./${file}`)
+            .filter((file) => resolve(dir, file) !== id)
+            .sort();
+
+          this.addWatchFile(dir);
+
+          const entries = files.map((file) => {
+            if (eager) {
+              const name = `__glob_${counter++}`;
+              imports.push(`import * as ${name} from ${JSON.stringify(file)};`);
+
+              return `${JSON.stringify(file)}: ${name},`;
+            }
+
+            return `${JSON.stringify(file)}: () => import(${JSON.stringify(file)}),`;
+          });
+
+          // Keep the line count, so the source map still lines up.
+          const newlines = match.split('\n').length - 1;
+
+          return `{ ${entries.join(' ')} }${'\n'.repeat(newlines)}`;
+        },
+      );
+
+      if (output.includes('import.meta.glob')) {
+        this.error(
+          `${id} still has an import.meta.glob call after expansion. Only a single string pattern with an optional { eager } object is supported.`,
+        );
+      }
+
+      // Imports are hoisted, so appending them leaves every line in place.
+      return { code: `${output}\n${imports.join('\n')}\n`, map: null };
     },
   };
 }

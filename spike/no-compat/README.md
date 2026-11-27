@@ -3,7 +3,8 @@
 What a v2 engine and its runtime need so that an app runs them without
 `@embroider/compat`, and so that a compat app can run the same engines during
 a migration. Tested on ember-source 7.3.1, @embroider/core 4.6.10,
-@embroider/router 3.0.6, @embroider/vite 1.8, Vite 8.4, Babel 8.
+@embroider/router 3.0.6 (patched with embroider-build/embroider#2848),
+@embroider/vite 1.8, Vite 8.4, Babel 8.
 
 | Package | What it is |
 | --- | --- |
@@ -21,7 +22,7 @@ pnpm --filter host test           # the acceptance suite, no compat
 pnpm --filter host-compat test    # the same suite, compat + v1 ember-engines
 pnpm --filter blog test           # blog in isolation, from source
 pnpm --filter host build && pnpm check:dist
-pnpm demo:no-active-flag          # shows mounts failing without the router flag
+pnpm test:node                    # expandGlob
 pnpm demo:no-registration         # shows mounts failing without host registration
 pnpm --filter host start          # dev server; workspace engines served from src
 ```
@@ -31,7 +32,7 @@ server on Node 24 and 26.
 
 ## What it shows
 
-- `host` and `host-compat` run the same 13 acceptance tests. The compat copy is
+- `host` and `host-compat` run the same 15 acceptance tests. The compat copy is
   generated from `host/tests`, so the two can't drift. The tests cover:
   - JS and CSS loading lazily;
   - a host `LinkTo` into an inner engine route before load;
@@ -39,7 +40,8 @@ server on Node 24 and 26.
   - Sass;
   - an addon service looked up by name;
   - `<LinkToExternal>` with per-engine bindings, `@model(s)`, `@query`,
-    `@replace`, `@current-when`, href and active state;
+    `@replace`, `@current-when`, href and active state, a model that hasn't
+    loaded, and `target="_blank"`;
   - router-service `transitionToExternal`;
   - sticky query params in a lazy engine;
   - multi-mount;
@@ -89,13 +91,12 @@ server on Node 24 and 26.
    from package metadata, with keys `./engines/<name>` and
    `./route-maps/<name>`. `pnpm demo:no-registration` shows the failure
    without it.
-2. **Set `@embroider/core: { active: true }`** in the macros global config
-   (`host/babel.config.mjs`). `@embroider/router` 3.0.6, the latest release,
-   only enables lazy loading behind that flag, and only compat sets it.
-   embroider-build/embroider#2848 removed the gate on main (merged
-   2026-11-12, unreleased). Until it ships, `pnpm demo:no-active-flag` shows
-   every mount failing with "You attempted to mount the engine 'blog', but it
-   is not registered with its parent."
+2. **Use an `@embroider/router` without the `active` gate.** 3.0.6, the latest
+   release, only enables lazy loading when the macros global config has
+   `@embroider/core: { active: true }`, which only compat sets.
+   embroider-build/embroider#2848 removes the gate (merged, unreleased).
+   The spike patches 3.0.6 with that change (`patches/`) and sets no flag; drop
+   the patch once a release ships.
 3. **Register nested routable engines on the host.** Ember's router builds
    every routable engine instance from the root owner. The plugin finds them
    through the engines' dependencies.

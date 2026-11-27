@@ -15,6 +15,8 @@ import GoHome from '../components/go-home.gjs';
     <LinkToExternal @route="item" @models={{array 7}} data-test-blog-item-models>Item 7</LinkToExternal>
     <LinkToExternal @route="home" @current-when="blog" data-test-blog-home-current-when>Home (current-when blog)</LinkToExternal>
     <LinkToExternal @route="home" @replace={{true}} data-test-blog-home-replace>Home (replace)</LinkToExternal>
+    <LinkToExternal @route="item" @model={{undefined}} data-test-blog-item-loading>Item (loading)</LinkToExternal>
+    <LinkToExternal @route="home" target="_blank" data-test-blog-home-blank>Home (new tab)</LinkToExternal>
     <GoHome />
     {{outlet}}
   </section>

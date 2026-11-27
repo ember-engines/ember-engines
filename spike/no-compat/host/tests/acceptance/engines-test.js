@@ -104,6 +104,32 @@ module('Acceptance | engines', function (hooks) {
     }
   });
 
+  test('LinkToExternal with a model that has not loaded has no URL and does nothing', async function (assert) {
+    await visit('/blog');
+    assert.dom('[data-test-blog-item-loading]').hasAttribute('href', '#');
+    assert.dom('[data-test-blog-item-loading]').doesNotHaveClass('active');
+    await click('[data-test-blog-item-loading]');
+    assert.strictEqual(currentURL(), '/blog');
+  });
+
+  test('LinkToExternal leaves target=_blank links to the browser', async function (assert) {
+    let defaultPrevented;
+    // Runs after the link's handler; records it, then stops the real navigation.
+    let record = (event) => {
+      defaultPrevented = event.defaultPrevented;
+      event.preventDefault();
+    };
+    document.addEventListener('click', record);
+    try {
+      await visit('/blog');
+      await click('[data-test-blog-home-blank]');
+      assert.false(defaultPrevented);
+      assert.strictEqual(currentURL(), '/blog');
+    } finally {
+      document.removeEventListener('click', record);
+    }
+  });
+
   test('router-service transitionToExternal follows the binding', async function (assert) {
     await visit('/blog');
     await click('[data-test-go-home]');

@@ -37,6 +37,8 @@ jobs:
           cache-dependency-path: spike/no-compat/pnpm-lock.yaml
       - name: Install
         run: pnpm install --frozen-lockfile
+      - name: Node tests (expandGlob)
+        run: pnpm test:node
       - name: Build runtime, ui-kit and engines
         run: pnpm build:addons
       - name: No-compat host
@@ -49,7 +51,5 @@ jobs:
         run: |
           pnpm --filter host build
           pnpm check:dist
-      - name: "Demo: without the @embroider/core active flag, every mount fails"
-        run: pnpm demo:no-active-flag
       - name: "Demo: without host registration, every mount fails"
         run: pnpm demo:no-registration

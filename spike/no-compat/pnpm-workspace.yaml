@@ -15,3 +15,6 @@ overrides:
 allowBuilds:
   "@parcel/watcher": false
   core-js: false
+
+patchedDependencies:
+  '@embroider/router@3.0.6': patches/@embroider__router@3.0.6.patch
