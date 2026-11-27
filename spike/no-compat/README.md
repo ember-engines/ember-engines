@@ -11,7 +11,7 @@ lists each engine chunk as it loads.
 
 | Package | What it is |
 | --- | --- |
-| `runtime/` | The runtime pieces of v1 ember-engines, reworked for v2:<br>• `./engine` is an `Engine` base class that applies the host/engine contract (see below) without patching Ember;<br>• `buildRoutes`;<br>• a Glimmer `<LinkToExternal>`;<br>• `./vite`, a host registration plugin;<br>• `./rollup`, with `expandGlob()` and `sass()`. |
+| `runtime/` | The runtime pieces of v1 ember-engines, reworked for v2:<br>• `./engine` is an `Engine` base class that applies the host/engine contract (see below) without patching Ember;<br>• `buildRoutes`;<br>• a Glimmer `<LinkToExternal>`;<br>• `./vite`, with the host plugins `engines()` (registration) and `publicAssets()`;<br>• `./test-support`, with `setupEngine` and `loadEngine`;<br>• `./rollup`, with `expandGlob()` and `sass()`. |
 | `blog/` | A v2 lazy engine built with tsdown + `@nullvoxpopuli/ember-rolldown`. It has Sass, query params and three external routes, is mounted twice, and has its own isolation app (`demo-app/`, `tests/`). |
 | `comments/` | A v2 lazy engine mounted inside `blog`, built with rollup + `@embroider/addon-dev` and the runtime's `expandGlob()` and `sass()` plugins. |
 | `shop/` | A v2 eager engine (routable, no `lazy-engine`), bundled with the host. |
@@ -47,14 +47,15 @@ server on Node 24 and 26.
   - `<LinkToExternal>` with per-engine bindings, `@model(s)`, `@query`,
     `@replace`, `@current-when`, href and active state, a model that hasn't
     loaded, and `target="_blank"`, plus one rendered by the host itself;
-  - an engine's `public-assets`;
+  - an engine's `public-assets` in the build (`runtime/node-tests` covers the
+    dev server, with and without a base path);
   - router-service `transitionToExternal`;
   - sticky query params in a lazy engine;
   - multi-mount;
   - a nested engine;
   - an eager routable engine, loaded at boot;
   - a routeless engine rendered with `{{mount}}`, with host services.
-- `blog`'s isolation app passes 6/6, from source against a fake host. Three
+- `blog`'s isolation app passes 7/7, from source against a fake host. Four
   of them cover `setupEngine` (below).
 - `check:dist` asserts the build output:
   - no published engine dist contains `import.meta.glob` (RFC 939) or a
@@ -88,9 +89,11 @@ server on Node 24 and 26.
 
 `<LinkToExternal>` covers `@route`, `@model`, `@models`, `@query`, `@replace`,
 `@current-when` (external route names, as in v1), models that haven't loaded,
-`target`, href and the `active` class. Outside a mounted engine it takes
-`@route` as a host route, like v1, so a design-system link shared by host and
-engines renders in both. It doesn't implement
+`target`, href and the `active` class. Without a mount point it takes `@route`
+as a host route, like v1: in the host, so a design-system link shared by host
+and engines renders in both, and in a routeless engine, whose `externalRoutes`
+it therefore ignores, also like v1. Before the first transition, a route that
+needs params gives no URL, as Ember's routing service does for `<LinkTo>`. It doesn't implement
 `@disabled`, `@activeClass`, the loading and transitioning classes, or
 `@preventDefault`.
 
@@ -131,7 +134,9 @@ engine, because the registry remembers a miss.
 6. **Serve engines' `public-assets`.** Compat serves and copies them through
    `@embroider/vite`'s `assets()`, which reads compat's resolver config.
    Without it, an engine's images get the app's `index.html`.
-   `publicAssets()` in `runtime/vite.mjs` does the same from package metadata.
+   `publicAssets()` in `runtime/vite.mjs` serves and emits them from package
+   metadata. In dev it answers the requests itself rather than through Vite's
+   file serving, which would transform scripts and apply `server.fs.allow`.
    This affects any v2 addon with `public-assets`, not only engines.
 
 ## Engine types

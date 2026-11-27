@@ -24,8 +24,9 @@ export default class LinkToExternal extends Component {
     return this.externalRoute(this.args.route);
   }
 
-  // Outside a mounted engine (a design-system link the host renders too) the
-  // name is already a host route, as with v1 <LinkToExternal>.
+  // Without a mount point, the name is already a host route, as with v1
+  // <LinkToExternal>: in the host (a design-system link it renders too) and in
+  // a routeless engine rendered with {{mount}}.
   externalRoute(name) {
     let owner = getOwner(this);
     return owner.mountPoint ? owner._getExternalRoute(name) : name;
@@ -50,18 +51,20 @@ export default class LinkToExternal extends Component {
   get href() {
     if (this.isLoading) return '#';
 
+    let routeArgs = this.routeArgs;
+
     // Before the first transition, as in a rendering test without visit(), a
-    // route that needs the current route's params has no URL. <LinkTo>
-    // swallows that error the same way.
+    // route that needs the current route's params has no URL. Ember's routing
+    // service swallows that error for <LinkTo> the same way.
     if (this.router.currentURL === null) {
       try {
-        return this.router.urlFor(...this.routeArgs);
+        return this.router.urlFor(...routeArgs);
       } catch {
         return undefined;
       }
     }
 
-    return this.router.urlFor(...this.routeArgs);
+    return this.router.urlFor(...routeArgs);
   }
 
   // A loading link is never active, as with <LinkTo>. `current-when` names are

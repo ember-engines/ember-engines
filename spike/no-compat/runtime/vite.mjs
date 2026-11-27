@@ -14,8 +14,8 @@
 // graph. That includes engines that only another engine depends on, because
 // Ember's router builds every routable engine instance from the root owner.
 
-import { existsSync, readFileSync, realpathSync } from 'node:fs';
-import { dirname, join, posix } from 'node:path';
+import { createReadStream, existsSync, readFileSync, realpathSync } from 'node:fs';
+import { dirname, extname, join, posix } from 'node:path';
 
 const VIRTUAL_ID = 'virtual:ember-engines';
 const RESOLVED_ID = `\0${VIRTUAL_ID}`;
@@ -94,6 +94,31 @@ export function discoverEngines(root) {
   return [...engines.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
+// What addons usually ship as public assets.
+const CONTENT_TYPES = {
+  '.avif': 'image/avif',
+  '.css': 'text/css',
+  '.gif': 'image/gif',
+  '.ico': 'image/x-icon',
+  '.jpeg': 'image/jpeg',
+  '.jpg': 'image/jpeg',
+  '.js': 'text/javascript',
+  '.json': 'application/json',
+  '.mjs': 'text/javascript',
+  '.mp4': 'video/mp4',
+  '.otf': 'font/otf',
+  '.pdf': 'application/pdf',
+  '.png': 'image/png',
+  '.svg': 'image/svg+xml',
+  '.ttf': 'font/ttf',
+  '.txt': 'text/plain',
+  '.wasm': 'application/wasm',
+  '.webm': 'video/webm',
+  '.webp': 'image/webp',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+};
+
 // Serves and emits v2 addons' `public-assets` (engines' images, mostly) at the
 // URLs they declare. Under compat, @embroider/vite's `assets()` did this, but it
 // reads compat's resolver config. As there, a file in the app's own public
@@ -118,16 +143,24 @@ export function publicAssets({ root = process.cwd() } = {}) {
       }
     },
 
-    // Hands the request to Vite's /@fs/ file serving (content type, caching)
-    // before the SPA fallback answers it with index.html.
+    // Answers the request itself: Vite's own file serving would transform
+    // scripts and apply `server.fs.allow`, unlike the build's copy.
     configureServer(server) {
       let base = server.config.base;
-      server.middlewares.use((req, _res, next) => {
-        let path = req.url?.split('?')[0];
-        if (path?.startsWith(base)) path = `/${path.slice(base.length)}`;
-        let file = path && assets.get(path);
-        if (file) req.url = `/@fs${file}`;
-        next();
+      server.middlewares.use((req, res, next) => {
+        let path;
+        try {
+          path = decodeURIComponent(req.url?.split('?')[0] ?? '');
+        } catch {
+          return next();
+        }
+        if (!path.startsWith(base)) return next();
+
+        let file = assets.get(`/${path.slice(base.length)}`);
+        if (!file) return next();
+
+        res.setHeader('Content-Type', CONTENT_TYPES[extname(file).toLowerCase()] ?? 'application/octet-stream');
+        createReadStream(file).on('error', next).pipe(res);
       });
     },
 

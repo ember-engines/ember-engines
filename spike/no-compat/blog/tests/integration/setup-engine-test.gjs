@@ -27,10 +27,33 @@ module('Integration | setupEngine', function (hooks) {
     assert.dom('[data-test-home]').hasAttribute('href', '/', 'external routes follow the host binding');
   });
 
-  test('loadEngine builds a lazy engine, loading its bundle if it hasn’t been', async function (assert) {
-    let comments = await loadEngine('comments');
+  test('before the first transition, a link whose route needs params has no URL', async function (assert) {
+    await render(<template><LinkToExternal @route="item" data-test-item>Item</LinkToExternal></template>, {
+      owner: this.engine,
+    });
 
-    assert.true(globalThis.__engineLoads.includes('comments'));
+    assert.dom('[data-test-item]').doesNotHaveAttribute('href');
+  });
+
+  test('loadEngine builds a lazy engine from its bundle', async function (assert) {
+    // An earlier test may have loaded comments already, so count the bundle's
+    // loads rather than the engine's.
+    let bundle = globalThis._embroiderEngineBundles_.find((b) => b.names.includes('comments'));
+    let { load } = bundle;
+    let loads = 0;
+    bundle.load = () => {
+      loads++;
+      return load();
+    };
+
+    let comments;
+    try {
+      comments = await loadEngine('comments');
+    } finally {
+      bundle.load = load;
+    }
+
+    assert.strictEqual(loads, 1);
     assert.strictEqual(comments.mountPoint, 'comments');
     assert.strictEqual(comments.lookup('service:session'), this.owner.lookup('service:session'));
   });
