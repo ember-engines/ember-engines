@@ -3,7 +3,7 @@
 What a v2 engine and its runtime need so that an app runs them without
 `@embroider/compat`, and so that a compat app can run the same engines during
 a migration. Tested on ember-source 7.3.1, @embroider/core 4.6.10,
-@embroider/router 3.0.6 (patched with embroider-build/embroider#2848),
+@embroider/router 4.0,
 @embroider/vite 1.8, Vite 8.3, Babel 8.
 
 A production build of `host` runs at <https://aklkv.github.io/ember-engines/>. It
@@ -95,12 +95,10 @@ server on Node 24 and 26.
    from package metadata, with keys `./engines/<name>` and
    `./route-maps/<name>`. `pnpm demo:no-registration` shows the failure
    without it.
-2. **Use an `@embroider/router` without the `active` gate.** 3.0.6, the latest
-   release, only enables lazy loading when the macros global config has
-   `@embroider/core: { active: true }`, which only compat sets.
-   embroider-build/embroider#2848 removes the gate (merged, unreleased).
-   The spike patches 3.0.6 with that change (`patches/`) and sets no flag; drop
-   the patch once a release ships.
+2. **Use `@embroider/router` 4.0 or later.** 3.x only enables lazy loading
+   when the macros global config has `@embroider/core: { active: true }`, which
+   only compat sets. embroider-build/embroider#2848 removed that gate, and 4.0.0
+   is the first release without it.
 3. **Register nested routable engines on the host.** Ember's router builds
    every routable engine instance from the root owner. The plugin finds them
    through the engines' dependencies.

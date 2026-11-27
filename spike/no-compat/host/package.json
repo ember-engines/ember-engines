@@ -15,7 +15,7 @@
     "@ember/test-helpers": "^5.4.3",
     "@embroider/core": "^4.6.10",
     "@embroider/macros": "^1.21.4",
-    "@embroider/router": "^3.0.6",
+    "@embroider/router": "^4.0.0",
     "@embroider/vite": "^1.8.1",
     "@glimmer/component": "^2.1.1",
     "@rollup/plugin-babel": "^7.1.0",
