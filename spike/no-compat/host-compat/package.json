@@ -35,9 +35,11 @@
     "qunit": "^2.26.0",
     "qunit-dom": "^3.6.0",
     "sass-embedded": "^1.104.1",
+    "shop": "workspace:*",
     "testem": "^3.21.0",
     "ui-kit": "workspace:*",
-    "vite": "^8.3.8"
+    "vite": "^8.3.8",
+    "widget": "workspace:*"
   },
   "exports": {
     "./tests/*": "./tests/*",

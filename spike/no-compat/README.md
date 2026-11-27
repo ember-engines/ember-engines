@@ -1,4 +1,4 @@
-# Spike: v2 lazy engines, with and without compat
+# Spike: v2 engines, with and without compat
 
 What a v2 engine and its runtime need so that an app runs them without
 `@embroider/compat`, and so that a compat app can run the same engines during
@@ -14,6 +14,8 @@ lists each engine chunk as it loads.
 | `runtime/` | The runtime pieces of v1 ember-engines, reworked for v2:<br>• `./engine` is an `Engine` base class that applies the host/engine contract (see below) without patching Ember;<br>• `buildRoutes`;<br>• a Glimmer `<LinkToExternal>`;<br>• `./vite`, a host registration plugin;<br>• `./rollup`, with `expandGlob()` and `sass()`. |
 | `blog/` | A v2 lazy engine built with tsdown + `@nullvoxpopuli/ember-rolldown`. It has Sass, query params and three external routes, is mounted twice, and has its own isolation app (`demo-app/`, `tests/`). |
 | `comments/` | A v2 lazy engine mounted inside `blog`, built with rollup + `@embroider/addon-dev` and the runtime's `expandGlob()` and `sass()` plugins. |
+| `shop/` | A v2 eager engine (routable, no `lazy-engine`), bundled with the host. |
+| `widget/` | A v2 routeless engine, rendered with `{{mount "widget"}}`. |
 | `ui-kit/` | A v2 addon whose component looks up its service by name, as many design-system components do. |
 | `host/` | The no-compat app: Vite, Ember's built-in strict resolver, no initializers. |
 | `host-compat/` | A compat app (ember-cli + `@embroider/compat`) running the same engines, with v1 `ember-engines` also installed, the way an app looks mid-migration. |
@@ -35,7 +37,7 @@ server on Node 24 and 26.
 
 ## What it shows
 
-- `host` and `host-compat` run the same 15 acceptance tests. The compat copy is
+- `host` and `host-compat` run the same 17 acceptance tests. The compat copy is
   generated from `host/tests`, so the two can't drift. The tests cover:
   - JS and CSS loading lazily;
   - a host `LinkTo` into an inner engine route before load;
@@ -48,7 +50,9 @@ server on Node 24 and 26.
   - router-service `transitionToExternal`;
   - sticky query params in a lazy engine;
   - multi-mount;
-  - a nested engine.
+  - a nested engine;
+  - an eager routable engine, loaded at boot;
+  - a routeless engine rendered with `{{mount}}`, with host services.
 - `blog`'s isolation app passes 3/3, from source against a fake host.
 - `check:dist` asserts the build output:
   - no published engine dist contains `import.meta.glob` (RFC 939) or a
@@ -108,6 +112,27 @@ server on Node 24 and 26.
    `modules`. Nothing merges `app-js` any more. A missing entry fails silently
    (empty render).
 
+## Engine types
+
+| Type | `package.json` | Loads |
+| --- | --- | --- |
+| Lazy, routable | `lazy-engine: true`, exports `./routes` and `./engine`, `implicit-modules: ["./routes.js"]` | Its own JS and CSS, when one of its routes is entered (`@embroider/router`) |
+| Eager, routable | Exports `./routes` and `./engine`, `implicit-modules: ["./routes.js"]`, no `lazy-engine` | With the host, at boot |
+| Routeless | Exports only `./engine`, no `lazy-engine` | With the host, at boot; rendered with `{{mount "name"}}` |
+
+- A routeless engine can't be lazy: nothing routes into it, so nothing would
+  load it. `runtime/vite.mjs` rejects a lazy engine without `./routes`.
+- In Ember 7.3, `{{mount}}` calls the engine's `template:application` as a
+  template factory, so a routeless engine's application template has to be one
+  (`precompileTemplate()`, see `widget/src/templates/application.js`). A
+  `.gjs` `<template>` works for route templates, which may be components,
+  but not here.
+- Laziness is static. v1 apps often turned lazy loading off in development
+  (`lazyLoading.enabled = EMBER_ENV !== 'development'` in the engine's
+  `index.js`). `lazy-engine` is package metadata, so an engine is lazy, or
+  eager, in every environment, and development and tests behave like
+  production.
+
 ## What an engine package needs
 
 - Keyword `ember-engine`, `ember-addon.lazy-engine: true`, and
@@ -120,3 +145,8 @@ server on Node 24 and 26.
 - Optionally, a `workspace-source` condition for monorepo dev. Don't use the
   standard `development` condition: every consumer's dev server would then
   compile the engine's source.
+- Declarations only if the engine is published. An app's private engines
+  (workspace packages nobody installs) can skip them; in one app that was
+  about three quarters of each engine's build time. Hosts and engines that
+  import another engine can type-check its source through the same custom
+  condition (`"customConditions": ["workspace-source"]` in `tsconfig.json`).

@@ -8,11 +8,11 @@
 //   window._embroiderEngineBundles_ = bundles;  // lazy engines, for @embroider/router
 //   class App extends Application { modules = { ...appModules, ...modules }; }
 //
-// `modules` holds every engine's route map, plus the Engine class of eager
-// engines, keyed for Ember's strict resolver. Engines are found by keyword
-// (`ember-engine`) anywhere in the app's addon graph. That includes engines
-// that only another engine depends on, because Ember's router builds every
-// routable engine instance from the root owner.
+// `modules` holds every routable engine's route map, plus the Engine class of
+// eager engines (routable or routeless), keyed for Ember's strict resolver.
+// Engines are found by keyword (`ember-engine`) anywhere in the app's addon
+// graph. That includes engines that only another engine depends on, because
+// Ember's router builds every routable engine instance from the root owner.
 
 import { existsSync, readFileSync, realpathSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -70,6 +70,8 @@ export function discoverEngines(root) {
           dir: depDir,
           from: dir,
           lazy: Boolean(meta['lazy-engine']),
+          // A routeless engine (rendered with {{mount}}) exports no route map.
+          routable: Boolean(dep.exports?.['./routes']),
         });
       }
 
@@ -106,16 +108,24 @@ export function engines({ root = process.cwd(), disabled = false } = {}) {
 
       for (let [i, engine] of found.entries()) {
         let importer = join(engine.from, 'package.json');
-        let routes = await this.resolve(`${engine.name}/routes`, importer);
         let entry = await this.resolve(`${engine.name}/engine`, importer);
-        if (!routes || !entry) {
-          throw new Error(
-            `Engine ${engine.name} must export ./routes and ./engine (checked from ${engine.from}).`,
-          );
+        if (!entry) {
+          throw new Error(`Engine ${engine.name} must export ./engine (checked from ${engine.from}).`);
         }
 
-        imports.push(`import routes${i} from ${JSON.stringify(routes.id)};`);
-        modules.push(`  ${JSON.stringify(`./route-maps/${engine.name}`)}: routes${i},`);
+        // The router loads a lazy engine when one of its routes is entered, so a
+        // lazy engine must have a route map.
+        if (engine.lazy && !engine.routable) {
+          throw new Error(`Lazy engine ${engine.name} must export ./routes (checked from ${engine.from}).`);
+        }
+        if (engine.routable) {
+          let routes = await this.resolve(`${engine.name}/routes`, importer);
+          if (!routes) {
+            throw new Error(`Engine ${engine.name} exports ./routes, but it doesn't resolve (checked from ${engine.from}).`);
+          }
+          imports.push(`import routes${i} from ${JSON.stringify(routes.id)};`);
+          modules.push(`  ${JSON.stringify(`./route-maps/${engine.name}`)}: routes${i},`);
+        }
 
         if (engine.lazy) {
           bundles.push(

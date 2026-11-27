@@ -12,4 +12,6 @@ Router.map(function () {
   this.mount('blog', { path: '/blog' });
   // The same engine at a second mount point.
   this.mount('blog', { as: 'blog-two', path: '/blog-two' });
+  // An eager engine: bundled with the host, nothing to load on entry.
+  this.mount('shop', { path: '/shop' });
 });

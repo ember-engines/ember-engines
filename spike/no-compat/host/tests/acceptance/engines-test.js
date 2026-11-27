@@ -173,4 +173,24 @@ module('Acceptance | engines', function (hooks) {
     await click('[data-test-comments-home]');
     assert.strictEqual(currentURL(), '/');
   });
+
+  test('an eager engine is bundled with the host and mounts without loading anything', async function (assert) {
+    await visit('/');
+    assert.true(loaded('shop'), 'shop JS loaded at boot');
+
+    await click('[data-test-nav-shop]');
+    assert.strictEqual(currentURL(), '/shop');
+    assert.dom('[data-test-shop]').exists();
+
+    await click('[data-test-shop-cart-link]');
+    assert.strictEqual(currentURL(), '/shop/cart');
+    assert.dom('[data-test-shop-cart]').hasText('Your cart is empty.');
+  });
+
+  test('a routeless engine renders with {{mount}} and gets host services', async function (assert) {
+    await visit('/');
+    assert.true(loaded('widget'), 'routeless engines are eager');
+    assert.dom('[data-test-widget]').exists();
+    assert.dom('[data-test-widget-user]').hasText('ada', 'the host session through dependencies.services');
+  });
 });

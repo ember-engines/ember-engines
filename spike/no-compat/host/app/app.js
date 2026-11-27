@@ -34,5 +34,7 @@ export default class App extends Application {
     comments: {
       dependencies: { services: ['session'], externalRoutes: { home: 'index' } },
     },
+    shop: { dependencies: { services: ['session'] } },
+    widget: { dependencies: { services: ['session'] } },
   };
 }

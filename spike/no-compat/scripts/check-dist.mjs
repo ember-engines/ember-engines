@@ -1,7 +1,8 @@
 // Asserts what the spike claims about build output:
 // - published engine dist has no import.meta.glob (RFC 939) and imports .css, not .scss;
-// - in the host's production build nothing loaded at boot holds engine code or
-//   CSS, and each engine is its own lazy JS chunk and CSS file.
+// - in the host's production build nothing loaded at boot holds a lazy engine's
+//   code or CSS, each lazy engine is its own JS chunk and CSS file, and eager
+//   engines load at boot.
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -52,6 +53,14 @@ check(blogJs.length === 1 && commentsJs.length === 1 && blogJs[0] !== commentsJs
 let blogCss = holding(lazy.filter((f) => f.endsWith('.css')), 'data-test-blog');
 let commentsCss = holding(lazy.filter((f) => f.endsWith('.css')), 'data-test-comments');
 check(blogCss.length === 1 && commentsCss.length === 1 && blogCss[0] !== commentsCss[0], 'each engine has its own lazy CSS file');
+
+// Eager engines (shop is routable, widget routeless) ship in what loads at boot,
+// not in a lazy chunk.
+for (let [engine, text] of [['shop', 'Shop engine (eager)'], ['widget', 'Widget engine (routeless)']]) {
+  let code = files(`${engine}/dist`).filter((f) => f.endsWith('.js')).map((f) => readFileSync(f, 'utf8')).join('\n');
+  check(!code.includes('import.meta.glob'), `${engine}/dist has no import.meta.glob`);
+  check(holding(bootFiles, text).length === 1 && holding(lazy, text).length === 0, `the eager ${engine} engine loads at boot, not in a lazy chunk`);
+}
 
 if (failures.length) {
   for (let f of failures) console.error(`FAIL ${f}`);

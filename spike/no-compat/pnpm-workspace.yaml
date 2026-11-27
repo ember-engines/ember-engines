@@ -3,6 +3,8 @@ packages:
   - ui-kit
   - comments
   - blog
+  - shop
+  - widget
   - host
   - host-compat
 
