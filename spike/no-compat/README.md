@@ -37,7 +37,7 @@ server on Node 24 and 26.
 
 ## What it shows
 
-- `host` and `host-compat` run the same 17 acceptance tests. The compat copy is
+- `host` and `host-compat` run the same 19 acceptance tests. The compat copy is
   generated from `host/tests`, so the two can't drift. The tests cover:
   - JS and CSS loading lazily;
   - a host `LinkTo` into an inner engine route before load;
@@ -46,7 +46,8 @@ server on Node 24 and 26.
   - an addon service looked up by name;
   - `<LinkToExternal>` with per-engine bindings, `@model(s)`, `@query`,
     `@replace`, `@current-when`, href and active state, a model that hasn't
-    loaded, and `target="_blank"`;
+    loaded, and `target="_blank"`, plus one rendered by the host itself;
+  - an engine's `public-assets`;
   - router-service `transitionToExternal`;
   - sticky query params in a lazy engine;
   - multi-mount;
@@ -86,7 +87,9 @@ server on Node 24 and 26.
 
 `<LinkToExternal>` covers `@route`, `@model`, `@models`, `@query`, `@replace`,
 `@current-when` (external route names, as in v1), models that haven't loaded,
-`target`, href and the `active` class. It doesn't implement
+`target`, href and the `active` class. Outside a mounted engine it takes
+`@route` as a host route, like v1, so a design-system link shared by host and
+engines renders in both. It doesn't implement
 `@disabled`, `@activeClass`, the loading and transitioning classes, or
 `@preventDefault`.
 
@@ -111,6 +114,11 @@ server on Node 24 and 26.
 5. **List addon services resolved by name** in the app's and each engine's
    `modules`. Nothing merges `app-js` any more. A missing entry fails silently
    (empty render).
+6. **Serve engines' `public-assets`.** Compat serves and copies them through
+   `@embroider/vite`'s `assets()`, which reads compat's resolver config.
+   Without it, an engine's images get the app's `index.html`.
+   `publicAssets()` in `runtime/vite.mjs` does the same from package metadata.
+   This affects any v2 addon with `public-assets`, not only engines.
 
 ## Engine types
 

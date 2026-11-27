@@ -15,7 +15,7 @@
 // Ember's router builds every routable engine instance from the root owner.
 
 import { existsSync, readFileSync, realpathSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { dirname, join, posix } from 'node:path';
 
 const VIRTUAL_ID = 'virtual:ember-engines';
 const RESOLVED_ID = `\0${VIRTUAL_ID}`;
@@ -32,8 +32,11 @@ function packageDir(name, fromDir) {
   }
 }
 
-export function discoverEngines(root) {
-  let engines = new Map();
+// Every ember-addon the app can reach, with the package that depends on it.
+// The walk follows v2 addons' dependencies only: a v1 addon can't hold a v2
+// addon we could load anyway.
+export function discoverAddons(root) {
+  let addons = [];
   let seen = new Set();
 
   function walk(dir, isRoot) {
@@ -49,39 +52,95 @@ export function discoverEngines(root) {
       seen.add(depDir);
 
       let dep = readPackage(depDir);
-      let keywords = dep.keywords ?? [];
-      if (!keywords.includes('ember-addon')) continue;
-      let meta = dep['ember-addon'] ?? {};
+      if (!(dep.keywords ?? []).includes('ember-addon')) continue;
+      addons.push({ pkg: dep, dir: depDir, from: dir });
 
-      if (keywords.includes('ember-engine')) {
-        if (meta.version !== 2) {
-          throw new Error(
-            `${dep.name} is a v1 engine. v1 engines only build with @embroider/compat.`,
-          );
-        }
-        let existing = engines.get(dep.name);
-        if (existing && existing.dir !== depDir) {
-          throw new Error(
-            `Two copies of engine ${dep.name}: ${existing.dir} and ${depDir}. Engines are registered by name, so only one can be mounted.`,
-          );
-        }
-        engines.set(dep.name, {
-          name: dep.name,
-          dir: depDir,
-          from: dir,
-          lazy: Boolean(meta['lazy-engine']),
-          // A routeless engine (rendered with {{mount}}) exports no route map.
-          routable: Boolean(dep.exports?.['./routes']),
-        });
-      }
-
-      // v1 addons can't hold v2 engines we could load anyway.
-      if (meta.version === 2) walk(depDir, false);
+      if (dep['ember-addon']?.version === 2) walk(depDir, false);
     }
   }
 
   walk(root, true);
+  return addons;
+}
+
+export function discoverEngines(root) {
+  let engines = new Map();
+
+  for (let { pkg: dep, dir: depDir, from } of discoverAddons(root)) {
+    if (!dep.keywords.includes('ember-engine')) continue;
+
+    let meta = dep['ember-addon'] ?? {};
+    if (meta.version !== 2) {
+      throw new Error(
+        `${dep.name} is a v1 engine. v1 engines only build with @embroider/compat.`,
+      );
+    }
+    let existing = engines.get(dep.name);
+    if (existing && existing.dir !== depDir) {
+      throw new Error(
+        `Two copies of engine ${dep.name}: ${existing.dir} and ${depDir}. Engines are registered by name, so only one can be mounted.`,
+      );
+    }
+    engines.set(dep.name, {
+      name: dep.name,
+      dir: depDir,
+      from,
+      lazy: Boolean(meta['lazy-engine']),
+      // A routeless engine (rendered with {{mount}}) exports no route map.
+      routable: Boolean(dep.exports?.['./routes']),
+    });
+  }
+
   return [...engines.values()].sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// Serves and emits v2 addons' `public-assets` (engines' images, mostly) at the
+// URLs they declare. Under compat, @embroider/vite's `assets()` did this, but it
+// reads compat's resolver config. As there, a file in the app's own public
+// folder wins.
+export function publicAssets({ root = process.cwd() } = {}) {
+  let assets = new Map();
+
+  return {
+    name: 'ember-addon-public-assets',
+
+    configResolved({ publicDir }) {
+      assets = new Map();
+      for (let { pkg, dir } of discoverAddons(root)) {
+        let meta = pkg['ember-addon'] ?? {};
+        if (meta.version !== 2) continue;
+
+        for (let [file, url] of Object.entries(meta['public-assets'] ?? {})) {
+          let path = posix.resolve('/', url);
+          if (publicDir && existsSync(join(publicDir, path))) continue;
+          assets.set(path, join(dir, file));
+        }
+      }
+    },
+
+    // Hands the request to Vite's /@fs/ file serving (content type, caching)
+    // before the SPA fallback answers it with index.html.
+    configureServer(server) {
+      let base = server.config.base;
+      server.middlewares.use((req, _res, next) => {
+        let path = req.url?.split('?')[0];
+        if (path?.startsWith(base)) path = `/${path.slice(base.length)}`;
+        let file = path && assets.get(path);
+        if (file) req.url = `/@fs${file}`;
+        next();
+      });
+    },
+
+    generateBundle() {
+      for (let [path, file] of assets) {
+        this.emitFile({
+          type: 'asset',
+          fileName: path.slice(1),
+          source: readFileSync(file),
+        });
+      }
+    },
+  };
 }
 
 export function engines({ root = process.cwd(), disabled = false } = {}) {

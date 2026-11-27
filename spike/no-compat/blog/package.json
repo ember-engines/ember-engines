@@ -29,6 +29,7 @@
   "files": [
     "addon-main.cjs",
     "dist",
+    "public",
     "src"
   ],
   "scripts": {
@@ -43,7 +44,10 @@
     "lazy-engine": true,
     "implicit-modules": [
       "./routes.js"
-    ]
+    ],
+    "public-assets": {
+      "./public/images/badge.svg": "/blog/images/badge.svg"
+    }
   },
   "dependencies": {
     "@embroider/addon-shim": "^1.11.0",

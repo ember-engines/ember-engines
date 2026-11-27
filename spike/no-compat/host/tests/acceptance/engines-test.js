@@ -65,6 +65,19 @@ module('Acceptance | engines', function (hooks) {
     assert.dom('[data-test-account]').exists();
   });
 
+  test('LinkToExternal in the host takes a host route name', async function (assert) {
+    await visit('/');
+    assert.dom('[data-test-nav-account]').hasAttribute('href', '/account');
+    await click('[data-test-nav-account]');
+    assert.strictEqual(currentURL(), '/account');
+  });
+
+  test('an engine’s public assets are served at the URLs it declares', async function (assert) {
+    let response = await fetch('/blog/images/badge.svg');
+    assert.strictEqual(response.status, 200);
+    assert.strictEqual(response.headers.get('content-type'), 'image/svg+xml');
+  });
+
   test('LinkToExternal passes models and query params', async function (assert) {
     await visit('/blog');
     assert.dom('[data-test-blog-item]').hasAttribute('href', '/items/42?tab=details');

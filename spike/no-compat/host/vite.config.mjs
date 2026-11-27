@@ -1,7 +1,7 @@
 import { defineConfig, defaultClientConditions } from 'vite';
 import { extensions, ember } from '@embroider/vite';
 import { babel } from '@rollup/plugin-babel';
-import { engines } from 'ember-engines-runtime/vite';
+import { engines, publicAssets } from 'ember-engines-runtime/vite';
 
 // No classicEmberSupport(): the no-compat shape RFC 1174 proposes.
 export default defineConfig(({ command }) => ({
@@ -17,6 +17,8 @@ export default defineConfig(({ command }) => ({
     // NO_ENGINE_REGISTRATION=1 shows what a strict-resolver app gets today:
     // nothing registers lazy engines or their route maps.
     engines({ disabled: Boolean(process.env.NO_ENGINE_REGISTRATION) }),
+    // Engines' `public-assets`, which compat serves from its resolver config.
+    publicAssets(),
     ember(),
     babel({
       babelHelpers: 'runtime',

@@ -21,7 +21,14 @@ export default class LinkToExternal extends Component {
   }
 
   get routeName() {
-    return getOwner(this)._getExternalRoute(this.args.route);
+    return this.externalRoute(this.args.route);
+  }
+
+  // Outside a mounted engine (a design-system link the host renders too) the
+  // name is already a host route, as with v1 <LinkToExternal>.
+  externalRoute(name) {
+    let owner = getOwner(this);
+    return owner.mountPoint ? owner._getExternalRoute(name) : name;
   }
 
   get models() {
@@ -42,6 +49,18 @@ export default class LinkToExternal extends Component {
 
   get href() {
     if (this.isLoading) return '#';
+
+    // Before the first transition, as in a rendering test without visit(), a
+    // route that needs the current route's params has no URL. <LinkTo>
+    // swallows that error the same way.
+    if (this.router.currentURL === null) {
+      try {
+        return this.router.urlFor(...this.routeArgs);
+      } catch {
+        return undefined;
+      }
+    }
+
     return this.router.urlFor(...this.routeArgs);
   }
 
@@ -54,8 +73,7 @@ export default class LinkToExternal extends Component {
     let currentWhen = this.args['current-when'];
     if (typeof currentWhen === 'boolean') return currentWhen;
     if (typeof currentWhen === 'string') {
-      let owner = getOwner(this);
-      return currentWhen.split(' ').some((name) => this.router.isActive(owner._getExternalRoute(name)));
+      return currentWhen.split(' ').some((name) => this.router.isActive(this.externalRoute(name)));
     }
 
     return this.router.isActive(...this.routeArgs);
