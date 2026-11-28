@@ -1,0 +1,19 @@
+packages:
+  - runtime
+  - ui-kit
+  - comments
+  - blog
+  - shop
+  - widget
+  - host
+  - host-compat
+
+# v1 ember-engines (installed in host-compat only) needs ember-cli-htmlbars 7 on ember-source 7.
+overrides:
+  ember-cli-htmlbars: ^7.0.1
+
+# Neither build script is needed: sass-embedded only uses the watcher for --watch,
+# and core-js 2 (via v1 ember-engines) only prints a banner.
+allowBuilds:
+  "@parcel/watcher": false
+  core-js: false

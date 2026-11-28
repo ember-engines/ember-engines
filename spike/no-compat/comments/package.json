@@ -1,0 +1,65 @@
+{
+  "name": "comments",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "keywords": [
+    "ember-addon",
+    "ember-engine"
+  ],
+  "exports": {
+    "./engine": {
+      "workspace-source": "./src/engine.js",
+      "default": "./dist/engine.js"
+    },
+    "./engine.js": {
+      "workspace-source": "./src/engine.js",
+      "default": "./dist/engine.js"
+    },
+    "./routes": {
+      "workspace-source": "./src/routes.js",
+      "default": "./dist/routes.js"
+    },
+    "./routes.js": {
+      "workspace-source": "./src/routes.js",
+      "default": "./dist/routes.js"
+    },
+    "./addon-main.js": "./addon-main.cjs"
+  },
+  "files": [
+    "addon-main.cjs",
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "rollup --config"
+  },
+  "ember-addon": {
+    "version": 2,
+    "type": "addon",
+    "main": "addon-main.cjs",
+    "lazy-engine": true,
+    "implicit-modules": [
+      "./routes.js"
+    ]
+  },
+  "dependencies": {
+    "@embroider/addon-shim": "^1.11.0",
+    "decorator-transforms": "^2.4.0",
+    "ember-engines-runtime": "workspace:*"
+  },
+  "peerDependencies": {
+    "@glimmer/component": "^2.1.1",
+    "ember-source": ">=7.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^8.1.3",
+    "@embroider/addon-dev": "^8.5.0",
+    "@glimmer/component": "^2.1.1",
+    "@rollup/plugin-babel": "^7.1.0",
+    "babel-plugin-ember-template-compilation": "^4.0.1",
+    "ember-source": "~7.3.0",
+    "rollup": "^4.63.3",
+    "sass-embedded": "^1.104.1"
+  }
+}

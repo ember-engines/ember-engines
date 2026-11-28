@@ -1,0 +1,95 @@
+name: Spike (no-compat engines)
+
+on:
+  push:
+    branches:
+      - spike/**
+    paths:
+      - spike/no-compat/**
+      - .github/workflows/spike-no-compat.yml
+  workflow_dispatch: {}
+
+concurrency:
+  group: spike-no-compat-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [24, 26]
+    defaults:
+      run:
+        working-directory: spike/no-compat
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: spike/no-compat/package.json
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+          cache-dependency-path: spike/no-compat/pnpm-lock.yaml
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Node tests (expandGlob)
+        run: pnpm test:node
+      - name: Build runtime, ui-kit and engines
+        run: pnpm build:addons
+      - name: No-compat host
+        run: pnpm --filter host test
+      - name: Compat host, with v1 ember-engines installed
+        run: pnpm --filter host-compat test
+      - name: blog in isolation
+        run: pnpm --filter blog test
+      - name: Production build and dist checks
+        run: |
+          pnpm --filter host build
+          pnpm check:dist
+      - name: "Demo: without host registration, every mount fails"
+        run: pnpm demo:no-registration
+
+  demo:
+    name: Deploy the demo to GitHub Pages
+    needs: test
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    defaults:
+      run:
+        working-directory: spike/no-compat
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: spike/no-compat/package.json
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: spike/no-compat/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build:addons
+      - name: Build the no-compat host for /ember-engines/
+        run: pnpm --filter host build
+        env:
+          DEMO_BASE: /ember-engines/
+      # GitHub Pages serves 404.html for unknown paths, so deep links reach the app.
+      - run: cp host/dist/index.html host/dist/404.html
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: spike/no-compat/host/dist
+      - id: deploy
+        uses: actions/deploy-pages@v5

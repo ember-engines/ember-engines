@@ -1,0 +1,5 @@
+$accent: rgb(0, 128, 0);
+
+[data-test-comments] {
+  outline: 3px solid $accent;
+}

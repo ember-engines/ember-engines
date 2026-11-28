@@ -1,0 +1,16 @@
+@use 'sass:map';
+@use './styles/tokens';
+
+[data-test-blog] {
+  outline: 3px solid tokens.$brand;
+
+  @each $name, $size in tokens.$sizes {
+    &.pad-#{$name} {
+      padding: $size;
+    }
+  }
+
+  h2 {
+    margin-block-end: map.get(tokens.$sizes, md);
+  }
+}
