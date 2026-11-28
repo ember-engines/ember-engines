@@ -17,8 +17,3 @@ overrides:
 allowBuilds:
   "@parcel/watcher": false
   core-js: false
-
-# The first release without the macros gate (embroider-build/embroider#2848),
-# published 2026-11-27. Drop this once it's a day old.
-minimumReleaseAgeExclude:
-  - "@embroider/router@4.0.0"
